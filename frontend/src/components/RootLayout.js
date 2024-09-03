@@ -8,30 +8,32 @@ export default function RootLayout({ children }) {
 
   return (
     <>
+      {/* Top Navigation Bar */}
       <div className="bg-gradient-to-r from-blue-500 to-blue-700 p-6 text-white shadow-lg">
         <nav className="container mx-auto flex justify-between items-center">
-          <div className="text-2xl font-bold">Clinical Database</div>
+          <div className="text-2xl font-bold">Probensammlung</div>
           <div className="flex space-x-4">
-            <Link 
-              href="/" 
+            {/* Updated Link structure without <a> tags */}
+            <Link
+              href="/"
               className={clsx('text-white font-semibold hover:text-blue-200', {
-                'underline': location === '/',
+                underline: location === '/',
               })}
             >
               Home
             </Link>
-            <Link 
-              href="/table_view" 
+            <Link
+              href="/table_view"
               className={clsx('text-white font-semibold hover:text-blue-200', {
-                'underline': location === '/table_view',
+                underline: location === '/table_view',
               })}
             >
               Übersicht
             </Link>
-            <Link 
-              href="/sonstiges" 
+            <Link
+              href="/sonstiges"
               className={clsx('text-white font-semibold hover:text-blue-200', {
-                'underline': location === '/sonstiges',
+                underline: location === '/sonstiges',
               })}
             >
               Sonstiges
@@ -40,6 +42,7 @@ export default function RootLayout({ children }) {
         </nav>
       </div>
 
+      {/* Main Content */}
       <main className="container mx-auto p-4">
         {children}
       </main>
