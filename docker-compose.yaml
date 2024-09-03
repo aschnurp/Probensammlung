@@ -1,0 +1,58 @@
+version:  "3"
+services: 
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: clinical_database-api:latest
+    ports:
+      - 8000:8000
+    depends_on:
+      mysql:
+        condition: service_healthy
+    restart: always
+    environment:
+      DATABASE_HOSTNAME:  $DATABASE_HOSTNAME
+      DATABASE_PORT:  $DATABASE_PORT
+      DATABASE_PASSWORD:  $DATABASE_PASSWORD
+      DATABASE_NAME:  $DATABASE_NAME
+      DATABASE_USERNAME:  $DATABASE_USERNAME
+    volumes:
+      - ./:/usr/src/app:ro
+    command: bash -c "alembic upgrade head && uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload"
+
+  frontend:
+    image: playground-web-frontend:latest
+    build:
+      context: .
+      dockerfile: /frontend/frontend.dockerfile
+    ports:
+      - 3000:3000
+    depends_on:
+      - api
+ 
+  mysql:
+    image: mariadb:11.3
+    environment:
+      MYSQL_ROOT_PASSWORD: $DATABASE_PASSWORD
+      MYSQL_DATABASE: $DATABASE_NAME
+    volumes:
+      - db_data:/var/lib/mysql
+    ports:
+      - 3306:3306
+    healthcheck:
+      test: ["CMD", "pgrep", "mariadbd"]
+      interval: 2s
+      timeout: 2s
+      retries: 10
+  
+  phpmyadmin:
+    image: phpmyadmin
+    restart: always
+    ports:
+      - 8080:80
+    environment:
+      - PMA_ARBITRARY=1
+volumes:
+  data:
+  db_data:

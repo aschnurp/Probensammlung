@@ -1,0 +1,48 @@
+import React from 'react';
+import Link from 'next/link';
+import clsx from 'clsx';
+import { usePathname } from 'next/navigation';
+
+export default function RootLayout({ children }) {
+  const location = usePathname();
+
+  return (
+    <>
+      <div className="bg-gradient-to-r from-blue-500 to-blue-700 p-6 text-white shadow-lg">
+        <nav className="container mx-auto flex justify-between items-center">
+          <div className="text-2xl font-bold">Clinical Database</div>
+          <div className="flex space-x-4">
+            <Link 
+              href="/" 
+              className={clsx('text-white font-semibold hover:text-blue-200', {
+                'underline': location === '/',
+              })}
+            >
+              Home
+            </Link>
+            <Link 
+              href="/table_view" 
+              className={clsx('text-white font-semibold hover:text-blue-200', {
+                'underline': location === '/table_view',
+              })}
+            >
+              Übersicht
+            </Link>
+            <Link 
+              href="/sonstiges" 
+              className={clsx('text-white font-semibold hover:text-blue-200', {
+                'underline': location === '/sonstiges',
+              })}
+            >
+              Sonstiges
+            </Link>
+          </div>
+        </nav>
+      </div>
+
+      <main className="container mx-auto p-4">
+        {children}
+      </main>
+    </>
+  );
+}
