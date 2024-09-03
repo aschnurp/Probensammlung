@@ -1,0 +1,8 @@
+__pycache__
+venv/
+.env
+s
+node_modules/
+/frontend/.next/
+.next/
+start_application.bat
