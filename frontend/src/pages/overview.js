@@ -1,20 +1,18 @@
 'use client';
-import React, { useState, useEffect, useRef } from 'react';
-import { Box } from '@mui/system';
+
+import React, { useState, useEffect } from 'react';
+import { Box, Typography, Divider } from '@mui/material';
 import Link from 'next/link';
-import { Link as RouterLink } from 'react-router-dom';
 import ReusableButton from '../components/button';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import clsx from 'clsx';
 import { usePathname } from 'next/navigation';
-import { CgEnter } from 'react-icons/cg';
-import { useRouter } from 'next/router';
+import { getTableData } from '../services/api'; 
 
-// Import column definitions
 const theme = createTheme({
   palette: {
     background: {
-      paper: '#ebf6fc',
+      paper: '#f0f8ff',
     },
     text: {
       primary: '#173A5E',
@@ -24,8 +22,7 @@ const theme = createTheme({
       active: '#001E3C',
     },
     success: {
-      main: '#009688', // Correctly defining the main color
-      dark: '#00695c', // Optionally keep dark if needed
+      main: '#009688',
     },
     primary: {
       main: '#1976d2',
@@ -34,243 +31,144 @@ const theme = createTheme({
       main: '#dc004e',
     },
   },
+  typography: {
+    fontFamily: 'Roboto, sans-serif',
+    fontWeightBold: 700,
+  },
+  components: {
+    MuiButton: {
+      styleOverrides: {
+        root: {
+          borderRadius: 8,
+        },
+      },
+    },
+  },
 });
 
-
 export default function Overview() {
-  const location = usePathname()
-    return (
-      <ThemeProvider theme={theme}>
-      <Box sx={{ 
-        display: "flex",
-        color: 'text.secondary',
-        justifyContent: "center", 
-        alignItems: "center",
-        fontWeight: 'bold',
-        fontSize: 24 
-        }}>Datenabfrage</Box>
+  const [count, setCount] = useState(0);
+  const location = usePathname();
+
+  return (
+    <ThemeProvider theme={theme}>
+      <Box
+        sx={{
+          textAlign: 'center',
+          mt: 4,
+          mb: 2,
+        }}
+      >
+        <Typography variant="h5" sx={{ fontWeight: 'bold', color: 'text.primary' }}>
+          Datenabfrage
+        </Typography>
+      </Box>
+
       <Box
         sx={{
           bgcolor: 'background.paper',
-          boxShadow: 1,
-          borderRadius: 2,
-          p: 2,
-          minWidth: 300,
-          margin: 5
+          boxShadow: 3,
+          borderRadius: 4,
+          p: 3,
+          m: 5,
         }}
       >
+        <Box
+          sx={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center', // This ensures alignment
+          }}
+        >
+          <Typography variant="h6" sx={{ fontWeight: 'medium', color: 'text.primary' }}>
+            Probensammlung
+          </Typography>
+          <Link
+            href="/data_overview"
+            className={clsx('text-white font-semibold hover:text-blue-200', {
+              underline: location === '/data_overview',
+            })}
+          >
+            <ReusableButton
+              buttonVariant="contained"
+              buttonColor="primary"
+              buttonText="Öffnen"
+            />
+          </Link>
+        </Box>
+        <Divider sx={{ my: 2 }} />
+        <Box sx={{ display: 'flex', alignItems: 'center' }}>
+          <Typography variant="body2" sx={{ color: 'success.dark', fontWeight: 'bold' }}>
+            -API-
+          </Typography>
+          <Typography variant="body2" sx={{ color: 'text.secondary', ml: 1 }}>
+            Einträge
+          </Typography>
+        </Box>
+      </Box>
 
-        <Box sx={{ color: 'text.primary', fontSize: 24, fontWeight: 'medium'}}>
-        Probensammlung
-        <Box sx={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', marginBottom: 1 }}>
-        <Link
-              href="/data_overview"
+      <Box
+        sx={{
+          textAlign: 'center',
+          mt: 4,
+          mb: 2,
+        }}
+      >
+        <Typography variant="h5" sx={{ fontWeight: 'bold', color: 'text.primary' }}>
+          Neue Daten Eintragen
+        </Typography>
+      </Box>
+
+      {[
+        { title: 'Patient anlegen', link: '/patient_anlegen' },
+        { title: 'Proben einschleusen', link: '/proben_einschleusen' },
+        { title: 'Proben ausschleusen', link: '/proben_ausscheusen' },
+        { title: 'Proben wieder einschleusen', link: '/proben_wiedereinschleusen' },
+      ].map((section, index) => (
+        <Box
+          key={index}
+          sx={{
+            bgcolor: 'background.paper',
+            boxShadow: 3,
+            borderRadius: 4,
+            p: 3,
+            m: 5,
+          }}
+        >
+          <Box
+            sx={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center', // Ensures alignment of title and button
+            }}
+          >
+            <Typography variant="h6" sx={{ fontWeight: 'medium', color: 'text.primary' }}>
+              {section.title}
+            </Typography>
+            <Link
+              href={section.link}
               className={clsx('text-white font-semibold hover:text-blue-200', {
-                underline: location === '/data_overview',
+                underline: location === section.link,
               })}
             >
-        <ReusableButton
-          buttonVariant="contained"
-          buttonColor="primary"
-          buttonText="Öffnen"
-        />
-    </Link>
-      </Box> 
+              <ReusableButton
+                buttonVariant="contained"
+                buttonColor="primary"
+                buttonText="Neu"
+              />
+            </Link>
+          </Box>
+          <Divider sx={{ my: 2 }} />
+          <Box sx={{ display: 'flex', alignItems: 'center' }}>
+            <Typography variant="body2" sx={{ color: 'success.dark', fontWeight: 'bold' }}>
+              -API-
+            </Typography>
+            <Typography variant="body2" sx={{ color: 'text.secondary', ml: 1 }}>
+              Einträge
+            </Typography>
+          </Box>
         </Box>
-        <Box
-          sx={{
-            color: 'success.dark',
-            display: 'inline',
-            fontWeight: 'bold',
-            mx: 0.5,
-            fontSize: 14,
-          }}
-        >
-          -API-
-        </Box>
-        Einträge 
-        </Box>
-
-      <Box sx={{        
-        display: "flex",
-        color: 'text.secondary',
-        justifyContent: "center", 
-        alignItems: "center",
-        fontWeight: 'bold',
-        fontSize: 24   }}>Neue Daten Eintragen </Box>
-
-      <Box
-        sx={{
-          bgcolor: 'background.paper',
-          boxShadow: 1,
-          borderRadius: 2,
-          p: 2,
-          minWidth: 300,
-          margin: 5
-        }}
-      >
-        <Box sx={{ color: 'text.primary', fontSize: 24, fontWeight: 'medium' }}>
-        Patient anlegen
-        <Box sx={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', marginBottom: 1 }}>
-        <Link
-              href="/patient_anlegen"
-              className={clsx('text-white font-semibold hover:text-blue-200', {
-                underline: location === '/patient_anlegen',
-              })}
-            >
-        <ReusableButton
-        buttonVariant="contained"
-        buttonColor="primary"
-        buttonText="Neu"
-        />
-        </Link>
-      </Box>
-        </Box>
-        <Box
-          sx={{
-            color: 'success.dark',
-            display: 'inline',
-            fontWeight: 'bold',
-            mx: 0.5,
-            fontSize: 14,
-          }}
-        >
-          -API-
-        </Box>
-        <Box sx={{ color: 'text.secondary', display: 'inline', fontSize: 14 }}>
-        Einträge
-        </Box>
-      </Box>
-
-      <Box
-        sx={{
-          bgcolor: 'background.paper',
-          boxShadow: 1,
-          borderRadius: 2,
-          p: 2,
-          minWidth: 300,
-          margin: 5
-        }}
-      >
-        <Box sx={{ color: 'text.primary', fontSize: 24, fontWeight: 'medium' }}>
-        Proben einschleusen
-        <Box sx={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', marginBottom: 1 }}>
-        <Link
-              href="/proben_einschleusen"
-              className={clsx('text-white font-semibold hover:text-blue-200', {
-                underline: location === '/proben_einschleusen',
-              })}
-            >        <ReusableButton
-        buttonVariant="contained"
-        buttonColor="primary"
-        buttonText="Neu"
-        />
-        </Link>
-      
-      </Box>
-        </Box>
-        <Box
-          sx={{
-            color: 'success.dark',
-            display: 'inline',
-            fontWeight: 'bold',
-            mx: 0.5,
-            fontSize: 14,
-          }}
-        >
-          -API-
-        </Box>
-        <Box sx={{ color: 'text.secondary', display: 'inline', fontSize: 14 }}>
-        Einträge
-        </Box>
-      </Box>
-
-      <Box
-        sx={{
-          bgcolor: 'background.paper',
-          boxShadow: 1,
-          borderRadius: 2,
-          p: 2,
-          minWidth: 300,
-          margin: 5
-        }}
-      >
-        <Box sx={{ color: 'text.primary', fontSize: 24, fontWeight: 'medium' }}>
-        Proben ausschleusen
-        <Box sx={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', marginBottom: 1 }}>
-        <Link
-              href="/proben_ausscheusen"
-              className={clsx('text-white font-semibold hover:text-blue-200', {
-                underline: location === '/proben_ausscheusen',
-              })}
-            >        
-            
-        <ReusableButton
-        buttonVariant="contained"
-        buttonColor="primary"
-        buttonText="Neu"
-        />
-        </Link>
-      </Box>
-        </Box>
-        <Box
-          sx={{
-            color: 'success.dark',
-            display: 'inline',
-            fontWeight: 'bold',
-            mx: 0.5,
-            fontSize: 14,
-          }}
-        >
-          -API-
-        </Box>
-        <Box sx={{ color: 'text.secondary', display: 'inline', fontSize: 14 }}>
-        Einträge
-        </Box>
-      </Box>
-      <Box
-        sx={{
-          bgcolor: 'background.paper',
-          boxShadow: 1,
-          borderRadius: 2,
-          p: 2,
-          minWidth: 300,
-          margin: 5
-        }}
-      >
-
-        <Box sx={{ color: 'text.primary', fontSize: 24, fontWeight: 'medium' }}>
-        Proben wieder einschleusen
-        <Box sx={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', marginBottom: 1 }}>
-        <Link
-              href="/proben_wiedereinschleusen"
-              className={clsx('text-white font-semibold hover:text-blue-200', {
-                underline: location === '/proben_wiedereinschleusen',
-              })}
-            >         <ReusableButton
-        buttonVariant="contained"
-        buttonColor="primary"
-        buttonText="Neu"
-        /> 
-        </Link>
-        
-      </Box>
-        </Box>
-        <Box
-          sx={{
-            color: 'success.dark',
-            display: 'inline',
-            fontWeight: 'bold',
-            mx: 0.5,
-            fontSize: 14,
-          }}
-        >
-          -API-
-        </Box>
-        <Box sx={{ color: 'text.secondary', display: 'inline', fontSize: 14 }}>
-          Einträge
-        </Box>
-      </Box>
+      ))}
     </ThemeProvider>
   );
 }
