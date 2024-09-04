@@ -5,7 +5,10 @@ import Link from 'next/link';
 import { Link as RouterLink } from 'react-router-dom';
 import ReusableButton from '../components/button';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
+import clsx from 'clsx';
+import { usePathname } from 'next/navigation';
 import { CgEnter } from 'react-icons/cg';
+import { useRouter } from 'next/router';
 
 // Import column definitions
 const theme = createTheme({
@@ -35,6 +38,7 @@ const theme = createTheme({
 
 
 export default function Overview() {
+  const location = usePathname()
     return (
       <ThemeProvider theme={theme}>
       <Box sx={{ 
@@ -59,15 +63,18 @@ export default function Overview() {
         <Box sx={{ color: 'text.primary', fontSize: 24, fontWeight: 'medium'}}>
         Probensammlung
         <Box sx={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', marginBottom: 1 }}>
-        <Link href= '/overview/probensammlung' target="_blank" rel="noopener noreferrer" color="inherit">
-          
-       
+        <Link
+              href="/data_overview"
+              className={clsx('text-white font-semibold hover:text-blue-200', {
+                underline: location === '/data_overview',
+              })}
+            >
         <ReusableButton
-        buttonVariant="contained"
-        buttonColor="primary"
-        buttonText="Bearbeiten"
+          buttonVariant="contained"
+          buttonColor="primary"
+          buttonText="Öffnen"
         />
-         </Link>
+    </Link>
       </Box> 
         </Box>
         <Box
@@ -105,8 +112,12 @@ export default function Overview() {
         <Box sx={{ color: 'text.primary', fontSize: 24, fontWeight: 'medium' }}>
         Patient anlegen
         <Box sx={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', marginBottom: 1 }}>
-        <Link href='/overview/new_patient' target="_blank" rel="noopener noreferrer" color="inherit">
-
+        <Link
+              href="/patient_anlegen"
+              className={clsx('text-white font-semibold hover:text-blue-200', {
+                underline: location === '/patient_anlegen',
+              })}
+            >
         <ReusableButton
         buttonVariant="contained"
         buttonColor="primary"
@@ -144,8 +155,12 @@ export default function Overview() {
         <Box sx={{ color: 'text.primary', fontSize: 24, fontWeight: 'medium' }}>
         Proben einschleusen
         <Box sx={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', marginBottom: 1 }}>
-        <Link href='/overview/signin' target="_blank" rel="noopener noreferrer" color="inherit">
-        <ReusableButton
+        <Link
+              href="/proben_einschleusen"
+              className={clsx('text-white font-semibold hover:text-blue-200', {
+                underline: location === '/proben_einschleusen',
+              })}
+            >        <ReusableButton
         buttonVariant="contained"
         buttonColor="primary"
         buttonText="Neu"
@@ -183,7 +198,13 @@ export default function Overview() {
         <Box sx={{ color: 'text.primary', fontSize: 24, fontWeight: 'medium' }}>
         Proben ausschleusen
         <Box sx={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', marginBottom: 1 }}>
-        <Link href='/overview/signout' target="_blank" rel="noopener noreferrer" color="inherit">
+        <Link
+              href="/proben_ausscheusen"
+              className={clsx('text-white font-semibold hover:text-blue-200', {
+                underline: location === '/proben_ausscheusen',
+              })}
+            >        
+            
         <ReusableButton
         buttonVariant="contained"
         buttonColor="primary"
@@ -221,8 +242,12 @@ export default function Overview() {
         <Box sx={{ color: 'text.primary', fontSize: 24, fontWeight: 'medium' }}>
         Proben wieder einschleusen
         <Box sx={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', marginBottom: 1 }}>
-        <Link href='/overview/signin_again' target="_blank" rel="noopener noreferrer" color="inherit">
-         <ReusableButton
+        <Link
+              href="/proben_wiedereinschleusen"
+              className={clsx('text-white font-semibold hover:text-blue-200', {
+                underline: location === '/proben_wiedereinschleusen',
+              })}
+            >         <ReusableButton
         buttonVariant="contained"
         buttonColor="primary"
         buttonText="Neu"
