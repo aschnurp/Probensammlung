@@ -1,33 +1,42 @@
 'use client';
-import axios from 'axios';
 import React, { useState, useEffect, useRef } from 'react';
-import { Box, ThemeProvider, createTheme } from '@mui/system';
-import { Button } from '@mui/material/styles';
+import { Box } from '@mui/system';
+import Link from 'next/link';
+import { Link as RouterLink } from 'react-router-dom';
+import ReusableButton from '../components/button';
+import { ThemeProvider, createTheme } from '@mui/material/styles';
 import { CgEnter } from 'react-icons/cg';
 
 // Import column definitions
 const theme = createTheme({
-    palette: {
-      background: {
-        paper: '#ebf6fc',
-      },
-      text: {
-        primary: '#173A5E',
-        secondary: '#46505A',
-      },
-      action: {
-        active: '#001E3C',
-      },
-      success: {
-        dark: '#009688',
-      },
+  palette: {
+    background: {
+      paper: '#ebf6fc',
     },
-  });
+    text: {
+      primary: '#173A5E',
+      secondary: '#46505A',
+    },
+    action: {
+      active: '#001E3C',
+    },
+    success: {
+      main: '#009688', // Correctly defining the main color
+      dark: '#00695c', // Optionally keep dark if needed
+    },
+    primary: {
+      main: '#1976d2',
+    },
+    secondary: {
+      main: '#dc004e',
+    },
+  },
+});
 
 
-export default function Uebersicht() {
+export default function Overview() {
     return (
-        <ThemeProvider theme={theme}>
+      <ThemeProvider theme={theme}>
       <Box sx={{ 
         display: "flex",
         color: 'text.secondary',
@@ -35,9 +44,7 @@ export default function Uebersicht() {
         alignItems: "center",
         fontWeight: 'bold',
         fontSize: 24 
-        
         }}>Datenabfrage</Box>
-
       <Box
         sx={{
           bgcolor: 'background.paper',
@@ -50,7 +57,18 @@ export default function Uebersicht() {
       >
 
         <Box sx={{ color: 'text.primary', fontSize: 24, fontWeight: 'medium'}}>
-        Daten 
+        Probensammlung
+        <Box sx={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', marginBottom: 1 }}>
+        <Link href= '/overview/probensammlung' target="_blank" rel="noopener noreferrer" color="inherit">
+          
+       
+        <ReusableButton
+        buttonVariant="contained"
+        buttonColor="primary"
+        buttonText="Bearbeiten"
+        />
+         </Link>
+      </Box> 
         </Box>
         <Box
           sx={{
@@ -63,10 +81,8 @@ export default function Uebersicht() {
         >
           -API-
         </Box>
-        <Box sx={{ color: 'text.secondary', display: 'inline', fontSize: 14 }}>
-        Einträge
+        Einträge 
         </Box>
-      </Box>
 
       <Box sx={{        
         display: "flex",
@@ -88,6 +104,16 @@ export default function Uebersicht() {
       >
         <Box sx={{ color: 'text.primary', fontSize: 24, fontWeight: 'medium' }}>
         Patient anlegen
+        <Box sx={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', marginBottom: 1 }}>
+        <Link href='/overview/new_patient' target="_blank" rel="noopener noreferrer" color="inherit">
+
+        <ReusableButton
+        buttonVariant="contained"
+        buttonColor="primary"
+        buttonText="Neu"
+        />
+        </Link>
+      </Box>
         </Box>
         <Box
           sx={{
@@ -117,6 +143,16 @@ export default function Uebersicht() {
       >
         <Box sx={{ color: 'text.primary', fontSize: 24, fontWeight: 'medium' }}>
         Proben einschleusen
+        <Box sx={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', marginBottom: 1 }}>
+        <Link href='/overview/signin' target="_blank" rel="noopener noreferrer" color="inherit">
+        <ReusableButton
+        buttonVariant="contained"
+        buttonColor="primary"
+        buttonText="Neu"
+        />
+        </Link>
+      
+      </Box>
         </Box>
         <Box
           sx={{
@@ -146,6 +182,15 @@ export default function Uebersicht() {
       >
         <Box sx={{ color: 'text.primary', fontSize: 24, fontWeight: 'medium' }}>
         Proben ausschleusen
+        <Box sx={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', marginBottom: 1 }}>
+        <Link href='/overview/signout' target="_blank" rel="noopener noreferrer" color="inherit">
+        <ReusableButton
+        buttonVariant="contained"
+        buttonColor="primary"
+        buttonText="Neu"
+        />
+        </Link>
+      </Box>
         </Box>
         <Box
           sx={{
@@ -175,6 +220,16 @@ export default function Uebersicht() {
 
         <Box sx={{ color: 'text.primary', fontSize: 24, fontWeight: 'medium' }}>
         Proben wieder einschleusen
+        <Box sx={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', marginBottom: 1 }}>
+        <Link href='/overview/signin_again' target="_blank" rel="noopener noreferrer" color="inherit">
+         <ReusableButton
+        buttonVariant="contained"
+        buttonColor="primary"
+        buttonText="Neu"
+        /> 
+        </Link>
+        
+      </Box>
         </Box>
         <Box
           sx={{

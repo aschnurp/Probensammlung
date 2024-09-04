@@ -23,9 +23,9 @@ export default function RootLayout({ children }) {
               Home
             </Link>
             <Link
-              href="/table_view"
+              href="/overview"
               className={clsx('text-white font-semibold hover:text-blue-200', {
-                underline: location === '/table_view',
+                underline: location === '/overview',
               })}
             >
               Übersicht

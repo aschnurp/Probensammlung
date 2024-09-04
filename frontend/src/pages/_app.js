@@ -5,7 +5,9 @@ function MyApp({ Component, pageProps }) {
   return (
     <RootLayout>
       <Component {...pageProps} />
+      
     </RootLayout>
+    
   );
 }
 
