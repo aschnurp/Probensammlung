@@ -1,7 +1,7 @@
 // src/SampleForm.js
 
 import React, { useState } from 'react';
-import { Box, TextField, Radio, RadioGroup, FormControlLabel, Button, Select, MenuItem, InputLabel, FormControl } from '@mui/material';
+import { Box, TextField, Radio, RadioGroup, FormControlLabel, Typography,Button, Select, MenuItem, InputLabel, FormControl } from '@mui/material';
 
 export default function SampleForm() {
   const [formData, setFormData] = useState({
@@ -53,6 +53,17 @@ export default function SampleForm() {
 
   return (
     <Box sx={{ p: 3, maxWidth: 600, mx: 'auto' }}>
+  <Box
+        sx={{
+          textAlign: 'center',
+          mt: 4,
+          mb: 2,
+        }}
+      >
+        <Typography variant="h5" sx={{ fontWeight: 'bold', color: 'text.primary' }}>
+          Proben Einschleusen
+        </Typography>
+      </Box>  
       <TextField
         label="Patienten ID"
         name="patientId"

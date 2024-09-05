@@ -1,7 +1,7 @@
 // src/PatientForm.js
 
 import React, { useState } from 'react';
-import { Box, TextField, Radio, RadioGroup, FormControlLabel, Button } from '@mui/material';
+import { Box, TextField, Radio, RadioGroup, FormControlLabel, Button, Typography } from '@mui/material';
 
 export default function PatientForm() {
   const [formData, setFormData] = useState({
@@ -41,6 +41,17 @@ export default function PatientForm() {
 
   return (
     <Box sx={{ p: 3, maxWidth: 600, mx: 'auto' }}>
+            <Box
+        sx={{
+          textAlign: 'center',
+          mt: 4,
+          mb: 2,
+        }}
+      >
+        <Typography variant="h5" sx={{ fontWeight: 'bold', color: 'text.primary' }}>
+          Patienten Eintragen
+        </Typography>
+      </Box>
       <TextField
         label="Patienten ID"
         name="patientId"
