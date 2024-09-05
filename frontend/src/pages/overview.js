@@ -7,7 +7,10 @@ import ReusableButton from '../components/button';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import clsx from 'clsx';
 import { usePathname } from 'next/navigation';
-import { getTableData } from '../services/api'; 
+import { getPatientCount } from '../services/api';
+import { getSerumCount } from '../services/api'; 
+import { getGewebeCount } from '../services/api'; 
+import { getUrinCount } from '../services/api';  
 
 const theme = createTheme({
   palette: {
@@ -47,8 +50,40 @@ const theme = createTheme({
 });
 
 export default function Overview() {
-  const [count, setCount] = useState(0);
+  const [patient_count, setPatientCount] = useState(0);
+  const [serum_count, setSerumCount] = useState(0);
+  const [gewebe_count, setGewebeCount] = useState(0);
+  const [urin_count, setUrinCount] = useState(0);
   const location = usePathname();
+  const [loading, setLoading] = useState(false); // Ladezustand
+  const [error, setError] = useState(null); // Fehlerzustand
+
+
+  useEffect(() => {
+    const fetchData = async (fetchFunction, setFunction, errorMessage) => {
+        setLoading(true);
+        setError(null);
+        try {
+            const count = await fetchFunction();
+            setFunction(count);
+        } catch (error) {
+            setError(errorMessage);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const fetchCounts = async () => {
+        await Promise.all([
+            fetchData(getPatientCount, setPatientCount, 'Failed to fetch patient count'),
+            fetchData(getSerumCount, setSerumCount, 'Failed to fetch serum count'),
+            fetchData(getGewebeCount, setGewebeCount, 'Failed to fetch geweb count'),
+            fetchData(getUrinCount, setUrinCount, 'Failed to fetch urin count'),
+        ]);
+    };
+
+    fetchCounts();
+}, []);
 
   return (
     <ThemeProvider theme={theme}>
@@ -95,17 +130,47 @@ export default function Overview() {
               buttonText="Öffnen"
             />
           </Link>
-        </Box>
-        <Divider sx={{ my: 2 }} />
-        <Box sx={{ display: 'flex', alignItems: 'center' }}>
-          <Typography variant="body2" sx={{ color: 'success.dark', fontWeight: 'bold' }}>
-            -API-
-          </Typography>
-          <Typography variant="body2" sx={{ color: 'text.secondary', ml: 1 }}>
-            Einträge
-          </Typography>
-        </Box>
+          </Box>
+    <Divider sx={{ my: 2 }} />
+    <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 3 }}>
+      <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+        <Typography variant="body2" sx={{ color: 'success.dark', fontWeight: 'bold' }}>
+          {patient_count}
+        </Typography>
+        <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+          Patienten
+        </Typography>
       </Box>
+
+      <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+        <Typography variant="body2" sx={{ color: 'success.dark', fontWeight: 'bold' }}>
+          {serum_count}
+        </Typography>
+        <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+          Serumproben
+        </Typography>
+      </Box>
+
+      <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+        <Typography variant="body2" sx={{ color: 'success.dark', fontWeight: 'bold' }}>
+          {gewebe_count}
+        </Typography>
+        <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+          Gewebeproben
+        </Typography>
+      </Box>
+
+      <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+        <Typography variant="body2" sx={{ color: 'success.dark', fontWeight: 'bold' }}>
+          {urin_count}
+        </Typography>
+        <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+          Urinproben
+        </Typography>
+      </Box>
+    </Box>
+</Box>
+
 
       <Box
         sx={{
@@ -159,14 +224,6 @@ export default function Overview() {
             </Link>
           </Box>
           <Divider sx={{ my: 2 }} />
-          <Box sx={{ display: 'flex', alignItems: 'center' }}>
-            <Typography variant="body2" sx={{ color: 'success.dark', fontWeight: 'bold' }}>
-              -API-
-            </Typography>
-            <Typography variant="body2" sx={{ color: 'text.secondary', ml: 1 }}>
-              Einträge
-            </Typography>
-          </Box>
         </Box>
       ))}
     </ThemeProvider>
