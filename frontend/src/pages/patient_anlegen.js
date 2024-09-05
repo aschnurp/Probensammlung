@@ -49,14 +49,16 @@ export default function PatientForm() {
         fullWidth
         margin="normal"
       />
-      <TextField
-        label="Datum"
-        name="date"
-        value={formData.date}
-        onChange={handleChange}
-        fullWidth
-        margin="normal"
-      />
+        <TextField
+            label="Datum"
+            name="serumDate"
+            type="date"
+            value={formData.serumDate}
+            onChange={handleChange}
+            fullWidth
+            margin="normal"
+            InputLabelProps={{ shrink: true }}
+        />
       <Box sx={{ mt: 2 }}>
         <RadioGroup
           row
