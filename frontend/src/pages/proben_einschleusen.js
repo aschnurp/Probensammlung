@@ -1,7 +1,7 @@
 // src/SampleForm.js
 
 import React, { useState } from 'react';
-import { Box, TextField, Radio, RadioGroup, FormControlLabel, Typography,Button, Select, MenuItem, InputLabel, FormControl } from '@mui/material';
+import { Box, TextField, Radio, RadioGroup, FormLabel ,FormControlLabel, Typography,Button, Select, MenuItem, InputLabel, FormControl } from '@mui/material';
 
 export default function SampleForm() {
   const [formData, setFormData] = useState({
@@ -84,18 +84,17 @@ export default function SampleForm() {
 
       <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 3 }}>
       <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-      <FormControl fullWidth margin="normal">
-        <InputLabel>Probenart</InputLabel>
-        <Select
-          name="sampleType"
-          value={formData.sampleType}
-          onChange={handleChange}
-        >
-          <MenuItem value="gewebe">Gewebeproben</MenuItem>
-          <MenuItem value="serum">Serumproben</MenuItem>
-          <MenuItem value="urin">Urinproben</MenuItem>
-        </Select>
-      </FormControl>
+      <FormControl>
+    <FormLabel id="demo-radio-buttons-group-label">Parafinprobe</FormLabel>
+    <RadioGroup
+    aria-labelledby="demo-radio-buttons-group-label"
+    defaultValue="none"
+    name="radio-buttons-group"
+    >
+        <FormControlLabel value="none" control={<Radio />} label="Nein" />
+        <FormControlLabel value="parafin" control={<Radio />} label="Ja" />
+    </RadioGroup>
+    </FormControl>
       </Box>
 
       <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
@@ -179,18 +178,18 @@ export default function SampleForm() {
             fullWidth
             margin="normal"
           />
-           <TextField
-            label="Boxnummer"
-            name="boxnumber"
-            value={formData.boxnumber}
-            onChange={handleChange}
-            fullWidth
-            margin="normal"
-          />
             <TextField
             label="Raum"
             name="room"
             value={formData.room}
+            onChange={handleChange}
+            fullWidth
+            margin="normal"
+          />
+         <TextField
+            label="Boxnummer"
+            name="boxnumber"
+            value={formData.boxnumber}
             onChange={handleChange}
             fullWidth
             margin="normal"
@@ -254,6 +253,38 @@ export default function SampleForm() {
             margin="normal"
             InputLabelProps={{ shrink: true }}
           />
+            <TextField
+            label="Raum"
+            name="room"
+            value={formData.room}
+            onChange={handleChange}
+            fullWidth
+            margin="normal"
+          />
+           <TextField
+            label="Boxnummer"
+            name="boxnumber"
+            value={formData.boxnumber}
+            onChange={handleChange}
+            fullWidth
+            margin="normal"
+          />
+           <TextField
+            label="Boxzeile"
+            name="box_row"
+            value={formData.box_row}
+            onChange={handleChange}
+            fullWidth
+            margin="normal"
+          />
+           <TextField
+            label="Boxspalte"
+            name="box_col"
+            value={formData.box_col}
+            onChange={handleChange}
+            fullWidth
+            margin="normal"
+          />
           <TextField
             label="Besonderheiten"
             name="serumComments"
@@ -286,6 +317,38 @@ export default function SampleForm() {
             fullWidth
             margin="normal"
             InputLabelProps={{ shrink: true }}
+          />
+                      <TextField
+            label="Raum"
+            name="room"
+            value={formData.room}
+            onChange={handleChange}
+            fullWidth
+            margin="normal"
+          />
+         <TextField
+            label="Boxnummer"
+            name="boxnumber"
+            value={formData.boxnumber}
+            onChange={handleChange}
+            fullWidth
+            margin="normal"
+          />
+           <TextField
+            label="Boxzeile"
+            name="box_row"
+            value={formData.box_row}
+            onChange={handleChange}
+            fullWidth
+            margin="normal"
+          />
+           <TextField
+            label="Boxspalte"
+            name="box_col"
+            value={formData.box_col}
+            onChange={handleChange}
+            fullWidth
+            margin="normal"
           />
           <TextField
             label="Besonderheiten"
