@@ -1,5 +1,5 @@
 export const urinprobenDataColumns = [
-    { key: "probennummer", label: "Probennummer" },
+    { key: "probennummer", label: "Probennr" },
     { key: "sap_id", label: "SAP ID" },
     { key: "created_at", label: "Erstellungsdatum" },
     { key: "probenart", label: "Probenart" },

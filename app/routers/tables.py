@@ -56,36 +56,10 @@ def get_table_data(
 def row_to_dict(row):
     return dict(row)
 
-@router.post("/filter")
-async def filter_table_data(filter_data: schemas.TableFilterRequest, db: Session = Depends(get_db)):
-    try:
-        # Reflect the table from the database
-        metadata = MetaData()
-        metadata.reflect(bind=engine)
-        table = metadata.tables.get(filter_data.table_name)
-        
-        if table is None:
-            raise HTTPException(status_code=404, detail="Table not found")
+#@router.post("/filter") --implement filter?
 
-        # Build the filter condition dynamically
-        if filter_data.column_name not in table.c:
-            raise HTTPException(status_code=400, detail="Column not found in table")
+@router.put("/data")
 
-        column = table.c[filter_data.column_name]
-        filter_condition = column == filter_data.value
-
-        # Execute the query
-        query = db.query(table).filter(filter_condition)
-        results = query.all()
-
-        # Convert results to list of dictionaries
-        results_dicts = [row_to_dict(result) for result in results]
-
-        return results_dicts
-
-    except Exception as e:
-        print(f"Error: {e}")
-        raise HTTPException(status_code=500, detail=str(e))
 
 
 #get all table names
