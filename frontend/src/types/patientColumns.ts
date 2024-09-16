@@ -1,4 +1,4 @@
-export const PatientDataColumns = [
+export const patientDataColumns = [
     { key: "sap_id", label: "SAP ID" },
     { key: "probennummer", label: "Probennummer" },
     { key: "sap_fallnummer", label: "Sap Fallnummer" },
