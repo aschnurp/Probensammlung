@@ -30,7 +30,7 @@ export default function ProbeWiedereinschleusen() {
   return (
     <Box sx={{ p: 3, maxWidth: 600, mx: 'auto' }}>
       <Typography variant="h5" gutterBottom>
-        Proben wiedereinschleusen
+        Proben erneut Einschleusen
       </Typography>
       <TextField
         label="Scannerfeld für Barcode ID"
@@ -48,7 +48,7 @@ export default function ProbeWiedereinschleusen() {
         fullWidth
         sx={{ mt: 2 }}
       >
-        Probe wiedereinschleusen
+        Proben erneut Einschleusen
       </Button>
 
       {statusMessage && (

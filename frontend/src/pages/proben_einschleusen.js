@@ -12,6 +12,8 @@ export default function SampleForm() {
     date: '',
     time: '',
     size: '',
+    sample_one: '',
+    sample_two: '',
     collector: '',
     specialComments: '',
     remarks: '',
@@ -32,6 +34,8 @@ export default function SampleForm() {
       sampleType: '',
       paraffin: '',
       blockType: '',
+      sample_one: '',
+      sample_two: '',
       date: '',
       time: '',
       size: '',
@@ -82,53 +86,6 @@ export default function SampleForm() {
         </Select>
       </FormControl>
 
-      <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 3 }}>
-      <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-      <FormControl>
-    <FormLabel id="demo-radio-buttons-group-label">Parafinprobe</FormLabel>
-    <RadioGroup
-    aria-labelledby="demo-radio-buttons-group-label"
-    defaultValue="none"
-    name="radio-buttons-group"
-    >
-        <FormControlLabel value="none" control={<Radio />} label="Nein" />
-        <FormControlLabel value="parafin" control={<Radio />} label="Ja" />
-    </RadioGroup>
-    </FormControl>
-      </Box>
-
-      <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-      <FormControl fullWidth margin="normal">
-        <InputLabel>Probenart</InputLabel>
-        <Select
-          name="sampleType"
-          value={formData.sampleType}
-          onChange={handleChange}
-        >
-          <MenuItem value="gewebe">Gewebeproben</MenuItem>
-          <MenuItem value="serum">Serumproben</MenuItem>
-          <MenuItem value="urin">Urinproben</MenuItem>
-        </Select>
-      </FormControl>
-      </Box>
-
-      <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-      <FormControl fullWidth margin="normal">
-        <InputLabel>Probenart</InputLabel>
-        <Select
-          name="sampleType"
-          value={formData.sampleType}
-          onChange={handleChange}
-        >
-          <MenuItem value="gewebe">Gewebeproben</MenuItem>
-          <MenuItem value="serum">Serumproben</MenuItem>
-          <MenuItem value="urin">Urinproben</MenuItem>
-        </Select>
-      </FormControl>
-      </Box>
-    </Box>
-
-
 
       <TextField
         label="Patienten ID"
@@ -138,10 +95,48 @@ export default function SampleForm() {
         fullWidth
         margin="normal"
       />
-    
+  
+
 
       {formData.sampleType === 'gewebe' && (
         <Box sx={{ mt: 2 }}>
+
+        <FormControl fullWidth margin="normal">
+        <InputLabel>Probe I</InputLabel>
+        <Select
+          name="sample_one"
+          value={formData.sample_one}
+          onChange={handleChange}
+        >
+          <MenuItem value="none">none</MenuItem>
+          <MenuItem value="paraffin_normal_one">Paraffin / Normal / ein Block</MenuItem>
+          <MenuItem value="paraffin_normal_a">Paraffin / Normal / Block A</MenuItem>
+          <MenuItem value="paraffin_normal_b">Paraffin / Normal / Block B</MenuItem>
+          <MenuItem value="paraffin_tumor_one">Paraffin / Tumor / ein Block</MenuItem>
+          <MenuItem value="paraffin_tumor_a">Paraffin / Tumor / Block A</MenuItem>
+          <MenuItem value="paraffin_tumor_b">Paraffin / Tumor / Block B</MenuItem>
+
+        </Select>
+        </FormControl>
+
+        <FormControl fullWidth margin="normal">
+        <InputLabel>Probe II</InputLabel>
+        <Select
+          name="sample_two"
+          value={formData.sample_two}
+          onChange={handleChange}
+        >
+          <MenuItem value="none">none</MenuItem>
+          <MenuItem value="paraffin_normal_one">Paraffin / Normal / ein Block</MenuItem>
+          <MenuItem value="paraffin_normal_a">Paraffin / Normal / Block A</MenuItem>
+          <MenuItem value="paraffin_normal_b">Paraffin / Normal / Block B</MenuItem>
+          <MenuItem value="paraffin_tumor_one">Paraffin / Tumor / ein Block</MenuItem>
+          <MenuItem value="paraffin_tumor_a">Paraffin / Tumor / Block A</MenuItem>
+          <MenuItem value="paraffin_tumor_b">Paraffin / Tumor / Block B</MenuItem>
+
+        </Select>
+        </FormControl>
+
           <TextField
             label="Datum"
             name="date"
@@ -170,14 +165,20 @@ export default function SampleForm() {
             fullWidth
             margin="normal"
           />
-          <TextField
-            label="Probenabholer*in"
-            name="collector"
-            value={formData.collector}
-            onChange={handleChange}
-            fullWidth
-            margin="normal"
-          />
+        <FormControl fullWidth margin="normal">
+        <InputLabel>Probenabholer*in</InputLabel>
+        <Select
+          name="collector"
+          value={formData.collector}
+          onChange={handleChange}
+        >
+          <MenuItem value="rebecca">Rebecca</MenuItem>
+          <MenuItem value="sophie">Sophie</MenuItem>
+          <MenuItem value="atachan">Atachan</MenuItem>
+
+
+        </Select>
+        </FormControl>
             <TextField
             label="Raum"
             name="room"

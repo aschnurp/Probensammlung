@@ -178,10 +178,6 @@ export default function Uebersicht() {
 
   return (
     <>
-      <div className="flex justify-center items-center">
-        <h1 className="font-bold">Alle Tabellen der Datenbank</h1>
-      </div>
-
       <div className="flex justify-center items-center mt-12">
         <div className="relative" ref={dropdownRef}>
           <button
