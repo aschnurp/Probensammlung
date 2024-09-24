@@ -1,7 +1,7 @@
 // src/PatientForm.js
 
 import React, { useState } from 'react';
-import { Box, TextField, Radio, RadioGroup, FormControlLabel, Button, Typography } from '@mui/material';
+import { Box, TextField, Radio, RadioGroup,FormControl ,FormLabel, FormControlLabel, Button, Typography } from '@mui/material';
 
 export default function PatientForm() {
   const [formData, setFormData] = useState({
@@ -70,18 +70,18 @@ export default function PatientForm() {
             margin="normal"
             InputLabelProps={{ shrink: true }}
         />
-      <Box sx={{ mt: 2 }}>
-        <RadioGroup
-          row
-          name="gender"
-          value={formData.gender}
-          onChange={handleChange}
-        >
-          <FormControlLabel value="M" control={<Radio />} label="M" />
-          <FormControlLabel value="W" control={<Radio />} label="W" />
-          <FormControlLabel value="D" control={<Radio />} label="D" />
-        </RadioGroup>
-      </Box>
+<FormControl>
+  <FormLabel id="demo-radio-buttons-group-label">Gender</FormLabel>
+  <RadioGroup
+    aria-labelledby="demo-radio-buttons-group-label"
+    defaultValue="female"
+    name="radio-buttons-group"
+  >
+    <FormControlLabel value="female" control={<Radio />} label="Female" />
+    <FormControlLabel value="male" control={<Radio />} label="Male" />
+    <FormControlLabel value="other" control={<Radio />} label="Other" />
+  </RadioGroup>
+</FormControl>
       <TextField
         label="Alter"
         name="age"
