@@ -40,7 +40,7 @@ export default function SampleForm() {
       time: '',
       size: '',
       collector: '',
-      room:'',
+      room: '',
       box_col:'',
       box_row:'',
       specialComments: '',
@@ -73,12 +73,14 @@ export default function SampleForm() {
         </Typography>
       </Box> 
 
-        <FormControl fullWidth margin="normal">
+        <FormControl variant="outlined" fullWidth margin="normal">
         <InputLabel>Probenart</InputLabel>
         <Select
           name="sampleType"
           value={formData.sampleType}
           onChange={handleChange}
+          margin='normal'
+          label = "Probenart"
         >
           <MenuItem value="gewebe">Gewebeproben</MenuItem>
           <MenuItem value="serum">Serumproben</MenuItem>
@@ -101,12 +103,15 @@ export default function SampleForm() {
       {formData.sampleType === 'gewebe' && (
         <Box sx={{ mt: 2 }}>
 
-        <FormControl fullWidth margin="normal">
-        <InputLabel>Probe I</InputLabel>
-        <Select
-          name="sample_one"
-          value={formData.sample_one}
-          onChange={handleChange}
+<FormControl variant="outlined" fullWidth margin="normal">
+  <InputLabel>Probe I</InputLabel>
+  <Select
+    name="sample_one"
+    value={formData.sample_one}
+    onChange={handleChange}
+    fullWidth
+    margin="normal"
+    label="Probe I"
         >
           <MenuItem value="none">none</MenuItem>
           <MenuItem value="paraffin_normal_one">Paraffin / Normal / ein Block</MenuItem>
@@ -118,13 +123,16 @@ export default function SampleForm() {
 
         </Select>
         </FormControl>
-
-        <FormControl fullWidth margin="normal">
-        <InputLabel>Probe II</InputLabel>
-        <Select
-          name="sample_two"
-          value={formData.sample_two}
-          onChange={handleChange}
+        <FormControl variant="outlined" fullWidth margin="normal">
+  <InputLabel id="sample-one-label">Probe II</InputLabel>
+  <Select
+    labelId="sample-one-label"
+    name="sample_two"
+    value={formData.sample_two}
+    onChange={handleChange}
+    fullWidth
+    margin="normal"
+    label="Probe II"
         >
           <MenuItem value="none">none</MenuItem>
           <MenuItem value="paraffin_normal_one">Paraffin / Normal / ein Block</MenuItem>
@@ -165,12 +173,15 @@ export default function SampleForm() {
             fullWidth
             margin="normal"
           />
-        <FormControl fullWidth margin="normal">
+        <FormControl  fullWidth margin="normal">
         <InputLabel>Probenabholer*in</InputLabel>
         <Select
           name="collector"
           value={formData.collector}
           onChange={handleChange}
+          fullWidth
+          margin="normal"
+          label = "Probenabholer*in"
         >
           <MenuItem value="rebecca">Rebecca</MenuItem>
           <MenuItem value="sophie">Sophie</MenuItem>

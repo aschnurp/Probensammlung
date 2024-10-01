@@ -1,5 +1,5 @@
 export type urinprobenData = {
-    probennummer?: number;
+    patient_ID_intern?: number;
     sap_id?: number;
     created_at: string;	
     probenart?: string;	

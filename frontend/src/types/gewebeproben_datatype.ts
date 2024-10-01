@@ -1,5 +1,5 @@
 export type gewebeprobenData = {
-    probennummer?: number;
+    patient_ID_intern?: number;
     sap_id?: number;
     created_at?: number;
     probenart?: string;

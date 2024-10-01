@@ -1,7 +1,6 @@
 export const patientDataColumns = [
     { key: "sap_id", label: "SAP ID" },
-    { key: "probennummer", label: "Probennr." },
-    { key: "sap_fallnummer", label: "SAP Fallnummer" },
+    { key: "patient_ID_intern", label: "Patienten ID (intern)" },
     { key: "created_at", label: "Erstellungsdatum" },
     { key: "datum", label: "Datum" },
     { key: "geschlecht", label: "Geschlecht" },
