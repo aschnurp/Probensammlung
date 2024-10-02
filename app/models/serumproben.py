@@ -1,5 +1,5 @@
 from sqlalchemy import TIMESTAMP, Column, Integer, String, Boolean, ForeignKey
-from sqlalchemy.dialects.mysql import TINYINT, FLOAT, TEXT, DATE
+from sqlalchemy.dialects.mysql import TINYINT, FLOAT, TEXT, DATE, VARCHAR
 from sqlalchemy.orm import relationship
 from ..database import Base
 from sqlalchemy.sql.sqltypes import TIMESTAMP
@@ -8,7 +8,7 @@ from sqlalchemy.sql.expression import text
 
 class Serumproben(Base):
     __tablename__ = "serumproben"
-    barcode_id = Column(TEXT, primary_key= True, nullable=False)	
+    barcode_id = Column(VARCHAR(200), primary_key= True, nullable=False)	
     patient_ID_intern = Column(TEXT) 
     sap_id = Column(Integer)
     created_at = Column(TIMESTAMP(timezone=True), nullable=False, server_default=text("now()"))	
