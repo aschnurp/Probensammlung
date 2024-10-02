@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from .database import get_db, engine
 from sqlalchemy.orm import Session
-from .models import gewebeproben, serumproben, urinproben, patient
+from .models import gewebeproben, serumproben, urinproben, patient, paraffinproben
 from .config import settings
 from .routers import tables, custom_query, number_entrys
 from fastapi.middleware.cors import CORSMiddleware
@@ -22,6 +22,7 @@ app.add_middleware(
 
 #initalize database !order!
 gewebeproben.Base.metadata.create_all(bind=engine)
+paraffinproben.Base.metadata.create_all(bind=engine)
 serumproben.Base.metadata.create_all(bind=engine)
 urinproben.Base.metadata.create_all(bind=engine)
 patient.Base.metadata.create_all(bind=engine)

@@ -8,4 +8,3 @@ export const patientDataColumns = [
     { key: "op_diagnose", label: "OP Diagnose" },
     { key: "bemerkung", label: "Bemerkung" }
 ];
-

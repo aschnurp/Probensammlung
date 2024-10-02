@@ -8,16 +8,14 @@ from sqlalchemy.sql.expression import text
 
 class Gewebeproben(Base):
     __tablename__ = "gewebeproben"
-    patient_ID_intern = Column(Integer, primary_key= True, nullable=False)
-    sap_id = Column(Integer, ForeignKey("patient.sap_id"))
+    barcode_id = Column(TEXT, primary_key= True, nullable=False)
+    patient_ID_intern = Column(TEXT) 
+    sap_id = Column(Integer)
     created_at = Column(TIMESTAMP(timezone=True), nullable=False, server_default=text("now()"))	
-    probenart = Column(TEXT)	
-    barcode_ID = Column(Integer) 	
-    lagerraum = Column(TEXT) 	
-    probe_erhalten_zeit	 = Column(TEXT)
-    probengröße = Column(TEXT)	
-    bearbeiter_in = Column(TEXT)	
-    anmerkungen_probennahme  = Column(TEXT)	
-    anmerkungen_prbenaufbereitung  = Column(TEXT)
-
+    probenart = Column(TEXT)		
+    boxnummer = Column(Integer) 
+    boxzeile = Column(Integer) 
+    boxspalte = Column(Integer) 	
+    lagerraum = Column(TEXT)
+    anmerkungen = Column(TEXT)
 
