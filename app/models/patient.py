@@ -9,15 +9,10 @@ from sqlalchemy.sql.expression import text
 class Patient(Base):
     __tablename__ = "patient"
     sap_id = Column(Integer, primary_key = True, nullable = False)
-    probennummer = Column(Integer)
-    sap_fallnummer = Column(Integer)
+    patient_ID_intern = Column(Integer)
     created_at = Column(TIMESTAMP(timezone=True), nullable=False, server_default=text("now()"))
     datum = Column(TEXT)
     geschlecht = Column(TEXT)
     alter = Column(Integer)
     op_diagnose = Column(TEXT)
     bemerkung = Column(TEXT)
-
-
-
-
