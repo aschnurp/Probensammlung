@@ -9,9 +9,9 @@ from sqlalchemy.sql.expression import text
 class Paraffinproben(Base):
     __tablename__ = "paraffinproben"
     barcode_id = Column(VARCHAR(200), primary_key= True, nullable=False)
-    patient_ID_intern = Column(TEXT)
+    patient_ID_intern = Column(VARCHAR(200), ForeignKey("patient.patient_ID_intern")) 
     sap_id = Column(Integer)
-    created_at = Column(TIMESTAMP(timezone=True), nullable=False, server_default=text("now()"))	
+    created_at = Column(TEXT)	
     probenart = Column(TEXT)
     lagerraum = Column(TEXT) 	
     probe_erhalten_zeit	 = Column(TEXT)

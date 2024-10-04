@@ -15,4 +15,5 @@ class Patient(Base):
     geschlecht = Column(TEXT)
     alter = Column(Integer)
     op_diagnose = Column(TEXT)
+    op_geplant = Column(TEXT)
     bemerkung = Column(TEXT)
