@@ -1,5 +1,4 @@
 // src/PatientForm.js
-
 import React, { useState } from 'react';
 import { Box, TextField, Radio, RadioGroup,FormControl ,FormLabel, FormControlLabel, Button, Typography } from '@mui/material';
 
@@ -10,7 +9,6 @@ export default function PatientForm() {
     gender: '',
     age: '',
     sapId: '',
-    sapCaseNumber: '',
     diagnosis: '',
     plannedSurgery: '',
     remarks: '',
@@ -27,7 +25,6 @@ export default function PatientForm() {
       gender: '',
       age: '',
       sapId: '',
-      sapCaseNumber: '',
       diagnosis: '',
       plannedSurgery: '',
       remarks: '',

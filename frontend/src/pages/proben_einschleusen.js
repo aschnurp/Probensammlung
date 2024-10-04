@@ -24,6 +24,8 @@ export default function SampleForm() {
     urinComments: '',
   });
 
+  const today = new Date().toISOString().split('T')[0];
+
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
@@ -40,7 +42,7 @@ export default function SampleForm() {
       time: '',
       size: '',
       collector: '',
-      room: '',
+      room: '1027',
       box_col:'',
       box_row:'',
       specialComments: '',
@@ -50,6 +52,7 @@ export default function SampleForm() {
       serumComments: '',
       urinDate: '',
       urinComments: '',
+      urinDate: today,
     });
   };
 
@@ -194,6 +197,7 @@ export default function SampleForm() {
             label="Raum"
             name="room"
             value={formData.room}
+            defaultValue="1027"
             onChange={handleChange}
             fullWidth
             margin="normal"
@@ -259,6 +263,7 @@ export default function SampleForm() {
             label="Datum"
             name="serumDate"
             type="date"
+            defaultValue="2011-09-29"
             value={formData.serumDate}
             onChange={handleChange}
             fullWidth
@@ -268,6 +273,7 @@ export default function SampleForm() {
             <TextField
             label="Raum"
             name="room"
+            defaultValue="1027"
             value={formData.room}
             onChange={handleChange}
             fullWidth
@@ -333,6 +339,7 @@ export default function SampleForm() {
                       <TextField
             label="Raum"
             name="room"
+            defaultValue="1027"
             value={formData.room}
             onChange={handleChange}
             fullWidth
