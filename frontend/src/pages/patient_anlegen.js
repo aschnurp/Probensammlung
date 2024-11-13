@@ -4,7 +4,7 @@ import { Box, TextField, Radio, RadioGroup,FormControl ,FormLabel, FormControlLa
 
 export default function PatientForm() {
   const [formData, setFormData] = useState({
-    patientId: '',
+    patientId_internal: '',
     date: '',
     gender: '',
     age: '',
@@ -20,7 +20,7 @@ export default function PatientForm() {
 
   const handleClear = () => {
     setFormData({
-      patientId: '',
+      patientId_internal: '',
       date: '',
       gender: '',
       age: '',
@@ -50,9 +50,9 @@ export default function PatientForm() {
         </Typography>
       </Box>
       <TextField
-        label="Patienten ID"
-        name="patientId"
-        value={formData.patientId}
+        label="Patienten ID (intern)"
+        name="patientId_internal"
+        value={formData.patientId_internal}
         onChange={handleChange}
         fullWidth
         margin="normal"

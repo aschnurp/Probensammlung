@@ -17,10 +17,13 @@ export default function Uebersicht() {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedTable, setSelectedTable] = useState(null);
   const [data, setData] = useState([]);
+  const [filteredData, setFilteredData] = useState([]); // Added filtered data state
   const [editRowIndex, setEditRowIndex] = useState(null); // Für das Bearbeiten von Einträgen
   const [formData, setFormData] = useState({}); // Für die Datenbearbeitung
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [searchQuery, setSearchQuery] = useState(""); // Filter search query
+  const [selectedColumn, setSelectedColumn] = useState(""); // Selected column for search filter
   const dropdownRef = useRef(null);
 
   const toggleDropdown = () => setIsOpen(!isOpen);
@@ -41,11 +44,38 @@ export default function Uebersicht() {
     try {
       const response = await axios.get(`http://localhost:8000/table/data?table_name=${tableName}`);
       setData(response.data);
+      setFilteredData(response.data); // Initialize filtered data with fetched data
     } catch (error) {
       setError('Failed to fetch data');
     } finally {
       setLoading(false);
     }
+  };
+
+  // Handle search for specific column
+  const handleSearchChange = (e) => {
+    const query = e.target.value;
+    setSearchQuery(query);
+
+    if (query === "") {
+      setFilteredData(data); // If the search query is empty, show all data
+    } else {
+      const lowercasedQuery = query.toLowerCase();
+      const filtered = data.filter((row) => {
+        if (selectedColumn && row[selectedColumn]) {
+          return row[selectedColumn].toString().toLowerCase().includes(lowercasedQuery);
+        }
+        return Object.keys(row).some((key) => 
+          row[key] && row[key].toString().toLowerCase().includes(lowercasedQuery)
+        );
+      });
+      setFilteredData(filtered); // Set filtered data based on search query
+    }
+  };
+
+  // Handle column selection for search filter
+  const handleColumnSelect = (e) => {
+    setSelectedColumn(e.target.value);
   };
 
   useEffect(() => {
@@ -84,6 +114,7 @@ export default function Uebersicht() {
     try {
       const response = await axios.put(`http://localhost:8000/table/data/${rowId}`, formData);
       setData(data.map((row, index) => (index === editRowIndex ? response.data : row)));
+      setFilteredData(filteredData.map((row, index) => (index === editRowIndex ? response.data : row))); // Update filtered data as well
       setEditRowIndex(null); // Bearbeitungsmodus beenden
       setFormData({});
     } catch (error) {
@@ -96,6 +127,7 @@ export default function Uebersicht() {
     try {
       await axios.delete(`http://localhost:8000/table/data/${rowId}`);
       setData(data.filter((row) => row.id !== rowId));
+      setFilteredData(filteredData.filter((row) => row.id !== rowId)); // Remove from filtered data as well
     } catch (error) {
       console.error('Failed to delete data', error);
     }
@@ -122,7 +154,7 @@ export default function Uebersicht() {
               </tr>
             </thead>
             <tbody className="bg-white divide-y divide-gray-200">
-              {data.map((row, rowIndex) => (
+              {filteredData.map((row, rowIndex) => (
                 <tr key={rowIndex}>
                   {columns.map(col => (
                     <td key={col.key} className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
@@ -206,6 +238,34 @@ export default function Uebersicht() {
           )}
         </div>
       </div>
+
+      {/* Filter Input */}
+      {selectedTable && (
+        <div className="flex margin-left auto mt-4">
+          <div className="mr-4">
+            <select
+              value={selectedColumn}
+              onChange={handleColumnSelect}
+              className="border border-gray-300 px-4 py-2 rounded"
+            >
+              <option value="">Alle Spalten</option>
+              {TABLE_COLUMNS[selectedTable]?.map((col) => (
+                <option key={col.key} value={col.key}>
+                  {col.label}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          <input
+            type="text"
+            value={searchQuery}
+            onChange={handleSearchChange}
+            placeholder="Suche..."
+            className="border border-gray-300 px-4 py-2 rounded"
+          />
+        </div>
+      )}
 
       {renderTable()}
     </>

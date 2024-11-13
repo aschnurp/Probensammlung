@@ -5,7 +5,7 @@ import { Box, TextField, Radio, RadioGroup, FormLabel ,FormControlLabel, Typogra
 
 export default function SampleForm() {
   const [formData, setFormData] = useState({
-    patientId: '',
+    patientId_internal: '',
     sampleType: '',
     paraffin: '',
     blockType: '',
@@ -32,7 +32,7 @@ export default function SampleForm() {
 
   const handleClear = () => {
     setFormData({
-      patientId: '',
+      patientId_internal: '',
       sampleType: '',
       paraffin: '',
       blockType: '',
@@ -93,9 +93,9 @@ export default function SampleForm() {
 
 
       <TextField
-        label="Patienten ID"
-        name="patientId"
-        value={formData.patientId}
+        label="Patienten ID (Intern)"
+        name="patientId_internal"
+        value={formData.patientId_internal}
         onChange={handleChange}
         fullWidth
         margin="normal"
@@ -189,6 +189,10 @@ export default function SampleForm() {
           <MenuItem value="rebecca">Rebecca</MenuItem>
           <MenuItem value="sophie">Sophie</MenuItem>
           <MenuItem value="atachan">Atachan</MenuItem>
+          <MenuItem value="atachan">Anton</MenuItem>
+          <MenuItem value="atachan">Sandra</MenuItem>
+          <MenuItem value="atachan">Peggy</MenuItem>
+          <MenuItem value="atachan">Andere</MenuItem>
 
 
         </Select>

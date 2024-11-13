@@ -105,7 +105,7 @@ export default function Overview() {
           boxShadow: 3,
           borderRadius: 4,
           p: 3,
-          m: 5,
+          m: 10,
         }}
       >
         <Box
@@ -197,7 +197,7 @@ export default function Overview() {
             boxShadow: 3,
             borderRadius: 4,
             p: 3,
-            m: 5,
+            m: 10,
           }}
         >
           <Box
