@@ -20,7 +20,6 @@ class TableDataIDIn(BaseModel):
 class TableDataSerumproben(BaseModel):
     patient_Id_intern: str
     sap_id: int
-    created_at: str	
     probenart: str	
     barcode_id: str 	
     boxnummer: int 
@@ -32,9 +31,8 @@ class TableDataSerumproben(BaseModel):
 class TableDataGewebeproben(BaseModel):
     patient_Id_intern: str
     sap_id: int
-    created_at: int
     probenart: str
-    barcode_ID: str
+    barcode_id: str
     boxnummer: int
     boxzeile: int
     boxspalte: int
@@ -44,7 +42,6 @@ class TableDataGewebeproben(BaseModel):
 class TableDataUrinproben(BaseModel):
     patient_Id_intern: str
     sap_id: int
-    created_at: str
     probenart: str
     barcode_id: str
     boxnummer: int
@@ -56,8 +53,15 @@ class TableDataUrinproben(BaseModel):
 class TableDataParaffinproben(BaseModel):
     patient_Id_intern: str
     sap_id: int
-    created_at: str	
-    probenart: str	
-    barcode_id: str 		
+    probenart: str			
     lagerraum: str	
     anmerkungen: str
+
+class TableDatapatient(BaseModel):
+    sap_id: int
+    patient_Id_intern: str
+    datum: str
+    geschlecht: str
+    alter: int
+    op_diagnose: str
+    bemerkung: str
