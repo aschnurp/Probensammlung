@@ -14,8 +14,5 @@ class Paraffinproben(Base):
     created_at = Column(TEXT)	
     probenart = Column(TEXT)
     lagerraum = Column(TEXT) 	
-    probe_erhalten_zeit	 = Column(TEXT)
-    probengröße = Column(TEXT)	
-    bearbeiter_in = Column(TEXT)	
-    anmerkungen_probennahme  = Column(TEXT)	
-    anmerkungen_prbenaufbereitung  = Column(TEXT)
+    anmerkungen = Column(TEXT)
+

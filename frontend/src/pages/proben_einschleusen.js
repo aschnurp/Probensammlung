@@ -87,6 +87,7 @@ export default function SampleForm() {
           <MenuItem value="gewebe">Gewebeproben</MenuItem>
           <MenuItem value="serum">Serumproben</MenuItem>
           <MenuItem value="urin">Urinproben</MenuItem>
+          <MenuItem value="paraffin">Paraffinproben</MenuItem>
         </Select>
       </FormControl>
 
@@ -374,6 +375,50 @@ export default function SampleForm() {
             label="Besonderheiten"
             name="urinComments"
             value={formData.urinComments}
+            onChange={handleChange}
+            fullWidth
+            margin="normal"
+            multiline
+            rows={4}
+          />
+        </Box>
+      )}
+
+
+{formData.sampleType === 'paraffin' && (
+        <Box sx={{ mt: 2 }}>
+          <TextField
+            label="Scannerfeld für Barcode ID"
+            name="barcodeId"
+            value={formData.barcodeId}
+            onChange={handleChange}
+            fullWidth
+            margin="normal"
+          />
+          <TextField
+            label="Datum"
+            name="Date"
+            type="date"
+            defaultValue="2011-09-29"
+            value={formData.serumDate}
+            onChange={handleChange}
+            fullWidth
+            margin="normal"
+            InputLabelProps={{ shrink: true }}
+          />
+            <TextField
+            label="Raum"
+            name="room"
+            defaultValue="1027"
+            value={formData.room}
+            onChange={handleChange}
+            fullWidth
+            margin="normal"
+          />
+          <TextField
+            label="Besonderheiten"
+            name="serumComments"
+            value={formData.serumComments}
             onChange={handleChange}
             fullWidth
             margin="normal"

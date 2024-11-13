@@ -74,9 +74,9 @@ export default function PatientForm() {
     defaultValue="female"
     name="radio-buttons-group"
   >
-    <FormControlLabel value="female" control={<Radio />} label="Female" />
-    <FormControlLabel value="male" control={<Radio />} label="Male" />
-    <FormControlLabel value="other" control={<Radio />} label="Other" />
+    <FormControlLabel value="female" control={<Radio />} label="Weiblich" />
+    <FormControlLabel value="male" control={<Radio />} label="Männlich" />
+    <FormControlLabel value="other" control={<Radio />} label="Divers" />
   </RadioGroup>
 </FormControl>
       <TextField
