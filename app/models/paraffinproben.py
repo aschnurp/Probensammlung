@@ -8,8 +8,8 @@ from sqlalchemy.sql.expression import text
 
 class Paraffinproben(Base):
     __tablename__ = "paraffinproben"
-    barcode_id = Column(VARCHAR(200), primary_key= True, nullable=False)
-    patient_ID_intern = Column(VARCHAR(200), ForeignKey("patient.patient_ID_intern")) 
+    id = Column(Integer, primary_key= True, nullable=False, autoincrement=True)
+    patient_Id_intern = Column(VARCHAR(200), ForeignKey("patient.patient_Id_intern")) 
     sap_id = Column(Integer)
     created_at = Column(TEXT)	
     probenart = Column(TEXT)

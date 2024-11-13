@@ -10,6 +10,7 @@ from ..models.patient import Patient
 from ..models.serumproben import Serumproben
 from ..models.gewebeproben import Gewebeproben
 from ..models.urinproben import Urinproben
+from ..models.paraffinproben import Paraffinproben
 
 router = APIRouter(
     prefix="/number",
@@ -44,6 +45,14 @@ def get_gewebeproben(db: Session = Depends(get_db)):
 @router.get("/urinproben", status_code=status.HTTP_201_CREATED)
 def get_urinproben(db: Session = Depends(get_db)):
     item = db.query(Urinproben).count()
+    if item == None:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail= f"no item in this list")
+    return item
+
+#Get number of all paraffinproben
+@router.get("/paraffinproben", status_code=status.HTTP_201_CREATED)
+def get_paraffinproben(db: Session = Depends(get_db)):
+    item = db.query(Paraffinproben).count()
     if item == None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail= f"no item in this list")
     return item

@@ -103,49 +103,6 @@ export default function SampleForm() {
   
       {formData.sampleType === 'gewebe' && (
         <Box sx={{ mt: 2 }}>
-
-<FormControl variant="outlined" fullWidth margin="normal">
-  <InputLabel>Probe I</InputLabel>
-  <Select
-    name="sample_one"
-    value={formData.sample_one}
-    onChange={handleChange}
-    fullWidth
-    margin="normal"
-    label="Probe I"
-        >
-          <MenuItem value="none">none</MenuItem>
-          <MenuItem value="paraffin_normal_one">Paraffin / Normal / ein Block</MenuItem>
-          <MenuItem value="paraffin_normal_a">Paraffin / Normal / Block A</MenuItem>
-          <MenuItem value="paraffin_normal_b">Paraffin / Normal / Block B</MenuItem>
-          <MenuItem value="paraffin_tumor_one">Paraffin / Tumor / ein Block</MenuItem>
-          <MenuItem value="paraffin_tumor_a">Paraffin / Tumor / Block A</MenuItem>
-          <MenuItem value="paraffin_tumor_b">Paraffin / Tumor / Block B</MenuItem>
-
-        </Select>
-        </FormControl>
-        <FormControl variant="outlined" fullWidth margin="normal">
-  <InputLabel id="sample-one-label">Probe II</InputLabel>
-  <Select
-    labelId="sample-one-label"
-    name="sample_two"
-    value={formData.sample_two}
-    onChange={handleChange}
-    fullWidth
-    margin="normal"
-    label="Probe II"
-        >
-          <MenuItem value="none">none</MenuItem>
-          <MenuItem value="paraffin_normal_one">Paraffin / Normal / ein Block</MenuItem>
-          <MenuItem value="paraffin_normal_a">Paraffin / Normal / Block A</MenuItem>
-          <MenuItem value="paraffin_normal_b">Paraffin / Normal / Block B</MenuItem>
-          <MenuItem value="paraffin_tumor_one">Paraffin / Tumor / ein Block</MenuItem>
-          <MenuItem value="paraffin_tumor_a">Paraffin / Tumor / Block A</MenuItem>
-          <MenuItem value="paraffin_tumor_b">Paraffin / Tumor / Block B</MenuItem>
-
-        </Select>
-        </FormControl>
-
           <TextField
             label="Datum"
             name="date"
@@ -387,14 +344,6 @@ export default function SampleForm() {
 
 {formData.sampleType === 'paraffin' && (
         <Box sx={{ mt: 2 }}>
-          <TextField
-            label="Scannerfeld für Barcode ID"
-            name="barcodeId"
-            value={formData.barcodeId}
-            onChange={handleChange}
-            fullWidth
-            margin="normal"
-          />
           <TextField
             label="Datum"
             name="Date"

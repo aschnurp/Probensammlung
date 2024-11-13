@@ -17,37 +17,47 @@ class TableDataIn(BaseModel):
 class TableDataIDIn(BaseModel):
     table_name: str
 
-class ResetForegetPassword(BaseModel):
-    access_token: str
-    new_password: str
-    confirm_password: str
+class TableDataSerumproben(BaseModel):
+    patient_Id_intern: str
+    sap_id: int
+    created_at: str	
+    probenart: str	
+    barcode_id: str 	
+    boxnummer: int 
+    boxzeile: int 
+    boxspalte: int 	
+    lagerraum: str	
+    anmerkungen: str
 
-class SuccessMessage(BaseModel):
-    success: bool
-    status_code: int
-    message: str
+class TableDataGewebeproben(BaseModel):
+    patient_Id_intern: str
+    sap_id: int
+    created_at: int
+    probenart: str
+    barcode_ID: str
+    boxnummer: int
+    boxzeile: int
+    boxspalte: int
+    lagerraum: str
+    anmerkungen: str
 
-class ForgetPasswordRequest(BaseModel):
-    email: str
-        
-class UserLogin(BaseModel):
-    email : EmailStr
-    password : str
+class TableDataUrinproben(BaseModel):
+    patient_Id_intern: str
+    sap_id: int
+    created_at: str
+    probenart: str
+    barcode_id: str
+    boxnummer: int
+    boxzeile: int
+    boxspalte: int
+    lagerraum: str
+    anmerkungen: str
 
-class UserCreate(BaseModel):
-    email: EmailStr
-    password: str
-
-class UserOut(BaseModel):
-    id: int
-    email: EmailStr
-    created_at: datetime
-    class Config:
-        orm_mode = True
-
-class Token(BaseModel):
-    access_token: str
-    token_type: str
-
-class TokenData(BaseModel):
-    id: Optional[str] | None = None
+class TableDataParaffinproben(BaseModel):
+    patient_Id_intern: str
+    sap_id: int
+    created_at: str	
+    probenart: str	
+    barcode_id: str 		
+    lagerraum: str	
+    anmerkungen: str

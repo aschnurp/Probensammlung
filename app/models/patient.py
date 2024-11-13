@@ -9,7 +9,7 @@ from sqlalchemy.sql.expression import text
 class Patient(Base):
     __tablename__ = "patient"
     sap_id = Column(Integer)
-    patient_ID_intern = Column(VARCHAR(200), primary_key = True, nullable = False)
+    patient_Id_intern = Column(VARCHAR(200), primary_key = True, nullable = False)
     created_at = Column(TIMESTAMP(timezone=True), nullable=False, server_default=text("now()"))
     datum = Column(TEXT)
     geschlecht = Column(TEXT)
