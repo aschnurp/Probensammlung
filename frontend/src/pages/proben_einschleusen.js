@@ -24,7 +24,6 @@ export default function SampleForm() {
     urinComments: '',
   });
 
-  const today = new Date().toISOString().split('T')[0];
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -52,7 +51,7 @@ export default function SampleForm() {
       serumComments: '',
       urinDate: '',
       urinComments: '',
-      urinDate: today,
+      urinDate: '',
     });
   };
 
@@ -101,8 +100,6 @@ export default function SampleForm() {
         margin="normal"
       />
   
-
-
       {formData.sampleType === 'gewebe' && (
         <Box sx={{ mt: 2 }}>
 
@@ -189,10 +186,10 @@ export default function SampleForm() {
           <MenuItem value="rebecca">Rebecca</MenuItem>
           <MenuItem value="sophie">Sophie</MenuItem>
           <MenuItem value="atachan">Atachan</MenuItem>
-          <MenuItem value="atachan">Anton</MenuItem>
-          <MenuItem value="atachan">Sandra</MenuItem>
-          <MenuItem value="atachan">Peggy</MenuItem>
-          <MenuItem value="atachan">Andere</MenuItem>
+          <MenuItem value="anton">Anton</MenuItem>
+          <MenuItem value="sandra">Sandra</MenuItem>
+          <MenuItem value="peggy">Peggy</MenuItem>
+          <MenuItem value="other">Andere</MenuItem>
 
 
         </Select>

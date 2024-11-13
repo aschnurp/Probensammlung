@@ -96,14 +96,6 @@ export default function PatientForm() {
         margin="normal"
       />
       <TextField
-        label="Fallnummer im SAP"
-        name="sapCaseNumber"
-        value={formData.sapCaseNumber}
-        onChange={handleChange}
-        fullWidth
-        margin="normal"
-      />
-      <TextField
         label="Diagnose"
         name="diagnosis"
         value={formData.diagnosis}
