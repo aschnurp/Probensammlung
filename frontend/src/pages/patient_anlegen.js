@@ -46,7 +46,7 @@ export default function PatientForm() {
         }}
       >
         <Typography variant="h5" sx={{ fontWeight: 'bold', color: 'text.primary' }}>
-          Patienten Eintragen
+          Patienten Anlegen
         </Typography>
       </Box>
       <TextField
@@ -68,7 +68,7 @@ export default function PatientForm() {
             InputLabelProps={{ shrink: true }}
         />
 <FormControl>
-  <FormLabel id="demo-radio-buttons-group-label">Gender</FormLabel>
+  <FormLabel id="demo-radio-buttons-group-label">Geschlecht</FormLabel>
   <RadioGroup
     aria-labelledby="demo-radio-buttons-group-label"
     defaultValue="female"

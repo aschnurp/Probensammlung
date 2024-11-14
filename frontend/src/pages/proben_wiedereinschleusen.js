@@ -29,9 +29,17 @@ export default function ProbeWiedereinschleusen() {
 
   return (
     <Box sx={{ p: 3, maxWidth: 600, mx: 'auto' }}>
-      <Typography variant="h5" gutterBottom>
+      <Box         
+      sx={{
+          textAlign: 'center',
+          mt: 4,
+          mb: 2,
+        }}
+        >
+        <Typography variant="h5" sx={{ fontWeight: 'bold', color: 'text.primary' }}>
         Proben erneut Einschleusen
       </Typography>
+      </Box>
       <TextField
         label="Scannerfeld für Barcode ID"
         name="barcodeId"
@@ -56,17 +64,6 @@ export default function ProbeWiedereinschleusen() {
           {statusMessage}
         </Typography>
       )}
-
-      <Box sx={{ mt: 4 }}>
-        <Typography variant="h6">Übersicht der Proben</Typography>
-        <ul>
-          {usedProbes.map((probe, index) => (
-            <li key={index}>
-              Barcode ID: {probe.barcodeId}, Status: {probe.status}
-            </li>
-          ))}
-        </ul>
-      </Box>
     </Box>
   );
 }

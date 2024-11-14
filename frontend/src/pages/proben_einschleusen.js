@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import { Box, TextField, Radio, RadioGroup, FormLabel ,FormControlLabel, Typography,Button, Select, MenuItem, InputLabel, FormControl } from '@mui/material';
+import { postSerumEntry } from '../services/api'; 
 
 export default function SampleForm() {
   const [formData, setFormData] = useState({
@@ -382,7 +383,7 @@ export default function SampleForm() {
           Clear All
         </Button>
         <Button variant="contained" color="primary" onClick={handleSubmit}>
-          Senden
+          Senden postSerumEntry
         </Button>
       </Box>
     </Box>
