@@ -9,19 +9,21 @@ export default function SampleForm() {
   const [formData, setFormData] = useState({
     patient_Id_intern: '',
     probenart: '',
+    paraffin: '',
     date: '',
     time: '',
     size: '',
-    sample_one: '',
-    sample_two: '',
-    collector: '',
-    specialComments: '',
-    remarks: '',
+    abholer: '',
+    lagerraum: '',
+    boxspalte:'',
+    boxzeile:'',
     barcode_id: '',
-    serumDate: '',
-    serumComments: '',
-    urinDate: '',
-    urinComments: '',
+    boxnummer: '',
+    anmerkungen: '',
+    created_at: '',
+    uhrzeit: '',
+    sap_id: '',
+    remarks: '',
   });
 
 
@@ -37,18 +39,17 @@ export default function SampleForm() {
       date: '',
       time: '',
       size: '',
-      collector: '',
-      lagerraum: '1027',
+      abholer: '',
+      lagerraum: '',
       boxspalte:'',
       boxzeile:'',
-      specialComments: '',
-      remarks: '',
       barcode_id: '',
-      serumDate: '',
-      serumComments: '',
-      urinDate: '',
-      urinComments: '',
-      urinDate: '',
+      boxnummer: '',
+      anmerkungen: '',
+      created_at: '',
+      uhrzeit: '',
+      sap_id: '',
+      remarks: '',
     });
   };
 
@@ -63,13 +64,32 @@ export default function SampleForm() {
       boxzeile: formData.boxzeile,
       boxspalte: formData.boxspalte,
       anmerkungen: formData.anmerkungen,
-      created_at: formData.created_at
+      created_at: formData.created_at,
+      uhrzeit: formData.uhrzeit,
+      sap_id: formData.sap_id,
+      abholer: formData.abholer,
+      remarks: formData.remarks,
+      size: formData.size,
     };
     console.log('Button clicked');
     // Include only fields relevant to `probenart`
     if (formData.probenart === 'paraffin') {
 
     } else if (formData.probenart === 'gewebe') {
+      filteredData.patient_Id_intern = formData.patient_Id_intern;
+      filteredData.probenart= formData.probenart;
+      filteredData.anmerkungen= formData.anmerkungen;
+      filteredData.barcode_id = formData.barcode_id;
+      filteredData.lagerraum= formData.lagerraum;
+      filteredData.created_at= formData.created_at;
+      filteredData.abholer= formData.abholer;
+      filteredData.uhrzeit= formData.uhrzeit;
+      filteredData.boxnummer= formData.boxnummer;
+      filteredData.boxzeile= formData.boxzeile;
+      filteredData.boxspalte = formData.boxspalte;
+      filteredData.size = formData.size;
+      filteredData.remarks = formData.remarks;
+
 
     } else if (formData.probenart === 'serum') {
       filteredData.patient_Id_intern = formData.patient_Id_intern;
@@ -142,6 +162,14 @@ export default function SampleForm() {
       {formData.probenart === 'gewebe' && (
         <Box sx={{ mt: 2 }}>
           <TextField
+            label="Scannerfeld für Barcode ID"
+            name="barcode_id"
+            value={formData.barcode_id}
+            onChange={handleChange}
+            fullWidth
+            margin="normal"
+          />
+          <TextField
             label="Datum"
             name="created_at"
             type="date"
@@ -153,9 +181,9 @@ export default function SampleForm() {
           />
           <TextField
             label="Probe erhalten (Uhrzeit)"
-            name="time"
+            name="uhrzeit"
             type="time"
-            value={formData.time}
+            value={formData.uhrzeit}
             onChange={handleChange}
             fullWidth
             margin="normal"
@@ -172,7 +200,7 @@ export default function SampleForm() {
         <FormControl  fullWidth margin="normal">
         <InputLabel>Probenabholer*in</InputLabel>
         <Select
-          name="collector"
+          name="abholer"
           value={formData.abholer}
           onChange={handleChange}
           fullWidth

@@ -34,11 +34,26 @@ class TableDataSerumprobenOUT(BaseModel):
     anmerkungen: str
 
 
-class TableDataGewebeproben(BaseModel):
+class TableDataGewebeprobenIN(BaseModel):
     patient_Id_intern: str
     probenart: str	
     barcode_id: str 	
     lagerraum: str
+
+class TableDataGewebeprobenOUT(BaseModel):
+    patient_Id_intern: str
+    probenart: str	
+    barcode_id: str 	
+    lagerraum: str
+    created_at: str
+    abholer: str
+    uhrzeit: str
+    boxnummer: int
+    boxzeile: int
+    boxspalte: int
+    anmerkungen: str
+    remarks: str
+    size: str
 
 class TableDataUrinproben(BaseModel):
     patient_Id_intern: str

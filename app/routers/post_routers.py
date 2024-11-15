@@ -31,8 +31,8 @@ def create_serumproben(post: schemas.TableDataSerumprobenOUT, db: Session = Depe
 
 
 #router for new gewebe entry
-@router.post("/gewebe", status_code=status.HTTP_201_CREATED, response_model= schemas.TableDataGewebeproben)
-def create_gewebeproben(post: schemas.TableDataGewebeproben, db: Session = Depends(get_db)):
+@router.post("/gewebe", status_code=status.HTTP_201_CREATED, response_model= schemas.TableDataGewebeprobenIN)
+def create_gewebeproben(post: schemas.TableDataGewebeprobenOUT, db: Session = Depends(get_db)):
     new_item = Gewebeproben(**post.dict())
     existing_item = db.query(Gewebeproben).filter(Gewebeproben.barcode_id == post.barcode_id).first()
     if existing_item:

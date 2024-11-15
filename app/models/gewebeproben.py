@@ -20,4 +20,6 @@ class Gewebeproben(Base):
     boxspalte = Column(Integer) 	
     lagerraum = Column(TEXT)
     anmerkungen = Column(TEXT)
+    remarks = Column(TEXT)
+    size = Column(TEXT)
 
