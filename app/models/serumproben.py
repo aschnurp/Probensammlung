@@ -9,8 +9,8 @@ from sqlalchemy.sql.expression import text
 class Serumproben(Base):
     __tablename__ = "serumproben"
     barcode_id = Column(VARCHAR(200), primary_key= True, nullable=False)	
-    patient_Id_intern = Column(VARCHAR(200), ForeignKey("patient.patient_Id_intern")) 
-    sap_id = Column(Integer)
+    patient_Id_intern = Column(VARCHAR(200), ForeignKey("patient.patient_Id_intern"))
+    sap_id = Column(Integer) 
     created_at = Column(TIMESTAMP(timezone=True), nullable=False, server_default=text("now()"))	
     probenart = Column(TEXT)	
     boxnummer = Column(Integer) 

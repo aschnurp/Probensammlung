@@ -17,51 +17,42 @@ class TableDataIn(BaseModel):
 class TableDataIDIn(BaseModel):
     table_name: str
 
-class TableDataSerumproben(BaseModel):
+class TableDataSerumprobenIN(BaseModel):
     patient_Id_intern: str
-    sap_id: int
     probenart: str	
     barcode_id: str 	
-    boxnummer: int 
-    boxzeile: int 
-    boxspalte: int 	
     lagerraum: str	
+
+class TableDataSerumprobenOUT(BaseModel):
+    patient_Id_intern: str
+    probenart: str	
+    barcode_id: str 	
+    lagerraum: str
+    boxnummer: int
+    boxzeile: int
+    boxspalte: int
     anmerkungen: str
+
 
 class TableDataGewebeproben(BaseModel):
     patient_Id_intern: str
-    sap_id: int
-    probenart: str
-    barcode_id: str
-    boxnummer: int
-    boxzeile: int
-    boxspalte: int
+    probenart: str	
+    barcode_id: str 	
     lagerraum: str
-    anmerkungen: str
 
 class TableDataUrinproben(BaseModel):
     patient_Id_intern: str
-    sap_id: int
-    probenart: str
-    barcode_id: str
-    boxnummer: int
-    boxzeile: int
-    boxspalte: int
+    probenart: str	
+    barcode_id: str 	
     lagerraum: str
-    anmerkungen: str
 
 class TableDataParaffinproben(BaseModel):
     patient_Id_intern: str
-    sap_id: int
     probenart: str			
     lagerraum: str	
-    anmerkungen: str
 
 class TableDatapatient(BaseModel):
-    sap_id: int
     patient_Id_intern: str
-    datum: str
     geschlecht: str
     alter: int
     op_diagnose: str
-    bemerkung: str

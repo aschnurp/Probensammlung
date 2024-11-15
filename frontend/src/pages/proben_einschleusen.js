@@ -1,15 +1,14 @@
 // src/SampleForm.js
 
 import React, { useState } from 'react';
+import axios from 'axios';
 import { Box, TextField, Radio, RadioGroup, FormLabel ,FormControlLabel, Typography,Button, Select, MenuItem, InputLabel, FormControl } from '@mui/material';
 import { postSerumEntry } from '../services/api'; 
 
 export default function SampleForm() {
   const [formData, setFormData] = useState({
-    patientId_internal: '',
-    sampleType: '',
-    paraffin: '',
-    blockType: '',
+    patient_Id_intern: '',
+    probenart: '',
     date: '',
     time: '',
     size: '',
@@ -18,7 +17,7 @@ export default function SampleForm() {
     collector: '',
     specialComments: '',
     remarks: '',
-    barcodeId: '',
+    barcode_id: '',
     serumDate: '',
     serumComments: '',
     urinDate: '',
@@ -32,22 +31,19 @@ export default function SampleForm() {
 
   const handleClear = () => {
     setFormData({
-      patientId_internal: '',
-      sampleType: '',
+      patient_Id_intern: '',
+      probenart: '',
       paraffin: '',
-      blockType: '',
-      sample_one: '',
-      sample_two: '',
       date: '',
       time: '',
       size: '',
       collector: '',
-      room: '1027',
-      box_col:'',
-      box_row:'',
+      lagerraum: '1027',
+      boxspalte:'',
+      boxzeile:'',
       specialComments: '',
       remarks: '',
-      barcodeId: '',
+      barcode_id: '',
       serumDate: '',
       serumComments: '',
       urinDate: '',
@@ -56,9 +52,50 @@ export default function SampleForm() {
     });
   };
 
-  const handleSubmit = () => {
-    // Handle form submission, e.g., sending data to a server
-    console.log('Submitted Data:', formData);
+
+  const handleSubmit = async () => {
+    const filteredData = {     
+      probenart: formData.probenart,
+      barcode_id: formData.barcode_id,
+      patient_Id_intern: formData.patient_Id_intern,
+      lagerraum: formData.lagerraum,
+      boxnummer: formData.boxnummer,
+      boxzeile: formData.boxzeile,
+      boxspalte: formData.boxspalte,
+      anmerkungen: formData.anmerkungen,
+      created_at: formData.created_at
+    };
+    console.log('Button clicked');
+    // Include only fields relevant to `probenart`
+    if (formData.probenart === 'paraffin') {
+
+    } else if (formData.probenart === 'gewebe') {
+
+    } else if (formData.probenart === 'serum') {
+      filteredData.patient_Id_intern = formData.patient_Id_intern;
+      filteredData.barcode_id = formData.barcode_id;
+      filteredData.lagerraum = formData.lagerraum;
+      filteredData.probenart = formData.probenart;
+      filteredData.boxnummer = formData.boxnummer;
+      filteredData.boxzeile = formData.boxzeile;
+      filteredData.boxspalte = formData.boxspalte;
+      filteredData.anmerkungen = formData.anmerkungen;
+      filteredData.created_at = formData.created_at;
+    } else if (formData.probenart === 'urin') {
+
+    }
+
+
+    // Send the filtered data based on probenart
+    try {
+      console.log('formData before filtering:', formData);
+      const response = await axios.post(`http://localhost:8000/new_data/${formData.probenart}`, filteredData, {
+        headers: { 'Content-Type': 'application/json' },
+      });
+      console.log('Data submitted successfully:', response.data);
+    } catch (error) {
+      console.error('Error submitting data:', error);
+    }
   };
 
   return (
@@ -79,11 +116,11 @@ export default function SampleForm() {
         <FormControl variant="outlined" fullWidth margin="normal">
         <InputLabel>Probenart</InputLabel>
         <Select
-          name="sampleType"
-          value={formData.sampleType}
+          name="probenart"
+          value={formData.probenart}
           onChange={handleChange}
           margin='normal'
-          label = "Probenart"
+          label = "probenart"
         >
           <MenuItem value="gewebe">Gewebeproben</MenuItem>
           <MenuItem value="serum">Serumproben</MenuItem>
@@ -95,20 +132,20 @@ export default function SampleForm() {
 
       <TextField
         label="Patienten ID (Intern)"
-        name="patientId_internal"
-        value={formData.patientId_internal}
+        name="patient_Id_intern"
+        value={formData.patient_Id_intern}
         onChange={handleChange}
         fullWidth
         margin="normal"
       />
   
-      {formData.sampleType === 'gewebe' && (
+      {formData.probenart === 'gewebe' && (
         <Box sx={{ mt: 2 }}>
           <TextField
             label="Datum"
-            name="date"
+            name="created_at"
             type="date"
-            value={formData.date}
+            value={formData.created_at}
             onChange={handleChange}
             fullWidth
             margin="normal"
@@ -136,7 +173,7 @@ export default function SampleForm() {
         <InputLabel>Probenabholer*in</InputLabel>
         <Select
           name="collector"
-          value={formData.collector}
+          value={formData.abholer}
           onChange={handleChange}
           fullWidth
           margin="normal"
@@ -155,8 +192,8 @@ export default function SampleForm() {
         </FormControl>
             <TextField
             label="Raum"
-            name="room"
-            value={formData.room}
+            name="lagerraum"
+            value={formData.lagerraum}
             defaultValue="1027"
             onChange={handleChange}
             fullWidth
@@ -164,32 +201,32 @@ export default function SampleForm() {
           />
          <TextField
             label="Boxnummer"
-            name="boxnumber"
-            value={formData.boxnumber}
+            name="boxnummer"
+            value={formData.boxnummer}
             onChange={handleChange}
             fullWidth
             margin="normal"
           />
            <TextField
             label="Boxzeile"
-            name="box_row"
-            value={formData.box_row}
+            name="boxzeile"
+            value={formData.boxzeile}
             onChange={handleChange}
             fullWidth
             margin="normal"
           />
            <TextField
             label="Boxspalte"
-            name="box_col"
-            value={formData.box_col}
+            name="boxspalte"
+            value={formData.boxspalte}
             onChange={handleChange}
             fullWidth
             margin="normal"
           />
           <TextField
             label="Besonderheiten/Anmerkungen (bei Probennahme)"
-            name="specialComments"
-            value={formData.specialComments}
+            name="anmerkungen"
+            value={formData.anmerkungen}
             onChange={handleChange}
             fullWidth
             margin="normal"
@@ -209,22 +246,22 @@ export default function SampleForm() {
         </Box>
       )}
 
-      {formData.sampleType === 'serum' && (
+      {formData.probenart === 'serum' && (
         <Box sx={{ mt: 2 }}>
           <TextField
             label="Scannerfeld für Barcode ID"
-            name="barcodeId"
-            value={formData.barcodeId}
+            name="barcode_id"
+            value={formData.barcode_id}
             onChange={handleChange}
             fullWidth
             margin="normal"
           />
           <TextField
             label="Datum"
-            name="serumDate"
+            name="created_at"
             type="date"
-            defaultValue="2011-09-29"
-            value={formData.serumDate}
+            defaultValue="2024-09-29"
+            value={formData.created_at}
             onChange={handleChange}
             fullWidth
             margin="normal"
@@ -232,41 +269,41 @@ export default function SampleForm() {
           />
             <TextField
             label="Raum"
-            name="room"
+            name="lagerraum"
             defaultValue="1027"
-            value={formData.room}
+            value={formData.lagerraum}
             onChange={handleChange}
             fullWidth
             margin="normal"
           />
            <TextField
             label="Boxnummer"
-            name="boxnumber"
-            value={formData.boxnumber}
+            name="boxnummer"
+            value={formData.boxnummer}
             onChange={handleChange}
             fullWidth
             margin="normal"
           />
            <TextField
             label="Boxzeile"
-            name="box_row"
-            value={formData.box_row}
+            name="boxzeile"
+            value={formData.boxzeile}
             onChange={handleChange}
             fullWidth
             margin="normal"
           />
            <TextField
             label="Boxspalte"
-            name="box_col"
-            value={formData.box_col}
+            name="boxspalte"
+            value={formData.boxspalte}
             onChange={handleChange}
             fullWidth
             margin="normal"
           />
           <TextField
             label="Besonderheiten"
-            name="serumComments"
-            value={formData.serumComments}
+            name="anmerkungen"
+            value={formData.anmerkungen}
             onChange={handleChange}
             fullWidth
             margin="normal"
@@ -276,63 +313,63 @@ export default function SampleForm() {
         </Box>
       )}
 
-      {formData.sampleType === 'urin' && (
+      {formData.probenart === 'urin' && (
         <Box sx={{ mt: 2 }}>
           <TextField
             label="Scannerfeld für Barcode ID"
-            name="barcodeId"
-            value={formData.barcodeId}
+            name="barcode_id"
+            value={formData.barcode_id}
             onChange={handleChange}
             fullWidth
             margin="normal"
           />
           <TextField
             label="Datum"
-            name="urinDate"
+            name="created_at"
             type="date"
-            value={formData.urinDate}
+            value={formData.created_at}
             onChange={handleChange}
             fullWidth
             margin="normal"
             InputLabelProps={{ shrink: true }}
           />
-                      <TextField
+          <TextField
             label="Raum"
-            name="room"
+            name="lagerraum"
             defaultValue="1027"
-            value={formData.room}
+            value={formData.lagerraum}
             onChange={handleChange}
             fullWidth
             margin="normal"
           />
          <TextField
             label="Boxnummer"
-            name="boxnumber"
-            value={formData.boxnumber}
+            name="boxnummer"
+            value={formData.boxnummer}
             onChange={handleChange}
             fullWidth
             margin="normal"
           />
            <TextField
             label="Boxzeile"
-            name="box_row"
-            value={formData.box_row}
+            name="boxzeile"
+            value={formData.boxzeile}
             onChange={handleChange}
             fullWidth
             margin="normal"
           />
            <TextField
             label="Boxspalte"
-            name="box_col"
-            value={formData.box_col}
+            name="boxspalte"
+            value={formData.boxspalte}
             onChange={handleChange}
             fullWidth
             margin="normal"
           />
           <TextField
             label="Besonderheiten"
-            name="urinComments"
-            value={formData.urinComments}
+            name="anmerkungen"
+            value={formData.anmerkungen}
             onChange={handleChange}
             fullWidth
             margin="normal"
@@ -343,14 +380,14 @@ export default function SampleForm() {
       )}
 
 
-{formData.sampleType === 'paraffin' && (
+{formData.probenart === 'paraffin' && (
         <Box sx={{ mt: 2 }}>
           <TextField
             label="Datum"
-            name="Date"
+            name="created_at"
             type="date"
             defaultValue="2011-09-29"
-            value={formData.serumDate}
+            value={formData.created_at}
             onChange={handleChange}
             fullWidth
             margin="normal"
@@ -358,17 +395,17 @@ export default function SampleForm() {
           />
             <TextField
             label="Raum"
-            name="room"
+            name="lagerraum"
             defaultValue="1027"
-            value={formData.room}
+            value={formData.lagerraum}
             onChange={handleChange}
             fullWidth
             margin="normal"
           />
           <TextField
             label="Besonderheiten"
-            name="serumComments"
-            value={formData.serumComments}
+            name="anmerkungen"
+            value={formData.anmerkungen}
             onChange={handleChange}
             fullWidth
             margin="normal"
@@ -383,7 +420,7 @@ export default function SampleForm() {
           Clear All
         </Button>
         <Button variant="contained" color="primary" onClick={handleSubmit}>
-          Senden postSerumEntry
+          Senden 
         </Button>
       </Box>
     </Box>
