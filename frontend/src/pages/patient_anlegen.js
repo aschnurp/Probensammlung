@@ -8,7 +8,7 @@ export default function PatientForm() {
     patient_Id_intern: '',
     gender: '',
     age: '',
-    sapId: '',
+    sap_id: '',
     diagnosis: '',
     plannedSurgery: '',
     remarks: '',
