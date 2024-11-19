@@ -10,7 +10,6 @@ export default function SampleForm() {
     patient_Id_intern: '',
     probenart: '',
     paraffin: '',
-    date: '',
     time: '',
     size: '',
     abholer: '',
@@ -36,7 +35,7 @@ export default function SampleForm() {
       patient_Id_intern: '',
       probenart: '',
       paraffin: '',
-      date: '',
+
       time: '',
       size: '',
       abholer: '',
@@ -74,6 +73,11 @@ export default function SampleForm() {
     console.log('Button clicked');
     // Include only fields relevant to `probenart`
     if (formData.probenart === 'paraffin') {
+      filteredData.patient_Id_intern = formData.patient_Id_intern;
+      filteredData.created_at = formData.created_at;
+      filteredData.probenart = formData.probenart;
+      filteredData.lagerraum = formData.lagerraum;
+      filteredData.anmerkungen =formData.anmerkungen;
 
     } else if (formData.probenart === 'gewebe') {
       filteredData.patient_Id_intern = formData.patient_Id_intern;
@@ -102,7 +106,15 @@ export default function SampleForm() {
       filteredData.anmerkungen = formData.anmerkungen;
       filteredData.created_at = formData.created_at;
     } else if (formData.probenart === 'urin') {
-
+      filteredData.patient_Id_intern = formData.patient_Id_intern;
+      filteredData.probenart= formData.probenart;
+      filteredData.barcode_id= formData.barcode_id;
+      filteredData.lagerraum= formData.lagerraum;
+      filteredData.created_at= formData.created_at;
+      filteredData.boxnummer= formData.boxnummer;
+      filteredData.boxzeile= formData.boxzeile;
+      filteredData.boxspalte= formData.boxspalte;
+      filteredData.anmerkungen= formData.anmerkungen;
     }
 
 

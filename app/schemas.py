@@ -55,19 +55,49 @@ class TableDataGewebeprobenOUT(BaseModel):
     remarks: str
     size: str
 
-class TableDataUrinproben(BaseModel):
+class TableDataUrinprobenIN(BaseModel):
     patient_Id_intern: str
     probenart: str	
     barcode_id: str 	
     lagerraum: str
 
-class TableDataParaffinproben(BaseModel):
+class TableDataUrinprobenOUT(BaseModel):
+    patient_Id_intern: str
+    probenart: str	
+    barcode_id: str 	
+    lagerraum: str
+    created_at: str
+    boxnummer: int
+    boxzeile: int
+    boxspalte: int
+    anmerkungen: str
+
+class TableDataParaffinprobenIN(BaseModel):
     patient_Id_intern: str
     probenart: str			
     lagerraum: str	
 
-class TableDatapatient(BaseModel):
+
+class TableDataParaffinprobenOUT(BaseModel):
+    patient_Id_intern: str
+    created_at: str
+    probenart: str			
+    lagerraum: str
+    anmerkungen: str	
+
+class TableDatapatientIN(BaseModel):
     patient_Id_intern: str
     geschlecht: str
     alter: int
     op_diagnose: str
+
+class TableDatapatientOUT(BaseModel):
+    patient_Id_intern: str
+    geschlecht: str
+    alter: int
+    op_diagnose: str
+    sap_id: int
+    created_at: str
+    bemerkung: str
+
+

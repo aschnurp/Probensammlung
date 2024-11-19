@@ -2,7 +2,6 @@
 // variable .... displayd text
 export const gewebeprobenDataColumns = [
     { key: "patient_Id_intern", label: "Patienten ID (intern)" },
-    { key: "sap_id", label: "SAP ID" },
     { key: "created_at", label: "Erstellungsdatum" },
     { key: "probenart", label: "Probenart" },
     { key: "barcode_id", label: "Barcode ID" },

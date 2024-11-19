@@ -57,15 +57,17 @@ export const getUrinCount = async () => {
     }
 };
 
-//Post Routes
-
-export const postSerumEntry = async () => {
+export const getParaffinCount = async () => {
     try {
-        const response = await axios.post(`${API_BASE_URL}/new_data/serum`);
-        return response.data; 
+        const response = await axios.get(`${API_BASE_URL}/number/paraffinproben`);
+        return response.data;  
     } catch (error) {
         console.error('Error fetching patient count:', error);
-        throw error;
+        throw error; 
     }
 };
+
+
+
+
 

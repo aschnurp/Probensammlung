@@ -10,7 +10,8 @@ import { usePathname } from 'next/navigation';
 import { getPatientCount } from '../services/api';
 import { getSerumCount } from '../services/api'; 
 import { getGewebeCount } from '../services/api'; 
-import { getUrinCount } from '../services/api';  
+import { getUrinCount } from '../services/api'; 
+import { getParaffinCount } from '../services/api'; 
 
 const theme = createTheme({
   palette: {
@@ -54,6 +55,7 @@ export default function Overview() {
   const [serum_count, setSerumCount] = useState(0);
   const [gewebe_count, setGewebeCount] = useState(0);
   const [urin_count, setUrinCount] = useState(0);
+  const [paraffin_count, setParaffinCount] = useState(0);
   const location = usePathname();
   const [loading, setLoading] = useState(false); // Ladezustand
   const [error, setError] = useState(null); // Fehlerzustand
@@ -79,6 +81,7 @@ export default function Overview() {
             fetchData(getSerumCount, setSerumCount, 'Failed to fetch serum count'),
             fetchData(getGewebeCount, setGewebeCount, 'Failed to fetch geweb count'),
             fetchData(getUrinCount, setUrinCount, 'Failed to fetch urin count'),
+            fetchData(getParaffinCount, setParaffinCount, 'Failed to fetch urin count'),
         ]);
     };
 
@@ -166,6 +169,15 @@ export default function Overview() {
         </Typography>
         <Typography variant="body2" sx={{ color: 'text.secondary' }}>
           Urinproben
+        </Typography>
+      </Box>
+      
+      <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+        <Typography variant="body2" sx={{ color: 'success.dark', fontWeight: 'bold' }}>
+          {paraffin_count}
+        </Typography>
+        <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+          Paraffinproben
         </Typography>
       </Box>
     </Box>
