@@ -1,16 +1,18 @@
 // src/PatientForm.js
 import React, { useState } from 'react';
+import axios from 'axios';
 import { Box, TextField, Radio, RadioGroup,FormControl ,FormLabel, FormControlLabel, Button, Typography } from '@mui/material';
 
 export default function PatientForm() {
   const [formData, setFormData] = useState({
-    patientId_internal: '',
+    patient_Id_intern: '',
     gender: '',
     age: '',
     sapId: '',
     diagnosis: '',
     plannedSurgery: '',
     remarks: '',
+    created_at: '',
   });
 
   const handleChange = (e) => {
@@ -19,21 +21,32 @@ export default function PatientForm() {
 
   const handleClear = () => {
     setFormData({
-      patientId_internal: '',
-
-      gender: '',
-      age: '',
-      sapId: '',
-      diagnosis: '',
+      patient_Id_intern: '',
+      geschlecht: '',
+      alter: '',
+      sap_id: '',
+      op_diagnose: '',
       plannedSurgery: '',
-      remarks: '',
+      bemerkung: '',
+      created_at: '',
     });
   };
 
-  const handleSubmit = () => {
-    // Handle form submission, e.g., sending data to a server
-    console.log('Submitted Data:', formData);
-  };
+  const handleSubmit = async () => {
+    console.log('Button clicked');
+
+  try {
+    console.log('formData before filtering:', formData);
+    const response = await axios.post(`http://localhost:8000/new_data/patient`, formData, {
+      headers: { 'Content-Type': 'application/json' },
+    });
+    console.log('Data submitted successfully:', response.data);
+  } catch (error) {
+    console.error('Error submitting data:', error);
+  }
+};
+
+
 
   return (
     <Box sx={{ p: 3, maxWidth: 600, mx: 'auto' }}>
@@ -50,54 +63,57 @@ export default function PatientForm() {
       </Box>
       <TextField
         label="Patienten ID (intern)"
-        name="patientId_internal"
-        value={formData.patientId_internal}
+        name="patient_Id_intern"
+        value={formData.patient_Id_intern}
         onChange={handleChange}
         fullWidth
         margin="normal"
       />
         <TextField
             label="Datum"
-            name="serumDate"
+            name="created_at"
             type="date"
-            value={formData.serumDate}
+            value={formData.created_at}
             onChange={handleChange}
             fullWidth
             margin="normal"
             InputLabelProps={{ shrink: true }}
         />
-<FormControl>
-  <FormLabel id="demo-radio-buttons-group-label">Geschlecht</FormLabel>
-  <RadioGroup
-    aria-labelledby="demo-radio-buttons-group-label"
-    defaultValue="female"
-    name="radio-buttons-group"
-  >
-    <FormControlLabel value="female" control={<Radio />} label="Weiblich" />
-    <FormControlLabel value="male" control={<Radio />} label="Männlich" />
-    <FormControlLabel value="other" control={<Radio />} label="Divers" />
-  </RadioGroup>
-</FormControl>
+      <FormControl>
+        <FormLabel id="geschlecht-label">Geschlecht</FormLabel>
+        <RadioGroup
+          aria-labelledby="geschlecht-label"
+          name="geschlecht"
+          value={formData.geschlecht}
+          onChange={handleChange} 
+        >
+          <FormControlLabel value="female" control={<Radio />} label="Weiblich" />
+          <FormControlLabel value="male" control={<Radio />} label="Männlich" />
+          <FormControlLabel value="other" control={<Radio />} label="Divers" />
+        </RadioGroup>
+      </FormControl>
+
+
       <TextField
         label="Alter"
-        name="age"
-        value={formData.age}
+        name="alter"
+        value={formData.alter}
         onChange={handleChange}
         fullWidth
         margin="normal"
       />
       <TextField
         label="Pat. ID im SAP"
-        name="sapId"
-        value={formData.sapId}
+        name="sap_id"
+        value={formData.sap_id}
         onChange={handleChange}
         fullWidth
         margin="normal"
       />
       <TextField
         label="Diagnose"
-        name="diagnosis"
-        value={formData.diagnosis}
+        name="op_diagnose"
+        value={formData.op_diagnose}
         onChange={handleChange}
         fullWidth
         margin="normal"
@@ -112,8 +128,8 @@ export default function PatientForm() {
       />
       <TextField
         label="Bemerkungen"
-        name="remarks"
-        value={formData.remarks}
+        name="bemerkung"
+        value={formData.bemerkung}
         onChange={handleChange}
         fullWidth
         margin="normal"

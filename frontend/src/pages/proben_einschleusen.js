@@ -35,7 +35,6 @@ export default function SampleForm() {
       patient_Id_intern: '',
       probenart: '',
       paraffin: '',
-
       time: '',
       size: '',
       abholer: '',

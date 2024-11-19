@@ -11,9 +11,8 @@ class Patient(Base):
     sap_id = Column(Integer)
     patient_Id_intern = Column(VARCHAR(200), primary_key = True, nullable = False)
     created_at = Column(TIMESTAMP(timezone=True), nullable=False, server_default=text("now()"))
-    datum = Column(TEXT)
     geschlecht = Column(TEXT)
     alter = Column(Integer)
     op_diagnose = Column(TEXT)
-    op_geplant = Column(TEXT)
     bemerkung = Column(TEXT)
+

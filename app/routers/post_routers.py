@@ -66,7 +66,7 @@ def create_paraffinproben(post: schemas.TableDataParaffinprobenOUT, db: Session 
     return new_item
 
 
-#router for new urin entry
+#router for new patient entry
 @router.post("/patient", status_code=status.HTTP_201_CREATED, response_model= schemas.TableDatapatientIN)
 def create_patient(post: schemas.TableDatapatientOUT, db: Session = Depends(get_db)):
     new_item = Patient(**post.dict())
