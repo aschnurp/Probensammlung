@@ -112,9 +112,9 @@ export default function Uebersicht() {
   };
 
   // Handle Save (Update) function
-  const handleSave = async (rowId) => {
+  const handleSave = async (barcode_id) => {
     try {
-      const response = await axios.put(`http://localhost:8000/table/data/${rowId}`, formData);
+      const response = await axios.put(`http://localhost:8000/update/${tableName}/${barcode_id}`, formData);
       setData(data.map((row, index) => (index === editRowIndex ? response.data : row)));
       setFilteredData(filteredData.map((row, index) => (index === editRowIndex ? response.data : row))); // Update filtered data as well
       setEditRowIndex(null); // Bearbeitungsmodus beenden

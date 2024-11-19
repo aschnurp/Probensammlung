@@ -3,7 +3,7 @@ from .database import get_db, engine
 from sqlalchemy.orm import Session
 from .models import gewebeproben, serumproben, urinproben, patient, paraffinproben
 from .config import settings
-from .routers import tables, number_entrys, post_routers
+from .routers import tables, number_entrys, post_routers, put_routers
 from fastapi.middleware.cors import CORSMiddleware
 
 
@@ -30,6 +30,7 @@ patient.Base.metadata.create_all(bind=engine)
 app.include_router(tables.router)
 app.include_router(post_routers.router)
 app.include_router(number_entrys.router)
+app.include_router(put_routers.router)
 
 
 

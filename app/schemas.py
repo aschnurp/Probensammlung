@@ -45,7 +45,6 @@ class TableDataGewebeprobenOUT(BaseModel):
     probenart: str	
     barcode_id: str 	
     lagerraum: str
-    created_at: str
     abholer: str
     uhrzeit: str
     boxnummer: int
@@ -66,7 +65,6 @@ class TableDataUrinprobenOUT(BaseModel):
     probenart: str	
     barcode_id: str 	
     lagerraum: str
-    created_at: str
     boxnummer: int
     boxzeile: int
     boxspalte: int
@@ -79,8 +77,8 @@ class TableDataParaffinprobenIN(BaseModel):
 
 
 class TableDataParaffinprobenOUT(BaseModel):
+    id: int
     patient_Id_intern: str
-    created_at: str
     probenart: str			
     lagerraum: str
     anmerkungen: str	
@@ -97,7 +95,6 @@ class TableDatapatientOUT(BaseModel):
     alter: int
     op_diagnose: str
     sap_id: int
-    created_at: str
     bemerkung: str
 
 
