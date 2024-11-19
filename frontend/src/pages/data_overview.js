@@ -2,7 +2,7 @@ import { gewebeprobenDataColumns } from '../types/gewebeprobenColumns';
 import { patientDataColumns } from '../types/patientColumns';
 import { serumprobenDataColumns } from '../types/serumprobenColumns';
 import { urinprobenDataColumns } from '../types/urinprobenColumns';
-import { parffinprobenDataColumns } from '../types/paraffinprobenColumns';
+import { paraffinprobenDataColumns } from '../types/paraffinprobenColumns';
 import axios from 'axios';
 import React, { useState, useEffect, useRef } from 'react';
 
@@ -12,7 +12,7 @@ const TABLE_COLUMNS = {
   gewebeproben: gewebeprobenDataColumns,
   serumproben: serumprobenDataColumns,
   urinproben: urinprobenDataColumns,
-  paraffinproben: parffinprobenDataColumns
+  paraffinproben: paraffinprobenDataColumns,
 };
 
 export default function Uebersicht() {
