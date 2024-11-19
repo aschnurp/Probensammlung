@@ -10,7 +10,7 @@ class Patient(Base):
     __tablename__ = "patient"
     sap_id = Column(Integer)
     patient_Id_intern = Column(VARCHAR(200), primary_key = True, nullable = False)
-    created_at = Column(TIMESTAMP(timezone=True), nullable=False, server_default=text("now()"))
+    created_at = Column(DATE)	
     geschlecht = Column(TEXT)
     alter = Column(Integer)
     op_diagnose = Column(TEXT)

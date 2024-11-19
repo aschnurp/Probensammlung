@@ -10,7 +10,7 @@ class Serumproben(Base):
     __tablename__ = "serumproben"
     barcode_id = Column(VARCHAR(200), primary_key= True, nullable=False)	
     patient_Id_intern = Column(VARCHAR(200), ForeignKey("patient.patient_Id_intern"))
-    created_at = Column(TIMESTAMP(timezone=True), nullable=False, server_default=text("now()"))	
+    created_at = Column(DATE)		
     probenart = Column(TEXT)	
     boxnummer = Column(Integer) 
     boxzeile = Column(Integer) 
