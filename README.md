@@ -13,7 +13,7 @@ _npm run dev_
 // do not forget to locate the correct frontend folder first //
 
 ## Features
-- saving data in a comprehensive database with clinial backgound
+- saving data in a comprehensive database with clinial background
 - data validation rules that ensures data integrity
 - locally database access
 
