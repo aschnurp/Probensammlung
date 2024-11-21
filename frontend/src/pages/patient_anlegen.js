@@ -6,12 +6,12 @@ import { Box, TextField, Radio, RadioGroup,FormControl ,FormLabel, FormControlLa
 export default function PatientForm() {
   const [formData, setFormData] = useState({
     patient_Id_intern: '',
-    gender: '',
-    age: '',
+    geschlecht: '',
+    alter: '',
     sap_id: '',
-    diagnosis: '',
+    op_diagnose: '',
     plannedSurgery: '',
-    remarks: '',
+    bemerkung: '',
     created_at: '',
   });
 

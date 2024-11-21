@@ -8,7 +8,8 @@ from sqlalchemy.sql.expression import text
 
 class Serumproben(Base):
     __tablename__ = "serumproben"
-    barcode_id = Column(VARCHAR(200), primary_key= True, nullable=False)	
+    barcode_id = Column(VARCHAR(200), primary_key= True, nullable=False)
+    timestamp = Column(TIMESTAMP(timezone=True), nullable=False, server_default=text("now()"))	
     patient_Id_intern = Column(VARCHAR(200), ForeignKey("patient.patient_Id_intern"))
     created_at = Column(DATE)		
     probenart = Column(TEXT)	

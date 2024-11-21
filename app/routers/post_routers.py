@@ -18,8 +18,8 @@ router = APIRouter(
 )
 
 #router for new serum entry
-@router.post("/serum", status_code=status.HTTP_201_CREATED, response_model= schemas.TableDataSerumprobenIN)
-def create_serumproben(post: schemas.TableDataSerumprobenOUT, db: Session = Depends(get_db)):
+@router.post("/serum", status_code=status.HTTP_201_CREATED, response_model= schemas.TableDataSerumproben)
+def create_serumproben(post: schemas.TableDataSerumproben, db: Session = Depends(get_db)):
     new_item = Serumproben(**post.dict())
     existing_item = db.query(Serumproben).filter(Serumproben.barcode_id == post.barcode_id).first()
     if existing_item:
@@ -31,8 +31,8 @@ def create_serumproben(post: schemas.TableDataSerumprobenOUT, db: Session = Depe
 
 
 #router for new gewebe entry
-@router.post("/gewebe", status_code=status.HTTP_201_CREATED, response_model= schemas.TableDataGewebeprobenIN)
-def create_gewebeproben(post: schemas.TableDataGewebeprobenOUT, db: Session = Depends(get_db)):
+@router.post("/gewebe", status_code=status.HTTP_201_CREATED, response_model= schemas.TableDataGewebeproben)
+def create_gewebeproben(post: schemas.TableDataGewebeproben, db: Session = Depends(get_db)):
     new_item = Gewebeproben(**post.dict())
     existing_item = db.query(Gewebeproben).filter(Gewebeproben.barcode_id == post.barcode_id).first()
     if existing_item:
@@ -44,8 +44,8 @@ def create_gewebeproben(post: schemas.TableDataGewebeprobenOUT, db: Session = De
 
 
 #router for new urin entry
-@router.post("/urin", status_code=status.HTTP_201_CREATED, response_model= schemas.TableDataUrinprobenIN)
-def create_urinproben(post: schemas.TableDataUrinprobenOUT, db: Session = Depends(get_db)):
+@router.post("/urin", status_code=status.HTTP_201_CREATED, response_model= schemas.TableDataUrinproben)
+def create_urinproben(post: schemas.TableDataUrinproben, db: Session = Depends(get_db)):
     new_item = Urinproben(**post.dict())
     existing_item = db.query(Urinproben).filter(Urinproben.barcode_id == post.barcode_id).first()
     if existing_item:
@@ -57,8 +57,8 @@ def create_urinproben(post: schemas.TableDataUrinprobenOUT, db: Session = Depend
 
 
 #router for new paraffin entry
-@router.post("/paraffin", status_code=status.HTTP_201_CREATED, response_model= schemas.TableDataParaffinprobenIN)
-def create_paraffinproben(post: schemas.TableDataParaffinprobenOUT, db: Session = Depends(get_db)):
+@router.post("/paraffin", status_code=status.HTTP_201_CREATED, response_model= schemas.TableDataParaffinproben)
+def create_paraffinproben(post: schemas.TableDataParaffinproben, db: Session = Depends(get_db)):
     new_item = Paraffinproben(**post.dict())
     db.add(new_item)
     db.commit()
@@ -67,8 +67,8 @@ def create_paraffinproben(post: schemas.TableDataParaffinprobenOUT, db: Session 
 
 
 #router for new patient entry
-@router.post("/patient", status_code=status.HTTP_201_CREATED, response_model= schemas.TableDatapatientIN)
-def create_patient(post: schemas.TableDatapatientOUT, db: Session = Depends(get_db)):
+@router.post("/patient", status_code=status.HTTP_201_CREATED, response_model= schemas.TableDatapatient)
+def create_patient(post: schemas.TableDatapatient, db: Session = Depends(get_db)):
     new_item = Patient(**post.dict())
     existing_item = db.query(Patient).filter(Patient.patient_Id_intern == post.patient_Id_intern).first()
     if existing_item:
