@@ -29,16 +29,23 @@ export default function ProbeWiedereinschleusen() {
 
   return (
     <Box sx={{ p: 3, maxWidth: 600, mx: 'auto' }}>
-      <Box         
-      sx={{
+
+      <Box sx={{ position: 'absolute', top: 90, left: 16 }}>
+        <Button variant="contained" color="info" onClick={() => window.location.href = '/overview'}>
+          Zur Übersicht
+        </Button>
+      </Box>
+      
+      <Box
+        sx={{
           textAlign: 'center',
           mt: 4,
           mb: 2,
         }}
-        >
+      >
         <Typography variant="h5" sx={{ fontWeight: 'bold', color: 'text.primary' }}>
-        Proben erneut Einschleusen
-      </Typography>
+          Proben erneut Einschleusen
+        </Typography>
       </Box>
       <TextField
         label="Scannerfeld für Barcode ID"
