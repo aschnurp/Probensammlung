@@ -93,7 +93,6 @@ export default function SampleForm() {
       filteredData.size = formData.size;
       filteredData.remarks = formData.remarks;
 
-
     } else if (formData.probenart === 'serum') {
       filteredData.patient_Id_intern = formData.patient_Id_intern;
       filteredData.barcode_id = formData.barcode_id;
@@ -104,6 +103,7 @@ export default function SampleForm() {
       filteredData.boxspalte = formData.boxspalte;
       filteredData.anmerkungen = formData.anmerkungen;
       filteredData.created_at = formData.created_at;
+
     } else if (formData.probenart === 'urin') {
       filteredData.patient_Id_intern = formData.patient_Id_intern;
       filteredData.probenart= formData.probenart;
@@ -241,6 +241,7 @@ export default function SampleForm() {
          <TextField
             label="Boxnummer"
             name="boxnummer"
+            type="number"
             value={formData.boxnummer}
             onChange={handleChange}
             fullWidth
@@ -249,6 +250,7 @@ export default function SampleForm() {
            <TextField
             label="Boxzeile"
             name="boxzeile"
+            type="number"
             value={formData.boxzeile}
             onChange={handleChange}
             fullWidth
@@ -257,6 +259,7 @@ export default function SampleForm() {
            <TextField
             label="Boxspalte"
             name="boxspalte"
+            type="number"
             value={formData.boxspalte}
             onChange={handleChange}
             fullWidth
@@ -318,6 +321,7 @@ export default function SampleForm() {
            <TextField
             label="Boxnummer"
             name="boxnummer"
+            type="number"
             value={formData.boxnummer}
             onChange={handleChange}
             fullWidth
@@ -326,6 +330,7 @@ export default function SampleForm() {
            <TextField
             label="Boxzeile"
             name="boxzeile"
+            type="number"
             value={formData.boxzeile}
             onChange={handleChange}
             fullWidth
@@ -334,6 +339,7 @@ export default function SampleForm() {
            <TextField
             label="Boxspalte"
             name="boxspalte"
+            type="number"
             value={formData.boxspalte}
             onChange={handleChange}
             fullWidth
@@ -384,6 +390,7 @@ export default function SampleForm() {
          <TextField
             label="Boxnummer"
             name="boxnummer"
+            type="number"
             value={formData.boxnummer}
             onChange={handleChange}
             fullWidth
@@ -392,6 +399,7 @@ export default function SampleForm() {
            <TextField
             label="Boxzeile"
             name="boxzeile"
+            type="number"
             value={formData.boxzeile}
             onChange={handleChange}
             fullWidth
@@ -400,6 +408,7 @@ export default function SampleForm() {
            <TextField
             label="Boxspalte"
             name="boxspalte"
+            type="number"
             value={formData.boxspalte}
             onChange={handleChange}
             fullWidth

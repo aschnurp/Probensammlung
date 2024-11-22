@@ -97,6 +97,7 @@ export default function PatientForm() {
       <TextField
         label="Alter"
         name="alter"
+        type="number"
         value={formData.alter}
         onChange={handleChange}
         fullWidth
@@ -105,6 +106,7 @@ export default function PatientForm() {
       <TextField
         label="Pat. ID im SAP"
         name="sap_id"
+        type="number"
         value={formData.sap_id}
         onChange={handleChange}
         fullWidth
