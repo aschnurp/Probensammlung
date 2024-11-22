@@ -372,6 +372,7 @@ export default function SampleForm() {
           <TextField
             label="Boxnummer"
             name="boxnummer"
+            type="number"
             value={formData.boxnummer}
             onChange={handleChange}
             fullWidth
@@ -384,6 +385,7 @@ export default function SampleForm() {
           <TextField
             label="Boxzeile"
             name="boxzeile"
+            type="number"
             value={formData.boxzeile}
             onChange={handleChange}
             fullWidth
@@ -396,6 +398,7 @@ export default function SampleForm() {
           <TextField
             label="Boxspalte"
             name="boxspalte"
+            type="number"
             value={formData.boxspalte}
             onChange={handleChange}
             fullWidth
@@ -481,6 +484,7 @@ export default function SampleForm() {
           <TextField
             label="Boxnummer"
             name="boxnummer"
+            type="number"
             value={formData.boxnummer}
             onChange={handleChange}
             fullWidth
@@ -493,6 +497,7 @@ export default function SampleForm() {
           <TextField
             label="Boxzeile"
             name="boxzeile"
+            type="number"
             value={formData.boxzeile}
             onChange={handleChange}
             fullWidth
@@ -505,6 +510,7 @@ export default function SampleForm() {
           <TextField
             label="Boxspalte"
             name="boxspalte"
+            type="number"
             value={formData.boxspalte}
             onChange={handleChange}
             fullWidth
@@ -575,6 +581,7 @@ export default function SampleForm() {
           <TextField
             label="Boxnummer"
             name="boxnummer"
+            type="number"
             value={formData.boxnummer}
             onChange={handleChange}
             fullWidth
@@ -587,6 +594,7 @@ export default function SampleForm() {
           <TextField
             label="Boxzeile"
             name="boxzeile"
+            type="number"
             value={formData.boxzeile}
             onChange={handleChange}
             fullWidth
@@ -599,6 +607,7 @@ export default function SampleForm() {
           <TextField
             label="Boxspalte"
             name="boxspalte"
+            type="number"
             value={formData.boxspalte}
             onChange={handleChange}
             fullWidth

@@ -17,84 +17,58 @@ class TableDataIn(BaseModel):
 class TableDataIDIn(BaseModel):
     table_name: str
 
-class TableDataSerumprobenIN(BaseModel):
+class TableDataSerumproben(BaseModel):
+    patient_Id_intern: str
+    probenart: str	
+    barcode_id: str  	
+    lagerraum: Optional[str] = None
+    boxnummer: Optional[int] = None
+    boxzeile: Optional[int] = None
+    boxspalte: Optional[int] = None
+    anmerkungen: Optional[str] = None
+    created_at: Optional[str] = None
+
+class TableDataGewebeproben(BaseModel):
     patient_Id_intern: str
     probenart: str	
     barcode_id: str 	
-    lagerraum: str	
+    lagerraum: Optional[str] = None
+    abholer: Optional[str] = None
+    uhrzeit: Optional[str] = None
+    boxnummer: Optional[int] = None
+    boxzeile: Optional[int] = None
+    boxspalte: Optional[int] = None
+    anmerkungen: Optional[str] = None
+    remarks: Optional[str] = None
+    size: Optional[str] = None
+    created_at: Optional[str] = None
 
-class TableDataSerumprobenOUT(BaseModel):
+class TableDataUrinproben(BaseModel):
     patient_Id_intern: str
     probenart: str	
     barcode_id: str 	
-    lagerraum: str
-    boxnummer: int
-    boxzeile: int
-    boxspalte: int
-    anmerkungen: str
+    lagerraum: Optional[str] = None
+    boxnummer: Optional[int] = None
+    boxzeile: Optional[int] = None
+    boxspalte: Optional[int] = None
+    anmerkungen: Optional[str] = None
+    created_at: Optional[str] = None
 
-
-class TableDataGewebeprobenIN(BaseModel):
-    patient_Id_intern: str
-    probenart: str	
-    barcode_id: str 	
-    lagerraum: str
-
-class TableDataGewebeprobenOUT(BaseModel):
-    patient_Id_intern: str
-    probenart: str	
-    barcode_id: str 	
-    lagerraum: str
-    abholer: str
-    uhrzeit: str
-    boxnummer: int
-    boxzeile: int
-    boxspalte: int
-    anmerkungen: str
-    remarks: str
-    size: str
-
-class TableDataUrinprobenIN(BaseModel):
-    patient_Id_intern: str
-    probenart: str	
-    barcode_id: str 	
-    lagerraum: str
-
-class TableDataUrinprobenOUT(BaseModel):
-    patient_Id_intern: str
-    probenart: str	
-    barcode_id: str 	
-    lagerraum: str
-    boxnummer: int
-    boxzeile: int
-    boxspalte: int
-    anmerkungen: str
-
-class TableDataParaffinprobenIN(BaseModel):
+class TableDataParaffinproben(BaseModel):
+    id: Optional[int] = None
     patient_Id_intern: str
     probenart: str			
-    lagerraum: str	
+    lagerraum: Optional[str] = None
+    anmerkungen: Optional[str] = None
+    created_at: Optional[str] = None	
 
-
-class TableDataParaffinprobenOUT(BaseModel):
-    id: int
+class TableDatapatient(BaseModel):
     patient_Id_intern: str
-    probenart: str			
-    lagerraum: str
-    anmerkungen: str	
-
-class TableDatapatientIN(BaseModel):
-    patient_Id_intern: str
-    geschlecht: str
-    alter: int
-    op_diagnose: str
-
-class TableDatapatientOUT(BaseModel):
-    patient_Id_intern: str
-    geschlecht: str
-    alter: int
-    op_diagnose: str
-    sap_id: int
-    bemerkung: str
+    geschlecht: Optional[str] = None
+    alter: Optional[int] = None
+    op_diagnose: Optional[str] = None
+    sap_id: Optional[int] = None
+    bemerkung: Optional[str] = None
+    created_at: Optional[str] = None
 
 

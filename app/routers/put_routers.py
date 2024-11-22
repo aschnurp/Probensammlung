@@ -18,8 +18,8 @@ router = APIRouter(
 )
 
 #router for new serum entry
-@router.put("/serum", status_code=status.HTTP_201_CREATED, response_model= schemas.TableDataSerumprobenOUT)
-def update_serumproben(updated_post: schemas.TableDataSerumprobenOUT, db: Session = Depends(get_db)):
+@router.put("/serum", status_code=status.HTTP_201_CREATED, response_model= schemas.TableDataSerumproben)
+def update_serumproben(updated_post: schemas.TableDataSerumproben, db: Session = Depends(get_db)):
     existing_item = db.query(Serumproben).filter(Serumproben.barcode_id == updated_post.barcode_id)
     if existing_item == None:
         raise HTTPException(status_code= status.HTTP_403_FORBIDDEN, detail= f"entery with barcode_id: {updated_post.barcode_id} does not exist") 
@@ -28,8 +28,8 @@ def update_serumproben(updated_post: schemas.TableDataSerumprobenOUT, db: Sessio
     return existing_item.first()
 
 #router for new gewebe entry
-@router.put("/gewebe", status_code=status.HTTP_201_CREATED, response_model= schemas.TableDataGewebeprobenOUT)
-def update_gewebeproben(updated_post: schemas.TableDataGewebeprobenOUT, db: Session = Depends(get_db)):
+@router.put("/gewebe", status_code=status.HTTP_201_CREATED, response_model= schemas.TableDataGewebeproben)
+def update_gewebeproben(updated_post: schemas.TableDataGewebeproben, db: Session = Depends(get_db)):
     existing_item = db.query(Gewebeproben).filter(Gewebeproben.barcode_id == updated_post.barcode_id)
     if existing_item == None:
         raise HTTPException(status_code= status.HTTP_403_FORBIDDEN, detail= f"entery with barcode_id: {updated_post.barcode_id} does not exist") 
@@ -38,8 +38,8 @@ def update_gewebeproben(updated_post: schemas.TableDataGewebeprobenOUT, db: Sess
     return existing_item.first()
 
 #router for new urin entry
-@router.put("/urin", status_code=status.HTTP_201_CREATED, response_model= schemas.TableDataUrinprobenOUT)
-def update_gewebeproben(updated_post: schemas.TableDataUrinprobenOUT, db: Session = Depends(get_db)):
+@router.put("/urin", status_code=status.HTTP_201_CREATED, response_model= schemas.TableDataUrinproben)
+def update_gewebeproben(updated_post: schemas.TableDataUrinproben, db: Session = Depends(get_db)):
     existing_item = db.query(Urinproben).filter(Urinproben.barcode_id == updated_post.barcode_id)
     if existing_item == None:
         raise HTTPException(status_code= status.HTTP_403_FORBIDDEN, detail= f"entery with barcode_id: {updated_post.barcode_id} does not exist") 
@@ -48,8 +48,8 @@ def update_gewebeproben(updated_post: schemas.TableDataUrinprobenOUT, db: Sessio
     return existing_item.first()
 
 #router for new paraffin entry
-@router.put("/paraffin", status_code=status.HTTP_201_CREATED, response_model= schemas.TableDataParaffinprobenOUT)
-def update_paraffinproben(updated_post: schemas.TableDataParaffinprobenOUT, db: Session = Depends(get_db)):
+@router.put("/paraffin", status_code=status.HTTP_201_CREATED, response_model= schemas.TableDataParaffinproben)
+def update_paraffinproben(updated_post: schemas.TableDataParaffinproben, db: Session = Depends(get_db)):
     existing_item = db.query(Paraffinproben).filter(Paraffinproben.id == updated_post.id)
     if existing_item == None:
         raise HTTPException(status_code= status.HTTP_403_FORBIDDEN, detail= f"entery with barcode_id: {updated_post.id} does not exist") 
@@ -59,8 +59,8 @@ def update_paraffinproben(updated_post: schemas.TableDataParaffinprobenOUT, db: 
 
 
 #router for new gewebe entry
-@router.put("/patient", status_code=status.HTTP_201_CREATED, response_model= schemas.TableDatapatientOUT)
-def update_patient(updated_post: schemas.TableDatapatientOUT, db: Session = Depends(get_db)):
+@router.put("/patient", status_code=status.HTTP_201_CREATED, response_model= schemas.TableDatapatient)
+def update_patient(updated_post: schemas.TableDatapatient, db: Session = Depends(get_db)):
     existing_item = db.query(Patient).filter(Patient.patient_Id_intern == updated_post.patient_Id_intern)
     if existing_item == None:
         raise HTTPException(status_code= status.HTTP_403_FORBIDDEN, detail= f"entery with barcode_id: {updated_post.patient_Id_intern} does not exist") 
