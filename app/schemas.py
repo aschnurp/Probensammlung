@@ -26,6 +26,7 @@ class TableDataSerumproben(BaseModel):
     boxzeile: Optional[int] = None
     boxspalte: Optional[int] = None
     anmerkungen: Optional[str] = None
+    created_at: Optional[str] = None
 
 class TableDataGewebeproben(BaseModel):
     patient_Id_intern: str
@@ -40,6 +41,7 @@ class TableDataGewebeproben(BaseModel):
     anmerkungen: Optional[str] = None
     remarks: Optional[str] = None
     size: Optional[str] = None
+    created_at: Optional[str] = None
 
 class TableDataUrinproben(BaseModel):
     patient_Id_intern: str
@@ -50,13 +52,15 @@ class TableDataUrinproben(BaseModel):
     boxzeile: Optional[int] = None
     boxspalte: Optional[int] = None
     anmerkungen: Optional[str] = None
+    created_at: Optional[str] = None
 
 class TableDataParaffinproben(BaseModel):
     id: Optional[int] = None
     patient_Id_intern: str
     probenart: str			
     lagerraum: Optional[str] = None
-    anmerkungen: Optional[str] = None	
+    anmerkungen: Optional[str] = None
+    created_at: Optional[str] = None	
 
 class TableDatapatient(BaseModel):
     patient_Id_intern: str
@@ -65,5 +69,6 @@ class TableDatapatient(BaseModel):
     op_diagnose: Optional[str] = None
     sap_id: Optional[int] = None
     bemerkung: Optional[str] = None
+    created_at: Optional[str] = None
 
 
