@@ -28,6 +28,9 @@ export default function Uebersicht() {
   const [selectedColumn, setSelectedColumn] = useState(""); // Selected column for search filter
   const dropdownRef = useRef(null);
 
+  const tableScrollRef = useRef(null);
+
+
   const toggleDropdown = () => setIsOpen(!isOpen);
 
   const handleTable = async (e) => {
@@ -67,7 +70,7 @@ export default function Uebersicht() {
         if (selectedColumn && row[selectedColumn]) {
           return row[selectedColumn].toString().toLowerCase().includes(lowercasedQuery);
         }
-        return Object.keys(row).some((key) => 
+        return Object.keys(row).some((key) =>
           row[key] && row[key].toString().toLowerCase().includes(lowercasedQuery)
         );
       });
@@ -135,6 +138,21 @@ export default function Uebersicht() {
     }
   };
 
+
+  // Table horizontal Scroll logic
+  const scrollLeft = () => {
+    if (tableScrollRef.current) {
+      tableScrollRef.current.scrollBy({ left: -100, behavior: 'smooth' });
+    }
+  };
+
+  const scrollRight = () => {
+    if (tableScrollRef.current) {
+      tableScrollRef.current.scrollBy({ left: 100, behavior: 'smooth' });
+    }
+  };
+
+
   const renderTable = () => {
     const columns = TABLE_COLUMNS[selectedTable];
 
@@ -143,8 +161,16 @@ export default function Uebersicht() {
 
     return (
       <div className="flex justify-center items-center mt-12">
-        <div className="w-full h-[700px] overflow-y-auto">
-          <table className="min-w-full divide-y divide-gray-200">
+
+        {/* Left Scroll Button */}
+        <button
+          onClick={scrollLeft}
+          className="absolute left-0 top-1/2 transform -translate-y-1/2 bg-gray-200 p-2 rounded-full shadow-md hover:bg-gray-300"
+        >
+          ←
+        </button>
+        <div className="w-full h-[700px] overflow-y-auto" ref={tableScrollRef}>
+          <table className="min-w-full divide-y divide-gray-200" >
             <thead className="bg-gray-100 sticky top-0 z-10">
               <tr>
                 {columns.map(col => (
@@ -206,6 +232,13 @@ export default function Uebersicht() {
             </tbody>
           </table>
         </div>
+        {/* Right Scroll Button */}
+        <button
+          onClick={scrollRight}
+          className="absolute right-0 top-1/2 transform -translate-y-1/2 bg-gray-200 p-2 rounded-full shadow-md hover:bg-gray-300"
+        >
+          →
+        </button>
       </div>
     );
   };
