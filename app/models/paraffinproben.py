@@ -15,4 +15,5 @@ class Paraffinproben(Base):
     probenart = Column(TEXT)
     lagerraum = Column(TEXT) 	
     anmerkungen = Column(TEXT)
+    status = Column(TINYINT, ForeignKey("status.id"))
 

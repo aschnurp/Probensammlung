@@ -32,7 +32,7 @@ export default function ProbeAusschleusen() {
         <Button variant="contained" color="info" onClick={() => window.location.href = '/overview'}>
           Zur Übersicht
         </Button>
-      </Box>Í
+      </Box>
       <Box
         sx={{
           textAlign: 'center',

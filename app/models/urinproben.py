@@ -18,3 +18,4 @@ class Urinproben(Base):
     boxspalte = Column(Integer) 	
     lagerraum = Column(TEXT)
     anmerkungen = Column(TEXT)
+    status = Column(TINYINT, ForeignKey("status.id"))

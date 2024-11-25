@@ -22,4 +22,5 @@ class Gewebeproben(Base):
     anmerkungen = Column(TEXT)
     remarks = Column(TEXT)
     size = Column(TEXT)
+    status = Column(TINYINT, ForeignKey("status.id"))
 
