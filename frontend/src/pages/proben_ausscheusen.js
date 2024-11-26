@@ -2,6 +2,8 @@
 
 import React, { useState } from 'react';
 import { Box, TextField, Button, Typography } from '@mui/material';
+import { IoMdArrowRoundBack } from "react-icons/io";
+
 
 export default function ProbeAusschleusen() {
   const [barcodeId, setBarcodeId] = useState('');
@@ -12,7 +14,7 @@ export default function ProbeAusschleusen() {
     setBarcodeId(e.target.value);
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = () => {З
     // Simulate scanning logic
     if (barcodeId) {
       const existingProbe = probeData.find(probe => probe.barcodeId === barcodeId);
@@ -29,10 +31,10 @@ export default function ProbeAusschleusen() {
   return (
     <Box sx={{ p: 3, maxWidth: 600, mx: 'auto' }}>
       <Box sx={{ position: 'absolute', top: 90, left: 16 }}>
-        <Button variant="contained" color="info" onClick={() => window.location.href = '/overview'}>
-          Zur Übersicht
+        <Button variant="contained" color="primary" onClick={() => window.location.href = '/overview'}>
+          <IoMdArrowRoundBack className='text-2xl'/>
         </Button>
-      </Box>Í
+      </Box>
       <Box
         sx={{
           textAlign: 'center',

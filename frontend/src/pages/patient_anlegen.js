@@ -14,6 +14,8 @@ import {
   Snackbar,
   Alert,
 } from '@mui/material';
+import { IoMdArrowRoundBack } from "react-icons/io";
+
 
 export default function PatientForm() {
   // Corrected initial state keys to match input field names
@@ -192,11 +194,11 @@ export default function PatientForm() {
     <Box sx={{ p: 3, maxWidth: 600, mx: 'auto' }}>
 
       <Box sx={{ position: 'absolute', top: 90, left: 16 }}>
-        <Button variant="contained" color="info" onClick={() => window.location.href = '/overview'}>
-          Zur Übersicht
+        <Button variant="contained" color="primary" onClick={() => window.location.href = '/overview'}>
+          <IoMdArrowRoundBack className='text-2xl' />
         </Button>
       </Box>
-      
+
       <Box
         sx={{
           textAlign: 'center',
