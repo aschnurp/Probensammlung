@@ -109,3 +109,12 @@ class TableDatapatient(BaseModel):
     created_at: Optional[str] = None
 
 
+
+
+class LastBoxInfo(BaseModel):
+    boxnummer: int
+    boxzeile: int
+    boxspalte: int
+
+    class Config:
+        orm_mode = True

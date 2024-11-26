@@ -56,6 +56,7 @@ export default function Uebersicht() {
     try {
       const response = await axios.get(`http://localhost:8000/table/data?table_name=${tableName}`);
       setData(response.data);
+      console.log('here the data of the selected table',response.data);
       setFilteredData(response.data); // Initialize filtered data with fetched data
     } catch (error) {
       setError('Failed to fetch data');
