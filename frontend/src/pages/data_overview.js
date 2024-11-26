@@ -15,6 +15,13 @@ const TABLE_COLUMNS = {
   paraffinproben: paraffinprobenDataColumns,
 };
 
+// definition für probenstatus mapping
+const STATUS_MAPPING = {
+  1: "eingescheust",
+  2: "ausheschleust",
+  3: "wiedereingeschleust",
+}
+
 export default function Uebersicht() {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedTable, setSelectedTable] = useState(null);
@@ -186,16 +193,21 @@ export default function Uebersicht() {
                 <tr key={rowIndex}>
                   {columns.map(col => (
                     <td key={col.key} className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                      {editRowIndex === rowIndex ? (
-                        <input
-                          value={formData[col.key] || ''}
-                          onChange={(e) => setFormData({ ...formData, [col.key]: e.target.value })}
-                          className="border border-gray-300 px-2 py-1"
-                        />
-                      ) : (
-                        row[col.key] !== null ? row[col.key] : 'N/A'
-                      )}
-                    </td>
+                    {editRowIndex === rowIndex ? (
+                      <input
+                        value={formData[col.key] || ''}
+                        onChange={(e) => setFormData({ ...formData, [col.key]: e.target.value })}
+                        className="border border-gray-300 px-2 py-1"
+                      />
+                    ) : (
+                      // Überprüfe, ob die Spalte ein Statuswert ist, und mappe den Wert
+                      col.key === "status" && row[col.key] in STATUS_MAPPING
+                        ? STATUS_MAPPING[row[col.key]]
+                        : row[col.key] !== null
+                        ? row[col.key]
+                        : 'N/A'
+                    )}
+                  </td>
                   ))}
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                     {editRowIndex === rowIndex ? (

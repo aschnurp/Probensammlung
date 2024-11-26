@@ -17,7 +17,7 @@ class TableDataIn(BaseModel):
 class TableDataIDIn(BaseModel):
     table_name: str
 
-class TableDataSerumproben(BaseModel):
+class SerumprobenBase(BaseModel):
     patient_Id_intern: str
     probenart: str	
     barcode_id: str  	
@@ -28,7 +28,16 @@ class TableDataSerumproben(BaseModel):
     anmerkungen: Optional[str] = None
     created_at: Optional[str] = None
 
-class TableDataGewebeproben(BaseModel):
+class TableDataSerumproben(SerumprobenBase):
+    status: Optional[int] = 1
+
+class TableDataSerumproben_Ausgeschleust(BaseModel):
+    status: Optional[int] = 2
+
+class TableDataSerumproben_Wiedereingeschleust(BaseModel):
+    status: Optional[int] = 3
+
+class GewebeprobenBase(BaseModel):
     patient_Id_intern: str
     probenart: str	
     barcode_id: str 	
@@ -43,7 +52,16 @@ class TableDataGewebeproben(BaseModel):
     size: Optional[str] = None
     created_at: Optional[str] = None
 
-class TableDataUrinproben(BaseModel):
+class TableDataGewebeproben(GewebeprobenBase):
+    status: Optional[int] = 1
+
+class TableDataGewebeproben_Ausgeschleust(BaseModel):
+    status: Optional[int] = 2
+
+class TableDataGewebeproben_Wiedereingeschleust(BaseModel):
+    status: Optional[int] = 3
+
+class UrinprobenBase(BaseModel):
     patient_Id_intern: str
     probenart: str	
     barcode_id: str 	
@@ -54,13 +72,32 @@ class TableDataUrinproben(BaseModel):
     anmerkungen: Optional[str] = None
     created_at: Optional[str] = None
 
+class TableDataUrinproben(UrinprobenBase):
+    status: Optional[int] = 1
+
+class TableDataUrinproben_Ausgeschleust(BaseModel):
+    status: Optional[int] = 2
+
+class TableDataUrinproben_Wiedereingeschleust(BaseModel):
+    status: Optional[int] = 3
+
+
 class TableDataParaffinproben(BaseModel):
     id: Optional[int] = None
     patient_Id_intern: str
     probenart: str			
     lagerraum: Optional[str] = None
     anmerkungen: Optional[str] = None
-    created_at: Optional[str] = None	
+    created_at: Optional[str] = None
+
+class TableDataParaffinproben(TableDataParaffinproben):
+    status: Optional[int] = 1
+
+class TableDataParaffinproben_Ausgeschleust(BaseModel):
+    status: Optional[int] = 2
+
+class TableDataParaffinproben_Wiedereingeschleust(BaseModel):
+    status: Optional[int] = 3
 
 class TableDatapatient(BaseModel):
     patient_Id_intern: str
