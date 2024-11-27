@@ -5,6 +5,19 @@ import { urinprobenDataColumns } from '../types/urinprobenColumns';
 import { paraffinprobenDataColumns } from '../types/paraffinprobenColumns';
 import axios from 'axios';
 import React, { useState, useEffect, useRef } from 'react';
+import {
+  Box,
+  TextField,
+  Button,
+  Typography,
+  RadioGroup,
+  FormControl,
+  FormLabel,
+  FormControlLabel,
+  Radio,
+  Snackbar,
+  Alert,
+} from '@mui/material';
 
 // Mapping der Tabellen-Spalten für dynamisches Rendern
 const TABLE_COLUMNS = {
@@ -314,7 +327,17 @@ export default function Uebersicht() {
           />
         </div>
       )}
-
+      <Box
+        sx={{
+          textAlign: 'center',
+          mt: 5,
+          height: 10,
+        }}
+      >
+        <Typography variant="h5" sx={{ fontWeight: 'bold', color: 'text.primary' }}>
+        {selectedTable}
+        </Typography>
+      </Box>
       {renderTable()}
     </>
   );

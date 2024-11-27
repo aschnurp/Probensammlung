@@ -95,6 +95,7 @@ export default function Overview() {
           textAlign: 'center',
           mt: 4,
           mb: 2,
+          height: 0,
         }}
       >
         <Typography variant="h5" sx={{ fontWeight: 'bold', color: 'text.primary' }}>
@@ -189,6 +190,7 @@ export default function Overview() {
           textAlign: 'center',
           mt: 4,
           mb: 2,
+          height: 0,
         }}
       >
         <Typography variant="h5" sx={{ fontWeight: 'bold', color: 'text.primary' }}>
