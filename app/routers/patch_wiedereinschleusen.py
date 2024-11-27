@@ -10,8 +10,8 @@ from ..models.urinproben import Urinproben
 from ..models.paraffinproben import Paraffinproben
 
 router = APIRouter(
-    prefix="/wiedereingeschleust",
-    tags=['wiedereingeschleust']
+    prefix="/wiedereingeschleusen",
+    tags=['wiedereingeschleusen']
 )
 
 #router for new serum entry

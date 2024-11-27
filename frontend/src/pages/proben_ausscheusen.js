@@ -58,7 +58,7 @@ export default function ProbeAusschleusen() {
       console.log('Data submitted successfully:', response.data);
 
       // Show success snackbar notification
-      setSnackbarMessage('Probe Ausgeschleust!');
+      setSnackbarMessage(`Probe mit der Barcode Nummer ${barcodeId} erfolgreich Ausgeschleust!`);
       setSnackbarSeverity('success');
       setSnackbarOpen(true);
 
