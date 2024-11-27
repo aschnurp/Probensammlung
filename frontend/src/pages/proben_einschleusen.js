@@ -182,7 +182,7 @@ export default function SampleForm() {
         }
 
         const message =
-          `${'Backend-Fehler beim Senden der Daten.', error.response?.data?.detail} ${error.response?.data?.detail && error.response.data.detail.length > 0
+          `${'Fehler beim Senden der Daten.', error.response?.data?.detail} ${error.response?.data?.detail && error.response.data.detail.length > 0
             ? `: ${error.response.data.detail[0].msg}, ${error.response.data.detail[0].loc?.[1] || ''}`
             : ''
           }`;

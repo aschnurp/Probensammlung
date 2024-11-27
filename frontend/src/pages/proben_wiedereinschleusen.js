@@ -14,6 +14,12 @@ export default function ProbeWiedereinschleusen() {
     setBarcodeId(e.target.value);
   };
 
+
+
+
+
+
+  
   const handleSubmit = () => {
     if (barcodeId) {
       const existingProbe = usedProbes.find(probe => probe.barcodeId === barcodeId);
