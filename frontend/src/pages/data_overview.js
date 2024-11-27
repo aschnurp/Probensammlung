@@ -50,6 +50,25 @@ export default function Uebersicht() {
 
   const tableScrollRef = useRef(null);
 
+  const [Table_header, setTable_header] = useState(""); // Keep React state setter
+
+  useEffect(() => {
+    // Dynamically update Table_header whenever selectedTable changes
+    if (selectedTable === "urinproben") {
+      setTable_header("Urinproben");
+    } else if (selectedTable === "serumproben") {
+      setTable_header("Serumproben");
+    } else if (selectedTable === "gewebeproben") {
+      setTable_header("Gewebeproben");
+    } else if (selectedTable === "paraffinproben") {
+      setTable_header("Paraffinproben");
+    } else if (selectedTable === "patient") {
+      setTable_header("Patient");
+    } else {
+      setTable_header("");
+    }
+  }, [selectedTable]); // Dependency on selectedTable
+  
 
   const toggleDropdown = () => setIsOpen(!isOpen);
 
@@ -335,7 +354,7 @@ export default function Uebersicht() {
         }}
       >
         <Typography variant="h5" sx={{ fontWeight: 'bold', color: 'text.primary' }}>
-        {selectedTable}
+        {Table_header}
         </Typography>
       </Box>
       {renderTable()}
