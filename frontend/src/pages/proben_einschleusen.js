@@ -11,12 +11,12 @@ import {
   MenuItem,
   InputLabel,
   FormControl,
-  Snackbar, // Added
-  Alert,    // Added
+  Snackbar, 
+  Alert,    
 } from '@mui/material';
 import { IoMdArrowRoundBack } from "react-icons/io";
 import { suggestBoxData } from '../components/custom_functions/suggestBoxData';
-import dayjs from 'dayjs';  // If you're using a library for date manipulation (optional)
+import dayjs from 'dayjs'; 
 
 
 
@@ -250,8 +250,8 @@ export default function SampleForm() {
 
       if (error.response) {
         const message = error.response.data.detail
-          ? `Backend-Fehler: ${error.response.data.detail}`
-          : 'Backend-Fehler beim Senden der Daten.';
+          ? `Error: ${error.response.data.detail}`
+          : 'Fehler beim Senden der Daten.';
         setSnackbarMessage(message);
         setSnackbarSeverity('error');
       } else {
@@ -270,8 +270,6 @@ export default function SampleForm() {
     }
     setSnackbarOpen(false);
   };
-
-
 
 
   ///////////////////////////////////////////////////////////
