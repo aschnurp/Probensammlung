@@ -10,6 +10,7 @@ from app.seed import seed_status_data
 
 app = FastAPI()
 
+
 #origin list for websites
 origins = ["*"]
 
@@ -20,6 +21,8 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+
 
 #initalize database !order!
 status.Base.metadata.create_all(bind=engine)

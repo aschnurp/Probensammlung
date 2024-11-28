@@ -1,6 +1,6 @@
 // src/SampleForm.js
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import {
   Box,
@@ -15,6 +15,9 @@ import {
   Alert,    // Added
 } from '@mui/material';
 import { IoMdArrowRoundBack } from "react-icons/io";
+import { suggestBoxData } from '../components/custom_functions/suggestBoxData';
+import dayjs from 'dayjs';  // If you're using a library for date manipulation (optional)
+
 
 
 export default function SampleForm() {
@@ -46,8 +49,57 @@ export default function SampleForm() {
   const [snackbarMessage, setSnackbarMessage] = useState('');
   const [snackbarSeverity, setSnackbarSeverity] = useState('success'); // 'success' or 'error'
 
+  useEffect(() => {
+    if (formData.probenart) {
+      fetchAndSuggestBoxData(formData.probenart);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [formData.probenart]);
+
+
   ///////////////////////////////////////////////////////////
 
+  // implementing the Box data suggestion functionality
+  // Function to fetch and suggest box data
+  const fetchAndSuggestBoxData = async (probenart) => {
+    try {
+      // Map probenart to the corresponding table name
+      const tableName =
+        probenart === 'gewebe'
+          ? 'gewebeproben'
+          : probenart === 'serum'
+            ? 'serumproben'
+            : probenart === 'urin'
+              ? 'urinproben'
+              : null;
+
+      if (!tableName) return;
+
+      const suggestion = await suggestBoxData(tableName);
+
+      if (suggestion) {
+        setFormData((prevData) => ({
+          ...prevData,
+          boxnummer: suggestion.suggestedBoxnummer.toString(),
+          boxzeile: suggestion.suggestedBoxzeile.toString(),
+          boxspalte: suggestion.suggestedBoxspalte.toString(),
+        }));
+
+        if (suggestion.isNewBox) {
+          setSnackbarMessage(
+            `Die maximale Anzahl von Zeilen und Spalten wurde erreicht. Eine neue Box (Boxnummer: ${suggestion.suggestedBoxnummer}) wird verwendet.`
+          );
+          setSnackbarSeverity('info');
+          setSnackbarOpen(true);
+        }
+      }
+    } catch (error) {
+      console.error('Error suggesting box data:', error);
+      setSnackbarMessage('Fehler beim Vorschlagen der Boxdaten.');
+      setSnackbarSeverity('error');
+      setSnackbarOpen(true);
+    }
+  };
 
 
 
@@ -137,16 +189,21 @@ export default function SampleForm() {
 
     setErrors({});
 
+    // Format created_at as a string in YYYY-MM-DD
+    const formattedCreatedAt = formData.created_at
+      ? dayjs(formData.created_at).format('YYYY-MM-DD')
+      : '';
+
     const filteredData = {
       probenart: formData.probenart,
       barcode_id: formData.barcode_id,
       patient_Id_intern: formData.patient_Id_intern,
       lagerraum: formData.lagerraum,
-      boxnummer: formData.boxnummer,
-      boxzeile: formData.boxzeile,
-      boxspalte: formData.boxspalte,
+      boxnummer: parseInt(formData.boxnummer, 10),
+      boxzeile: parseInt(formData.boxzeile, 10),
+      boxspalte: parseInt(formData.boxspalte, 10),
       anmerkungen: formData.anmerkungen,
-      created_at: formData.created_at,
+      created_at: formattedCreatedAt,
       uhrzeit: formData.uhrzeit,
       sap_id: formData.sap_id,
       abholer: formData.abholer,
@@ -155,17 +212,33 @@ export default function SampleForm() {
     };
 
     try {
-      console.log('trying to submit data:', filteredData);
+      let endpoint = '';
+      switch (formData.probenart) {
+        case 'gewebe':
+          endpoint = 'gewebe';
+          break;
+        case 'serum':
+          endpoint = 'serum';
+          break;
+        case 'urin':
+          endpoint = 'urin';
+          break;
+        case 'paraffin':
+          endpoint = 'paraffin';
+          break;
+        default:
+          throw new Error('Ungültige Probenart ausgewählt.');
+      }
+
       const response = await axios.post(
-        `http://localhost:8000/new_data/${formData.probenart}`,
+        `http://localhost:8000/new_data/${endpoint}`,
         filteredData,
         {
           headers: { 'Content-Type': 'application/json' },
         }
       );
-      console.log('Data submitted successfully:', response.data);
 
-      // Show success toast notification
+      // Success notification
       setSnackbarMessage('Daten erfolgreich gesendet!');
       setSnackbarSeverity('success');
       setSnackbarOpen(true);
@@ -176,16 +249,9 @@ export default function SampleForm() {
       console.error('Error submitting data:', error);
 
       if (error.response) {
-        console.error('Response data:', error.response.data);
-        if (error.response.data.errors) {
-          setErrors(error.response.data.errors);
-        }
-
-        const message =
-          `${'Fehler beim Senden der Daten.', error.response?.data?.detail} ${error.response?.data?.detail && error.response.data.detail.length > 0
-            ? `: ${error.response.data.detail[0].msg}, ${error.response.data.detail[0].loc?.[1] || ''}`
-            : ''
-          }`;
+        const message = error.response.data.detail
+          ? `Backend-Fehler: ${error.response.data.detail}`
+          : 'Backend-Fehler beim Senden der Daten.';
         setSnackbarMessage(message);
         setSnackbarSeverity('error');
       } else {
@@ -217,7 +283,7 @@ export default function SampleForm() {
 
       <Box sx={{ position: 'absolute', top: 90, left: 16 }}>
         <Button variant="contained" color="primary" onClick={() => window.location.href = '/overview'}>
-          <IoMdArrowRoundBack className='text-2xl'/>
+          <IoMdArrowRoundBack className='text-2xl' />
         </Button>
       </Box>
 
