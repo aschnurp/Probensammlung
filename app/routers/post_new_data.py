@@ -20,15 +20,28 @@ router = APIRouter(
 )
 
 #router for new serum entry
-@router.post("/serum", status_code=status.HTTP_201_CREATED, response_model= schemas.TableDataSerumproben)
+# Example POST method for Serumproben
+@router.post("/serum", status_code=status.HTTP_201_CREATED, response_model=schemas.TableDataSerumproben)
 def create_serumproben(post: schemas.TableDataSerumproben, db: Session = Depends(get_db)):
-    new_item = Serumproben(**post.dict())
+    post_data = post.dict()
+    
+    # Ensure created_at is always stored as a string
+    if isinstance(post_data.get("created_at"), datetime):
+        post_data["created_at"] = post_data["created_at"].strftime('%Y-%m-%d %H:%M:%S')
+
+    new_item = Serumproben(**post_data)
     existing_item = db.query(Serumproben).filter(Serumproben.barcode_id == post.barcode_id).first()
     if existing_item:
-        raise HTTPException(status_code= status.HTTP_403_FORBIDDEN, detail= f"entery with barcode_id: {post.barcode_id} already exists") 
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail=f"Entry with barcode_id: {post.barcode_id} already exists")
+
     db.add(new_item)
     db.commit()
     db.refresh(new_item)
+
+    # Convert datetime fields to strings before returning
+    if isinstance(new_item.created_at, datetime):
+        new_item.created_at = new_item.created_at.strftime('%Y-%m-%d %H:%M:%S')
+
     return new_item
 
 
@@ -51,15 +64,30 @@ def create_gewebeproben(post: schemas.TableDataGewebeproben, db: Session = Depen
     return new_item
 
 #router for new urin entry
-@router.post("/urin", status_code=status.HTTP_201_CREATED, response_model= schemas.TableDataUrinproben)
+# Router for new urin entry
+@router.post("/urin", status_code=status.HTTP_201_CREATED, response_model=schemas.TableDataUrinproben)
 def create_urinproben(post: schemas.TableDataUrinproben, db: Session = Depends(get_db)):
-    new_item = Urinproben(**post.dict())
+    post_data = post.dict()
+
+    # Ensure created_at is always stored as a string
+    if isinstance(post_data.get("created_at"), datetime):
+        post_data["created_at"] = post_data["created_at"].strftime('%Y-%m-%d %H:%M:%S')
+
+    new_item = Urinproben(**post_data)
+
+    # Check if an entry with the same barcode_id already exists
     existing_item = db.query(Urinproben).filter(Urinproben.barcode_id == post.barcode_id).first()
     if existing_item:
-        raise HTTPException(status_code= status.HTTP_403_FORBIDDEN, detail= f"entery with barcode_id: {post.barcode_id} already exists") 
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail=f"entry with barcode_id: {post.barcode_id} already exists")
+
     db.add(new_item)
     db.commit()
     db.refresh(new_item)
+
+    # Convert datetime fields to strings before returning
+    if isinstance(new_item.created_at, datetime):
+        new_item.created_at = new_item.created_at.strftime('%Y-%m-%d %H:%M:%S')
+
     return new_item
 
 
