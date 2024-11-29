@@ -79,6 +79,7 @@ class TableDatapatient(BaseModel):
     geschlecht: Optional[str] = None
     alter: Optional[int] = None
     op_diagnose: Optional[str] = None
+    op_gepant: Optional[str] = None
     sap_id: Optional[int] = None
     bemerkung: Optional[str] = None
     created_at: Optional[str] = None

@@ -28,6 +28,7 @@ export default function PatientForm() {
     plannedSurgery: '',
     bemerkung: '',
     created_at: '',
+    op_geplant: '',
   });
 
   // State for handling field errors
@@ -62,6 +63,7 @@ export default function PatientForm() {
       plannedSurgery: '',
       bemerkung: '',
       created_at: '',
+      op_geplant: '',
     });
     setErrors({});
   };
@@ -99,8 +101,8 @@ export default function PatientForm() {
       newErrors.op_diagnose = 'Diagnose ist erforderlich.';
     }
 
-    if (!plannedSurgery.trim()) {
-      newErrors.plannedSurgery = 'Gepante OP ist erforderlich.';
+    if (!op_diagnose.trim()) {
+      newErrors.op_geplant = 'Diagnose ist erforderlich.';
     }
 
     if (!sap_id.trim()) {
@@ -291,7 +293,7 @@ export default function PatientForm() {
 
       {/* Diagnose TextField */}
       <TextField
-        label="Diagnose"
+        label="OP Diagnose"
         name="op_diagnose"
         value={formData.op_diagnose}
         onChange={handleChange}
@@ -302,17 +304,16 @@ export default function PatientForm() {
         helperText={errors.op_diagnose}
       />
 
-      {/* Geplante OP TextField */}
-      <TextField
+        <TextField
         label="Geplante OP"
-        name="plannedSurgery"
-        value={formData.plannedSurgery}
+        name="op_geplant"
+        value={formData.op_geplant}
         onChange={handleChange}
         fullWidth
         margin="normal"
         required
-        error={Boolean(errors.plannedSurgery)}
-        helperText={errors.plannedSurgery}
+        error={Boolean(errors.op_geplant)}
+        helperText={errors.op_geplant}
       />
 
       {/* Bemerkungen TextField (Optional) */}

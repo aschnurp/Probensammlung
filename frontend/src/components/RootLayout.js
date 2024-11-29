@@ -31,12 +31,12 @@ export default function RootLayout({ children }) {
               Übersicht
             </Link>
             <Link
-              href="/sonstiges"
+              href="/help"
               className={clsx('text-white font-semibold hover:text-blue-200', {
-                underline: location === '/sonstiges',
+                underline: location === '/help',
               })}
             >
-              Sonstiges
+              Hilfe
             </Link>
           </div>
         </nav>

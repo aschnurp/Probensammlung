@@ -14,7 +14,7 @@ router = APIRouter(
 
 #router for new serum entry
 @router.patch("/serum/{barcode_id}", status_code=status.HTTP_200_OK,response_model=schemas.TableDataSerumproben)
-def patch_serumproben(barcode_id: int, db: Session = Depends(get_db)):
+def patch_serumproben(barcode_id: str, db: Session = Depends(get_db)):
     # Suche nach dem bestehenden Eintrag
     item_query = db.query(Serumproben).filter(Serumproben.barcode_id == barcode_id)
     existing_item = item_query.first()
@@ -40,7 +40,7 @@ def patch_serumproben(barcode_id: int, db: Session = Depends(get_db)):
 
 #router for new serum entry
 @router.patch("/gewebe/{barcode_id}", status_code=status.HTTP_200_OK,response_model=schemas.TableDataSerumproben)
-def patch_gewebeproben(barcode_id: int, db: Session = Depends(get_db)):
+def patch_gewebeproben(barcode_id: str, db: Session = Depends(get_db)):
     # Suche nach dem bestehenden Eintrag
     item_query = db.query(Gewebeproben).filter(Gewebeproben.barcode_id == barcode_id)
     existing_item = item_query.first()
@@ -66,7 +66,7 @@ def patch_gewebeproben(barcode_id: int, db: Session = Depends(get_db)):
 
 #router for new serum entry
 @router.patch("/urin/{barcode_id}", status_code=status.HTTP_200_OK,response_model=schemas.TableDataSerumproben)
-def patch_urinproben(barcode_id: int, db: Session = Depends(get_db)):
+def patch_urinproben(barcode_id: str, db: Session = Depends(get_db)):
     # Suche nach dem bestehenden Eintrag
     item_query = db.query(Urinproben).filter(Urinproben.barcode_id == barcode_id)
     existing_item = item_query.first()
