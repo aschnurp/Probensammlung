@@ -1,9 +1,23 @@
+import os
 from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 from .config import settings
 
-SQLALCHEMY_DATABASE_URL = f"mariadb+mariadbconnector://{settings.database_username}:{settings.database_password}@{settings.database_hostname}:{settings.database_port}/{settings.database_name}"
+# Determine connection type based on environment variables
+connection_type = os.getenv("DB_CONNECTION_TYPE", "unix")  # default to 'unix'
+
+if connection_type == "tcp":
+    SQLALCHEMY_DATABASE_URL = (
+        f"mariadb+mariadbconnector://{settings.database_username}:"
+        f"{settings.database_password}@{settings.database_hostname}:"
+        f"{settings.database_port}/{settings.database_name}"
+    )
+else:  # Default to Unix Socket
+    SQLALCHEMY_DATABASE_URL = (
+        f"mariadb+mariadbconnector://{settings.database_username}:"
+        f"{settings.database_password}@localhost/{settings.database_name}"
+    )
 
 engine = create_engine(SQLALCHEMY_DATABASE_URL)
  

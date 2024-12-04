@@ -1,4 +1,6 @@
-from fastapi import FastAPI
+from sqlalchemy.sql import text
+
+from fastapi import Depends, FastAPI
 from .database import get_db, engine, SessionLocal, Base
 from sqlalchemy.orm import Session
 from .models import status, gewebeproben, serumproben, urinproben, patient, paraffinproben
@@ -51,4 +53,13 @@ app.include_router(patch_ausschleusen.router)
 
 
 
-
+@app.get("/")
+def test_db_connection(db: Session = Depends(get_db)):
+    try:
+        # Use text() to wrap raw SQL
+        result = db.execute(text("SELECT 1")).fetchone()
+        
+        # Extract the value from the result tuple
+        return {"status": "success", "result": result[0]}
+    except Exception as e:
+        return {"status": "error", "error": str(e)}
