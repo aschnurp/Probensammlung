@@ -3,6 +3,7 @@ import { patientDataColumns } from '../types/patientColumns';
 import { serumprobenDataColumns } from '../types/serumprobenColumns';
 import { urinprobenDataColumns } from '../types/urinprobenColumns';
 import { paraffinprobenDataColumns } from '../types/paraffinprobenColumns';
+import dayjs from 'dayjs';
 import axios from 'axios';
 import React, { useState, useEffect, useRef } from 'react';
 import {
@@ -21,11 +22,11 @@ import {
 
 // Mapping der Tabellen-Spalten für dynamisches Rendern
 const TABLE_COLUMNS = {
-  patient: patientDataColumns,
+  paraffinproben: paraffinprobenDataColumns,
   gewebeproben: gewebeprobenDataColumns,
   serumproben: serumprobenDataColumns,
   urinproben: urinprobenDataColumns,
-  paraffinproben: paraffinprobenDataColumns,
+  patient: patientDataColumns,
 };
 
 // definition für probenstatus mapping
@@ -195,17 +196,12 @@ export default function Uebersicht() {
 
   const renderTable = () => {
     const columns = TABLE_COLUMNS[selectedTable];
-
+  
     if (!columns || loading) return null;
     if (error) return <p className="text-red-500">{error}</p>;
-
-
-
-
-
+  
     return (
       <div className="flex justify-center items-center mt-12">
-
         {/* Left Scroll Button */}
         <button
           onClick={scrollLeft}
@@ -214,37 +210,47 @@ export default function Uebersicht() {
           ←
         </button>
         <div className="w-full h-[700px] overflow-y-auto" ref={tableScrollRef}>
-          <table className="min-w-full divide-y divide-gray-200" >
+          <table className="min-w-full divide-y divide-gray-200">
             <thead className="bg-gray-100 sticky top-0 z-10">
               <tr>
-                {columns.map(col => (
-                  <th key={col.key} className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                {columns.map((col) => (
+                  <th
+                    key={col.key}
+                    className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                  >
                     {col.label}
                   </th>
                 ))}
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Aktionen</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Aktionen
+                </th>
               </tr>
             </thead>
             <tbody className="bg-white divide-y divide-gray-200">
               {filteredData.map((row, rowIndex) => (
                 <tr key={rowIndex}>
-                  {columns.map(col => (
-                    <td key={col.key} className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                    {editRowIndex === rowIndex ? (
-                      <input
-                        value={formData[col.key] || ''}
-                        onChange={(e) => setFormData({ ...formData, [col.key]: e.target.value })}
-                        className="border border-gray-300 px-2 py-1"
-                      />
-                    ) : (
-                      // Überprüfe, ob die Spalte ein Statuswert ist, und mappe den Wert
-                      col.key === "status" && row[col.key] in STATUS_MAPPING
-                        ? STATUS_MAPPING[row[col.key]]
-                        : row[col.key] !== null
-                        ? row[col.key]
-                        : 'N/A'
-                    )}
-                  </td>
+                  {columns.map((col) => (
+                    <td
+                      key={col.key}
+                      className="px-6 py-4 whitespace-nowrap text-sm text-gray-500"
+                    >
+                      {editRowIndex === rowIndex ? (
+                        <input
+                          value={formData[col.key] || ""}
+                          onChange={(e) =>
+                            setFormData({ ...formData, [col.key]: e.target.value })
+                          }
+                          className="border border-gray-300 px-2 py-1"
+                        />
+                      ) : (
+                        // Formatierung für Datum hinzufügen
+                        col.key === "created_at"
+                          ? dayjs(row[col.key]).format("DD.MM.YYYY")
+                          : row[col.key] !== null
+                          ? row[col.key]
+                          : "N/A"
+                      )}
+                    </td>
                   ))}
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                     {editRowIndex === rowIndex ? (
@@ -255,7 +261,10 @@ export default function Uebersicht() {
                         >
                           Speichern
                         </button>
-                        <button onClick={handleCancelEdit} className="text-red-500 hover:text-red-700">
+                        <button
+                          onClick={handleCancelEdit}
+                          className="text-red-500 hover:text-red-700"
+                        >
                           Abbrechen
                         </button>
                       </>
