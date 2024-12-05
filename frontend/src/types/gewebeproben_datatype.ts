@@ -8,7 +8,6 @@ export type gewebeprobenData = {
     boxspalte?: number;
     lagerraum?: string;
     anmerkungen?: string;
-    size?: string;
     abholer?: string;
     remarks?: string;
 }

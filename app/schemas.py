@@ -43,7 +43,6 @@ class GewebeprobenBase(BaseModel):
     boxspalte: Optional[int] = None
     anmerkungen: Optional[str] = None
     remarks: Optional[str] = None
-    size: Optional[str] = None
     created_at: Optional[str] = None
 
 class TableDataGewebeproben(GewebeprobenBase):

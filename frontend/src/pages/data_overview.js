@@ -235,21 +235,25 @@ export default function Uebersicht() {
                       className="px-6 py-4 whitespace-nowrap text-sm text-gray-500"
                     >
                       {editRowIndex === rowIndex ? (
-                        <input
-                          value={formData[col.key] || ""}
-                          onChange={(e) =>
-                            setFormData({ ...formData, [col.key]: e.target.value })
-                          }
-                          className="border border-gray-300 px-2 py-1"
-                        />
-                      ) : (
-                        // Formatierung für Datum hinzufügen
-                        col.key === "created_at"
-                          ? dayjs(row[col.key]).format("DD.MM.YYYY")
-                          : row[col.key] !== null
-                          ? row[col.key]
-                          : "N/A"
-                      )}
+                    <input
+                      value={formData[col.key] || ""}
+                      onChange={(e) =>
+                        setFormData({ ...formData, [col.key]: e.target.value })
+                      }
+                      className="border border-gray-300 px-2 py-1"
+                    />
+                    ) : (
+                    col.key === "created_at" ? (
+                      // Formatierung für das Datum, falls "created_at"
+                      dayjs(row[col.key]).format("DD.MM.YYYY")
+                    ) : col.key === "status" && row[col.key] in STATUS_MAPPING ? (
+                      // Status anzeigen, falls Status vorhanden
+                      STATUS_MAPPING[row[col.key]]
+                    ) : row[col.key] !== null ? (
+                      row[col.key]
+                    ) : (
+                      "N/A"
+                      ))}
                     </td>
                   ))}
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">

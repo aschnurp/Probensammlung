@@ -10,7 +10,6 @@ export const gewebeprobenDataColumns = [
     { key: "boxspalte", label: "Boxspalte" },
     { key: "lagerraum", label: "Lagerraum" },
     { key: "uhrzeit", label: "Probe erhalten (Uhrzeit)" },
-    { key: "size", label: "Probengröße" },
     { key: "anmerkungen", label: "Besonderheiten/Anmerkungen (bei Probennahme)" },
     { key: "abholer", label: "AbholerIn" },
     { key: "remarks", label: "Bemerkungen (während Probenaufbereitung)" },

@@ -25,7 +25,6 @@ export default function SampleForm() {
     patient_Id_intern: '',
     probenart: '',
     time: '',
-    size: '',
     abholer: '',
     lagerraum: '1029',
     boxspalte: '',
@@ -114,7 +113,6 @@ export default function SampleForm() {
       patient_Id_intern: '',
       probenart: '',
       time: '',
-      size: '',
       abholer: '',
       lagerraum: '',
       boxspalte: '',
@@ -157,8 +155,6 @@ export default function SampleForm() {
       if (!formData.uhrzeit || !isValidTime(formData.uhrzeit)) {
         newErrors.uhrzeit = 'Uhrzeit ist erforderlich und muss im Format HH:MM sein.';
       }
-      if (!formData.size) 
-        newErrors.size = 'Probengröße ist erforderlich.';
       if (!formData.abholer) 
         newErrors.abholer = 'Abholer ist erforderlich.';
       if (!formData.barcode_id) 
@@ -202,7 +198,6 @@ export default function SampleForm() {
       sap_id: formData.sap_id,
       abholer: formData.abholer,
       remarks: formData.remarks,
-      size: formData.size,
     };
 
     try {
@@ -369,19 +364,6 @@ export default function SampleForm() {
             error={Boolean(errors.uhrzeit)}
             helperText={errors.uhrzeit}
           />
-
-          {/* Probengröße */}
-          <TextField
-            label="Probengröße (LxBxH [cm])"
-            name="size"
-            value={formData.size}
-            onChange={handleChange}
-            fullWidth
-            margin="normal"
-            error={Boolean(errors.size)}
-            helperText={errors.size}
-          />
-
           {/* Probenabholer*in Select Field */}
           <FormControl
             variant="outlined"
