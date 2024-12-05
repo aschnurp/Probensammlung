@@ -5,6 +5,6 @@ export type PatientData = {
     geschlecht?: string;
     alter?: number;
     op_diagnose?: string;
-    op_gepant?: string;
+    op_geplant?: string;
     bemerkung?: string;
 }

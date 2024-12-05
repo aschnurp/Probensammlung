@@ -21,7 +21,7 @@ class SerumprobenBase(BaseModel):
     patient_Id_intern: str
     probenart: str	
     barcode_id: str  	
-    lagerraum: Optional[str] = None
+    lagerraum: Optional[str] = 1029
     boxnummer: Optional[int] = None
     boxzeile: Optional[int] = None
     boxspalte: Optional[int] = None
@@ -35,7 +35,7 @@ class GewebeprobenBase(BaseModel):
     patient_Id_intern: str
     probenart: str	
     barcode_id: str 	
-    lagerraum: Optional[str] = None
+    lagerraum: Optional[str] = 1029
     abholer: Optional[str] = None
     uhrzeit: Optional[str] = None
     boxnummer: Optional[int] = None
@@ -53,7 +53,7 @@ class UrinprobenBase(BaseModel):
     patient_Id_intern: str
     probenart: str	
     barcode_id: str 	
-    lagerraum: Optional[str] = None
+    lagerraum: Optional[str] = 1029
     boxnummer: Optional[int] = None
     boxzeile: Optional[int] = None
     boxspalte: Optional[int] = None
@@ -67,7 +67,7 @@ class TableDataParaffinproben(BaseModel):
     id: Optional[int] = None
     patient_Id_intern: str
     probenart: str			
-    lagerraum: Optional[str] = None
+    lagerraum: Optional[str] = 1012
     anmerkungen: Optional[str] = None
     created_at: Optional[str] = None
 

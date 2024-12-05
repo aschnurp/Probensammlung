@@ -31,6 +31,11 @@ export default function PatientForm() {
     op_geplant: '',
   });
 
+
+  
+
+
+
   // State for handling field errors
   const [errors, setErrors] = useState({});
 
@@ -77,7 +82,7 @@ export default function PatientForm() {
   // Validate the form data
   const validateForm = () => {
     const newErrors = {};
-    const { patient_Id_intern, geschlecht, alter, op_diagnose, plannedSurgery, created_at, sap_id } = formData;
+    const { patient_Id_intern, geschlecht, alter, op_diagnose, op_geplant, created_at, sap_id } = formData;
 
     // Required fields except 'bemerkung'
     if (!patient_Id_intern.trim()) {
@@ -101,7 +106,7 @@ export default function PatientForm() {
       newErrors.op_diagnose = 'Diagnose ist erforderlich.';
     }
 
-    if (!op_diagnose.trim()) {
+    if (!op_geplant.trim()) {
       newErrors.op_geplant = 'Art der OP ist erforderlich.';
     }
 

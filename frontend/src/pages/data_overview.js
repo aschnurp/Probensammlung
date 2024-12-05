@@ -39,13 +39,13 @@ export default function Uebersicht() {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedTable, setSelectedTable] = useState(null);
   const [data, setData] = useState([]);
-  const [filteredData, setFilteredData] = useState([]); // Added filtered data state
-  const [editRowIndex, setEditRowIndex] = useState(null); // Für das Bearbeiten von Einträgen
-  const [formData, setFormData] = useState({}); // Für die Datenbearbeitung
+  const [filteredData, setFilteredData] = useState([]); 
+  const [editRowIndex, setEditRowIndex] = useState(null); 
+  const [formData, setFormData] = useState({});
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [searchQuery, setSearchQuery] = useState(""); // Filter search query
-  const [selectedColumn, setSelectedColumn] = useState(""); // Selected column for search filter
+  const [searchQuery, setSearchQuery] = useState(""); 
+  const [selectedColumn, setSelectedColumn] = useState(""); 
   const dropdownRef = useRef(null);
 
   const tableScrollRef = useRef(null);
@@ -96,7 +96,7 @@ export default function Uebersicht() {
       setLoading(false);
     }
   };
-
+  
   // Handle search for specific column
   const handleSearchChange = (e) => {
     const query = e.target.value;

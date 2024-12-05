@@ -87,7 +87,7 @@ export default function ProbeAusschleusen() {
       </Box>
       <Box sx={{ textAlign: 'center', mt: 4, mb: 2 }}>
         <Typography variant="h5" sx={{ fontWeight: 'bold', color: 'text.primary' }}>
-          Proben Ausschleusen
+          Proben wieder einschleusen
         </Typography>
       </Box>
 

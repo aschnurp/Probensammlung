@@ -24,11 +24,10 @@ export default function SampleForm() {
   const [formData, setFormData] = useState({
     patient_Id_intern: '',
     probenart: '',
-    paraffin: '',
     time: '',
     size: '',
     abholer: '',
-    lagerraum: '',
+    lagerraum: '1029',
     boxspalte: '',
     boxzeile: '',
     barcode_id: '',
@@ -87,7 +86,7 @@ export default function SampleForm() {
 
         if (suggestion.isNewBox) {
           setSnackbarMessage(
-            `Die maximale Anzahl von Zeilen und Spalten wurde erreicht. Eine neue Box (Boxnummer: ${suggestion.suggestedBoxnummer}) wird verwendet.`
+            `Eine neue Box (Boxnummer: ${suggestion.suggestedBoxnummer}) wird verwendet.`
           );
           setSnackbarSeverity('info');
           setSnackbarOpen(true);
@@ -100,9 +99,6 @@ export default function SampleForm() {
       setSnackbarOpen(true);
     }
   };
-
-
-
 
   /////////////// helper functions here ///////////////
 
@@ -117,7 +113,6 @@ export default function SampleForm() {
     setFormData({
       patient_Id_intern: '',
       probenart: '',
-      paraffin: '',
       time: '',
       size: '',
       abholer: '',
@@ -159,14 +154,16 @@ export default function SampleForm() {
       if (!formData.boxspalte || !isValidInteger(formData.boxspalte)) {
         newErrors.boxspalte = 'Boxspalte ist erforderlich und muss eine ganze Zahl sein.';
       }
-
       if (!formData.uhrzeit || !isValidTime(formData.uhrzeit)) {
         newErrors.uhrzeit = 'Uhrzeit ist erforderlich und muss im Format HH:MM sein.';
       }
+      if (!formData.size) 
+        newErrors.size = 'Probengröße ist erforderlich.';
+      if (!formData.abholer) 
+        newErrors.abholer = 'Abholer ist erforderlich.';
+      if (!formData.barcode_id) 
+        newErrors.barcode_id = 'Barcode ist erforderlich.';
 
-      if (!formData.size) newErrors.size = 'Probengröße ist erforderlich.';
-      if (!formData.abholer) newErrors.abholer = 'Abholer ist erforderlich.';
-      if (!formData.barcode_id) newErrors.barcode_id = 'Barcode ist erforderlich.';
     } else if (formData.probenart === 'serum' || formData.probenart === 'urin') {
       if (!formData.boxnummer || !isValidInteger(formData.boxnummer)) {
         newErrors.boxnummer = 'Boxnummer ist erforderlich und muss eine ganze Zahl sein.';
@@ -179,9 +176,6 @@ export default function SampleForm() {
       }
       if (!formData.barcode_id) newErrors.barcode_id = 'Barcode ist erforderlich.';
     }
-
-
-
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
       return;
@@ -701,7 +695,6 @@ export default function SampleForm() {
             label="Datum"
             name="created_at"
             type="date"
-            defaultValue="2011-09-29"
             value={formData.created_at}
             onChange={handleChange}
             fullWidth
@@ -715,7 +708,6 @@ export default function SampleForm() {
           <TextField
             label="Raum"
             name="lagerraum"
-            defaultValue="1027"
             value={formData.lagerraum}
             onChange={handleChange}
             fullWidth
