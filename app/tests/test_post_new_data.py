@@ -19,7 +19,7 @@ def test_create_serumproben(client):
         "anmerkungen": "Keine",
         "remarks": "Keine",
         "size": "50ml",
-        "status": 1
+        "status": 1  # Add this field
     }
 
     response = client.post("/new_data/serum", json=serum_data)
@@ -45,7 +45,7 @@ def test_create_serumproben_duplicate(client):
     
     serum_data = {
         "barcode_id": "SER_DUPLICATE",
-        "patient_Id_intern": "PAT_DUPLICATE",
+        "patient_Id_intern": "00000",
         "created_at": "2024-04-27 11:00:00",
         "probenart": "Serum",
         "boxnummer": 4,
@@ -55,7 +55,7 @@ def test_create_serumproben_duplicate(client):
         "anmerkungen": "Keine",
         "remarks": "Keine",
         "size": "100ml",
-        "status": 2
+        "status": 1
     }
 
     # Erstes Erstellen des Eintrags
@@ -78,7 +78,7 @@ def test_create_gewebeproben(client):
    
     gewebe_data = {
         "barcode_id": "GEW123456",
-        "patient_Id_intern": "PAT123456",
+        "patient_Id_intern": "00000",
         "created_at": "2024-04-27 12:00:00",
         "probenart": "Gewebe",
         "lagerraum": "C3",
@@ -105,12 +105,12 @@ def test_create_gewebeproben_duplicate(client):
     
     gewebe_data = {
         "barcode_id": "GEW_DUPLICATE",
-        "patient_Id_intern": "PAT_DUPLICATE",
+        "patient_Id_intern": "00000",
         "created_at": "2024-04-27 13:00:00",
         "probenart": "Gewebe",
         "lagerraum": "D4",
         "anmerkungen": "Keine",
-        "status": 2
+        "status": 1
     }
 
     # Erstes Erstellen des Eintrags
@@ -134,7 +134,7 @@ def test_create_urinproben(client):
    
     urin_data = {
         "barcode_id": "URIN123456",
-        "patient_Id_intern": "PAT123456",
+        "patient_Id_intern": "00000",
         "created_at": "2024-04-27 14:00:00",
         "probenart": "Urin",
         "boxnummer": 7,
@@ -164,7 +164,7 @@ def test_create_urinproben_duplicate(client):
    
     urin_data = {
         "barcode_id": "URIN_DUPLICATE",
-        "patient_Id_intern": "PAT_DUPLICATE",
+        "patient_Id_intern": "00000",
         "created_at": "2024-04-27 15:00:00",
         "probenart": "Urin",
         "boxnummer": 10,
@@ -172,7 +172,7 @@ def test_create_urinproben_duplicate(client):
         "boxspalte": 12,
         "lagerraum": "F6",
         "anmerkungen": "Keine",
-        "status": 2
+        "status": 1
     }
 
     # Erstes Erstellen des Eintrags
@@ -195,7 +195,7 @@ def test_create_urinproben_duplicate(client):
 def test_create_paraffinproben(client):
     
     paraffin_data = {
-        "patient_Id_intern": "PAT123456",
+        "patient_Id_intern": "00000",
         "probenart": "Paraffin",
         "lagerraum": "G7",
         "anmerkungen": "Keine",
@@ -282,7 +282,7 @@ def test_create_serumproben_invalid_data(client):
    
     serum_data = {
         "barcode_id": "",  # Leeres Barcode-ID
-        "patient_Id_intern": "PAT_INVALID",
+        "patient_Id_intern": "00000",
         "created_at": "invalid_date",  # Ungültiges Datumsformat
         "probenart": "Serum",
         "boxnummer": -1,  # Ungültige Boxnummer

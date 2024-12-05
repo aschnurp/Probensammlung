@@ -6,3 +6,4 @@ node_modules/
 /frontend/.next/
 .next/
 start_application.bat
+test_separation_code.txt
