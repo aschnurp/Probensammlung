@@ -15,6 +15,6 @@ class Patient(Base):
     geschlecht = Column(TEXT, nullable=True)
     alter = Column(Integer, nullable=True)
     op_diagnose = Column(TEXT, nullable=True)
-    op_gepant = Column(TEXT, nullable=True)
+    op_geplant = Column(TEXT, nullable=True)
     bemerkung = Column(TEXT, nullable=True)
 

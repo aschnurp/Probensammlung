@@ -31,7 +31,7 @@ const TABLE_COLUMNS = {
 // definition für probenstatus mapping
 const STATUS_MAPPING = {
   1: "eingescheust",
-  2: "ausheschleust",
+  2: "ausgeschleust",
   3: "wiedereingeschleust",
 }
 

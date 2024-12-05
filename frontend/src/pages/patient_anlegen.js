@@ -102,7 +102,7 @@ export default function PatientForm() {
     }
 
     if (!op_diagnose.trim()) {
-      newErrors.op_geplant = 'Diagnose ist erforderlich.';
+      newErrors.op_geplant = 'Art der OP ist erforderlich.';
     }
 
     if (!sap_id.trim()) {
@@ -178,7 +178,7 @@ export default function PatientForm() {
 
       // Extract error message from response if available
       const errorMessage =
-        `${error.response?.data?.detail || 'Backend-Fehler beim Senden der Daten.'} ${error.response?.data?.detail && error.response.data.detail.length > 0
+        `${error.response?.data?.detail || 'Fehler beim Senden der Daten.'} ${error.response?.data?.detail && error.response.data.detail.length > 0
           ? `: ${error.response.data.detail[0].msg}, ${error.response.data.detail[0].loc?.[1] || ''}`
           : ''
         }`;
