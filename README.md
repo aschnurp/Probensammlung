@@ -20,6 +20,7 @@ DATABASE_PORT=3456
 DATABASE_NAME=test_db
 DATABASE_USERNAME=test_db
 DATABASE_PASSWORD=***********
+FRONTEND_PATH=path/to/frontend.dockerfile
 ```
 
 Create an second environment file for docker `\frontend\.env` with the following environment variables 
