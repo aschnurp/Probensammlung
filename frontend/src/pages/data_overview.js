@@ -36,6 +36,19 @@ const STATUS_MAPPING = {
   3: "wiedereingeschleust",
 }
 
+
+const ABHOLER_MAPPING = {
+  1: process.env.NEXT_PUBLIC_ABHOLER_ONE,
+  2: process.env.NEXT_PUBLIC_ABHOLER_TWO,
+  3: process.env.NEXT_PUBLIC_ABHOLER_THREE,
+  4: process.env.NEXT_PUBLIC_ABHOLER_FOUR,
+  5: process.env.NEXT_PUBLIC_ABHOLER_FIVE,
+  6: process.env.NEXT_PUBLIC_ABHOLER_SIX,
+  7: "Andere"
+}
+
+require('dotenv').config();
+
 export default function Uebersicht() {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedTable, setSelectedTable] = useState(null);
@@ -249,11 +262,14 @@ export default function Uebersicht() {
                     ) : col.key === "status" && row[col.key] in STATUS_MAPPING ? (
                       // Status anzeigen, falls Status vorhanden
                       STATUS_MAPPING[row[col.key]]
+                      ) : col.key === "abholer" && row[col.key] in ABHOLER_MAPPING ? (
+                        // Mapping der Abholer
+                        ABHOLER_MAPPING[row[col.key]]
                     ) : row[col.key] !== null ? (
                       row[col.key]
                     ) : (
                       "N/A"
-                      ))}
+                      )) }
                     </td>
                   ))}
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">

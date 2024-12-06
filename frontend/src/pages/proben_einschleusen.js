@@ -18,7 +18,7 @@ import { IoMdArrowRoundBack } from "react-icons/io";
 import { suggestBoxData } from '../components/custom_functions/suggestBoxData';
 import dayjs from 'dayjs'; 
 
-
+require('dotenv').config();
 
 export default function SampleForm() {
   const [formData, setFormData] = useState({
@@ -378,13 +378,13 @@ export default function SampleForm() {
               onChange={handleChange}
               label="Probenabholer*in"
             >
-              <MenuItem value="rebecca">Rebecca</MenuItem>
-              <MenuItem value="sophie">Sophie</MenuItem>
-              <MenuItem value="atachan">Atachan</MenuItem>
-              <MenuItem value="anton">Anton</MenuItem>
-              <MenuItem value="sandra">Sandra</MenuItem>
-              <MenuItem value="peggy">Peggy</MenuItem>
-              <MenuItem value="other">Andere</MenuItem>
+              <MenuItem value="1">{process.env.NEXT_PUBLIC_ABHOLER_ONE}</MenuItem>
+              <MenuItem value="2">{process.env.NEXT_PUBLIC_ABHOLER_TWO}</MenuItem>
+              <MenuItem value="3">{process.env.NEXT_PUBLIC_ABHOLER_THREE}</MenuItem>
+              <MenuItem value="4">{process.env.NEXT_PUBLIC_ABHOLER_FOUR}</MenuItem>
+              <MenuItem value="5">{process.env.NEXT_PUBLIC_ABHOLER_FIVE}</MenuItem>
+              <MenuItem value="6">{process.env.NEXT_PUBLIC_ABHOLER_SIX}</MenuItem>
+              <MenuItem value="7">Andere</MenuItem>
             </Select>
             {errors.abholer && (
               <Typography variant="caption" color="error">

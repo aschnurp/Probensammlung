@@ -7,7 +7,6 @@ import { TextField } from '@mui/material';
 import { Box, Typography, Divider } from '@mui/material';
 
 require('dotenv').config();
-console.log(process.env.NEXT_PUBLIC_CONTACT_NAME_ONE);
 
 export default function Sonstiges() {
   return (
