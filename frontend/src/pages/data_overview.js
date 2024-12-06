@@ -6,6 +6,8 @@ import { paraffinprobenDataColumns } from '../types/paraffinprobenColumns';
 import dayjs from 'dayjs';
 import axios from 'axios';
 import React, { useState, useEffect, useRef } from 'react';
+import InfoIcon from '@mui/icons-material/Info';
+//import InfoIcon from '@mui/icons-material/Info';
 import {
   Box,
   TextField,
@@ -18,7 +20,10 @@ import {
   Radio,
   Snackbar,
   Alert,
+  Popover,
+  IconButton,
 } from '@mui/material';
+
 
 // Mapping der Tabellen-Spalten für dynamisches Rendern
 const TABLE_COLUMNS = {
@@ -66,6 +71,19 @@ export default function Uebersicht() {
 
   const [Table_header, setTable_header] = useState(""); // Keep React state setter
 
+
+  const [anchorEl, setAnchorEl] = React.useState(null);
+
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const open = Boolean(anchorEl);
+  const id = open ? 'simple-popover' : undefined;
   useEffect(() => {
     // Dynamically update Table_header whenever selectedTable changes
     if (selectedTable === "urinproben") {
@@ -218,7 +236,7 @@ export default function Uebersicht() {
         {/* Left Scroll Button */}
         <button
           onClick={scrollLeft}
-          className="absolute left-0 top-1/2 transform -translate-y-1/2 bg-gray-200 p-2 rounded-full shadow-md hover:bg-gray-300"
+          className="absolute left-20 top-1/2 transform -translate-y-1/2 bg-gray-200 p-2 rounded-full shadow-md hover:bg-gray-300"
         >
           ←
         </button>
@@ -313,7 +331,7 @@ export default function Uebersicht() {
         {/* Right Scroll Button */}
         <button
           onClick={scrollRight}
-          className="absolute right-0 top-1/2 transform -translate-y-1/2 bg-gray-200 p-2 rounded-full shadow-md hover:bg-gray-300"
+          className="absolute right-20 top-1/2 transform -translate-y-1/2 bg-gray-200 p-2 rounded-full shadow-md hover:bg-gray-300"
         >
           →
         </button>
@@ -377,6 +395,41 @@ export default function Uebersicht() {
             placeholder="Suche..."
             className="border border-gray-300 px-4 py-2 rounded"
           />
+          
+          <IconButton onClick={handleClick}><InfoIcon />
+          
+          </IconButton >
+          <Popover
+            id={id}
+            open={open}
+            anchorEl={anchorEl}
+            onClose={handleClose}
+            anchorOrigin={{
+              vertical: 'bottom',
+              horizontal: 'left',
+            }}
+          >
+            <Typography variant='caption' fontWeight={'fontWeightBold'} sx={{ display: 'block' }}>
+            Anmerkungen zum Filter:
+             </Typography>
+             <Typography variant='caption' sx={{ display: 'block' }}>
+            Erstellungsdatum: yyyy-mm-dd
+             </Typography>
+             <Typography variant='caption' sx={{ display: 'block' }}>
+            Abholer:    1: {process.env.NEXT_PUBLIC_ABHOLER_ONE}  ---
+                        2: {process.env.NEXT_PUBLIC_ABHOLER_TWO}  ---
+                        3: {process.env.NEXT_PUBLIC_ABHOLER_THREE}  ---
+                        4: {process.env.NEXT_PUBLIC_ABHOLER_FOUR}  ---
+                        5: {process.env.NEXT_PUBLIC_ABHOLER_FIVE}  ---
+                        6: {process.env.NEXT_PUBLIC_ABHOLER_SIX}  ---
+                        7: Andere
+             </Typography>
+             <Typography variant='caption' sx={{ display: 'block' }}>
+            Probenstatus:   1: eingescheust   ---
+                            2: ausgeschleust  ---
+                            3: wiedereingeschleust
+             </Typography>
+          </Popover>
         </div>
       )}
       <Box

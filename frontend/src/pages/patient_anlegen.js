@@ -256,9 +256,9 @@ export default function PatientForm() {
           onChange={handleChange}
           row
         >
-          <FormControlLabel value="female" control={<Radio />} label="Weiblich" />
-          <FormControlLabel value="male" control={<Radio />} label="Männlich" />
-          <FormControlLabel value="other" control={<Radio />} label="Divers" />
+          <FormControlLabel value="Weiblich" control={<Radio />} label="Weiblich" />
+          <FormControlLabel value="Männlich" control={<Radio />} label="Männlich" />
+          <FormControlLabel value="Divers" control={<Radio />} label="Divers" />
         </RadioGroup>
         {errors.geschlecht && (
           <Typography variant="caption" color="error">
