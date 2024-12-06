@@ -187,15 +187,35 @@ export default function Uebersicht() {
   };
 
   // Handle Save (Update) function
-  const handleSave = async (barcode_id) => {
+  const handleSave = async () => {
     try {
-      const response = await axios.put(`http://localhost:8000/update/${tableName}/${barcode_id}`, formData);
-      setData(data.map((row, index) => (index === editRowIndex ? response.data : row)));
-      setFilteredData(filteredData.map((row, index) => (index === editRowIndex ? response.data : row))); // Update filtered data as well
-      setEditRowIndex(null); // Bearbeitungsmodus beenden
+      // Payload für den Patienten-Endpunkt erstellen
+      const payload = {
+        ...formData, // Alle bearbeiteten Daten
+      };
+  
+      // API-Aufruf mit PUT und JSON-Body
+      const response = await axios.put(
+        `http://localhost:8000/update/patient`, // Patient-spezifische Route
+        payload,
+        {
+          headers: {
+            "Content-Type": "application/json", // JSON als Content-Type
+          },
+        }
+      );
+  
+      // Aktualisiere die Tabelle mit den neuen Daten
+      setData((prevData) =>
+        prevData.map((row, index) => (index === editRowIndex ? response.data : row))
+      );
+      setFilteredData((prevFiltered) =>
+        prevFiltered.map((row, index) => (index === editRowIndex ? response.data : row))
+      );
+      setEditRowIndex(null); // Beende Bearbeitungsmodus
       setFormData({});
     } catch (error) {
-      console.error('Failed to update data', error);
+      console.error("Failed to update data", error);
     }
   };
 
