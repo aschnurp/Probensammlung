@@ -22,6 +22,20 @@ DATABASE_USERNAME=test_db
 DATABASE_PASSWORD=***********
 ```
 
+Create an second environment file for docker `\frontend\.env` with the following environment variables 
+```bash
+NEXT_PUBLIC_CONTACT_NAME_ONE=Your Name
+NEXT_PUBLIC_CONTACT_MAIL_ONE=Your EMail
+NEXT_PUBLIC_CONTACT_NAME_TWO=Your Name
+NEXT_PUBLIC_CONTACT_MAIL_TWO=Your EMail
+NEXT_PUBLIC_ABHOLER_ONE=Your Name
+NEXT_PUBLIC_ABHOLER_TWO=Your Name
+NEXT_PUBLIC_ABHOLER_THREE=Your Name
+NEXT_PUBLIC_ABHOLER_FOUR=Your Name
+NEXT_PUBLIC_ABHOLER_FIVE=Your Name
+NEXT_PUBLIC_ABHOLER_SIX=Your Name
+```
+
 Run the local test environment
 ```bash
 sudo docker-compose -f docker-compose-develop.yml up
