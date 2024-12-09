@@ -203,7 +203,6 @@ export default function Uebersicht() {
           },
         }
       );
-  
       // Update the table data with the response
       setData((prevData) =>
         prevData.map((row, index) =>
@@ -215,7 +214,7 @@ export default function Uebersicht() {
           index === editRowIndex ? response.data : row
         )
       );
-  
+
       setEditRowIndex(null); // Exit edit mode
       setFormData({});
     } catch (error) {
@@ -223,18 +222,47 @@ export default function Uebersicht() {
     }
   };
 
-  // Handle Delete function
-  const handleDelete = async (rowId) => {
+  const handleDelete = async (row) => {
     try {
-      await axios.delete(`http://localhost:8000/table/data/${rowId}`);
-      setData(data.filter((row) => row.id !== rowId));
-      setFilteredData(filteredData.filter((row) => row.id !== rowId)); // Remove from filtered data as well
+      // Prepare the payload to send, including the required fields
+      const payload = {
+        patient_Id_intern: row.patient_Id_intern,
+        probenart: row.probenart,
+        barcode_id: row.barcode_id,
+      };
+  
+      console.log("Payload to delete:", payload); // Log the payload for debugging
+  
+      // Make the DELETE request
+      const response = await axios.delete(
+        `http://localhost:8000/delete/${selectedTable}`,
+        {
+          headers: {
+            "Content-Type": "application/json", // Set the content type
+          },
+          data: payload, // Send the payload as 'data'
+        }
+      );
+  
+      console.log("Response after delete:", response); // Log the response
+      
+      // Update the data and filtered data after successful delete
+      setData((prevData) => prevData.filter((r) => r.rowId !== row.rowId));
+      setFilteredData((prevFiltered) => prevFiltered.filter((r) => r.rowId !== row.rowId));
+  
+      // Fetch updated data after deletion
+      const response_update = await axios.get(`http://localhost:8000/table/data?table_name=${selectedTable}`);
+  
+      // Update state with the new data
+      setData(response_update.data);
+      setFilteredData(response_update.data);
+  
+      console.log('Here is the updated data after deletion:', response_update.data);
     } catch (error) {
-      console.error('Failed to delete data', error);
+      console.error('Error deleting data:', error);
     }
   };
-
-
+  
   // Table horizontal Scroll logic
   const scrollLeft = () => {
     if (tableScrollRef.current) {
@@ -247,7 +275,6 @@ export default function Uebersicht() {
       tableScrollRef.current.scrollBy({ left: 100, behavior: 'smooth' });
     }
   };
-
 
   const renderTable = () => {
     const columns = TABLE_COLUMNS[selectedTable];
@@ -339,7 +366,7 @@ export default function Uebersicht() {
                           Bearbeiten
                         </button>
                         <button
-                          onClick={() => handleDelete(rowIndex, row)}
+                          onClick={() => handleDelete(row)} 
                           className="text-red-500 hover:text-red-700"
                         >
                           Löschen

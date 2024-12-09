@@ -5,7 +5,7 @@ from .database import get_db, engine, SessionLocal, Base
 from sqlalchemy.orm import Session
 from .models import status, gewebeproben, serumproben, urinproben, patient, paraffinproben
 from .config import settings
-from .routers import post_new_data, put_tabledata, tables, number_entrys, patch_ausschleusen, patch_wiedereinschleusen
+from .routers import post_new_data, put_tabledata, tables, number_entrys, patch_ausschleusen, patch_wiedereinschleusen, delete_tabledata
 from fastapi.middleware.cors import CORSMiddleware
 from app.seed import seed_status_data
 
@@ -47,6 +47,7 @@ app.include_router(number_entrys.router)
 app.include_router(put_tabledata.router)
 app.include_router(patch_wiedereinschleusen.router)
 app.include_router(patch_ausschleusen.router)
+app.include_router(delete_tabledata.router)
 
 
 
