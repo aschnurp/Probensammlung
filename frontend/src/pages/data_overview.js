@@ -186,33 +186,37 @@ export default function Uebersicht() {
     setFormData({});
   };
 
-  // Handle Save (Update) function
   const handleSave = async () => {
-    try {
-      // Payload für den Patienten-Endpunkt erstellen
-      const payload = {
-        ...formData, // Alle bearbeiteten Daten
-      };
+    if (!selectedTable) {
+      console.error("No table selected for updating data");
+      return;
+    }
   
-      // API-Aufruf mit PUT und JSON-Body
+    try {
+      const payload = { ...formData }; // Include the updated row data
       const response = await axios.put(
-        `http://localhost:8000/update/patient`, // Patient-spezifische Route
+        `http://localhost:8000/update/${selectedTable}`,
         payload,
         {
           headers: {
-            "Content-Type": "application/json", // JSON als Content-Type
+            "Content-Type": "application/json",
           },
         }
       );
   
-      // Aktualisiere die Tabelle mit den neuen Daten
+      // Update the table data with the response
       setData((prevData) =>
-        prevData.map((row, index) => (index === editRowIndex ? response.data : row))
+        prevData.map((row, index) =>
+          index === editRowIndex ? response.data : row
+        )
       );
       setFilteredData((prevFiltered) =>
-        prevFiltered.map((row, index) => (index === editRowIndex ? response.data : row))
+        prevFiltered.map((row, index) =>
+          index === editRowIndex ? response.data : row
+        )
       );
-      setEditRowIndex(null); // Beende Bearbeitungsmodus
+  
+      setEditRowIndex(null); // Exit edit mode
       setFormData({});
     } catch (error) {
       console.error("Failed to update data", error);
@@ -335,7 +339,7 @@ export default function Uebersicht() {
                           Bearbeiten
                         </button>
                         <button
-                          onClick={() => handleDelete(row.id)}
+                          onClick={() => handleDelete(rowIndex, row)}
                           className="text-red-500 hover:text-red-700"
                         >
                           Löschen
@@ -379,10 +383,14 @@ export default function Uebersicht() {
               <ul className="py-2 text-sm text-gray-700">
                 {Object.keys(TABLE_COLUMNS).map((tableName) => (
                   <li key={tableName}>
-                    <a href="#" className="block px-4 py-2 hover:bg-gray-100" onClick={handleTable}>
+                    <a
+                      href="#"
+                      className="block px-4 py-2 hover:bg-gray-100"
+                      onClick={(e) => handleTable(e)}
+                    >
                       {tableName.charAt(0).toUpperCase() + tableName.slice(1)}
                     </a>
-                  </li>
+                </li>
                 ))}
               </ul>
             </div>
