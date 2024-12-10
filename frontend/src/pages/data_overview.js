@@ -13,15 +13,14 @@ import {
   TextField,
   Button,
   Typography,
-  RadioGroup,
-  FormControl,
-  FormLabel,
-  FormControlLabel,
-  Radio,
-  Snackbar,
-  Alert,
   Popover,
   IconButton,
+  DialogTitle,
+  DialogContentText,
+  DialogContent,
+  DialogActions,
+  Dialog,
+  Snackbar,
 } from '@mui/material';
 
 
@@ -40,8 +39,6 @@ const STATUS_MAPPING = {
   2: "ausgeschleust",
   3: "wiedereingeschleust",
 }
-
-
 const ABHOLER_MAPPING = {
   1: process.env.NEXT_PUBLIC_ABHOLER_ONE,
   2: process.env.NEXT_PUBLIC_ABHOLER_TWO,
@@ -66,20 +63,31 @@ export default function Uebersicht() {
   const [searchQuery, setSearchQuery] = useState(""); 
   const [selectedColumn, setSelectedColumn] = useState(""); 
   const dropdownRef = useRef(null);
-
   const tableScrollRef = useRef(null);
-
   const [Table_header, setTable_header] = useState(""); // Keep React state setter
-
-
   const [anchorEl, setAnchorEl] = React.useState(null);
-
+  const [openPsw, setOpen] = useState()
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
 
   const handleClose = () => {
     setAnchorEl(null);
+  };
+
+  const handleClickOpenPASSW = () => {
+    setOpen(true);
+  };
+
+  // Handle closing the dialog
+  const handleClosePASSW = () => {
+    setOpen(false);
+    setError(""); // Reset error state when closing
+  };
+
+  // Handle passcode change
+  const handlePasscodeChange = (e) => {
+    setPasscode(e.target.value);
   };
 
   const open = Boolean(anchorEl);
@@ -222,7 +230,9 @@ export default function Uebersicht() {
     }
   };
 
+
   const handleDelete = async (row) => {
+    console.log(row);
     try {
       // Prepare the payload to send, including the required fields
       const payload = {
@@ -230,7 +240,7 @@ export default function Uebersicht() {
         probenart: row.probenart,
         barcode_id: row.barcode_id,
       };
-  
+      
       console.log("Payload to delete:", payload); // Log the payload for debugging
   
       // Make the DELETE request
@@ -243,10 +253,9 @@ export default function Uebersicht() {
           data: payload, // Send the payload as 'data'
         }
       );
-  
       console.log("Response after delete:", response); // Log the response
       
-      // Update the data and filtered data after successful delete
+      // Update data after successful delete
       setData((prevData) => prevData.filter((r) => r.rowId !== row.rowId));
       setFilteredData((prevFiltered) => prevFiltered.filter((r) => r.rowId !== row.rowId));
   
@@ -256,7 +265,6 @@ export default function Uebersicht() {
       // Update state with the new data
       setData(response_update.data);
       setFilteredData(response_update.data);
-  
       console.log('Here is the updated data after deletion:', response_update.data);
     } catch (error) {
       console.error('Error deleting data:', error);
@@ -365,12 +373,52 @@ export default function Uebersicht() {
                         >
                           Bearbeiten
                         </button>
-                        <button
-                          onClick={() => handleDelete(row)} 
-                          className="text-red-500 hover:text-red-700"
-                        >
-                          Löschen
-                        </button>
+                        <React.Fragment>
+                        <Button variant="outlined" onClick={handleClickOpenPASSW}>
+  DELETE
+</Button>
+<Dialog
+  open={openPsw}
+  onClose={handleClosePASSW}
+  PaperProps={{
+    component: "form",
+    onSubmit: (event) => {
+      event.preventDefault();
+      const formData = new FormData(event.currentTarget);
+      const formJson = Object.fromEntries(formData.entries());
+      const passcode = formJson.passcode;
+
+      // Überprüfen, ob der Passcode korrekt ist
+      if (passcode === process.env.NEXT_PUBLIC_DELETE_PASSCODE) {
+        handleDelete(row); // Eintrag löschen
+      } else {
+        alert("Incorrect passcode!"); // Fehlermeldung ausgeben
+      }
+      handleClosePASSW();
+    },
+  }}
+>
+  <DialogTitle>Confirm</DialogTitle>
+  <DialogContent>
+    <DialogContentText>Please enter the Password.</DialogContentText>
+    <TextField
+      autoFocus
+      required
+      margin="dense"
+      id="passcode"
+      name="passcode"
+      label="Passcode"
+      type="password"
+      fullWidth
+      variant="standard"
+    />
+  </DialogContent>
+  <DialogActions>
+    <Button onClick={handleClosePASSW}>Cancel</Button>
+    <Button type="submit">Save</Button>
+  </DialogActions>
+</Dialog>
+    </React.Fragment>
                       </>
                     )}
                   </td>
