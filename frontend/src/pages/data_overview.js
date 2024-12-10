@@ -233,14 +233,23 @@ export default function Uebersicht() {
 
   const handleDelete = async (row) => {
     console.log(row);
+    let payload;
     try {
       // Prepare the payload to send, including the required fields
-      const payload = {
-        patient_Id_intern: row.patient_Id_intern,
-        probenart: row.probenart,
-        barcode_id: row.barcode_id,
-      };
-      
+      if (selectedTable === "paraffinproben") {
+        payload = {
+          id: row.id,
+          probenart: row.probenart,
+          patient_Id_intern: row.patient_Id_intern,
+        };
+      } else {
+        payload = {
+          patient_Id_intern: row.patient_Id_intern,
+          probenart: row.probenart,
+          barcode_id: row.barcode_id,
+        };
+      }
+
       console.log("Payload to delete:", payload); // Log the payload for debugging
   
       // Make the DELETE request
