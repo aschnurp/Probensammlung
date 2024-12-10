@@ -329,112 +329,69 @@ export default function Uebersicht() {
               {filteredData.map((row, rowIndex) => (
                 <tr key={rowIndex}>
                   {columns.map((col) => (
-                    <td
-                      key={col.key}
-                      className="px-6 py-4 whitespace-nowrap text-sm text-gray-500"
-                    >
+                    <td key={col.key} className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                       {editRowIndex === rowIndex ? (
-                    <input
-                      value={formData[col.key] || ""}
-                      onChange={(e) =>
-                        setFormData({ ...formData, [col.key]: e.target.value })
-                      }
-                      className="border border-gray-300 px-2 py-1"
-                    />
-                    ) : (
-                    col.key === "created_at" ? (
-                      // Formatierung für das Datum, falls "created_at"
-                      dayjs(row[col.key]).format("DD.MM.YYYY")
-                    ) : col.key === "status" && row[col.key] in STATUS_MAPPING ? (
-                      // Status anzeigen, falls Status vorhanden
-                      STATUS_MAPPING[row[col.key]]
-                      ) : col.key === "abholer" && row[col.key] in ABHOLER_MAPPING ? (
-                        // Mapping der Abholer
-                        ABHOLER_MAPPING[row[col.key]]
-                    ) : row[col.key] !== null ? (
-                      row[col.key]
-                    ) : (
-                      "N/A"
-                      )) }
+                        <input
+                          value={formData[col.key] || ""}
+                          onChange={(e) => setFormData({ ...formData, [col.key]: e.target.value })}
+                          className="border border-gray-300 px-2 py-1"
+                        />
+                      ) : (
+                        col.key === "created_at" ? (
+                          // Formatierung für das Datum, falls "created_at"
+                          dayjs(row[col.key]).format("DD.MM.YYYY")
+                        ) : col.key === "status" && row[col.key] in STATUS_MAPPING ? (
+                          // Status anzeigen, falls Status vorhanden
+                          STATUS_MAPPING[row[col.key]]
+                        ) : col.key === "abholer" && row[col.key] in ABHOLER_MAPPING ? (
+                          // Mapping der Abholer
+                          ABHOLER_MAPPING[row[col.key]]
+                        ) : row[col.key] !== null ? (
+                          row[col.key]
+                        ) : (
+                          "N/A"
+                        ))}
                     </td>
                   ))}
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                     {editRowIndex === rowIndex ? (
-                      <>
-                        <button
+                      <Box display="flex" justifyContent="space-evenly">
+                        <Button
                           onClick={() => handleSave(row.id)}
-                          className="text-green-500 hover:text-green-700 mr-2"
+                          variant="contained"
+                          color="success"
+                          size="small"
                         >
                           Speichern
-                        </button>
-                        <button
+                        </Button>
+                        <Button
                           onClick={handleCancelEdit}
-                          className="text-red-500 hover:text-red-700"
+                          variant="outlined"
+                          color="error"
+                          size="small"
                         >
                           Abbrechen
-                        </button>
-                      </>
+                        </Button>
+                      </Box>
                     ) : (
-                      <>
-                        <button
+                      <Box display="flex" justifyContent="space-evenly" >
+                        <Button
                           variant="outlined"
-                          className="text-blue-500 hover:text-blue-700"
+                          color="primary"
                           onClick={() => handleEditClick(rowIndex, row)}
+                          size="small"
                         >
                           Bearbeiten
-                        </button>
-                        <React.Fragment>
-                        <Button onClick={handleClickOpenPASSW} color="error">
+                        </Button>
+                        <Button
+                          onClick={handleClickOpenPASSW}
+                          color="error"
+                          variant="outlined"
+                          size="small"
+                        >
                           Löschen
                         </Button>
-                        <Dialog
-                          open={openPsw}
-                          onClose={handleClosePASSW}
-                          PaperProps={{
-                            component: "form",
-                            onSubmit: (event) => {
-                              event.preventDefault();
-                              const formData = new FormData(event.currentTarget);
-                              const formJson = Object.fromEntries(formData.entries());
-                              const passcode = formJson.passcode;
-
-                              // Überprüfen, ob der Passcode korrekt ist
-                              if (passcode === process.env.NEXT_PUBLIC_DELETE_PASSCODE) {
-                                handleDelete(row); // Eintrag löschen
-                              } else {
-                                alert("Incorrect passcode!"); // Fehlermeldung ausgeben
-                              }
-                              handleClosePASSW();
-                            },
-                          }}
-                          BackdropProps={{
-                            style: {
-                              backgroundColor: "rgba(0, 0, 0, 0.2)", // Weniger dunkles Overlay
-                            },
-                          }}
-                        >
-                            <DialogTitle>Confirm</DialogTitle>
-                            <DialogContent>
-                              <DialogContentText>Please enter the Password.</DialogContentText>
-                              <TextField
-                                autoFocus
-                                required
-                                margin="dense"
-                                id="passcode"
-                                name="passcode"
-                                label="Passcode"
-                                type="password"
-                                fullWidth
-                                variant="standard"
-                              />
-                            </DialogContent>
-                            <DialogActions>
-                              <Button onClick={handleClosePASSW}>Cancel</Button>
-                              <Button type="submit">Save</Button>
-                            </DialogActions>
-                          </Dialog>
-                              </React.Fragment>
-                      </>
+                      </Box>
                     )}
                   </td>
                 </tr>
@@ -449,6 +406,54 @@ export default function Uebersicht() {
         >
           →
         </button>
+    
+        {/* Dialog for Password */}
+        <Dialog
+          open={openPsw}
+          onClose={handleClosePASSW}
+          PaperProps={{
+            component: "form",
+            onSubmit: (event) => {
+              event.preventDefault();
+              const formData = new FormData(event.currentTarget);
+              const formJson = Object.fromEntries(formData.entries());
+              const passcode = formJson.passcode;
+    
+              // Überprüfen, ob der Passcode korrekt ist
+              if (passcode === process.env.NEXT_PUBLIC_DELETE_PASSCODE) {
+                handleDelete(row); // Eintrag löschen
+              } else {
+                alert("Incorrect passcode!"); // Fehlermeldung ausgeben
+              }
+              handleClosePASSW();
+            },
+          }}
+          BackdropProps={{
+            style: {
+              backgroundColor: "rgba(0, 0, 0, 0.2)", // Weniger dunkles Overlay
+            },
+          }}
+        >
+          <DialogTitle>Confirm</DialogTitle>
+          <DialogContent>
+            <DialogContentText>Please enter the Password.</DialogContentText>
+            <TextField
+              autoFocus
+              required
+              margin="dense"
+              id="passcode"
+              name="passcode"
+              label="Passcode"
+              type="password"
+              fullWidth
+              variant="standard"
+            />
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleClosePASSW}>Cancel</Button>
+            <Button type="submit">Save</Button>
+          </DialogActions>
+        </Dialog>
       </div>
     );
   };
