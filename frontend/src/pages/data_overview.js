@@ -377,57 +377,63 @@ export default function Uebersicht() {
                     ) : (
                       <>
                         <button
+                          variant="outlined"
+                          className="text-blue-500 hover:text-blue-700"
                           onClick={() => handleEditClick(rowIndex, row)}
-                          className="text-blue-500 hover:text-blue-700 mr-2"
                         >
                           Bearbeiten
                         </button>
                         <React.Fragment>
-                        <Button variant="outlined" onClick={handleClickOpenPASSW}>
-  DELETE
-</Button>
-<Dialog
-  open={openPsw}
-  onClose={handleClosePASSW}
-  PaperProps={{
-    component: "form",
-    onSubmit: (event) => {
-      event.preventDefault();
-      const formData = new FormData(event.currentTarget);
-      const formJson = Object.fromEntries(formData.entries());
-      const passcode = formJson.passcode;
+                        <Button onClick={handleClickOpenPASSW} color="error">
+                          Löschen
+                        </Button>
+                        <Dialog
+                          open={openPsw}
+                          onClose={handleClosePASSW}
+                          PaperProps={{
+                            component: "form",
+                            onSubmit: (event) => {
+                              event.preventDefault();
+                              const formData = new FormData(event.currentTarget);
+                              const formJson = Object.fromEntries(formData.entries());
+                              const passcode = formJson.passcode;
 
-      // Überprüfen, ob der Passcode korrekt ist
-      if (passcode === process.env.NEXT_PUBLIC_DELETE_PASSCODE) {
-        handleDelete(row); // Eintrag löschen
-      } else {
-        alert("Incorrect passcode!"); // Fehlermeldung ausgeben
-      }
-      handleClosePASSW();
-    },
-  }}
->
-  <DialogTitle>Confirm</DialogTitle>
-  <DialogContent>
-    <DialogContentText>Please enter the Password.</DialogContentText>
-    <TextField
-      autoFocus
-      required
-      margin="dense"
-      id="passcode"
-      name="passcode"
-      label="Passcode"
-      type="password"
-      fullWidth
-      variant="standard"
-    />
-  </DialogContent>
-  <DialogActions>
-    <Button onClick={handleClosePASSW}>Cancel</Button>
-    <Button type="submit">Save</Button>
-  </DialogActions>
-</Dialog>
-    </React.Fragment>
+                              // Überprüfen, ob der Passcode korrekt ist
+                              if (passcode === process.env.NEXT_PUBLIC_DELETE_PASSCODE) {
+                                handleDelete(row); // Eintrag löschen
+                              } else {
+                                alert("Incorrect passcode!"); // Fehlermeldung ausgeben
+                              }
+                              handleClosePASSW();
+                            },
+                          }}
+                          BackdropProps={{
+                            style: {
+                              backgroundColor: "rgba(0, 0, 0, 0.2)", // Weniger dunkles Overlay
+                            },
+                          }}
+                        >
+                            <DialogTitle>Confirm</DialogTitle>
+                            <DialogContent>
+                              <DialogContentText>Please enter the Password.</DialogContentText>
+                              <TextField
+                                autoFocus
+                                required
+                                margin="dense"
+                                id="passcode"
+                                name="passcode"
+                                label="Passcode"
+                                type="password"
+                                fullWidth
+                                variant="standard"
+                              />
+                            </DialogContent>
+                            <DialogActions>
+                              <Button onClick={handleClosePASSW}>Cancel</Button>
+                              <Button type="submit">Save</Button>
+                            </DialogActions>
+                          </Dialog>
+                              </React.Fragment>
                       </>
                     )}
                   </td>
