@@ -11,12 +11,12 @@ import {
   MenuItem,
   InputLabel,
   FormControl,
-  Snackbar, 
-  Alert,    
+  Snackbar,
+  Alert,
 } from '@mui/material';
 import { IoMdArrowRoundBack } from "react-icons/io";
 import { suggestBoxData } from '../components/custom_functions/suggestBoxData';
-import dayjs from 'dayjs'; 
+import dayjs from 'dayjs';
 
 require('dotenv').config();
 
@@ -74,14 +74,17 @@ export default function SampleForm() {
       if (!tableName) return;
 
       const suggestion = await suggestBoxData(tableName);
+      console.log('Suggested box data: ZEILEEEE', suggestion.suggestedBoxzeile);
 
       if (suggestion) {
         setFormData((prevData) => ({
           ...prevData,
+
           boxnummer: suggestion.suggestedBoxnummer.toString(),
-          boxzeile: suggestion.suggestedBoxzeile.toString(),
+          boxzeile: suggestion.suggestedBoxzeile,
           boxspalte: suggestion.suggestedBoxspalte.toString(),
         }));
+        console.log('Formdata has been updated:', formData.boxzeile);
 
         if (suggestion.isNewBox) {
           setSnackbarMessage(
@@ -106,6 +109,7 @@ export default function SampleForm() {
     setFormData({ ...formData, [name]: value });
     // Clear the error for the field as the user types
     setErrors({ ...errors, [name]: '' });
+    console.log('Formdata CHANGED:', formData.boxzeile);
   };
 
   const handleClear = () => {
@@ -126,6 +130,8 @@ export default function SampleForm() {
       remarks: '',
     });
     setErrors({});
+
+  
   };
 
   const handleSubmit = async () => {
@@ -146,30 +152,32 @@ export default function SampleForm() {
       if (!formData.boxnummer || !isValidInteger(formData.boxnummer)) {
         newErrors.boxnummer = 'Boxnummer ist erforderlich und muss eine ganze Zahl sein.';
       }
-      if (!formData.boxzeile || !isValidInteger(formData.boxzeile)) {
-        newErrors.boxzeile = 'Boxzeile ist erforderlich und muss eine ganze Zahl sein.';
+      if (!formData.boxzeile ) {
+        newErrors.boxzeile = 'Boxzeile ist erforderlich.';
       }
-      if (!formData.boxspalte || !isValidInteger(formData.boxspalte)) {
-        newErrors.boxspalte = 'Boxspalte ist erforderlich und muss eine ganze Zahl sein.';
-      }
+      const boxspalteNumber = parseInt(formData.boxspalte, 10); // Convert to number
+    if (!formData.boxspalte || !isValidInteger(formData.boxspalte) || boxspalteNumber > 9 || boxspalteNumber === 0) {
+      newErrors.boxspalte = 'Boxspalte ist erforderlich und muss eine ganze Zahl zwischen 1-9 sein.';
+    }
       if (!formData.uhrzeit || !isValidTime(formData.uhrzeit)) {
         newErrors.uhrzeit = 'Uhrzeit ist erforderlich und muss im Format HH:MM sein.';
       }
-      if (!formData.abholer) 
+      if (!formData.abholer)
         newErrors.abholer = 'Abholer ist erforderlich.';
-      if (!formData.barcode_id) 
+      if (!formData.barcode_id)
         newErrors.barcode_id = 'Barcode ist erforderlich.';
 
     } else if (formData.probenart === 'serum' || formData.probenart === 'urin') {
       if (!formData.boxnummer || !isValidInteger(formData.boxnummer)) {
         newErrors.boxnummer = 'Boxnummer ist erforderlich und muss eine ganze Zahl sein.';
       }
-      if (!formData.boxzeile || !isValidInteger(formData.boxzeile)) {
-        newErrors.boxzeile = 'Boxzeile ist erforderlich und muss eine ganze Zahl sein.';
+      if (!formData.boxzeile ) {
+        newErrors.boxzeile = 'Boxzeile ist erforderlich.';
       }
-      if (!formData.boxspalte || !isValidInteger(formData.boxspalte)) {
-        newErrors.boxspalte = 'Boxspalte ist erforderlich und muss eine ganze Zahl sein.';
-      }
+      const boxspalteNumber = parseInt(formData.boxspalte, 10); // Convert to number
+    if (!formData.boxspalte || !isValidInteger(formData.boxspalte) || boxspalteNumber > 9 || boxspalteNumber === 0) {
+      newErrors.boxspalte = 'Boxspalte ist erforderlich und muss eine ganze Zahl zwischen 1-9 sein.';
+    }
       if (!formData.barcode_id) newErrors.barcode_id = 'Barcode ist erforderlich.';
     }
     if (Object.keys(newErrors).length > 0) {
@@ -190,7 +198,7 @@ export default function SampleForm() {
       patient_Id_intern: formData.patient_Id_intern,
       lagerraum: formData.lagerraum,
       boxnummer: parseInt(formData.boxnummer, 10),
-      boxzeile: parseInt(formData.boxzeile, 10),
+      boxzeile: formData.boxzeile,
       boxspalte: parseInt(formData.boxspalte, 10),
       anmerkungen: formData.anmerkungen,
       created_at: formattedCreatedAt,
@@ -419,17 +427,27 @@ export default function SampleForm() {
           />
 
           {/* Boxzeile */}
-          <TextField
-            label="Boxzeile"
-            name="boxzeile"
-            type="number"
-            value={formData.boxzeile}
-            onChange={handleChange}
-            fullWidth
-            margin="normal"
-            error={Boolean(errors.boxzeile)}
-            helperText={errors.boxzeile}
-          />
+          <FormControl variant="outlined" fullWidth margin="normal" error={Boolean(errors.boxzeile)}>
+            <InputLabel>Boxzeile</InputLabel>
+            <Select
+              name="boxzeile"
+              value={formData.boxzeile}
+              onChange={handleChange}
+              label="Boxzeile"
+            >
+              {['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I'].map((letter) => (
+                <MenuItem key={letter} value={letter}>
+                  {letter}
+                </MenuItem>
+              ))}
+            </Select>
+            {errors.boxzeile && (
+              <Typography variant="caption" color="error">
+                {errors.boxzeile}
+              </Typography>
+            )}
+          </FormControl>
+
 
           {/* Boxspalte */}
           <TextField
@@ -531,17 +549,26 @@ export default function SampleForm() {
           />
 
           {/* Boxzeile */}
-          <TextField
-            label="Boxzeile"
-            name="boxzeile"
-            type="number"
-            value={formData.boxzeile}
-            onChange={handleChange}
-            fullWidth
-            margin="normal"
-            error={Boolean(errors.boxzeile)}
-            helperText={errors.boxzeile}
-          />
+          <FormControl variant="outlined" fullWidth margin="normal" error={Boolean(errors.boxzeile)}>
+            <InputLabel>Boxzeile</InputLabel>
+            <Select
+              name="boxzeile"
+              value={formData.boxzeile}
+              onChange={handleChange}
+              label="Boxzeile"
+            >
+              {['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I'].map((letter) => (
+                <MenuItem key={letter} value={letter}>
+                  {letter}
+                </MenuItem>
+              ))}
+            </Select>
+            {errors.boxzeile && (
+              <Typography variant="caption" color="error">
+                {errors.boxzeile}
+              </Typography>
+            )}
+          </FormControl>
 
           {/* Boxspalte */}
           <TextField
@@ -628,17 +655,26 @@ export default function SampleForm() {
           />
 
           {/* Boxzeile */}
-          <TextField
-            label="Boxzeile"
-            name="boxzeile"
-            type="number"
-            value={formData.boxzeile}
-            onChange={handleChange}
-            fullWidth
-            margin="normal"
-            error={Boolean(errors.boxzeile)}
-            helperText={errors.boxzeile}
-          />
+          <FormControl variant="outlined" fullWidth margin="normal" error={Boolean(errors.boxzeile)}>
+            <InputLabel>Boxzeile</InputLabel>
+            <Select
+              name="boxzeile"
+              value={formData.boxzeile}
+              onChange={handleChange}
+              label="Boxzeile"
+            >
+              {['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I'].map((letter) => (
+                <MenuItem key={letter} value={letter}>
+                  {letter}
+                </MenuItem>
+              ))}
+            </Select>
+            {errors.boxzeile && (
+              <Typography variant="caption" color="error">
+                {errors.boxzeile}
+              </Typography>
+            )}
+          </FormControl>
 
           {/* Boxspalte */}
           <TextField

@@ -15,26 +15,39 @@ export async function suggestBoxData(
       }
     );
 
+
+
+
     const { boxnummer, boxzeile, boxspalte } = response.data;
+    console.log('response.data', response.data);
 
     let suggestedBoxnummer = boxnummer;
     let suggestedBoxzeile = boxzeile;
     let suggestedBoxspalte = boxspalte + 1;
     let isNewBox = false;
 
+    
+
+    // Letter sequence for boxzeile
+    const letters = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I'];
+
     // Check if spalte exceeds 9
     if (suggestedBoxspalte > 9) {
       suggestedBoxspalte = 1;
-      suggestedBoxzeile += 1;
+
+      // Move to the next letter in the sequence
+      const currentIndex = letters.indexOf(suggestedBoxzeile);
+      if (currentIndex >= 0 && currentIndex < letters.length - 1) {
+        suggestedBoxzeile = letters[currentIndex + 1];
+      } else {
+        // If the currentIndex is the last letter (I) or invalid, move to a new box
+        suggestedBoxzeile = 'A';
+        suggestedBoxnummer += 1;
+        isNewBox = true;
+      }
     }
 
-    // Check if zeile also exceeds 9
-    if (suggestedBoxzeile > 9) {
-      suggestedBoxzeile = 1;
-      suggestedBoxspalte = 1;
-      suggestedBoxnummer += 1;
-      isNewBox = true;
-    }
+    
 
     return {
       suggestedBoxnummer,
@@ -43,7 +56,14 @@ export async function suggestBoxData(
       isNewBox,
     };
   } catch (error) {
-    console.error('Error fetching last box info:', error);
-    return null;
+    console.error('no entry was found - setting initial values');
+    return {
+      suggestedBoxnummer: 1,
+      suggestedBoxzeile: 'A',
+      suggestedBoxspalte: 1,
+      isNewBox: true,
+    };
+    
   }
 }
+

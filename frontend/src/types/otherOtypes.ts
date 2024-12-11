@@ -4,7 +4,7 @@
 
 export interface LastBoxInfo {
     boxnummer: number;
-    boxzeile: number;
+    boxzeile: string;
     boxspalte: number;
 }
 
@@ -13,7 +13,7 @@ export interface LastBoxInfo {
 
 export interface SuggestedBoxData {
     suggestedBoxnummer: number;
-    suggestedBoxzeile: number;
+    suggestedBoxzeile: string;
     suggestedBoxspalte: number;
     isNewBox: boolean;
 }

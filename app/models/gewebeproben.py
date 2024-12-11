@@ -16,7 +16,7 @@ class Gewebeproben(Base):
     abholer = Column(TEXT)
     uhrzeit = Column(TEXT)		
     boxnummer = Column(Integer) 
-    boxzeile = Column(Integer) 
+    boxzeile = Column(TEXT) 
     boxspalte = Column(Integer) 	
     lagerraum = Column(TEXT)
     anmerkungen = Column(TEXT)
