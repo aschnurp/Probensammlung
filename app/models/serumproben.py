@@ -14,7 +14,7 @@ class Serumproben(Base):
     created_at = Column(TEXT)		
     probenart = Column(TEXT)	
     boxnummer = Column(Integer) 
-    boxzeile = Column(Integer) 
+    boxzeile = Column(TEXT) 
     boxspalte = Column(Integer) 	
     lagerraum = Column(TEXT)
     anmerkungen = Column(TEXT)

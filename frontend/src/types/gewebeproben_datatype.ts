@@ -4,7 +4,7 @@ export type gewebeprobenData = {
     created_at?: string;
     probenart?: string;
     boxnummer?: number;
-    boxzeile?: number;
+    boxzeile?: string;
     boxspalte?: number;
     lagerraum?: string;
     anmerkungen?: string;

@@ -23,7 +23,7 @@ class SerumprobenBase(BaseModel):
     barcode_id: str  	
     lagerraum: Optional[str] = 1029
     boxnummer: Optional[int] = None
-    boxzeile: Optional[int] = None
+    boxzeile: Optional[str] = None
     boxspalte: Optional[int] = None
     anmerkungen: Optional[str] = None
     created_at: Optional[str] = None
@@ -39,7 +39,7 @@ class GewebeprobenBase(BaseModel):
     abholer: Optional[str] = None
     uhrzeit: Optional[str] = None
     boxnummer: Optional[int] = None
-    boxzeile: Optional[int] = None
+    boxzeile: Optional[str] = None
     boxspalte: Optional[int] = None
     anmerkungen: Optional[str] = None
     remarks: Optional[str] = None
@@ -54,7 +54,7 @@ class UrinprobenBase(BaseModel):
     barcode_id: str 	
     lagerraum: Optional[str] = 1029
     boxnummer: Optional[int] = None
-    boxzeile: Optional[int] = None
+    boxzeile: Optional[str] = None
     boxspalte: Optional[int] = None
     anmerkungen: Optional[str] = None
     created_at: Optional[str] = None
@@ -85,7 +85,7 @@ class TableDatapatient(BaseModel):
 
 class LastBoxInfo(BaseModel):
     boxnummer: int
-    boxzeile: int
+    boxzeile: str
     boxspalte: int
 
     class Config:
