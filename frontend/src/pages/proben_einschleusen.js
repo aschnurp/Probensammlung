@@ -113,22 +113,17 @@ export default function SampleForm() {
   };
 
   const handleClear = () => {
-    setFormData({
-      patient_Id_intern: '',
-      probenart: '',
-      time: '',
-      abholer: '',
+    setFormData((prevData) => ({
+      ...prevData, // Spread the previous formData to keep existing fields
+      // Only clear the fields you want to reset
       lagerraum: '',
       boxspalte: '',
       boxzeile: '',
       barcode_id: '',
       boxnummer: '',
       anmerkungen: '',
-      created_at: '',
-      uhrzeit: '',
-      sap_id: '',
       remarks: '',
-    });
+    }));
     setErrors({});
 
   
@@ -236,7 +231,7 @@ export default function SampleForm() {
       );
 
       // Success notification
-      setSnackbarMessage('Daten erfolgreich gesendet!');
+      setSnackbarMessage('Daten erfolgreich gesendet! Die Werte für "Barcode", "Raum" und "Besonderheiten" wurden zurückgesetzt. Für die nächste Probe die Werte erneut eingeben bzw. anpassen.');
       setSnackbarSeverity('success');
       setSnackbarOpen(true);
 
