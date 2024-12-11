@@ -48,7 +48,7 @@ def delete_urinproben(delete_post: schemas.TableDataUrinproben, db: Session = De
     return {"message": "Successfully deleted"} 
 
 #router for new paraffin entry
-@router.delete("/parffinproben", status_code=status.HTTP_200_OK)  # No content on successful delete
+@router.delete("/paraffinproben", status_code=status.HTTP_200_OK)  # No content on successful delete
 def delete_paraffinproben(delete_post: schemas.TableDataParaffinproben, db: Session = Depends(get_db)):
     existing_item_query = db.query(Paraffinproben).filter(Paraffinproben.id == delete_post.id)
     existing_item = existing_item_query.first()
