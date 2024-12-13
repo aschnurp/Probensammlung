@@ -9,16 +9,8 @@ class Settings(BaseSettings):
     database_password: str
     database_name: str
     database_username: str
-    algorithm: str
-    secret_key: str
-    access_token_expire_minutes: int
-    forget_password_link_expire_minutes: int
     frontend_path: str
     db_connection_type: str = "unix"  # Default to 'unix'
-    next_public_contact_name_one: str
-    next_public_contact_mail_one: str
-    next_public_contact_name_two: str
-    next_public_contact_mail_two: str
 #    secret_key: str
 #    algorithm: str
 #    access_token_expire_minutes: int
