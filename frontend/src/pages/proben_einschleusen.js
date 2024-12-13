@@ -46,13 +46,14 @@ export default function SampleForm() {
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState('');
   const [snackbarSeverity, setSnackbarSeverity] = useState('success'); // 'success' or 'error'
+  const [updateBox, setUpdateBox] = useState(false);
 
   useEffect(() => {
     if (formData.probenart) {
       fetchAndSuggestBoxData(formData.probenart);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [formData.probenart]);
+  }, [formData.probenart, updateBox]);
 
 
   ///////////////////////////////////////////////////////////
@@ -84,7 +85,6 @@ export default function SampleForm() {
           boxzeile: suggestion.suggestedBoxzeile,
           boxspalte: suggestion.suggestedBoxspalte.toString(),
         }));
-        console.log('Formdata has been updated:', formData.boxzeile);
 
         if (suggestion.isNewBox) {
           setSnackbarMessage(
@@ -125,6 +125,7 @@ export default function SampleForm() {
       remarks: '',
     }));
     setErrors({});
+    setUpdateBox(prev => !prev);
 
   
   };
