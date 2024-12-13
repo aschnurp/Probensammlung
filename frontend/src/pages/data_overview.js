@@ -67,6 +67,7 @@ export default function Uebersicht() {
   const [Table_header, setTable_header] = useState(""); // Keep React state setter
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [openPsw, setOpen] = useState()
+  const [openCheck, setOpenCheck] = useState()
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
@@ -85,10 +86,17 @@ export default function Uebersicht() {
     setError(""); // Reset error state when closing
   };
 
-  // Handle passcode change
-  const handlePasscodeChange = (e) => {
-    setPasscode(e.target.value);
+  // Handle Check change
+  const handleOpenCheck = () => {
+    setOpenCheck(true); 
   };
+  
+  // Handle Check change
+  const handleCloseCheck = (e) => {
+    setOpenCheck(false);
+    setError(""); // Reset error state when closing
+  };
+
 
   const open = Boolean(anchorEl);
   const id = open ? 'simple-popover' : undefined;
@@ -186,6 +194,7 @@ export default function Uebersicht() {
   const handleEditClick = (index, rowData) => {
     setEditRowIndex(index);
     setFormData({ ...rowData }); // Die aktuellen Zeilendaten im Bearbeitungsformular laden
+    handleCloseCheck();
   };
 
   // Handle Cancel Edit
@@ -438,6 +447,33 @@ export default function Uebersicht() {
                             <Button type="submit">Speichern</Button>
                           </DialogActions>
                         </Dialog>
+                         {/* Dialog for Check Field */}
+                        <Dialog
+                        open={openCheck}
+                        onClose={handleCloseCheck}
+                        PaperProps={{
+                          component: "form",
+                          onSubmit: (event) => {
+                            event.preventDefault(); // Verhindert das Standard-Formularverhalten
+                            handleEditClick(rowIndex, row); // Bearbeitungsmodus aktivieren
+                          },
+                        }}
+                        BackdropProps={{
+                          style: {
+                            backgroundColor: "rgba(0, 0, 0, 0.2)", // Helligkeit Overlay
+                          },
+                        }}
+                      >
+                        <DialogTitle>Bearbeitungsmodus Aktivieren?</DialogTitle>
+                        <DialogContent>
+                          <DialogContentText>
+                          </DialogContentText>
+                        </DialogContent>
+                        <DialogActions>
+                          <Button onClick={handleCloseCheck}>Abbrechen</Button>
+                          <Button type="submit">Ja</Button>
+                        </DialogActions>
+                      </Dialog>
                       </React.Fragment>
                       </>
                     )}
