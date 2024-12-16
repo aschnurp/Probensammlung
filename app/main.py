@@ -3,7 +3,7 @@ from sqlalchemy.sql import text
 from fastapi import Depends, FastAPI
 from .database import get_db, engine, SessionLocal, Base
 from sqlalchemy.orm import Session
-from .models import status, gewebeproben, serumproben, urinproben, patient, paraffinproben
+from .models import status, gewebeproben, serumproben, urinproben, patient, paraffinproben, uebergeordete_probenart, untergeordete_probenart_gewebe, untergeordete_probenart_serum, untergeordete_probenart_urin, probenquelle_urin
 from .config import settings
 from .routers import post_new_data, put_tabledata, tables, number_entrys, patch_ausschleusen, patch_wiedereinschleusen, delete_tabledata
 from fastapi.middleware.cors import CORSMiddleware
@@ -26,8 +26,14 @@ app.add_middleware(
 
 
 
-#initalize database !order!
+#initalize database !order! Child-Tables first
 status.Base.metadata.create_all(bind=engine)
+uebergeordete_probenart.Base.metadata.create_all(bind=engine)
+untergeordete_probenart_urin.Base.metadata.create_all(bind=engine)
+untergeordete_probenart_gewebe.Base.metadata.create_all(bind=engine)
+untergeordete_probenart_serum.Base.metadata.create_all(bind=engine)
+probenquelle_urin.Base.metadata.create_all(bind=engine)
+
 gewebeproben.Base.metadata.create_all(bind=engine)
 paraffinproben.Base.metadata.create_all(bind=engine)
 serumproben.Base.metadata.create_all(bind=engine)
