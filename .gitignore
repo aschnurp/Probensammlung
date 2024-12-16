@@ -7,3 +7,4 @@ node_modules/
 .next/
 start_application.bat
 test_separation_code.txt
+allCode.txt
