@@ -232,7 +232,7 @@ export default function SampleForm() {
       );
 
       // Success notification
-      setSnackbarMessage('Daten erfolgreich gesendet! Die Werte für "Barcode", "Raum" und "Besonderheiten" wurden zurückgesetzt. Für die nächste Probe die Werte erneut eingeben bzw. anpassen.');
+      setSnackbarMessage('Daten erfolgreich gesendet!');
       setSnackbarSeverity('success');
       setSnackbarOpen(true);
 
