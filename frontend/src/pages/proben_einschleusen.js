@@ -1,5 +1,4 @@
 // src/SampleForm.js
-
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import {
@@ -17,6 +16,17 @@ import {
 import { IoMdArrowRoundBack } from "react-icons/io";
 import { suggestBoxData } from '../components/custom_functions/suggestBoxData';
 import dayjs from 'dayjs';
+import DateObject from "react-date-object";
+
+//default time management
+var date = new DateObject();
+var nowtime = new DateObject();
+
+date
+  .setFormat("YYYY-MM-DD")
+
+nowtime
+  .setFormat("HH:mm")
 
 require('dotenv').config();
 
@@ -32,8 +42,8 @@ export default function SampleForm() {
     barcode_id: '',
     boxnummer: '',
     anmerkungen: '',
-    created_at: '',
-    uhrzeit: '',
+    created_at: date.format(),  //default value date
+    uhrzeit: nowtime.format(),          //default value time
     sap_id: '',
     remarks: '',
   });
@@ -508,7 +518,6 @@ export default function SampleForm() {
             label="Datum"
             name="created_at"
             type="date"
-            defaultValue="2024-09-29"
             value={formData.created_at}
             onChange={handleChange}
             fullWidth
@@ -522,7 +531,6 @@ export default function SampleForm() {
           <TextField
             label="Raum"
             name="lagerraum"
-            defaultValue="1027"
             value={formData.lagerraum}
             onChange={handleChange}
             fullWidth

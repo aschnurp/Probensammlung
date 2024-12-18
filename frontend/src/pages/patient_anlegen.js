@@ -15,7 +15,17 @@ import {
   Alert,
 } from '@mui/material';
 import { IoMdArrowRoundBack } from "react-icons/io";
+import DateObject from "react-date-object";
 
+//default time management
+var date = new DateObject();
+var nowtime = new DateObject();
+
+date
+  .setFormat("YYYY-MM-DD")
+
+nowtime
+  .setFormat("HH:mm")
 
 export default function PatientForm() {
   // Corrected initial state keys to match input field names
@@ -27,14 +37,9 @@ export default function PatientForm() {
     op_diagnose: '',
     plannedSurgery: '',
     bemerkung: '',
-    created_at: '',
+    created_at: date.format(),
     op_geplant: '',
   });
-
-
-  
-
-
 
   // State for handling field errors
   const [errors, setErrors] = useState({});
@@ -123,8 +128,6 @@ export default function PatientForm() {
         newErrors.created_at = 'Datum muss im Format JJJJ-MM-TT sein.';
       }
     }
-
-
 
     // Add more validations if necessary for other fields
 
