@@ -56,10 +56,6 @@ app.include_router(patch_ausschleusen.router)
 app.include_router(delete_tabledata.router)
 
 
-
-
-
-
 @app.get("/")
 def test_db_connection(db: Session = Depends(get_db)):
     try:
