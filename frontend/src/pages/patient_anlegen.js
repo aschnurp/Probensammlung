@@ -135,7 +135,6 @@ export default function PatientForm() {
       setErrors(newErrors);
       return false;
     }
-
     return true;
   };
 
@@ -202,13 +201,11 @@ export default function PatientForm() {
 
   return (
     <Box sx={{ p: 3, maxWidth: 600, mx: 'auto' }}>
-
       <Box sx={{ position: 'absolute', top: 90, left: 16 }}>
         <Button variant="contained" color="primary" onClick={() => window.location.href = '/overview'}>
           <IoMdArrowRoundBack className='text-2xl' />
         </Button>
       </Box>
-
       <Box
         sx={{
           textAlign: 'center',

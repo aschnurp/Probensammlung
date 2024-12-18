@@ -32,7 +32,6 @@ export default function Sonstiges() {
         </Typography>
       </Box>
       <Box
-
         sx={{
           boxShadow: 4,
           borderRadius: 4,
