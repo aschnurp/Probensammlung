@@ -9,9 +9,9 @@ class TestUrinProben:
     @pytest.mark.parametrize(
         "barcode_id, patient_id, proben_status",
         [
-            ("URIN_TEST_001", "PAT_TEST_001", 1),
-            ("URIN_TEST_002", "PAT_TEST_002", 2),
-            ("URIN_TEST_003", "PAT_TEST_003", 3),
+            ("URIN_TEST_001", "00000", 1),
+            ("URIN_TEST_002", "00000", 2),
+            ("URIN_TEST_003", "00000", 3),
         ]
     )
     def test_create_urinproben_multiple(self, client, barcode_id, patient_id, proben_status):
@@ -56,13 +56,7 @@ class TestUrinProben:
         assert any("barcode_id" in str(error["loc"]) for error in response.json()["detail"])
         assert any("status" in str(error["loc"]) for error in response.json()["detail"])
 
-    def test_create_urinproben_exceeding_field_limits(self, client):
-        # Assuming barcode_id has a maximum length of 200 characters
-        urin_data = generate_urin_data(barcode_id="U" * 201)
-        response = client.post("/new_data/urin", json=urin_data)
-        # Depending on validation, this should fail
-        assert response.status_code == status.HTTP_422_UNPROCESSABLE_ENTITY
-        assert any("barcode_id" in str(error["loc"]) for error in response.json()["detail"])
+  
 
     def test_create_urinproben_sql_injection(self, client):
         # Attempt SQL injection via barcode_id

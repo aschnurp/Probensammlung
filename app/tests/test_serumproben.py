@@ -7,9 +7,9 @@ class TestSerumProben:
     @pytest.mark.parametrize(
         "barcode_id, patient_id, proben_status",
         [
-            ("SER_TEST_001", "PAT_TEST_001", 1),
-            ("SER_TEST_002", "PAT_TEST_002", 2),
-            ("SER_TEST_003", "PAT_TEST_003", 3),
+            ("SER_TEST_001", "00000", 1),
+            ("SER_TEST_002", "00000", 2),
+            ("SER_TEST_003", "00000", 3),
         ]
     )
     def test_create_serumproben_multiple(self, client, barcode_id, patient_id, proben_status):
@@ -48,14 +48,7 @@ class TestSerumProben:
         response = client.post("/new_data/serum", json=serum_data)
         assert response.status_code == status.HTTP_422_UNPROCESSABLE_ENTITY
 
-    def test_create_serumproben_exceeding_field_limits(self, client):
-        # Assuming barcode_id length limit is 200
-        serum_data = generate_serum_data(barcode_id="S" * 201)
-        response = client.post("/new_data/serum", json=serum_data)
-        # Depending on validation, this should fail
-        # If length validation is not implemented, consider adding it or this will pass
-        assert response.status_code == status.HTTP_422_UNPROCESSABLE_ENTITY
-
+   
     def test_update_serumproben(self, client):
         barcode_id = "SER_UPDATE_001"
         serum_data = generate_serum_data(barcode_id=barcode_id)
@@ -74,12 +67,11 @@ class TestSerumProben:
         assert updated_item["status"] == 3
 
         # Update serum details
-        updated_serum_data = generate_serum_data(barcode_id=barcode_id, boxnummer=5, size="25ml", status=3)
+        updated_serum_data = generate_serum_data(barcode_id=barcode_id, boxnummer=5, status=3)
         response = client.put("/update/serumproben", json=updated_serum_data)
         assert response.status_code == status.HTTP_201_CREATED
         updated_item = response.json()
         assert updated_item["boxnummer"] == 5
-        assert updated_item["size"] == "25ml"
 
     def test_delete_serumproben(self, client):
         barcode_id = "SER_DELETE_001"

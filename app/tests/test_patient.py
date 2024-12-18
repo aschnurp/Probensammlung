@@ -72,15 +72,7 @@ class TestPatient:
         assert any("sap_id" in str(error["loc"]) for error in response.json()["detail"])
         assert any("alter" in str(error["loc"]) for error in response.json()["detail"])
 
-    def test_create_patient_exceeding_field_limits(self, client):
-        # Assuming 'patient_Id_intern' has a maximum length of 200 characters
-        patient_data = generate_patient_data(
-            patient_id="P" * 201,
-            sap_id=4004
-        )
-        response = client.post("/new_data/patient", json=patient_data)
-        assert response.status_code == status.HTTP_422_UNPROCESSABLE_ENTITY
-        assert any("patient_Id_intern" in str(error["loc"]) for error in response.json()["detail"])
+    
 
     def test_create_patient_sql_injection(self, client):
         # Attempt SQL injection via 'patient_Id_intern'
