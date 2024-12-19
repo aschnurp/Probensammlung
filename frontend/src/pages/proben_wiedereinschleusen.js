@@ -47,7 +47,7 @@ export default function ProbeAusschleusen() {
 
       const response = await axios.patch(
         `http://localhost:8000/wiedereingeschleusen/${selectedProbe}/${barcodeId}`,
-        null, // No body required as per your backend logic
+        null, 
         {
           headers: { 'Content-Type': 'application/json' },
         }
