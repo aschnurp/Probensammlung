@@ -7,6 +7,7 @@ from fastapi.testclient import TestClient  # Updated import
 from app.database import get_db, Base
 from app.main import app
 from app.config import settings
+import json
 
 # Define the test database URL (ensure it's correct and does not append '_test' twice)
 SQLALCHEMY_DATABASE_URL = (
@@ -21,7 +22,6 @@ TestingSessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engin
 def ensure_test_database():
     """Create the test database if it doesn't exist."""
     try:
-        # Connect to the MySQL server without specifying a database
         default_engine = create_engine(
             f"mariadb+mariadbconnector://{settings.database_username}:"
             f"{settings.database_password}@{settings.database_hostname}:{settings.database_port}"
@@ -62,7 +62,7 @@ def session(test_engine, tables):
                 """
                 INSERT INTO status (id, status_text)
                 VALUES
-                    (1, 'Initial'),
+                    (1, 'Eingeschleust'),
                     (2, 'Ausschleust'),
                     (3, 'Wiedereingeschleust');
                 """
@@ -95,7 +95,82 @@ def client(session):
         finally:
             session.close()
 
+@pytest.fixture()
+def client(session):
+    """Provide a TestClient that uses the testing session."""
+    def override_get_db():
+        try:
+            yield session
+        finally:
+            session.close()
+
     app.dependency_overrides[get_db] = override_get_db
     with TestClient(app) as c:
         yield c
     app.dependency_overrides.clear()
+
+
+######## test data ########
+
+@pytest.fixture()
+def serum_data():
+    return {
+        "barcode_id": "1234",
+        "patient_Id_intern": "00000",
+        "created_at": "2024-04-27",
+        "probenart": "Serum",
+        "uebergeordete_probenart": 1,
+        "untergeordete_probenart": 1,
+        "boxnummer": 1, 
+        "boxzeile": "A",
+        "boxspalte": 3,
+        "lagerraum": "1027",
+        "anmerkungen": "Keine",
+        "remarks": "Keine",
+        "status": 1
+    }
+
+@pytest.fixture()
+def serum_data_invlaid():
+    return {
+        "patient_Id_intern": "00000",
+        "created_at": "2024-04-27",
+        "probenart": "Serum",
+        "uebergeordete_probenart": 1,
+        "untergeordete_probenart": 1,
+        "boxnummer": 1, 
+        "boxzeile": "A",
+        "boxspalte": 3,
+        "lagerraum": "1027",
+        "anmerkungen": "Keine",
+        "remarks": "Keine",
+        "status": 1
+    }
+
+
+@pytest.fixture()
+def patient_data():
+    return {
+        "sap_id":1,
+        "patient_Id_intern": "123",
+        "created_at": "2024-04-27",
+        "geschlecht": "weiblich",
+        "alter":  22,
+        "op_diagnose": "text",
+        "op_geplant": "text",
+        "bemerkung": "text"
+    }
+
+@pytest.fixture()
+def patient_data_double():
+    return {
+        "sap_id":1,
+        "patient_Id_intern": "00000",
+        "created_at": "2024-04-27",
+        "geschlecht": "weiblich",
+        "alter":  22,
+        "op_diagnose": "text",
+        "op_geplant": "text",
+        "bemerkung": "text"
+    }
+

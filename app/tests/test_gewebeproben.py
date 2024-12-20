@@ -65,7 +65,6 @@ class TestGewebeProben:
         # Attempt SQL injection via barcode_id
         gewebe_data = generate_gewebe_data(barcode_id="GEW'; DROP TABLE gewebeproben;--")
         response = client.post("/new_data/gewebe", json=gewebe_data)
-        # The response should not execute the injection; depends on ORM security
         assert response.status_code in [status.HTTP_201_CREATED, status.HTTP_400_BAD_REQUEST, status.HTTP_422_UNPROCESSABLE_ENTITY]
 
     def test_update_gewebeproben(self, client):

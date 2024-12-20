@@ -72,8 +72,6 @@ class TestPatient:
         assert any("sap_id" in str(error["loc"]) for error in response.json()["detail"])
         assert any("alter" in str(error["loc"]) for error in response.json()["detail"])
 
-    
-
     def test_create_patient_sql_injection(self, client):
         # Attempt SQL injection via 'patient_Id_intern'
         patient_data = generate_patient_data(
@@ -81,7 +79,6 @@ class TestPatient:
             sap_id=5005
         )
         response = client.post("/new_data/patient", json=patient_data)
-        # The response should not execute the injection; depends on ORM security
         assert response.status_code in [status.HTTP_201_CREATED, status.HTTP_400_BAD_REQUEST, status.HTTP_422_UNPROCESSABLE_ENTITY]
 
     def test_update_patient(self, client):
