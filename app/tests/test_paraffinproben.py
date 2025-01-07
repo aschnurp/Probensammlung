@@ -39,9 +39,6 @@ class TestParaffinProben:
         assert response.status_code == status.HTTP_422_UNPROCESSABLE_ENTITY
         assert any("patient_Id_intern" in str(error["loc"]) for error in response.json()["detail"])
         assert any("status" in str(error["loc"]) for error in response.json()["detail"])
-
-
-
     
     def test_update_paraffinproben(self, client):
         # First, create a paraffinproben entry
@@ -95,5 +92,3 @@ class TestParaffinProben:
      assert res.status_code == status.HTTP_200_OK
      data = res.json()
      assert not any(item["id"] == paraffin_id for item in data)
-
-     

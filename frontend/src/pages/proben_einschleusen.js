@@ -22,6 +22,7 @@ import DateObject from "react-date-object";
 //default time management
 var date = new DateObject();
 var nowtime = new DateObject();
+var raumnummer = '1029'
 
 date
   .setFormat("YYYY-MM-DD")
@@ -37,7 +38,7 @@ export default function SampleForm() {
     probenart: '',
     time: '',
     abholer: '',
-    lagerraum: '1029',
+    lagerraum: raumnummer,
     boxspalte: '',
     boxzeile: '',
     barcode_id: '',
@@ -175,7 +176,6 @@ export default function SampleForm() {
     setFormData((prevData) => ({
       ...prevData, // Spread the previous formData to keep existing fields
       // Only clear the fields you want to reset
-      lagerraum: '',
       boxspalte: '',
       boxzeile: '',
       barcode_id: '',
@@ -330,10 +330,9 @@ export default function SampleForm() {
         setSnackbarMessage(message);
         setSnackbarSeverity('error');
       } else {
-        setSnackbarMessage('Netzwerkfehler. Bitte versuchen Sie es erneut.');
+        setSnackbarMessage('Bitte passen Sie die Daten an und versuchen es erneut.');
         setSnackbarSeverity('error');
       }
-
       setSnackbarOpen(true);
     }
   };

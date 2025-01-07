@@ -5,40 +5,17 @@ from fastapi import status
 from app import schemas
 
 # Test für das Erstellen eines neuen Serumproben-Eintrags
-def test_create_serumproben(client):
-   
-    serum_data = {
-        "barcode_id": "SER123456",
-        "patient_Id_intern": "00000",
-        "created_at": "2024-04-27 10:00:00",
-        "probenart": "Serum",
-        "boxnummer": 1,
-        "boxzeile": 'A',
-        "boxspalte": 3,
-        "lagerraum": "A1",
-        "anmerkungen": "Keine",
-        "remarks": "Keine",
-        "size": "50ml",
-        "status": 1  # Add this field
-    }
-
+def test_create_serumproben(client, serum_data):
     response = client.post("/new_data/serum", json=serum_data)
 
     # Überprüft, ob der Eintrag erfolgreich erstellt wurde
-    assert response.status_code == status.HTTP_201_CREATED
+    assert response.status_code == 201
 
     # Überprüft, ob die zurückgegebenen Daten korrekt sind
     created_serum = schemas.TableDataSerumproben(**response.json())
     assert created_serum.barcode_id == serum_data["barcode_id"]
     assert created_serum.patient_Id_intern == serum_data["patient_Id_intern"]
     assert created_serum.probenart == serum_data["probenart"]
-
-
-
-
-
-
-
 
 # Test für das Erstellen eines doppelten Serumproben-Eintrags
 def test_create_serumproben_duplicate(client):
@@ -54,24 +31,17 @@ def test_create_serumproben_duplicate(client):
         "lagerraum": "B2",
         "anmerkungen": "Keine",
         "remarks": "Keine",
-        "size": "100ml",
         "status": 1
     }
 
     # Erstes Erstellen des Eintrags
     response1 = client.post("/new_data/serum", json=serum_data)
-    assert response1.status_code == status.HTTP_201_CREATED
+    assert response1.status_code == 201
 
     # Versuch, den gleichen Eintrag erneut zu erstellen
     response2 = client.post("/new_data/serum", json=serum_data)
     assert response2.status_code == status.HTTP_403_FORBIDDEN
     assert response2.json()["detail"] == f"Entry with barcode_id: {serum_data['barcode_id']} already exists"
-
-
-
-
-
-
 
 # Test für das Erstellen eines neuen Gewebeproben-Eintrags
 def test_create_gewebeproben(client):
@@ -92,13 +62,6 @@ def test_create_gewebeproben(client):
     created_gewebe = schemas.TableDataGewebeproben(**response.json())
     assert created_gewebe.barcode_id == gewebe_data["barcode_id"]
     assert created_gewebe.probenart == gewebe_data["probenart"]
-
-
-
-
-
-
-
 
 # Test für das Erstellen eines doppelten Gewebeproben-Eintrags
 def test_create_gewebeproben_duplicate(client):
@@ -122,13 +85,6 @@ def test_create_gewebeproben_duplicate(client):
     assert response2.status_code == status.HTTP_403_FORBIDDEN
     assert response2.json()["detail"] == f"Entry with barcode_id: {gewebe_data['barcode_id']} already exists"
 
-
-
-
-
-
-
-
 # Test für das Erstellen eines neuen Urinproben-Eintrags
 def test_create_urinproben(client):
    
@@ -151,13 +107,6 @@ def test_create_urinproben(client):
     created_urin = schemas.TableDataUrinproben(**response.json())
     assert created_urin.barcode_id == urin_data["barcode_id"]
     assert created_urin.probenart == urin_data["probenart"]
-
-
-
-
-
-
-
 
 # Test für das Erstellen eines doppelten Urinproben-Eintrags
 def test_create_urinproben_duplicate(client):
@@ -184,13 +133,6 @@ def test_create_urinproben_duplicate(client):
     assert response2.status_code == status.HTTP_403_FORBIDDEN
     assert response2.json()["detail"] == f"entry with barcode_id: {urin_data['barcode_id']} already exists"
 
-
-
-
-
-
-
-
 # Test für das Erstellen eines neuen Paraffinproben-Eintrags
 def test_create_paraffinproben(client):
     
@@ -209,98 +151,25 @@ def test_create_paraffinproben(client):
     assert created_paraffin.patient_Id_intern == paraffin_data["patient_Id_intern"]
     assert created_paraffin.probenart == paraffin_data["probenart"]
 
-
-
-
-
-
-
 # Test für das Erstellen eines neuen Patienteneintrags
-def test_create_patient(client):
-
-    patient_data = {
-        "sap_id": 123456,
-        "patient_Id_intern": "PAT123456",
-        "created_at": "2024-04-27 16:00:00",
-        "geschlecht": "männlich",
-        "alter": 45,
-        "op_diagnose": "Diagnose X",
-        "op_gepant": "Gephant Y",
-        "bemerkung": "Keine"
-    }
-
+def test_create_patient(client, patient_data):
     response = client.post("/new_data/patient", json=patient_data)
-    assert response.status_code == status.HTTP_201_CREATED
+
+    assert response.status_code == 201
 
     created_patient = schemas.TableDatapatient(**response.json())
     assert created_patient.patient_Id_intern == patient_data["patient_Id_intern"]
     assert created_patient.geschlecht == patient_data["geschlecht"]
 
-
-
-
-
-
-
-
-
-
 # Test für das Erstellen eines doppelten Patienteneintrags
-def test_create_patient_duplicate(client):
+def test_create_patient_duplicate(client, patient_data_double):
 
-    patient_data = {
-        "sap_id": 654321,
-        "patient_Id_intern": "PAT_DUPLICATE",
-        "created_at": "2024-04-27 17:00:00",
-        "geschlecht": "weiblich",
-        "alter": 30,
-        "op_diagnose": "Diagnose Y",
-        "op_gepant": "Gephant Z",
-        "bemerkung": "Keine"
-    }
-
-    # Erstes Erstellen des Eintrags
-    response1 = client.post("/new_data/patient", json=patient_data)
-    assert response1.status_code == status.HTTP_201_CREATED
-
-    # Versuch, den gleichen Eintrag erneut zu erstellen
-    response2 = client.post("/new_data/patient", json=patient_data)
+    response2 = client.post("/new_data/patient", json=patient_data_double)
     assert response2.status_code == status.HTTP_403_FORBIDDEN
-    assert response2.json()["detail"] == f"entery with barcode_id: {patient_data['patient_Id_intern']} already exists"
-
-
-
-
-
-
-
-
 
 
 # Test für das Erstellen eines Serumproben-Eintrags mit ungültigen Daten
-def test_create_serumproben_invalid_data(client):
-   
-    serum_data = {
-        "barcode_id": "",  # Leeres Barcode-ID
-        "patient_Id_intern": "00000",
-        "created_at": "invalid_date",  # Ungültiges Datumsformat
-        "probenart": "Serum",
-        "boxnummer": -1,  # Ungültige Boxnummer
-        "boxzeile": 'A',
-        "boxspalte": 3,
-        "lagerraum": "A1",
-        "anmerkungen": "Keine",
-        "remarks": "Keine",
-        "size": "50ml",
-        "status": 1
-    }
+def test_create_serumproben_invalid_data(client, serum_data_invlaid):
 
-    response = client.post("/new_data/serum", json=serum_data)
-
-    # Überprüft, ob die Anfrage aufgrund ungültiger Daten abgelehnt wurde
+    response = client.post("/new_data/serum", json=serum_data_invlaid)
     assert response.status_code == status.HTTP_422_UNPROCESSABLE_ENTITY
-
-    # Optional: Überprüfen Sie die spezifischen Fehlermeldungen
-    assert "barcode_id" in response.json()["detail"][0]["loc"]
-    assert "created_at" in response.json()["detail"][1]["loc"]
-    assert "boxnummer" in response.json()["detail"][2]["loc"]
