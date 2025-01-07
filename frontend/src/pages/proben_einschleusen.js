@@ -197,13 +197,13 @@ export default function SampleForm() {
     const isValidDate = (value) => /^\d{4}-\d{2}-\d{2}$/.test(value);
     const isValidTime = (value) => /^([0-1]\d|2[0-3]):([0-5]\d)$/.test(value);
 
-
     if (!formData.probenart) newErrors.probenart = 'Probenart ist erforderlich.';
     if (!formData.patient_Id_intern) newErrors.patient_Id_intern = 'Patienten ID ist erforderlich.';
     if (!formData.lagerraum) newErrors.lagerraum = 'Lagerraum ist erforderlich.';
     if (!formData.created_at || !isValidDate(formData.created_at)) {
       newErrors.created_at = 'Datum ist erforderlich und muss im Format JJJJ-MM-TT sein.';
     }
+
     // New validation for Übergeordnete Probe and Untergeordnete Probe
     const sampleTypes = ['gewebe', 'serum', 'paraffin'];
     if (formData.probenart && sampleTypes.includes(formData.probenart)) {
@@ -215,48 +215,65 @@ export default function SampleForm() {
       }
     }
 
-
-
+    // Validation for "gewebe"
     if (formData.probenart === 'gewebe') {
       if (!formData.boxnummer || !isValidInteger(formData.boxnummer)) {
         newErrors.boxnummer = 'Boxnummer ist erforderlich und muss eine ganze Zahl sein.';
       }
-      if (!formData.boxzeile) {
+
       if (!formData.boxzeile) {
         newErrors.boxzeile = 'Boxzeile ist erforderlich.';
       }
+
       const boxspalteNumber = parseInt(formData.boxspalte, 10); // Convert to number
-      if (!formData.boxspalte || !isValidInteger(formData.boxspalte) || boxspalteNumber > 9 || boxspalteNumber === 0) {
+      if (
+        !formData.boxspalte ||
+        !isValidInteger(formData.boxspalte) ||
+        boxspalteNumber > 9 ||
+        boxspalteNumber === 0
+      ) {
         newErrors.boxspalte = 'Boxspalte ist erforderlich und muss eine ganze Zahl zwischen 1-9 sein.';
       }
-      if (!formData.boxspalte || !isValidInteger(formData.boxspalte) || boxspalteNumber > 9 || boxspalteNumber === 0) {
-        newErrors.boxspalte = 'Boxspalte ist erforderlich und muss eine ganze Zahl zwischen 1-9 sein.';
-      }
+
       if (!formData.uhrzeit || !isValidTime(formData.uhrzeit)) {
         newErrors.uhrzeit = 'Uhrzeit ist erforderlich und muss im Format HH:MM sein.';
       }
-      if (!formData.abholer)
-        newErrors.abholer = 'Abholer ist erforderlich.';
-      if (!formData.barcode_id)
-        newErrors.barcode_id = 'Barcode ist erforderlich.';
 
-    } else if (formData.probenart === 'serum' || formData.probenart === 'urin') {
+      if (!formData.abholer) {
+        newErrors.abholer = 'Abholer ist erforderlich.';
+      }
+
+      if (!formData.barcode_id) {
+        newErrors.barcode_id = 'Barcode ist erforderlich.';
+      }
+    }
+
+    // Validation for "serum" or "urin"
+    else if (formData.probenart === 'serum' || formData.probenart === 'urin') {
       if (!formData.boxnummer || !isValidInteger(formData.boxnummer)) {
         newErrors.boxnummer = 'Boxnummer ist erforderlich und muss eine ganze Zahl sein.';
       }
-      if (!formData.boxzeile) {
+
       if (!formData.boxzeile) {
         newErrors.boxzeile = 'Boxzeile ist erforderlich.';
       }
+
       const boxspalteNumber = parseInt(formData.boxspalte, 10); // Convert to number
-      if (!formData.boxspalte || !isValidInteger(formData.boxspalte) || boxspalteNumber > 9 || boxspalteNumber === 0) {
+      if (
+        !formData.boxspalte ||
+        !isValidInteger(formData.boxspalte) ||
+        boxspalteNumber > 9 ||
+        boxspalteNumber === 0
+      ) {
         newErrors.boxspalte = 'Boxspalte ist erforderlich und muss eine ganze Zahl zwischen 1-9 sein.';
       }
-      if (!formData.boxspalte || !isValidInteger(formData.boxspalte) || boxspalteNumber > 9 || boxspalteNumber === 0) {
-        newErrors.boxspalte = 'Boxspalte ist erforderlich und muss eine ganze Zahl zwischen 1-9 sein.';
+
+      if (!formData.barcode_id) {
+        newErrors.barcode_id = 'Barcode ist erforderlich.';
       }
-      if (!formData.barcode_id) newErrors.barcode_id = 'Barcode ist erforderlich.';
     }
+
+    // If we have collected any errors, stop here
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
       return;
@@ -283,8 +300,8 @@ export default function SampleForm() {
       sap_id: formData.sap_id,
       abholer: formData.abholer,
       remarks: formData.remarks,
-      übergeordneteProbe: formData.übergeordneteProbe, // ID value
-      untergeordneteProbe: formData.untergeordneteProbe, // ID value
+      übergeordneteProbe: formData.übergeordneteProbe,
+      untergeordneteProbe: formData.untergeordneteProbe,
     };
 
     try {
@@ -313,6 +330,7 @@ export default function SampleForm() {
           headers: { 'Content-Type': 'application/json' },
         }
       );
+
       // Success notification
       setSnackbarMessage('Daten erfolgreich gesendet!');
       setSnackbarSeverity('success');
@@ -336,6 +354,15 @@ export default function SampleForm() {
       setSnackbarOpen(true);
     }
   };
+
+
+
+
+
+
+
+
+
 
 
   const handleSnackbarClose = (event, reason) => {
