@@ -33,18 +33,15 @@ export default function ProbeAusschleusen() {
 
   const validateForm = () => {
     const newErrors = {};
-
     if (!barcodeId.trim()) {
       newErrors.barcodeId = 'Barcode ID darf nicht leer sein.';
     }
-
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
 
   const handleSubmit = async () => {
     if (!validateForm()) return;
-
     try {
       console.log('Trying to submit data:', barcodeId);
 

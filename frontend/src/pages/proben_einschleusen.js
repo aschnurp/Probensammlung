@@ -118,8 +118,6 @@ export default function SampleForm() {
 
 
   ///////////////////////////////////////////////////////////
-
-  // implementing the Box data suggestion functionality
   // Function to fetch and suggest box data
   const fetchAndSuggestBoxData = async (probenart) => {
     try {
@@ -224,9 +222,13 @@ export default function SampleForm() {
         newErrors.boxnummer = 'Boxnummer ist erforderlich und muss eine ganze Zahl sein.';
       }
       if (!formData.boxzeile) {
+      if (!formData.boxzeile) {
         newErrors.boxzeile = 'Boxzeile ist erforderlich.';
       }
       const boxspalteNumber = parseInt(formData.boxspalte, 10); // Convert to number
+      if (!formData.boxspalte || !isValidInteger(formData.boxspalte) || boxspalteNumber > 9 || boxspalteNumber === 0) {
+        newErrors.boxspalte = 'Boxspalte ist erforderlich und muss eine ganze Zahl zwischen 1-9 sein.';
+      }
       if (!formData.boxspalte || !isValidInteger(formData.boxspalte) || boxspalteNumber > 9 || boxspalteNumber === 0) {
         newErrors.boxspalte = 'Boxspalte ist erforderlich und muss eine ganze Zahl zwischen 1-9 sein.';
       }
@@ -243,9 +245,13 @@ export default function SampleForm() {
         newErrors.boxnummer = 'Boxnummer ist erforderlich und muss eine ganze Zahl sein.';
       }
       if (!formData.boxzeile) {
+      if (!formData.boxzeile) {
         newErrors.boxzeile = 'Boxzeile ist erforderlich.';
       }
       const boxspalteNumber = parseInt(formData.boxspalte, 10); // Convert to number
+      if (!formData.boxspalte || !isValidInteger(formData.boxspalte) || boxspalteNumber > 9 || boxspalteNumber === 0) {
+        newErrors.boxspalte = 'Boxspalte ist erforderlich und muss eine ganze Zahl zwischen 1-9 sein.';
+      }
       if (!formData.boxspalte || !isValidInteger(formData.boxspalte) || boxspalteNumber > 9 || boxspalteNumber === 0) {
         newErrors.boxspalte = 'Boxspalte ist erforderlich und muss eine ganze Zahl zwischen 1-9 sein.';
       }
@@ -307,7 +313,6 @@ export default function SampleForm() {
           headers: { 'Content-Type': 'application/json' },
         }
       );
-
       // Success notification
       setSnackbarMessage('Daten erfolgreich gesendet!');
       setSnackbarSeverity('success');
@@ -345,7 +350,6 @@ export default function SampleForm() {
   ///////////////////////////////////////////////////////////
   ///////////////////////////////////////////////////////////
 
-
   return (
     <Box sx={{ p: 3, maxWidth: 600, mx: 'auto' }}>
 
@@ -354,7 +358,6 @@ export default function SampleForm() {
           <IoMdArrowRoundBack className='text-2xl' />
         </Button>
       </Box>
-
 
       <Box
         sx={{
@@ -367,8 +370,6 @@ export default function SampleForm() {
           Proben Einschleusen
         </Typography>
       </Box>
-
-
 
       {/* Probenart Select Field */}
       <FormControl variant="outlined" fullWidth margin="normal" error={Boolean(errors.probenart)}>
@@ -579,7 +580,6 @@ export default function SampleForm() {
               </Typography>
             )}
           </FormControl>
-
 
           {/* Boxspalte */}
           <TextField
@@ -892,7 +892,6 @@ export default function SampleForm() {
         </Alert>
       </Snackbar>
 
-
       {/* Action Buttons */}
       <Box sx={{ mt: 3, display: 'flex', justifyContent: 'space-between' }}>
         <Button variant="outlined" color="secondary" onClick={handleClear}>
@@ -902,10 +901,6 @@ export default function SampleForm() {
           Senden
         </Button>
       </Box>
-
-
     </Box>
-
-
   );
 }
