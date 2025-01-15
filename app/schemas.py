@@ -48,6 +48,11 @@ class GewebeprobenBase(BaseModel):
 class TableDataGewebeproben(GewebeprobenBase):
     status: Optional[int] = 1
 
+class TableDataProbenabholer(BaseModel):
+    id: Optional[int] = None
+    name: Optional[str] = None
+
+
 class UrinprobenBase(BaseModel):
     patient_Id_intern: str
     probenart: str	

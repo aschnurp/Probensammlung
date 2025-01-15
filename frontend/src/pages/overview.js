@@ -240,6 +240,57 @@ export default function Overview() {
           <Divider sx={{ my: 2 }} />
         </Box>
       ))}
+      <Box
+        sx={{
+          textAlign: 'center',
+          height: 0,
+        }}
+      >
+        <Typography variant="h5" sx={{ fontWeight: 'bold', color: 'text.primary' }}>
+          Weitere Funktionen
+        </Typography>
+      </Box>
+      <Box
+        sx={{
+          bgcolor: 'background.paper',
+          boxShadow: 3,
+          borderRadius: 4,
+          p: 3,
+          m: 10,
+        }}
+      >
+        <Box
+          sx={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center', // Ensures alignment of title and button
+          }}
+        >
+          <Typography variant="h6" sx={{ fontWeight: 'medium', color: 'text.primary' }}>
+            Probenabholer Ändern
+          </Typography>
+          <Link
+            href={'/proben_abholer_aendern'}
+            className={clsx('text-white font-semibold hover:text-blue-200', {
+              underline: location === '/proben_abholer_aendern',
+            })}
+          >
+            <ReusableButton
+              buttonVariant="contained"
+              buttonColor="primary"
+              buttonText="Bearbeiten"
+            />
+          </Link>
+        </Box>
+        <Divider sx={{ my: 2 }} />
+      </Box>
+      <Box
+        sx={{
+          height: 10,
+        }}>
+
+      </Box>
+
     </ThemeProvider>
   );
 }

@@ -11,6 +11,7 @@ from ..models.serumproben import Serumproben
 from ..models.gewebeproben import Gewebeproben
 from ..models.urinproben import Urinproben
 from ..models.paraffinproben import Paraffinproben
+from ..models.probenabholer import Probenabholer
 from datetime import datetime
 
 
@@ -63,7 +64,6 @@ def create_gewebeproben(post: schemas.TableDataGewebeproben, db: Session = Depen
 
     return new_item
 
-#router for new urin entry
 # Router for new urin entry
 @router.post("/urin", status_code=status.HTTP_201_CREATED, response_model=schemas.TableDataUrinproben)
 def create_urinproben(post: schemas.TableDataUrinproben, db: Session = Depends(get_db)):
@@ -108,6 +108,15 @@ def create_patient(post: schemas.TableDatapatient, db: Session = Depends(get_db)
     existing_item = db.query(Patient).filter(Patient.patient_Id_intern == post.patient_Id_intern).first()
     if existing_item:
         raise HTTPException(status_code= status.HTTP_403_FORBIDDEN, detail= f"entery with barcode_id: {post.patient_Id_intern} already exists") 
+    db.add(new_item)
+    db.commit()
+    db.refresh(new_item)
+    return new_item
+
+#router for new probenabholer entry
+@router.post("/probenabholer", status_code=status.HTTP_201_CREATED, response_model= schemas.TableDataProbenabholer)
+def create_probenabholer(post: schemas.TableDataProbenabholer, db: Session = Depends(get_db)):
+    new_item = Probenabholer(**post.dict())
     db.add(new_item)
     db.commit()
     db.refresh(new_item)
