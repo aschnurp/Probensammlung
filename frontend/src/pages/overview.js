@@ -267,7 +267,7 @@ export default function Overview() {
           }}
         >
           <Typography variant="h6" sx={{ fontWeight: 'medium', color: 'text.primary' }}>
-            Probenabholer Ändern
+            Probenabholer Bearbeiten
           </Typography>
           <Link
             href={'/proben_abholer_aendern'}

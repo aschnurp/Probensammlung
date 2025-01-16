@@ -1,6 +1,7 @@
 // src/SampleForm.js
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { makeStyles } from "@material-ui/core/styles";
 import {
   Box,
   TextField,
@@ -32,6 +33,13 @@ nowtime
 
 require('dotenv').config();
 
+const useStyles = makeStyles((theme) => ({
+  formControl: {
+    margin: theme.spacing(1),
+    minWidth: 120
+  }
+}));
+
 export default function SampleForm() {
   const [formData, setFormData] = useState({
     patient_Id_intern: '',
@@ -53,7 +61,6 @@ export default function SampleForm() {
   });
 
 
-
   /////////////// useEffect here ///////////////
 
   // State to track errors
@@ -67,7 +74,21 @@ export default function SampleForm() {
   // State to store options for Übergeordnete Probe and Untergeordnete Probe
   const [overgeordneteProbeOptions, setOvergeordneteProbeOptions] = useState([]);
   const [untergeordneteProbeOptions, setUntergeordneteProbeOptions] = useState([]);
+  const [selectedCategorias, setselectedCategorias] = useState("");
+  const [abholer, setCategorias] = useState([]);
 
+  useEffect(() => {
+    const getCategorias = async () => {
+      const res = await fetch(`http://localhost:8000/table/data?table_name=probenabholer`, {
+        method: "GET",
+        headers: { "Content-Type": "application/json" }
+      });
+      //console.log(res);
+      const response = await res.json();
+      setCategorias(response);
+    };
+    getCategorias();
+  }, []);
 
   useEffect(() => {
     if (formData.probenart) {
@@ -116,8 +137,6 @@ export default function SampleForm() {
   }, [formData.probenart]);
 
 
-
-
   ///////////////////////////////////////////////////////////
   // Function to fetch and suggest box data
   const fetchAndSuggestBoxData = async (probenart) => {
@@ -135,7 +154,7 @@ export default function SampleForm() {
       if (!tableName) return;
 
       const suggestion = await suggestBoxData(tableName);
-      console.log('Suggested box data: ZEILEEEE', suggestion.suggestedBoxzeile);
+      console.log('Suggested box data: Zeile', suggestion.suggestedBoxzeile);
 
       if (suggestion) {
         setFormData((prevData) => ({
@@ -187,8 +206,6 @@ export default function SampleForm() {
     }));
     setErrors({});
     setUpdateBox(prev => !prev);
-
-
   };
 
   const handleSubmit = async () => {
@@ -196,6 +213,8 @@ export default function SampleForm() {
     const isValidInteger = (value) => /^\d+$/.test(value);
     const isValidDate = (value) => /^\d{4}-\d{2}-\d{2}$/.test(value);
     const isValidTime = (value) => /^([0-1]\d|2[0-3]):([0-5]\d)$/.test(value);
+    //Test
+    console.log('handleSubmit called:', formData);
 
     if (!formData.probenart) newErrors.probenart = 'Probenart ist erforderlich.';
     if (!formData.patient_Id_intern) newErrors.patient_Id_intern = 'Patienten ID ist erforderlich.';
@@ -526,23 +545,23 @@ export default function SampleForm() {
           <FormControl
             variant="outlined"
             fullWidth
-            margin="normal"
-            error={Boolean(errors.abholer)}
-          >
-            <InputLabel>Probenabholer*in</InputLabel>
+            margin="normal">
+            <InputLabel id="demo-simple-select-label">Probenabholer:In</InputLabel>
             <Select
               name="abholer"
+              labelId="demo-simple-select-filled-label"
+              label="Probenabholer:In"
+              id="demo-simple-select-filled"
               value={formData.abholer}
               onChange={handleChange}
-              label="Probenabholer*in"
             >
-              <MenuItem value="1">{process.env.NEXT_PUBLIC_ABHOLER_ONE}</MenuItem>
+              <MenuItem value="">
+                <em>None</em>
+              </MenuItem>
+              {abholer.map((abholer) => (
+                <MenuItem key={abholer.id} value={abholer.name}>{abholer.name}</MenuItem>
+              ))}
             </Select>
-            {errors.abholer && (
-              <Typography variant="caption" color="error">
-                {errors.abholer}
-              </Typography>
-            )}
           </FormControl>
 
           {/* Raum */}

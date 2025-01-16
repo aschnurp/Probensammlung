@@ -230,7 +230,7 @@ export default function Uebersicht() {
         payload = {
           id: row.id,
         };
-        
+
       console.log("Payload to delete:", payload); // Log the payload for debugging
 
       // Make the DELETE request
