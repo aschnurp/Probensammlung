@@ -357,9 +357,6 @@ export default function Uebersicht() {
                     ) : col.key === "status" && row[col.key] in STATUS_MAPPING ? (
                       // Status anzeigen, falls Status vorhanden
                       STATUS_MAPPING[row[col.key]]
-                      ) : col.key === "abholer" && row[col.key] in ABHOLER_MAPPING ? (
-                        // Mapping der Abholer
-                        ABHOLER_MAPPING[row[col.key]]
                     ) : row[col.key] !== null ? (
                       row[col.key]
                     ) : (

@@ -356,15 +356,6 @@ export default function SampleForm() {
   };
 
 
-
-
-
-
-
-
-
-
-
   const handleSnackbarClose = (event, reason) => {
     if (reason === 'clickaway') {
       return;
@@ -546,12 +537,6 @@ export default function SampleForm() {
               label="Probenabholer*in"
             >
               <MenuItem value="1">{process.env.NEXT_PUBLIC_ABHOLER_ONE}</MenuItem>
-              <MenuItem value="2">{process.env.NEXT_PUBLIC_ABHOLER_TWO}</MenuItem>
-              <MenuItem value="3">{process.env.NEXT_PUBLIC_ABHOLER_THREE}</MenuItem>
-              <MenuItem value="4">{process.env.NEXT_PUBLIC_ABHOLER_FOUR}</MenuItem>
-              <MenuItem value="5">{process.env.NEXT_PUBLIC_ABHOLER_FIVE}</MenuItem>
-              <MenuItem value="6">{process.env.NEXT_PUBLIC_ABHOLER_SIX}</MenuItem>
-              <MenuItem value="7">Andere</MenuItem>
             </Select>
             {errors.abholer && (
               <Typography variant="caption" color="error">

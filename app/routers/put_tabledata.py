@@ -8,6 +8,7 @@ from ..models.serumproben import Serumproben
 from ..models.gewebeproben import Gewebeproben
 from ..models.urinproben import Urinproben
 from ..models.paraffinproben import Paraffinproben
+from ..models.probenabholer import Probenabholer
 
 router = APIRouter(
     prefix="/update",
@@ -66,6 +67,17 @@ def update_patient(updated_post: schemas.TableDatapatient, db: Session = Depends
     existing_item = existing_item_query.first()
     if existing_item == None:
         raise HTTPException(status_code= status.HTTP_403_FORBIDDEN, detail= f"entery with patient_Id_intern: {updated_post.patient_Id_intern} does not exist") 
+    existing_item_query.update(updated_post.dict(), synchronize_session = False)
+    db.commit()
+    return existing_item_query.first()
+
+#router for new probenabholer entry
+@router.put("/probenabholer", status_code=status.HTTP_201_CREATED, response_model= schemas.TableDataProbenabholer)
+def update_probenabholer(updated_post: schemas.TableDataProbenabholer, db: Session = Depends(get_db)):
+    existing_item_query = db.query(Probenabholer).filter(Probenabholer.id == updated_post.id)
+    existing_item = existing_item_query.first()
+    if existing_item == None:
+        raise HTTPException(status_code= status.HTTP_403_FORBIDDEN, detail= f"entery with id: {updated_post.id} does not exist") 
     existing_item_query.update(updated_post.dict(), synchronize_session = False)
     db.commit()
     return existing_item_query.first()
