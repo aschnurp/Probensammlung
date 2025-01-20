@@ -55,13 +55,13 @@ export default function Uebersicht() {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedTable, setSelectedTable] = useState(null);
   const [data, setData] = useState([]);
-  const [filteredData, setFilteredData] = useState([]); 
-  const [editRowIndex, setEditRowIndex] = useState(null); 
+  const [filteredData, setFilteredData] = useState([]);
+  const [editRowIndex, setEditRowIndex] = useState(null);
   const [formData, setFormData] = useState({});
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [searchQuery, setSearchQuery] = useState(""); 
-  const [selectedColumn, setSelectedColumn] = useState(""); 
+  const [searchQuery, setSearchQuery] = useState("");
+  const [selectedColumn, setSelectedColumn] = useState("");
   const dropdownRef = useRef(null);
   const tableScrollRef = useRef(null);
   const [Table_header, setTable_header] = useState(""); // Keep React state setter
@@ -71,6 +71,8 @@ export default function Uebersicht() {
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
+
+  
 
   const handleClose = () => {
     setAnchorEl(null);
@@ -88,9 +90,9 @@ export default function Uebersicht() {
 
   // Handle Check change
   const handleOpenCheck = () => {
-    setOpenCheck(true); 
+    setOpenCheck(true);
   };
-  
+
   // Handle Check change
   const handleCloseCheck = (e) => {
     setOpenCheck(false);
@@ -116,7 +118,7 @@ export default function Uebersicht() {
       setTable_header("");
     }
   }, [selectedTable]); // Dependency on selectedTable
-  
+
 
   const toggleDropdown = () => setIsOpen(!isOpen);
 
@@ -144,7 +146,7 @@ export default function Uebersicht() {
       console.log("sucsessful change table");
     }
   };
-  
+
   // Handle search for specific column
   const handleSearchChange = (e) => {
     const query = e.target.value;
@@ -208,7 +210,7 @@ export default function Uebersicht() {
       console.error("No table selected for updating data");
       return;
     }
-  
+
     try {
       const payload = { ...formData }; // Include the updated row data
       const response = await axios.put(
@@ -260,7 +262,7 @@ export default function Uebersicht() {
       }
 
       console.log("Payload to delete:", payload); // Log the payload for debugging
-  
+
       // Make the DELETE request
       const response = await axios.delete(
         `http://localhost:8000/delete/${selectedTable}`,
@@ -272,14 +274,14 @@ export default function Uebersicht() {
         }
       );
       console.log("Response after delete:", response); // Log the response
-      
+
       // Update data after successful delete
       setData((prevData) => prevData.filter((r) => r.rowId !== row.rowId));
       setFilteredData((prevFiltered) => prevFiltered.filter((r) => r.rowId !== row.rowId));
-  
+
       // Fetch updated data after deletion
       const response_update = await axios.get(`http://localhost:8000/table/data?table_name=${selectedTable}`);
-  
+
       // Update state with the new data
       setData(response_update.data);
       setFilteredData(response_update.data);
@@ -288,7 +290,7 @@ export default function Uebersicht() {
       console.error('Error deleting data:', error);
     }
   };
-  
+
   // Table horizontal Scroll logic
   const scrollLeft = () => {
     if (tableScrollRef.current) {
@@ -304,10 +306,10 @@ export default function Uebersicht() {
 
   const renderTable = () => {
     const columns = TABLE_COLUMNS[selectedTable];
-  
+
     if (!columns || loading) return null;
     if (error) return <p className="text-red-500">{error}</p>;
-  
+
     return (
       <div className="flex justify-center items-center mt-12">
         {/* Left Scroll Button */}
@@ -343,25 +345,26 @@ export default function Uebersicht() {
                       className="px-6 py-4 whitespace-nowrap text-sm text-gray-500"
                     >
                       {editRowIndex === rowIndex ? (
-                    <input
-                      value={formData[col.key] || ""}
-                      onChange={(e) =>
-                        setFormData({ ...formData, [col.key]: e.target.value })
-                      }
-                      className="border border-gray-300 px-2 py-1"
-                    />
-                    ) : (
-                    col.key === "created_at" ? (
-                      // Formatierung für das Datum, falls "created_at"
-                      dayjs(row[col.key]).format("DD.MM.YYYY")
-                    ) : col.key === "status" && row[col.key] in STATUS_MAPPING ? (
-                      // Status anzeigen, falls Status vorhanden
-                      STATUS_MAPPING[row[col.key]]
-                    ) : row[col.key] !== null ? (
-                      row[col.key]
-                    ) : (
-                      "N/A"
-                      )) }
+                        <input
+                          value={formData[col.key] || ""}
+                          onChange={(e) =>
+                            setFormData({ ...formData, [col.key]: e.target.value })
+                          }
+                          className="border border-gray-300 px-2 py-1"
+                        />
+                      ) : col.key === "probenart" ? (row["uebergeordete_probenart"] ? row["uebergeordete_probenart"] : ( row["untergeordnete_probenart"] ? row["untergeordnete_probenart"]: "N/A" ))
+
+                        : (col.key === "created_at" ? (
+                          // Formatierung für das Datum, falls "created_at"
+                          dayjs(row[col.key]).format("DD.MM.YYYY")
+                        ) : col.key === "status" && row[col.key] in STATUS_MAPPING ? (
+                          // Status anzeigen, falls Status vorhanden
+                          STATUS_MAPPING[row[col.key]]
+                        ) : row[col.key] !== null ? (
+                          row[col.key]
+                        ) : (
+                          "N/A"
+                        ))}
                     </td>
                   ))}
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
@@ -388,90 +391,90 @@ export default function Uebersicht() {
                       <>
                         <Button
                           onClick={() => handleEditClick(rowIndex, row)}
-                          variant="outlined" 
-                          color="primary" 
+                          variant="outlined"
+                          color="primary"
                           size='small'
-                          >
+                        >
                           Bearbeiten
                         </Button>
                         <React.Fragment>
-                        <Button variant="outlined" color="error" size='small' onClick={handleClickOpenPASSW}>
-                          Löschen
-                        </Button>
-                        <Dialog
-                          open={openPsw}
-                          onClose={handleClosePASSW}
-                          PaperProps={{
-                            component: "form",
-                            onSubmit: (event) => {
-                              event.preventDefault();
-                              const formData = new FormData(event.currentTarget);
-                              const formJson = Object.fromEntries(formData.entries());
-                              const passcode = formJson.passcode;
+                          <Button variant="outlined" color="error" size='small' onClick={handleClickOpenPASSW}>
+                            Löschen
+                          </Button>
+                          <Dialog
+                            open={openPsw}
+                            onClose={handleClosePASSW}
+                            PaperProps={{
+                              component: "form",
+                              onSubmit: (event) => {
+                                event.preventDefault();
+                                const formData = new FormData(event.currentTarget);
+                                const formJson = Object.fromEntries(formData.entries());
+                                const passcode = formJson.passcode;
 
-                              // Überprüfen, ob der Passcode korrekt ist
-                              if (passcode === process.env.NEXT_PUBLIC_DELETE_PASSCODE) {
-                                handleDelete(row); // Eintrag löschen
-                              } else {
-                                alert("Incorrect passcode!"); // Fehlermeldung ausgeben
-                              }
-                              handleClosePASSW();
-                            },
-                          }}
-                          BackdropProps={{
-                            style: {
-                              backgroundColor: "rgba(0, 0, 0, 0.2)", // Weniger dunkles Overlay
-                            },
-                          }}
-                        >
-                          <DialogTitle>Passwort</DialogTitle>
-                          <DialogContent>
-                            <DialogContentText></DialogContentText>
-                            <TextField
-                              autoFocus
-                              required
-                              margin="dense"
-                              id="passcode"
-                              name="passcode"
-                              label="Passcode"
-                              type="password"
-                              fullWidth
-                              variant="standard"
-                            />
-                          </DialogContent>
-                          <DialogActions>
-                            <Button onClick={handleClosePASSW}>Abbrechen</Button>
-                            <Button type="submit">Speichern</Button>
-                          </DialogActions>
-                        </Dialog>
-                         {/* Dialog for Check Field */}
-                        <Dialog
-                        open={openCheck}
-                        onClose={handleCloseCheck}
-                        PaperProps={{
-                          component: "form",
-                          onSubmit: (event) => {
-                            event.preventDefault(); // Verhindert das Standard-Formularverhalten
-                            handleEditClick(rowIndex, row); // Bearbeitungsmodus aktivieren
-                          },
-                        }}
-                        BackdropProps={{
-                          style: {
-                            backgroundColor: "rgba(0, 0, 0, 0.2)", // Helligkeit Overlay
-                          },
-                        }}
-                      >
-                        <DialogTitle>Bearbeitungsmodus Aktivieren?</DialogTitle>
-                        <DialogContent>
-                          <DialogContentText>
-                          </DialogContentText>
-                        </DialogContent>
-                        <DialogActions>
-                          <Button onClick={handleCloseCheck}>Abbrechen</Button>
-                          <Button type="submit">Ja</Button>
-                        </DialogActions>
-                      </Dialog>
-                      </React.Fragment>
+                                // Überprüfen, ob der Passcode korrekt ist
+                                if (passcode === process.env.NEXT_PUBLIC_DELETE_PASSCODE) {
+                                  handleDelete(row); // Eintrag löschen
+                                } else {
+                                  alert("Incorrect passcode!"); // Fehlermeldung ausgeben
+                                }
+                                handleClosePASSW();
+                              },
+                            }}
+                            BackdropProps={{
+                              style: {
+                                backgroundColor: "rgba(0, 0, 0, 0.2)", // Weniger dunkles Overlay
+                              },
+                            }}
+                          >
+                            <DialogTitle>Passwort</DialogTitle>
+                            <DialogContent>
+                              <DialogContentText></DialogContentText>
+                              <TextField
+                                autoFocus
+                                required
+                                margin="dense"
+                                id="passcode"
+                                name="passcode"
+                                label="Passcode"
+                                type="password"
+                                fullWidth
+                                variant="standard"
+                              />
+                            </DialogContent>
+                            <DialogActions>
+                              <Button onClick={handleClosePASSW}>Abbrechen</Button>
+                              <Button type="submit">Speichern</Button>
+                            </DialogActions>
+                          </Dialog>
+                          {/* Dialog for Check Field */}
+                          <Dialog
+                            open={openCheck}
+                            onClose={handleCloseCheck}
+                            PaperProps={{
+                              component: "form",
+                              onSubmit: (event) => {
+                                event.preventDefault(); // Verhindert das Standard-Formularverhalten
+                                handleEditClick(rowIndex, row); // Bearbeitungsmodus aktivieren
+                              },
+                            }}
+                            BackdropProps={{
+                              style: {
+                                backgroundColor: "rgba(0, 0, 0, 0.2)", // Helligkeit Overlay
+                              },
+                            }}
+                          >
+                            <DialogTitle>Bearbeitungsmodus Aktivieren?</DialogTitle>
+                            <DialogContent>
+                              <DialogContentText>
+                              </DialogContentText>
+                            </DialogContent>
+                            <DialogActions>
+                              <Button onClick={handleCloseCheck}>Abbrechen</Button>
+                              <Button type="submit">Ja</Button>
+                            </DialogActions>
+                          </Dialog>
+                        </React.Fragment>
                       </>
                     )}
                   </td>
@@ -518,7 +521,7 @@ export default function Uebersicht() {
                     >
                       {tableName.charAt(0).toUpperCase() + tableName.slice(1)}
                     </a>
-                </li>
+                  </li>
                 ))}
               </ul>
             </div>
@@ -551,9 +554,9 @@ export default function Uebersicht() {
             placeholder="Suche..."
             className="border border-gray-300 px-4 py-2 rounded"
           />
-          
+
           <IconButton onClick={handleClick}><InfoIcon />
-          
+
           </IconButton >
           <Popover
             id={id}
@@ -566,16 +569,16 @@ export default function Uebersicht() {
             }}
           >
             <Typography variant='caption' fontWeight={'fontWeightBold'} sx={{ display: 'block' }}>
-            Anmerkungen zum Filter:
-             </Typography>
-             <Typography variant='caption' sx={{ display: 'block' }}>
-            Erstellungsdatum: yyyy-mm-dd
-             </Typography>
-             <Typography variant='caption' sx={{ display: 'block' }}>
-            Probenstatus:   1: eingescheust   ---
-                            2: ausgeschleust  ---
-                            3: wiedereingeschleust
-             </Typography>
+              Anmerkungen zum Filter:
+            </Typography>
+            <Typography variant='caption' sx={{ display: 'block' }}>
+              Erstellungsdatum: yyyy-mm-dd
+            </Typography>
+            <Typography variant='caption' sx={{ display: 'block' }}>
+              Probenstatus:   1: eingescheust   ---
+              2: ausgeschleust  ---
+              3: wiedereingeschleust
+            </Typography>
           </Popover>
         </div>
       )}
@@ -587,7 +590,7 @@ export default function Uebersicht() {
         }}
       >
         <Typography variant="h5" sx={{ fontWeight: 'bold', color: 'text.primary' }}>
-        {Table_header}
+          {Table_header}
         </Typography>
       </Box>
       {renderTable()}
