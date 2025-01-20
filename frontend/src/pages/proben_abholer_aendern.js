@@ -227,19 +227,9 @@ export default function Uebersicht() {
     let payload;
     try {
       // Prepare the payload to send, including the required fields
-      if (selectedTable === "paraffinproben") {
         payload = {
           id: row.id,
-          probenart: row.probenart,
-          patient_Id_intern: row.patient_Id_intern,
         };
-      } else {
-        payload = {
-          patient_Id_intern: row.patient_Id_intern,
-          probenart: row.probenart,
-          barcode_id: row.barcode_id,
-        };
-      }
 
       console.log("Payload to delete:", payload); // Log the payload for debugging
 

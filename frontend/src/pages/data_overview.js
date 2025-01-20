@@ -357,12 +357,7 @@ export default function Uebersicht() {
                     ) : col.key === "status" && row[col.key] in STATUS_MAPPING ? (
                       // Status anzeigen, falls Status vorhanden
                       STATUS_MAPPING[row[col.key]]
-                      ) : col.key === "abholer" && row[col.key] in ABHOLER_MAPPING ? (
-                        // Mapping der Abholer
-                        ABHOLER_MAPPING[row[col.key]]
-                    ) :  /* Add custom logic for Probenart if needed */ col.key === "probenart" ? (
-                      row[col.key]  // This will display the Probenart value
-                    ): row[col.key] !== null ? (
+                    ) : row[col.key] !== null ? (
                       row[col.key]
                     ) : (
                       "N/A"
