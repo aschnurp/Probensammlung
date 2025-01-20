@@ -96,6 +96,6 @@ def seed_status_data(db: Session):
         db.add_all(seed_data)
         db.commit()
         print("Seed-Daten erfolgreich hinzugefügt.")
-
+    
     else:
         print("Tabelle ist bereits gefüllt. Keine Seed-Daten hinzugefügt.")

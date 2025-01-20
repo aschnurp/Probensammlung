@@ -360,7 +360,9 @@ export default function Uebersicht() {
                       ) : col.key === "abholer" && row[col.key] in ABHOLER_MAPPING ? (
                         // Mapping der Abholer
                         ABHOLER_MAPPING[row[col.key]]
-                    ) : row[col.key] !== null ? (
+                    ) :  /* Add custom logic for Probenart if needed */ col.key === "probenart" ? (
+                      row[col.key]  // This will display the Probenart value
+                    ): row[col.key] !== null ? (
                       row[col.key]
                     ) : (
                       "N/A"

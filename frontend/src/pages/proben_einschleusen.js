@@ -78,7 +78,7 @@ export default function SampleForm() {
 
   useEffect(() => {
     // Define the sample types that require the additional dropdowns
-    const sampleTypes = ['gewebe', 'serum', 'paraffin'];
+    const sampleTypes = ['gewebe', 'serum', 'urin'];
 
     if (formData.probenart && sampleTypes.includes(formData.probenart)) {
       // Define the Übergeordnete Probe options with id and text
@@ -90,8 +90,8 @@ export default function SampleForm() {
         { id: 5, text: "Blut" }
       ];
 
-      // Define the Untergeordnete Probe options with id and text
-      const untergeordneteProbenOptions = [
+      // Define the Untergeordnete Probe options with id and text for each type of sample
+      const untergeordneteProbenOptionsGewebe = [
         { id: 1, text: "keine" },
         { id: 2, text: "Paraffinblock" },
         { id: 3, text: "Paraffinblock (A/B)" },
@@ -100,9 +100,43 @@ export default function SampleForm() {
         { id: 6, text: "Cryo SF" }
       ];
 
+      const untergeordeteProbenOptionsUrin = [
+        { id: 1, text: "prä" },
+        { id: 2, text: "intra" },
+        { id: 3, text: "post 1d" },
+        { id: 4, text: "post 2d" },
+        { id: 5, text: "post 7d" },
+        { id: 6, text: "post 14d" }
+      ];
+
+      const untergeordneteProbenOptionsSerum = [
+        { id: 1, text: "Serum prä OP" },
+        { id: 2, text: "Serum intra OP peripher A" },
+        { id: 3, text: "Serum intra OP peripher V" },
+        { id: 4, text: "Serum intra OP ZVK" },
+        { id: 5, text: "Serum intra OP LV li." },
+        { id: 6, text: "Serum intra OP LV re." },
+        { id: 7, text: "Serum post OP 1d." },
+        { id: 8, text: "Serum post OP 2d" },
+        { id: 9, text: "Serum post OP 7d" },
+        { id: 10, text: "Serum post OP 14d" }
+      ];
+
+
       // Update the state with the new options
       setOvergeordneteProbeOptions(uebergeordneteProbenOptions);
-      setUntergeordneteProbeOptions(untergeordneteProbenOptions);
+
+      // update the untergeordneteProbeOptions based on the selected probenart
+      if (formData.probenart === 'gewebe') {
+        setUntergeordneteProbeOptions(untergeordneteProbenOptionsGewebe);
+      } else if (formData.probenart === 'serum') {
+        setUntergeordneteProbeOptions(untergeordneteProbenOptionsSerum);
+      }
+      else if (formData.probenart === 'urin') {
+        setUntergeordneteProbeOptions(untergeordeteProbenOptionsUrin);
+      }
+
+
     } else {
       // Clear the options and selected values if probenart is not relevant
       setOvergeordneteProbeOptions([]);
@@ -208,7 +242,7 @@ export default function SampleForm() {
     const sampleTypes = ['gewebe', 'serum', 'paraffin'];
     if (formData.probenart && sampleTypes.includes(formData.probenart)) {
       if (!formData.übergeordneteProbe) {
-        newErrors.übergeordneteProbe = 'Übergeordnete Probe ist erforderlich.';
+        newErrors.übergeordneteProbe = 'Übergeordnete Probe is erforderlich.';
       }
       if (!formData.untergeordneteProbe) {
         newErrors.untergeordneteProbe = 'Untergeordnete Probe ist erforderlich.';
@@ -418,12 +452,12 @@ export default function SampleForm() {
         )}
       </FormControl>
 
-      {['gewebe', 'serum', 'paraffin'].includes(formData.probenart) && (
+      {['gewebe', 'serum', 'urin'].includes(formData.probenart) && (
         <Grid container spacing={2}>
           {/* Übergeordnete Probe Dropdown */}
           <Grid item xs={12} sm={6}>
             <FormControl variant="outlined" fullWidth margin="normal" error={Boolean(errors.übergeordneteProbe)}>
-              <InputLabel>Übergeordnete Probe</InputLabel>
+              <InputLabel>Probenart (übergeordnete Probe)</InputLabel>
               <Select
                 id="uebergeordneteProbe"
                 name="übergeordneteProbe"
@@ -449,7 +483,7 @@ export default function SampleForm() {
           {/* Untergeordnete Probe Dropdown */}
           <Grid item xs={12} sm={6}>
             <FormControl variant="outlined" fullWidth margin="normal" error={Boolean(errors.untergeordneteProbe)}>
-              <InputLabel>Untergeordnete Probe</InputLabel>
+              <InputLabel>Probenart (untergeordnete Probe) </InputLabel>
               <Select
                 id="untergeordneteProbe"
                 name="untergeordneteProbe"
