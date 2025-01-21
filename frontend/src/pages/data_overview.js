@@ -72,7 +72,9 @@ export default function Uebersicht() {
     setAnchorEl(event.currentTarget);
   };
 
-  
+  useEffect(() => {
+    console.log('FILTERED DATAAAAAA:', filteredData);
+  }, [filteredData]);
 
   const handleClose = () => {
     setAnchorEl(null);
@@ -352,7 +354,7 @@ export default function Uebersicht() {
                           }
                           className="border border-gray-300 px-2 py-1"
                         />
-                      ) : col.key === "probenart" ? (row["uebergeordete_probenart"] ? row["uebergeordete_probenart"] : ( row["untergeordnete_probenart"] ? row["untergeordnete_probenart"]: "N/A" ))
+                      ) : col.key === "probenart" ? (row["uebergeordete_probenart"] ? row["uebergeordete_probenart"] : ( row["untergeordete_probenart"] ? row["untergeordete_probenart"]: "N/A" ))
 
                         : (col.key === "created_at" ? (
                           // Formatierung für das Datum, falls "created_at"

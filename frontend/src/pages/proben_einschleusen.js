@@ -85,6 +85,7 @@ export default function SampleForm() {
       });
       //console.log(res);
       const response = await res.json();
+      console.log("RESPONSEEEEE",response)
       setCategorias(response);
     };
     getCategorias();
@@ -222,7 +223,7 @@ export default function SampleForm() {
     setFormData({ ...formData, [name]: value });
     // Clear the error for the field as the user types
     setErrors({ ...errors, [name]: '' });
-    console.log('Formdata CHANGED:', formData.boxzeile);
+    console.log('Formdata CHANGED:', formData);
   };
 
   const handleClear = () => {
@@ -353,9 +354,11 @@ export default function SampleForm() {
       sap_id: formData.sap_id,
       abholer: formData.abholer,
       remarks: formData.remarks,
-      übergeordneteProbe: formData.übergeordneteProbe,
-      untergeordneteProbe: formData.untergeordneteProbe,
+      uebergeordnete_probenart: formData.übergeordneteProbe,
+      untergeordnete_probenart: formData.untergeordneteProbe,
     };
+
+    console.log('Filtered data beim EINSCHLEUSEN:', filteredData);
 
     try {
       let endpoint = '';

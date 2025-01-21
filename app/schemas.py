@@ -44,6 +44,7 @@ class GewebeprobenBase(BaseModel):
     anmerkungen: Optional[str] = None
     remarks: Optional[str] = None
     created_at: Optional[str] = None
+      
 
 class TableDataGewebeproben(GewebeprobenBase):
     status: Optional[int] = 1
