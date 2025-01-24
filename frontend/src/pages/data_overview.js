@@ -22,6 +22,7 @@ import {
   Dialog,
   Snackbar,
 } from '@mui/material';
+import { getProbeOptions } from '../components/custom_functions/getProbeOPtions';
 
 
 // Mapping der Tabellen-Spalten für dynamisches Rendern
@@ -71,10 +72,18 @@ export default function Uebersicht() {
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
+  // Use two separate states:
+  const [uebergeordeteOptionsToRender, setUebergeordeteOptionsToRender] = useState([]);
+  const [untergeordeteOptionsToRender, setUntergeordeteOptionsToRender] = useState([]);
 
   useEffect(() => {
     console.log('FILTERED DATAAAAAA:', filteredData);
   }, [filteredData]);
+
+
+
+
+
 
   const handleClose = () => {
     setAnchorEl(null);
@@ -120,6 +129,29 @@ export default function Uebersicht() {
       setTable_header("");
     }
   }, [selectedTable]); // Dependency on selectedTable
+
+  // import probeOPtions ffor the selected table
+
+  useEffect(() => {
+    if (selectedTable) {
+      let selectedTableName;
+      if (selectedTable === "urinproben") {
+        selectedTableName = "urin";
+      } else if (selectedTable === "serumproben") {
+        selectedTableName = "serum";
+      } else if (selectedTable === "gewebeproben") {
+        selectedTableName = "gewebe";
+      } else {
+        selectedTableName = selectedTable;
+      }
+
+      const probeOptions = getProbeOptions(selectedTableName);
+      setUebergeordeteOptionsToRender(probeOptions.übergeordete);
+      setUntergeordeteOptionsToRender(probeOptions.untergeordete);
+      console.log("Uebergeordete Options:", probeOptions.übergeordete);
+      console.log("Untergeordete Options:", probeOptions.untergeordete);
+    }
+  }, [selectedTable]);
 
 
   const toggleDropdown = () => setIsOpen(!isOpen);
@@ -244,6 +276,7 @@ export default function Uebersicht() {
   };
 
 
+
   const handleDelete = async (row) => {
     console.log(row);
     let payload;
@@ -354,7 +387,29 @@ export default function Uebersicht() {
                           }
                           className="border border-gray-300 px-2 py-1"
                         />
-                      ) : col.key === "probenart" ? (row["uebergeordete_probenart"] ? row["uebergeordete_probenart"] : ( row["untergeordete_probenart"] ? row["untergeordete_probenart"]: "N/A" ))
+                      ) : col.key === "probenart" ? (
+                        (() => {
+
+                          console.log( "IDDDDD", row["uebergeordete_probenart"], row["untergeordente_probenart"]);
+                          const ueberProbenartId = row["uebergeordete_probenart"];
+                          const unterProbenartId = row["untergeordente_probenart"];
+                      
+                          const ueberProbenartText = ueberProbenartId
+                            ? uebergeordeteOptionsToRender[1 - ueberProbenartId]?.text
+                            : null;
+                      
+                          const unterProbenartText = unterProbenartId
+                            ? untergeordeteOptionsToRender[unterProbenartId]?.text
+                            : null;
+                      
+                          // Combine both texts with a comma if both exist
+                          const combinedProbenart = [ueberProbenartText, unterProbenartText]
+                            .filter(Boolean) // Removes null or undefined
+                            .join(", ");
+                      
+                          return combinedProbenart || "N/A";
+                        })()
+                      )
 
                         : (col.key === "created_at" ? (
                           // Formatierung für das Datum, falls "created_at"

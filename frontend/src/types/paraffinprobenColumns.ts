@@ -4,5 +4,6 @@ export const paraffinprobenDataColumns = [
     { key: "probenart", label: "Probenart" },
     { key: "lagerraum", label: "Lagerraum" },
     { key: "anmerkungen", label: "Anmerkungen"},
-    { key: "status", label: "Probenstatus" }
+    { key: "status", label: "Probenstatus" },
+  
 ];
