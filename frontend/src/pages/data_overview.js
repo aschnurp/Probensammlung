@@ -390,9 +390,9 @@ export default function Uebersicht() {
                       ) : col.key === "probenart" ? (
                         (() => {
 
-                          console.log("IDDDDD", row["uebergeordete_probenart"], row["untergeordente_probenart"]);
+                          console.log("IDDDDD", row["uebergeordete_probenart"], row["untergeordete_probenart"]);
                           const ueberProbenartId = row["uebergeordete_probenart"];
-                          const unterProbenartId = row["untergeordente_probenart"];
+                          const unterProbenartId = row["untergeordete_probenart"];
 
                           const ueberProbenartText = uebergeordeteOptionsToRender.find(
                             (option) => option.id === ueberProbenartId
