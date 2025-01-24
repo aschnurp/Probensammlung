@@ -390,23 +390,26 @@ export default function Uebersicht() {
                       ) : col.key === "probenart" ? (
                         (() => {
 
-                          console.log( "IDDDDD", row["uebergeordete_probenart"], row["untergeordente_probenart"]);
+                          console.log("IDDDDD", row["uebergeordete_probenart"], row["untergeordente_probenart"]);
                           const ueberProbenartId = row["uebergeordete_probenart"];
                           const unterProbenartId = row["untergeordente_probenart"];
-                      
-                          const ueberProbenartText = ueberProbenartId
-                            ? uebergeordeteOptionsToRender[1 - ueberProbenartId]?.text
-                            : null;
-                      
-                          const unterProbenartText = unterProbenartId
-                            ? untergeordeteOptionsToRender[unterProbenartId]?.text
-                            : null;
-                      
+
+                          const ueberProbenartText = uebergeordeteOptionsToRender.find(
+                            (option) => option.id === ueberProbenartId
+                          )?.text || "N/A";
+                          
+                          const unterProbenartText = untergeordeteOptionsToRender.find(
+                            (option) => option.id === unterProbenartId
+                          )?.text || "N/A";
+                          
+
+                            console.log('TEXTES:', ueberProbenartText, unterProbenartText);
+
                           // Combine both texts with a comma if both exist
                           const combinedProbenart = [ueberProbenartText, unterProbenartText]
                             .filter(Boolean) // Removes null or undefined
                             .join(", ");
-                      
+
                           return combinedProbenart || "N/A";
                         })()
                       )

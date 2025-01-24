@@ -9,6 +9,5 @@ export const urinprobenDataColumns = [
     { key: "lagerraum", label: "Lagerraum" },
     { key: "anmerkungen", label: "Anmerkungen" },
     { key: "status", label: "Probenstatus" },
-    { key: "uebergeordete_probenart", label: "Übergeordnete Probenart" },       // Added
-    { key: "untergeordete_probenart", label: "Untergeordnete Probenart" },     // Added
+
 ];
