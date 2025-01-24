@@ -12,7 +12,7 @@ class Urinproben(Base):
     timestamp = Column(TIMESTAMP(timezone=True), nullable=False, server_default=text("now()"))
     patient_Id_intern = Column(VARCHAR(200), ForeignKey("patient.patient_Id_intern"))  
     created_at = Column(TEXT)	
-    uebere_probenart	= Column(TINYINT, ForeignKey("uebergeordete_probenart.id"), nullable=True)
+    uebergeordete_probenart	= Column(TINYINT, ForeignKey("uebergeordete_probenart.id"), nullable=True)
     probenart = Column(TEXT)
     untergeordete_probenart	= Column(TINYINT, ForeignKey("untergeordete_probenart_urin.id"), nullable=True)	
     boxnummer = Column(Integer) 
