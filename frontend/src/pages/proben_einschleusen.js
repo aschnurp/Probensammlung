@@ -204,7 +204,7 @@ export default function SampleForm() {
     }
 
     // New validation for Übergeordete Probe and Untergeordete Probe
-    const sampleTypes = ['gewebe', 'serum', 'paraffin'];
+    const sampleTypes = ['gewebe', 'serum', 'urin'];
     if (formData.probenart && sampleTypes.includes(formData.probenart)) {
       if (!formData.übergeordeteProbe) {
         newErrors.übergeordeteProbe = 'Übergeordete Probe is erforderlich.';
