@@ -86,7 +86,7 @@ export default function SampleForm() {
       });
       //console.log(res);
       const response = await res.json();
-      console.log("RESPONSEEEEE",response)
+      console.log("RESPONSEEEEE", response)
       setCategorias(response);
     };
     getCategorias();
@@ -414,7 +414,15 @@ export default function SampleForm() {
         <Grid container spacing={2}>
           {/* Übergeordnete Probe Dropdown */}
           <Grid item xs={12} sm={6}>
-            <FormControl variant="outlined" fullWidth margin="normal" error={Boolean(errors.übergeordneteProbe)}>
+            <FormControl variant="outlined" fullWidth margin="normal"
+              sx={{
+                '& .MuiInputLabel-root': {
+                  top: '-8px', // Adjust the label position
+                  backgroundColor: 'white', // Prevent overlap with the input border
+                  padding: '0 4px', // Add padding for the background
+                }
+              }}
+              error={Boolean(errors.übergeordneteProbe)}>
               <InputLabel>Probenart (übergeordnete Probe)</InputLabel>
               <Select
                 id="uebergeordneteProbe"
@@ -440,7 +448,16 @@ export default function SampleForm() {
 
           {/* Untergeordnete Probe Dropdown */}
           <Grid item xs={12} sm={6}>
-            <FormControl variant="outlined" fullWidth margin="normal" error={Boolean(errors.untergeordneteProbe)}>
+            <FormControl variant="outlined" fullWidth margin="normal"
+              sx={{
+                '& .MuiInputLabel-root': {
+                  top: '-8px', // Adjust the label position
+                  backgroundColor: 'white', // Prevent overlap with the input border
+                  padding: '0 4px', // Add padding for the background
+                }
+                
+              }}
+              error={Boolean(errors.untergeordneteProbe)}>
               <InputLabel>Probenart (untergeordnete Probe) </InputLabel>
               <Select
                 id="untergeordneteProbe"
