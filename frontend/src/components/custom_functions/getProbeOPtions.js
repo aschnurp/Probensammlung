@@ -2,12 +2,12 @@ export const getProbeOptions = (probenart) => {
     const sampleTypes = ['gewebe', 'serum', 'urin'];
     if (!sampleTypes.includes(probenart)) {
       return {
-        übergeordete: [],
-        untergeordete: [],
+        übergeordnete: [],
+        untergeordnete: [],
       };
     }
   
-    const uebergeordeteProbenOptions = [
+    const uebergeordneteProbenOptions = [
       { id: 1, text: "Normal" },
       { id: 2, text: "Normal regeneriert" },
       { id: 3, text: "Normal embolisiert" },
@@ -15,7 +15,7 @@ export const getProbeOptions = (probenart) => {
       { id: 5, text: "Blut" },
     ];
   
-    const untergeordeteProbenOptions = {
+    const untergeordneteProbenOptions = {
       gewebe: [
         { id: 1, text: "keine" },
         { id: 2, text: "Paraffinblock" },
@@ -47,8 +47,8 @@ export const getProbeOptions = (probenart) => {
     };
   
     return {
-      übergeordete: uebergeordeteProbenOptions,
-      untergeordete: untergeordeteProbenOptions[probenart] || [],
+      übergeordnete: uebergeordneteProbenOptions,
+      untergeordnete: untergeordneteProbenOptions[probenart] || [],
     };
   };
   

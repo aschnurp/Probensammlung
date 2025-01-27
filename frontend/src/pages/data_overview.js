@@ -73,8 +73,8 @@ export default function Uebersicht() {
     setAnchorEl(event.currentTarget);
   };
   // Use two separate states:
-  const [uebergeordeteOptionsToRender, setUebergeordeteOptionsToRender] = useState([]);
-  const [untergeordeteOptionsToRender, setUntergeordeteOptionsToRender] = useState([]);
+  const [uebergeordneteOptionsToRender, setUebergeordneteOptionsToRender] = useState([]);
+  const [untergeordneteOptionsToRender, setUntergeordneteOptionsToRender] = useState([]);
 
   useEffect(() => {
     console.log('FILTERED DATAAAAAA:', filteredData);
@@ -146,10 +146,10 @@ export default function Uebersicht() {
       }
 
       const probeOptions = getProbeOptions(selectedTableName);
-      setUebergeordeteOptionsToRender(probeOptions.übergeordete);
-      setUntergeordeteOptionsToRender(probeOptions.untergeordete);
-      console.log("Uebergeordete Options:", probeOptions.übergeordete);
-      console.log("Untergeordete Options:", probeOptions.untergeordete);
+      setUebergeordneteOptionsToRender(probeOptions.übergeordnete);
+      setUntergeordneteOptionsToRender(probeOptions.untergeordnete);
+      console.log("Uebergeordnete Options:", probeOptions.übergeordnete);
+      console.log("Untergeordnete Options:", probeOptions.untergeordnete);
     }
   }, [selectedTable]);
 
@@ -394,15 +394,15 @@ export default function Uebersicht() {
                       ) : col.key === "probenart" ? (
                         (() => {
 
-                          console.log("IDDDDD", row["uebergeordete_probenart"], row["untergeordete_probenart"]);
-                          const ueberProbenartId = row["uebergeordete_probenart"];
-                          const unterProbenartId = row["untergeordete_probenart"];
+                          console.log("IDDDDD", row["uebergeordnete_probenart"], row["untergeordnete_probenart"]);
+                          const ueberProbenartId = row["uebergeordnete_probenart"];
+                          const unterProbenartId = row["untergeordnete_probenart"];
 
-                          const ueberProbenartText = uebergeordeteOptionsToRender.find(
+                          const ueberProbenartText = uebergeordneteOptionsToRender.find(
                             (option) => option.id === ueberProbenartId
                           )?.text || "N/A";
 
-                          const unterProbenartText = untergeordeteOptionsToRender.find(
+                          const unterProbenartText = untergeordneteOptionsToRender.find(
                             (option) => option.id === unterProbenartId
                           )?.text || "N/A";
 

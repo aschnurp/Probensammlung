@@ -57,8 +57,8 @@ export default function SampleForm() {
     uhrzeit: '',
     sap_id: '',
     remarks: '',
-    übergeordeteProbe: '', // New field
-    untergeordeteProbe: '', // New field
+    übergeordneteProbe: '', // New field
+    untergeordneteProbe: '', // New field
   });
 
 
@@ -72,9 +72,9 @@ export default function SampleForm() {
   const [updateBox, setUpdateBox] = useState(false);
 
   // adding new variable sto the form 
-  // State to store options for Übergeordete Probe and Untergeordete Probe
-  const [overgeordeteProbeOptions, setOvergeordeteProbeOptions] = useState([]);
-  const [untergeordeteProbeOptions, setUntergeordeteProbeOptions] = useState([]);
+  // State to store options for Übergeordnete Probe and Untergeordnete Probe
+  const [overgeordneteProbeOptions, setOvergeordneteProbeOptions] = useState([]);
+  const [untergeordneteProbeOptions, setUntergeordneteProbeOptions] = useState([]);
   const [selectedCategorias, setselectedCategorias] = useState("");
   const [abholer, setCategorias] = useState([]);
 
@@ -101,17 +101,17 @@ export default function SampleForm() {
 
   useEffect(() => {
     if (formData.probenart) {
-      const { übergeordete, untergeordete } = getProbeOptions(formData.probenart);
-      setOvergeordeteProbeOptions(übergeordete);
-      setUntergeordeteProbeOptions(untergeordete);
+      const { übergeordnete, untergeordnete } = getProbeOptions(formData.probenart);
+      setOvergeordneteProbeOptions(übergeordnete);
+      setUntergeordneteProbeOptions(untergeordnete);
     } else {
       // Clear options if no valid probenart
-      setOvergeordeteProbeOptions([]);
-      setUntergeordeteProbeOptions([]);
+      setOvergeordneteProbeOptions([]);
+      setUntergeordneteProbeOptions([]);
       setFormData(prevData => ({
         ...prevData,
-        übergeordeteProbe: '',
-        untergeordeteProbe: '',
+        übergeordneteProbe: '',
+        untergeordneteProbe: '',
       }));
     }
   }, [formData.probenart]);
@@ -181,8 +181,8 @@ export default function SampleForm() {
       boxnummer: '',
       anmerkungen: '',
       remarks: '',
-      übergeordeteProbe: '', // Reset new field
-      untergeordeteProbe: '', // Reset new fieldÍ
+      übergeordneteProbe: '', // Reset new field
+      untergeordneteProbe: '', // Reset new fieldÍ
     }));
     setErrors({});
     setUpdateBox(prev => !prev);
@@ -203,14 +203,14 @@ export default function SampleForm() {
       newErrors.created_at = 'Datum ist erforderlich und muss im Format JJJJ-MM-TT sein.';
     }
 
-    // New validation for Übergeordete Probe and Untergeordete Probe
+    // New validation for Übergeordnete Probe and Untergeordnete Probe
     const sampleTypes = ['gewebe', 'serum', 'urin'];
     if (formData.probenart && sampleTypes.includes(formData.probenart)) {
-      if (!formData.übergeordeteProbe) {
-        newErrors.übergeordeteProbe = 'Übergeordete Probe is erforderlich.';
+      if (!formData.übergeordneteProbe) {
+        newErrors.übergeordneteProbe = 'Übergeordnete Probe is erforderlich.';
       }
-      if (!formData.untergeordeteProbe) {
-        newErrors.untergeordeteProbe = 'Untergeordete Probe ist erforderlich.';
+      if (!formData.untergeordneteProbe) {
+        newErrors.untergeordneteProbe = 'Untergeordnete Probe ist erforderlich.';
       }
     }
 
@@ -299,8 +299,8 @@ export default function SampleForm() {
       sap_id: formData.sap_id,
       abholer: formData.abholer,
       remarks: formData.remarks,
-      uebergeordete_probenart: formData.übergeordeteProbe,
-      untergeordete_probenart: formData.untergeordeteProbe,
+      uebergeordnete_probenart: formData.übergeordneteProbe,
+      untergeordnete_probenart: formData.untergeordneteProbe,
     };
 
     console.log('Filtered data beim EINSCHLEUSEN:', filteredData);
@@ -412,53 +412,53 @@ export default function SampleForm() {
 
       {['gewebe', 'serum', 'urin'].includes(formData.probenart) && (
         <Grid container spacing={2}>
-          {/* Übergeordete Probe Dropdown */}
+          {/* Übergeordnete Probe Dropdown */}
           <Grid item xs={12} sm={6}>
-            <FormControl variant="outlined" fullWidth margin="normal" error={Boolean(errors.übergeordeteProbe)}>
-              <InputLabel>Probenart (übergeordete Probe)</InputLabel>
+            <FormControl variant="outlined" fullWidth margin="normal" error={Boolean(errors.übergeordneteProbe)}>
+              <InputLabel>Probenart (übergeordnete Probe)</InputLabel>
               <Select
-                id="uebergeordeteProbe"
-                name="übergeordeteProbe"
-                value={formData.übergeordeteProbe}
+                id="uebergeordneteProbe"
+                name="übergeordneteProbe"
+                value={formData.übergeordneteProbe}
                 onChange={handleChange}
-                label="Übergeordete Probe"
+                label="Übergeordnete Probe"
               >
                 <MenuItem value="">-- Bitte auswählen --</MenuItem>
-                {overgeordeteProbeOptions.map(option => (
+                {overgeordneteProbeOptions.map(option => (
                   <MenuItem key={option.id} value={option.id}>
                     {option.text}
                   </MenuItem>
                 ))}
               </Select>
-              {errors.übergeordeteProbe && (
+              {errors.übergeordneteProbe && (
                 <Typography variant="caption" color="error">
-                  {errors.übergeordeteProbe}
+                  {errors.übergeordneteProbe}
                 </Typography>
               )}
             </FormControl>
           </Grid>
 
-          {/* Untergeordete Probe Dropdown */}
+          {/* Untergeordnete Probe Dropdown */}
           <Grid item xs={12} sm={6}>
-            <FormControl variant="outlined" fullWidth margin="normal" error={Boolean(errors.untergeordeteProbe)}>
-              <InputLabel>Probenart (untergeordete Probe) </InputLabel>
+            <FormControl variant="outlined" fullWidth margin="normal" error={Boolean(errors.untergeordneteProbe)}>
+              <InputLabel>Probenart (untergeordnete Probe) </InputLabel>
               <Select
-                id="untergeordeteProbe"
-                name="untergeordeteProbe"
-                value={formData.untergeordeteProbe}
+                id="untergeordneteProbe"
+                name="untergeordneteProbe"
+                value={formData.untergeordneteProbe}
                 onChange={handleChange}
-                label="Untergeordete Probe"
+                label="Untergeordnete Probe"
               >
                 <MenuItem value="">-- Bitte auswählen --</MenuItem>
-                {untergeordeteProbeOptions.map(option => (
+                {untergeordneteProbeOptions.map(option => (
                   <MenuItem key={option.id} value={option.id}>
                     {option.text}
                   </MenuItem>
                 ))}
               </Select>
-              {errors.untergeordeteProbe && (
+              {errors.untergeordneteProbe && (
                 <Typography variant="caption" color="error">
-                  {errors.untergeordeteProbe}
+                  {errors.untergeordneteProbe}
                 </Typography>
               )}
             </FormControl>
