@@ -171,8 +171,12 @@ export default function Uebersicht() {
 
     try {
       const response = await axios.get(`http://localhost:8000/table/data?table_name=${tableName}`);
-      setData(response.data);
-      setFilteredData(response.data); // Initialize filtered data with fetched data
+      const sorted = response.data.sort(
+        (a, b) => new Date(b.timestamp) - new Date(a.timestamp)
+      );
+      setData(sorted);
+      setFilteredData(sorted);
+
     } catch (error) {
       setError('Failed to fetch data');
     } finally {
@@ -397,13 +401,13 @@ export default function Uebersicht() {
                           const ueberProbenartText = uebergeordeteOptionsToRender.find(
                             (option) => option.id === ueberProbenartId
                           )?.text || "N/A";
-                          
+
                           const unterProbenartText = untergeordeteOptionsToRender.find(
                             (option) => option.id === unterProbenartId
                           )?.text || "N/A";
-                          
 
-                            console.log('TEXTES:', ueberProbenartText, unterProbenartText);
+
+                          console.log('TEXTES:', ueberProbenartText, unterProbenartText);
 
                           // Combine both texts with a comma if both exist
                           const combinedProbenart = [ueberProbenartText, unterProbenartText]
