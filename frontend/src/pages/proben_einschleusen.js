@@ -19,6 +19,7 @@ import { IoMdArrowRoundBack } from "react-icons/io";
 import { suggestBoxData } from '../components/custom_functions/suggestBoxData';
 import dayjs from 'dayjs';
 import DateObject from "react-date-object";
+import { getProbeOptions } from '../components/custom_functions/getProbeOPtions';
 
 //default time management
 var date = new DateObject();
@@ -85,6 +86,7 @@ export default function SampleForm() {
       });
       //console.log(res);
       const response = await res.json();
+      console.log("RESPONSEEEEE", response)
       setCategorias(response);
     };
     getCategorias();
@@ -98,34 +100,12 @@ export default function SampleForm() {
   }, [formData.probenart, updateBox]);
 
   useEffect(() => {
-    // Define the sample types that require the additional dropdowns
-    const sampleTypes = ['gewebe', 'serum', 'paraffin'];
-
-    if (formData.probenart && sampleTypes.includes(formData.probenart)) {
-      // Define the Übergeordnete Probe options with id and text
-      const uebergeordneteProbenOptions = [
-        { id: 1, text: "Normal" },
-        { id: 2, text: "Normal regeneriert" },
-        { id: 3, text: "Normal embolisiert" },
-        { id: 4, text: "Tumor" },
-        { id: 5, text: "Blut" }
-      ];
-
-      // Define the Untergeordnete Probe options with id and text
-      const untergeordneteProbenOptions = [
-        { id: 1, text: "keine" },
-        { id: 2, text: "Paraffinblock" },
-        { id: 3, text: "Paraffinblock (A/B)" },
-        { id: 4, text: "Trizol" },
-        { id: 5, text: "Cryo MF" },
-        { id: 6, text: "Cryo SF" }
-      ];
-
-      // Update the state with the new options
-      setOvergeordneteProbeOptions(uebergeordneteProbenOptions);
-      setUntergeordneteProbeOptions(untergeordneteProbenOptions);
+    if (formData.probenart) {
+      const { übergeordnete, untergeordnete } = getProbeOptions(formData.probenart);
+      setOvergeordneteProbeOptions(übergeordnete);
+      setUntergeordneteProbeOptions(untergeordnete);
     } else {
-      // Clear the options and selected values if probenart is not relevant
+      // Clear options if no valid probenart
       setOvergeordneteProbeOptions([]);
       setUntergeordneteProbeOptions([]);
       setFormData(prevData => ({
@@ -188,7 +168,7 @@ export default function SampleForm() {
     setFormData({ ...formData, [name]: value });
     // Clear the error for the field as the user types
     setErrors({ ...errors, [name]: '' });
-    console.log('Formdata CHANGED:', formData.boxzeile);
+    console.log('Formdata CHANGED:', formData);
   };
 
   const handleClear = () => {
@@ -224,10 +204,10 @@ export default function SampleForm() {
     }
 
     // New validation for Übergeordnete Probe and Untergeordnete Probe
-    const sampleTypes = ['gewebe', 'serum', 'paraffin'];
+    const sampleTypes = ['gewebe', 'serum', 'urin'];
     if (formData.probenart && sampleTypes.includes(formData.probenart)) {
       if (!formData.übergeordneteProbe) {
-        newErrors.übergeordneteProbe = 'Übergeordnete Probe ist erforderlich.';
+        newErrors.übergeordneteProbe = 'Übergeordnete Probe is erforderlich.';
       }
       if (!formData.untergeordneteProbe) {
         newErrors.untergeordneteProbe = 'Untergeordnete Probe ist erforderlich.';
@@ -319,9 +299,11 @@ export default function SampleForm() {
       sap_id: formData.sap_id,
       abholer: formData.abholer,
       remarks: formData.remarks,
-      übergeordneteProbe: formData.übergeordneteProbe,
-      untergeordneteProbe: formData.untergeordneteProbe,
+      uebergeordnete_probenart: formData.übergeordneteProbe,
+      untergeordnete_probenart: formData.untergeordneteProbe,
     };
+
+    console.log('Filtered data beim EINSCHLEUSEN:', filteredData);
 
     try {
       let endpoint = '';
@@ -428,12 +410,20 @@ export default function SampleForm() {
         )}
       </FormControl>
 
-      {['gewebe', 'serum', 'paraffin'].includes(formData.probenart) && (
+      {['gewebe', 'serum', 'urin'].includes(formData.probenart) && (
         <Grid container spacing={2}>
           {/* Übergeordnete Probe Dropdown */}
           <Grid item xs={12} sm={6}>
-            <FormControl variant="outlined" fullWidth margin="normal" error={Boolean(errors.übergeordneteProbe)}>
-              <InputLabel>Übergeordnete Probe</InputLabel>
+            <FormControl variant="outlined" fullWidth margin="normal"
+              sx={{
+                '& .MuiInputLabel-root': {
+                  top: '-8px', // Adjust the label position
+                  backgroundColor: 'white', // Prevent overlap with the input border
+                  padding: '0 4px', // Add padding for the background
+                }
+              }}
+              error={Boolean(errors.übergeordneteProbe)}>
+              <InputLabel>Probenart (übergeordnete Probe)</InputLabel>
               <Select
                 id="uebergeordneteProbe"
                 name="übergeordneteProbe"
@@ -458,8 +448,17 @@ export default function SampleForm() {
 
           {/* Untergeordnete Probe Dropdown */}
           <Grid item xs={12} sm={6}>
-            <FormControl variant="outlined" fullWidth margin="normal" error={Boolean(errors.untergeordneteProbe)}>
-              <InputLabel>Untergeordnete Probe</InputLabel>
+            <FormControl variant="outlined" fullWidth margin="normal"
+              sx={{
+                '& .MuiInputLabel-root': {
+                  top: '-8px', // Adjust the label position
+                  backgroundColor: 'white', // Prevent overlap with the input border
+                  padding: '0 4px', // Add padding for the background
+                }
+                
+              }}
+              error={Boolean(errors.untergeordneteProbe)}>
+              <InputLabel>Probenart (untergeordnete Probe) </InputLabel>
               <Select
                 id="untergeordneteProbe"
                 name="untergeordneteProbe"

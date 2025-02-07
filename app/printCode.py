@@ -4,7 +4,7 @@ def gather_code(root_folder, output_file):
     # Open the output file in write mode
     with open(output_file, 'w', encoding='utf-8') as all_code:
         # Traverse through all files in the app folder within the root folder
-        app_folder = os.path.join(root_folder, 'app')
+        app_folder = os.path.join(root_folder)
         for foldername, subfolders, filenames in os.walk(app_folder):
             for filename in filenames:
                 # Check for .py extensions

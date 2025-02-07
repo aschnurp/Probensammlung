@@ -8,5 +8,6 @@ export const urinprobenDataColumns = [
     { key: "boxspalte", label: "Boxspalte" },
     { key: "lagerraum", label: "Lagerraum" },
     { key: "anmerkungen", label: "Anmerkungen" },
-    { key: "status", label: "Probenstatus" }
+    { key: "status", label: "Probenstatus" },
+
 ];
