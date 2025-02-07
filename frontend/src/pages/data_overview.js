@@ -40,15 +40,6 @@ const STATUS_MAPPING = {
   2: "ausgeschleust",
   3: "wiedereingeschleust",
 }
-const ABHOLER_MAPPING = {
-  1: process.env.NEXT_PUBLIC_ABHOLER_ONE,
-  2: process.env.NEXT_PUBLIC_ABHOLER_TWO,
-  3: process.env.NEXT_PUBLIC_ABHOLER_THREE,
-  4: process.env.NEXT_PUBLIC_ABHOLER_FOUR,
-  5: process.env.NEXT_PUBLIC_ABHOLER_FIVE,
-  6: process.env.NEXT_PUBLIC_ABHOLER_SIX,
-  7: "Andere"
-}
 
 require('dotenv').config();
 
@@ -77,13 +68,8 @@ export default function Uebersicht() {
   const [untergeordneteOptionsToRender, setUntergeordneteOptionsToRender] = useState([]);
 
   useEffect(() => {
-    console.log('FILTERED DATAAAAAA:', filteredData);
+    console.log('FILTERED DATA:', filteredData);
   }, [filteredData]);
-
-
-
-
-
 
   const handleClose = () => {
     setAnchorEl(null);
@@ -391,30 +377,25 @@ export default function Uebersicht() {
                           }
                           className="border border-gray-300 px-2 py-1"
                         />
-                      ) : col.key === "probenart" ? (
+                      ) : col.key === "uebergeordnete_probenart" ? (
                         (() => {
-
-                          console.log("IDDDDD", row["uebergeordnete_probenart"], row["untergeordnete_probenart"]);
                           const ueberProbenartId = row["uebergeordnete_probenart"];
-                          const unterProbenartId = row["untergeordnete_probenart"];
-
+                          
                           const ueberProbenartText = uebergeordneteOptionsToRender.find(
                             (option) => option.id === ueberProbenartId
                           )?.text || "N/A";
-
+                          
+                          return ueberProbenartText;
+                        })()
+                      ) : col.key === "untergeordnete_probenart" ? (
+                        (() => {
+                          const unterProbenartId = row["untergeordnete_probenart"];
+                          
                           const unterProbenartText = untergeordneteOptionsToRender.find(
                             (option) => option.id === unterProbenartId
                           )?.text || "N/A";
-
-
-                          console.log('TEXTES:', ueberProbenartText, unterProbenartText);
-
-                          // Combine both texts with a comma if both exist
-                          const combinedProbenart = [ueberProbenartText, unterProbenartText]
-                            .filter(Boolean) // Removes null or undefined
-                            .join(", ");
-
-                          return combinedProbenart || "N/A";
+                          
+                          return unterProbenartText;
                         })()
                       )
 
