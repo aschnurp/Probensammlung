@@ -36,7 +36,7 @@ const TABLE_COLUMNS = {
 
 // definition für probenstatus mapping
 const STATUS_MAPPING = {
-  1: "eingescheust",
+  1: "eingeschleust",
   2: "ausgeschleust",
   3: "wiedereingeschleust",
 }
@@ -620,7 +620,7 @@ export default function Uebersicht() {
               Erstellungsdatum: yyyy-mm-dd
             </Typography>
             <Typography variant='caption' sx={{ display: 'block' }}>
-              Probenstatus:   1: eingescheust   ---
+              Probenstatus:   1: eingeschleust   ---
               2: ausgeschleust  ---
               3: wiedereingeschleust
             </Typography>

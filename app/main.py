@@ -3,7 +3,7 @@ from sqlalchemy.sql import text
 from fastapi import Depends, FastAPI
 from .database import get_db, engine, SessionLocal, Base
 from sqlalchemy.orm import Session
-from .models import status, gewebeproben, probenabholer, serumproben, uebergeordnete_probenart, untergeordnete_probenart_gewebe, untergeordnete_probenart_serum, urinproben, patient, paraffinproben, untergeordnete_probenart_urin, probenquelle_urin
+from .models import status, gewebeproben, probenabholer, serumproben, uebergeordnete_probenart_gewebe, uebergeordnete_probenart_urin, untergeordnete_probenart_gewebe, untergeordnete_probenart_serum, urinproben, patient, paraffinproben, untergeordnete_probenart_urin, probenquelle_urin
 from .config import settings
 from .routers import post_new_data, put_tabledata, tables, number_entrys, patch_ausschleusen, patch_wiedereinschleusen, delete_tabledata
 from fastapi.middleware.cors import CORSMiddleware
@@ -11,7 +11,6 @@ from app.seed import seed_status_data
 
 
 app = FastAPI()
-
 
 #origin list for websites
 origins = ["*"]
@@ -28,10 +27,13 @@ app.add_middleware(
 
 #initalize database !order! Child-Tables first
 status.Base.metadata.create_all(bind=engine)
-uebergeordnete_probenart.Base.metadata.create_all(bind=engine)
+uebergeordnete_probenart_gewebe.Base.metadata.create_all(bind=engine)
+uebergeordnete_probenart_urin.Base.metadata.create_all(bind=engine)
+
 untergeordnete_probenart_urin.Base.metadata.create_all(bind=engine)
 untergeordnete_probenart_gewebe.Base.metadata.create_all(bind=engine)
 untergeordnete_probenart_serum.Base.metadata.create_all(bind=engine)
+
 probenquelle_urin.Base.metadata.create_all(bind=engine)
 probenabholer.Base.metadata.create_all(bind=engine)
 
