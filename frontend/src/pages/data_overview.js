@@ -116,7 +116,7 @@ export default function Uebersicht() {
     }
   }, [selectedTable]); // Dependency on selectedTable
 
-  // import probeOPtions ffor the selected table
+  // import probeOPtions for the selected table
 
   useEffect(() => {
     if (selectedTable) {

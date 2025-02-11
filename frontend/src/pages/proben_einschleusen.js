@@ -13,7 +13,6 @@ import {
   FormControl,
   Snackbar,
   Alert,
-  Grid,
 } from '@mui/material';
 import { IoMdArrowRoundBack } from "react-icons/io";
 import { suggestBoxData } from '../components/custom_functions/suggestBoxData';
@@ -57,8 +56,8 @@ export default function SampleForm() {
     uhrzeit: '',
     sap_id: '',
     remarks: '',
-    übergeordneteProbe: '', // New field
-    untergeordneteProbe: '', // New field
+    übergeordneteProbe: '',
+    untergeordneteProbe: '',
   });
 
 
@@ -75,7 +74,6 @@ export default function SampleForm() {
   // State to store options for Übergeordnete Probe and Untergeordnete Probe
   const [overgeordneteProbeOptions, setOvergeordneteProbeOptions] = useState([]);
   const [untergeordneteProbeOptions, setUntergeordneteProbeOptions] = useState([]);
-  const [selectedCategorias, setselectedCategorias] = useState("");
   const [abholer, setCategorias] = useState([]);
 
   useEffect(() => {
@@ -86,7 +84,7 @@ export default function SampleForm() {
       });
       //console.log(res);
       const response = await res.json();
-      console.log("RESPONSEEEEE", response)
+      console.log("RESPONSE", response)
       setCategorias(response);
     };
     getCategorias();
@@ -181,8 +179,8 @@ export default function SampleForm() {
       boxnummer: '',
       anmerkungen: '',
       remarks: '',
-      übergeordneteProbe: '', // Reset new field
-      untergeordneteProbe: '', // Reset new fieldÍ
+      übergeordneteProbe: '',
+      untergeordneteProbe: '',
     }));
     setErrors({});
     setUpdateBox(prev => !prev);
@@ -204,7 +202,7 @@ export default function SampleForm() {
     }
 
     // New validation for Übergeordnete Probe and Untergeordnete Probe
-    const sampleTypes = ['gewebe', 'serum', 'urin'];
+    const sampleTypes = ['gewebe', 'serum', 'urin', 'paraffin'];
     if (formData.probenart && sampleTypes.includes(formData.probenart)) {
       if (!formData.übergeordneteProbe) {
         newErrors.übergeordneteProbe = 'Übergeordnete Probe is erforderlich.';
@@ -410,81 +408,6 @@ export default function SampleForm() {
         )}
       </FormControl>
 
-      {['gewebe', 'serum', 'urin'].includes(formData.probenart) && (
-        <Grid container spacing={2}>
-          {/* Übergeordnete Probe Dropdown */}
-          <Grid item xs={12} sm={6}>
-            <FormControl variant="outlined" fullWidth margin="normal"
-              sx={{
-                '& .MuiInputLabel-root': {
-                  top: '-8px', // Adjust the label position
-                  backgroundColor: 'white', // Prevent overlap with the input border
-                  padding: '0 4px', // Add padding for the background
-                }
-              }}
-              error={Boolean(errors.übergeordneteProbe)}>
-              <InputLabel>Probenart (übergeordnete Probe)</InputLabel>
-              <Select
-                id="uebergeordneteProbe"
-                name="übergeordneteProbe"
-                value={formData.übergeordneteProbe}
-                onChange={handleChange}
-                label="Übergeordnete Probe"
-              >
-                <MenuItem value="">-- Bitte auswählen --</MenuItem>
-                {overgeordneteProbeOptions.map(option => (
-                  <MenuItem key={option.id} value={option.id}>
-                    {option.text}
-                  </MenuItem>
-                ))}
-              </Select>
-              {errors.übergeordneteProbe && (
-                <Typography variant="caption" color="error">
-                  {errors.übergeordneteProbe}
-                </Typography>
-              )}
-            </FormControl>
-          </Grid>
-
-          {/* Untergeordnete Probe Dropdown */}
-          <Grid item xs={12} sm={6}>
-            <FormControl variant="outlined" fullWidth margin="normal"
-              sx={{
-                '& .MuiInputLabel-root': {
-                  top: '-8px', // Adjust the label position
-                  backgroundColor: 'white', // Prevent overlap with the input border
-                  padding: '0 4px', // Add padding for the background
-                }
-                
-              }}
-              error={Boolean(errors.untergeordneteProbe)}>
-              <InputLabel>Probenart (untergeordnete Probe) </InputLabel>
-              <Select
-                id="untergeordneteProbe"
-                name="untergeordneteProbe"
-                value={formData.untergeordneteProbe}
-                onChange={handleChange}
-                label="Untergeordnete Probe"
-              >
-                <MenuItem value="">-- Bitte auswählen --</MenuItem>
-                {untergeordneteProbeOptions.map(option => (
-                  <MenuItem key={option.id} value={option.id}>
-                    {option.text}
-                  </MenuItem>
-                ))}
-              </Select>
-              {errors.untergeordneteProbe && (
-                <Typography variant="caption" color="error">
-                  {errors.untergeordneteProbe}
-                </Typography>
-              )}
-            </FormControl>
-          </Grid>
-        </Grid>
-      )}
-
-
-
 
       {/* Patienten ID TextField */}
       <TextField
@@ -512,6 +435,70 @@ export default function SampleForm() {
             error={Boolean(errors.barcode_id)}
             helperText={errors.barcode_id}
           />
+
+          <FormControl
+            variant="outlined"
+            fullWidth
+            margin="normal"
+            error={Boolean(errors.übergeordneteProbe)}
+          >
+            <InputLabel>Übergeordnete Probenart</InputLabel>
+            <Select
+              id="uebergeordnet"
+              name="übergeordneteProbe"
+              value={formData.übergeordneteProbe}
+              onChange={handleChange}
+              label="Übergeordnete Probenart"
+            >
+              <MenuItem value="">-- Bitte auswählen --</MenuItem>
+              {Array.isArray(overgeordneteProbeOptions) && overgeordneteProbeOptions.length > 0 ? (
+                overgeordneteProbeOptions.map((option) => (
+                  <MenuItem key={option.id} value={option.id}>
+                    {option.text}
+                  </MenuItem>
+                ))
+              ) : (
+                <MenuItem disabled>Keine Optionen verfügbar</MenuItem>
+              )}
+            </Select>
+            {errors.übergeordneteProbe && (
+              <Typography variant="caption" color="error">
+                {errors.übergeordneteProbe}
+              </Typography>
+            )}
+          </FormControl>
+
+          <FormControl
+            variant="outlined"
+            fullWidth
+            margin="normal"
+            error={Boolean(errors.untergeordneteProbe)}
+          >
+            <InputLabel>Untergeordnete Probenart</InputLabel>
+            <Select
+              id="untergeordnet"
+              name="untergeordneteProbe"
+              value={formData.untergeordneteProbe}
+              onChange={handleChange}
+              label="Untergeordnet Probenart"
+            >
+              <MenuItem value="">-- Bitte auswählen --</MenuItem>
+              {Array.isArray(untergeordneteProbeOptions) && untergeordneteProbeOptions.length > 0 ? (
+                untergeordneteProbeOptions.map((option) => (
+                  <MenuItem key={option.id} value={option.id}>
+                    {option.text}
+                  </MenuItem>
+                ))
+              ) : (
+                <MenuItem disabled>Keine Optionen verfügbar</MenuItem>
+              )}
+            </Select>
+            {errors.untergeordneteProbe && (
+              <Typography variant="caption" color="error">
+                {errors.untergeordneteProbe}
+              </Typography>
+            )}
+          </FormControl>
 
           {/* Datum */}
           <TextField
@@ -656,6 +643,39 @@ export default function SampleForm() {
       {/* Conditional Fields for Serum */}
       {formData.probenart === 'serum' && (
         <Box sx={{ mt: 2 }}>
+          <FormControl
+            variant="outlined"
+            fullWidth
+            margin="normal"
+            error={Boolean(errors.untergeordneteProbe)}
+          >
+            <InputLabel>Untergeordnete Probenart</InputLabel>
+            <Select
+              id="untergeordnet"
+              name="untergeordneteProbe"
+              value={formData.untergeordneteProbe}
+              onChange={handleChange}
+              label="Untergeordnet Probenart"
+            >
+              <MenuItem value="">-- Bitte auswählen --</MenuItem>
+              {Array.isArray(untergeordneteProbeOptions) && untergeordneteProbeOptions.length > 0 ? (
+                untergeordneteProbeOptions.map((option) => (
+                  <MenuItem key={option.id} value={option.id}>
+                    {option.text}
+                  </MenuItem>
+                ))
+              ) : (
+                <MenuItem disabled>Keine Optionen verfügbar</MenuItem>
+              )}
+            </Select>
+            {errors.untergeordneteProbe && (
+              <Typography variant="caption" color="error">
+                {errors.untergeordneteProbe}
+              </Typography>
+            )}
+          </FormControl>
+
+
           {/* Barcode ID */}
           <TextField
             label="Scannerfeld für Barcode ID"
@@ -761,6 +781,70 @@ export default function SampleForm() {
       {/* Conditional Fields for Urin */}
       {formData.probenart === 'urin' && (
         <Box sx={{ mt: 2 }}>
+          <FormControl
+            variant="outlined"
+            fullWidth
+            margin="normal"
+            error={Boolean(errors.übergeordneteProbe)}
+          >
+            <InputLabel>Übergeordnete Probenart</InputLabel>
+            <Select
+              id="uebergeordnet"
+              name="übergeordneteProbe"
+              value={formData.übergeordneteProbe}
+              onChange={handleChange}
+              label="Übergeordnete Probenart"
+            >
+              <MenuItem value="">-- Bitte auswählen --</MenuItem>
+              {Array.isArray(overgeordneteProbeOptions) && overgeordneteProbeOptions.length > 0 ? (
+                overgeordneteProbeOptions.map((option) => (
+                  <MenuItem key={option.id} value={option.id}>
+                    {option.text}
+                  </MenuItem>
+                ))
+              ) : (
+                <MenuItem disabled>Keine Optionen verfügbar</MenuItem>
+              )}
+            </Select>
+            {errors.übergeordneteProbe && (
+              <Typography variant="caption" color="error">
+                {errors.übergeordneteProbe}
+              </Typography>
+            )}
+          </FormControl>
+
+          <FormControl
+            variant="outlined"
+            fullWidth
+            margin="normal"
+            error={Boolean(errors.untergeordneteProbe)}
+          >
+            <InputLabel>Untergeordnete Probenart</InputLabel>
+            <Select
+              id="untergeordnet"
+              name="untergeordneteProbe"
+              value={formData.untergeordneteProbe}
+              onChange={handleChange}
+              label="Untergeordnet Probenart"
+            >
+              <MenuItem value="">-- Bitte auswählen --</MenuItem>
+              {Array.isArray(untergeordneteProbeOptions) && untergeordneteProbeOptions.length > 0 ? (
+                untergeordneteProbeOptions.map((option) => (
+                  <MenuItem key={option.id} value={option.id}>
+                    {option.text}
+                  </MenuItem>
+                ))
+              ) : (
+                <MenuItem disabled>Keine Optionen verfügbar</MenuItem>
+              )}
+            </Select>
+            {errors.untergeordneteProbe && (
+              <Typography variant="caption" color="error">
+                {errors.untergeordneteProbe}
+              </Typography>
+            )}
+          </FormControl>
+
           {/* Barcode ID */}
           <TextField
             label="Scannerfeld für Barcode ID"
@@ -867,6 +951,71 @@ export default function SampleForm() {
       {/* Conditional Fields for Paraffin */}
       {formData.probenart === 'paraffin' && (
         <Box sx={{ mt: 2 }}>
+          <FormControl
+            variant="outlined"
+            fullWidth
+            margin="normal"
+            error={Boolean(errors.übergeordneteProbe)}
+          >
+            <InputLabel>Übergeordnete Probenart</InputLabel>
+            <Select
+              id="uebergeordnet"
+              name="übergeordneteProbe"
+              value={formData.übergeordneteProbe}
+              onChange={handleChange}
+              label="Übergeordnete Probenart"
+            >
+              <MenuItem value="">-- Bitte auswählen --</MenuItem>
+              {Array.isArray(overgeordneteProbeOptions) && overgeordneteProbeOptions.length > 0 ? (
+                overgeordneteProbeOptions.map((option) => (
+                  <MenuItem key={option.id} value={option.id}>
+                    {option.text}
+                  </MenuItem>
+                ))
+              ) : (
+                <MenuItem disabled>Keine Optionen verfügbar</MenuItem>
+              )}
+            </Select>
+            {errors.übergeordneteProbe && (
+              <Typography variant="caption" color="error">
+                {errors.übergeordneteProbe}
+              </Typography>
+            )}
+          </FormControl>
+
+          <FormControl
+            variant="outlined"
+            fullWidth
+            margin="normal"
+            error={Boolean(errors.untergeordneteProbe)}
+          >
+            <InputLabel>Untergeordnete Probenart</InputLabel>
+            <Select
+              id="untergeordnet"
+              name="untergeordneteProbe"
+              value={formData.untergeordneteProbe}
+              onChange={handleChange}
+              label="Untergeordnet Probenart"
+            >
+              <MenuItem value="">-- Bitte auswählen --</MenuItem>
+              {Array.isArray(untergeordneteProbeOptions) && untergeordneteProbeOptions.length > 0 ? (
+                untergeordneteProbeOptions.map((option) => (
+                  <MenuItem key={option.id} value={option.id}>
+                    {option.text}
+                  </MenuItem>
+                ))
+              ) : (
+                <MenuItem disabled>Keine Optionen verfügbar</MenuItem>
+              )}
+            </Select>
+            {errors.untergeordneteProbe && (
+              <Typography variant="caption" color="error">
+                {errors.untergeordneteProbe}
+              </Typography>
+            )}
+          </FormControl>
+
+
           {/* Datum */}
           <TextField
             label="Datum"
