@@ -1,7 +1,7 @@
 // src/SampleForm.js
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { makeStyles } from "@material-ui/core/styles";
+import { makeStyles } from "@mui/styles";
 import {
   Box,
   TextField,
@@ -505,7 +505,7 @@ export default function SampleForm() {
             label="Datum"
             name="created_at"
             type="date"
-            value={formData.created_at}
+            value={formData.created_at || dayjs().format("YYYY-MM-DD")}
             onChange={handleChange}
             fullWidth
             margin="normal"
@@ -519,7 +519,7 @@ export default function SampleForm() {
             label="Probe erhalten (Uhrzeit)"
             name="uhrzeit"
             type="time"
-            value={formData.uhrzeit}
+            value={formData.uhrzeit || dayjs().format("HH:mm")}
             onChange={handleChange}
             fullWidth
             margin="normal"
@@ -693,7 +693,7 @@ export default function SampleForm() {
             label="Datum"
             name="created_at"
             type="date"
-            value={formData.created_at}
+            value={formData.created_at || dayjs().format("YYYY-MM-DD")}
             onChange={handleChange}
             fullWidth
             margin="normal"
@@ -862,7 +862,7 @@ export default function SampleForm() {
             label="Datum"
             name="created_at"
             type="date"
-            value={formData.created_at}
+            value={formData.created_at || dayjs().format("YYYY-MM-DD")}
             onChange={handleChange}
             fullWidth
             margin="normal"
@@ -875,7 +875,6 @@ export default function SampleForm() {
           <TextField
             label="Raum"
             name="lagerraum"
-            defaultValue="1027"
             value={formData.lagerraum}
             onChange={handleChange}
             fullWidth
@@ -1021,7 +1020,7 @@ export default function SampleForm() {
             label="Datum"
             name="created_at"
             type="date"
-            value={formData.created_at}
+            value={formData.created_at || dayjs().format("YYYY-MM-DD")}
             onChange={handleChange}
             fullWidth
             margin="normal"
