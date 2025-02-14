@@ -27,7 +27,8 @@ class SerumprobenBase(BaseModel):
     boxspalte: Optional[int] = None
     anmerkungen: Optional[str] = None
     created_at: Optional[str] = None
-    uebergeordnete_probenart: Optional[int] = None  # added this
+    abholer: Optional[str] = None
+    uhrzeit: Optional[str] = None
     untergeordnete_probenart: Optional[int] = None  # anded this
 
 class TableDataSerumproben(SerumprobenBase):
@@ -68,6 +69,8 @@ class UrinprobenBase(BaseModel):
     boxspalte: Optional[int] = None
     anmerkungen: Optional[str] = None
     created_at: Optional[str] = None
+    abholer: Optional[str] = None
+    uhrzeit: Optional[str] = None
     uebergeordnete_probenart: Optional[int] = None 
     untergeordnete_probenart: Optional[int] = None  
 
@@ -82,7 +85,9 @@ class TableDataParaffinproben(BaseModel):
     anmerkungen: Optional[str] = None
     created_at: Optional[str] = None
     uebergeordnete_probenart: Optional[int] = None 
-    untergeordnete_probenart: Optional[int] = None 
+    untergeordnete_probenart: Optional[int] = None
+    abholer: Optional[str] = None
+    uhrzeit: Optional[str] = None 
 
 class TableDataParaffinproben(TableDataParaffinproben):
     status: Optional[int] = 1

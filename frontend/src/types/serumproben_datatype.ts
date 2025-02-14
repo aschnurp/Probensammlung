@@ -8,5 +8,6 @@ export type serumprobenData = {
     boxzeile?: string; 
     boxspalte?: number; 	
     lagerraum?: string;	
-    anmerkungen?: string;	
+    anmerkungen?: string;
+    abholer?: string;	
 }

@@ -17,7 +17,6 @@ import {
 import { IoMdArrowRoundBack } from "react-icons/io";
 import { suggestBoxData } from '../components/custom_functions/suggestBoxData';
 import dayjs from 'dayjs';
-import 'dayjs/locale/de';
 import DateObject from "react-date-object";
 dayjs.locale('de');
 import { getProbeOptions } from '../components/custom_functions/getProbeOPtions';
@@ -104,23 +103,21 @@ export default function SampleForm() {
     if (formData.probenart) {
       setFormData((prevData) => ({
         ...prevData,
-        lagerraum: raumZuordnung[formData.probenart] || raumnummer, // Standardwert oder Fallback
+        lagerraum: raumZuordnung[formData.probenart] || raumnummer,
       }));
     }
   }, [formData.probenart]);
 
   useEffect(() => {
-    // Setze das aktuelle Datum im ISO-Format (YYYY-MM-DD)
     const currentDate = dayjs().format('YYYY-MM-DD');
-    // Setze die aktuelle Uhrzeit im deutschen Format (HH:mm)
     const currentTime = dayjs().format('HH:mm');
 
     setFormData((prevData) => ({
       ...prevData,
-      created_at: currentDate, // Setze das Datum im ISO-Format
-      uhrzeit: currentTime,    // Setze die Uhrzeit im deutschen Format
+      created_at: currentDate, 
+      uhrzeit: currentTime,    
     }));
-  }, []); // Dieser Effekt wird nur einmal beim Laden der Seite ausgeführt
+  }, []); 
 
 
 
@@ -227,11 +224,17 @@ export default function SampleForm() {
     console.log('handleSubmit called:', formData);
 
     // New validation for Übergeordnete Probe and Untergeordnete Probe
-    const sampleTypes = ['gewebe', 'serum', 'urin', 'paraffin'];
+    const sampleTypes = ['gewebe', 'urin', 'paraffin'];
     if (formData.probenart && sampleTypes.includes(formData.probenart)) {
       if (!formData.übergeordneteProbe) {
         newErrors.übergeordneteProbe = 'Übergeordnete Probe is erforderlich.';
       }
+      if (!formData.untergeordneteProbe) {
+        newErrors.untergeordneteProbe = 'Untergeordnete Probe ist erforderlich.';
+      }
+    }
+    const sampleTypeSerum = ['serum'];
+    if (formData.probenart && sampleTypes.includes(formData.probenart)) {
       if (!formData.untergeordneteProbe) {
         newErrors.untergeordneteProbe = 'Untergeordnete Probe ist erforderlich.';
       }
@@ -318,7 +321,8 @@ export default function SampleForm() {
     };
 
     console.log('Filtered data beim EINSCHLEUSEN:', filteredData);
-
+    console.log("Selected probenart:", formData.probenart);
+    
     try {
       let endpoint = '';
       switch (formData.probenart) {
@@ -337,7 +341,7 @@ export default function SampleForm() {
         default:
           throw new Error('Ungültige Probenart ausgewählt.');
       }
-
+      console.log(endpoint)
       const response = await axios.post(
         `http://localhost:8000/new_data/${endpoint}`,
         filteredData,
@@ -718,7 +722,44 @@ export default function SampleForm() {
             error={Boolean(errors.created_at)}
             helperText={errors.created_at}
           />
+    
+          {/* Uhrzeit */}
+          <TextField
+            label="Uhrzeit"
+            name="uhrzeit"
+            type="time"
+            value={formData.uhrzeit}
+            onChange={handleChange}
+            fullWidth
+            margin="normal"
+            InputLabelProps={{ shrink: true }}
+            error={Boolean(errors.uhrzeit)}
+            helperText={errors.uhrzeit}
+          />
 
+
+          {/* Probenabholer*in Select Field */}
+          <FormControl
+            variant="outlined"
+            fullWidth
+            margin="normal">
+            <InputLabel id="demo-simple-select-label">Probenabholer:In</InputLabel>
+            <Select
+              name="abholer"
+              labelId="demo-simple-select-filled-label"
+              label="Probenabholer:In"
+              id="demo-simple-select-filled"
+              value={formData.abholer}
+              onChange={handleChange}
+            >
+              <MenuItem value="">
+                <em>None</em>
+              </MenuItem>
+              {abholer.map((abholer) => (
+                <MenuItem key={abholer.id} value={abholer.name}>{abholer.name}</MenuItem>
+              ))}
+            </Select>
+          </FormControl>
 
           {/* Raum */}
           <TextField
@@ -890,6 +931,42 @@ export default function SampleForm() {
             helperText={errors.created_at}
           />
 
+          {/* Uhrzeit */}
+          <TextField
+            label="Uhrzeit"
+            name="uhrzeit"
+            type="time"
+            value={formData.uhrzeit}
+            onChange={handleChange}
+            fullWidth
+            margin="normal"
+            InputLabelProps={{ shrink: true }}
+            error={Boolean(errors.uhrzeit)}
+            helperText={errors.uhrzeit}
+          />
+
+          {/* Probenabholer*in Select Field */}
+          <FormControl
+            variant="outlined"
+            fullWidth
+            margin="normal">
+            <InputLabel id="demo-simple-select-label">Probenabholer:In</InputLabel>
+            <Select
+              name="abholer"
+              labelId="demo-simple-select-filled-label"
+              label="Probenabholer:In"
+              id="demo-simple-select-filled"
+              value={formData.abholer}
+              onChange={handleChange}
+            >
+              <MenuItem value="">
+                <em>None</em>
+              </MenuItem>
+              {abholer.map((abholer) => (
+                <MenuItem key={abholer.id} value={abholer.name}>{abholer.name}</MenuItem>
+              ))}
+            </Select>
+          </FormControl>
 
           {/* Raum */}
           <TextField
@@ -1048,6 +1125,43 @@ export default function SampleForm() {
             helperText={errors.created_at}
 
           />
+
+          {/* Uhrzeit */}
+          <TextField
+            label="Uhrzeit"
+            name="uhrzeit"
+            type="time"
+            value={formData.uhrzeit}
+            onChange={handleChange}
+            fullWidth
+            margin="normal"
+            InputLabelProps={{ shrink: true }}
+            error={Boolean(errors.uhrzeit)}
+            helperText={errors.uhrzeit}
+          />
+
+          {/* Probenabholer*in Select Field */}
+          <FormControl
+            variant="outlined"
+            fullWidth
+            margin="normal">
+            <InputLabel id="demo-simple-select-label">Probenabholer:In</InputLabel>
+            <Select
+              name="abholer"
+              labelId="demo-simple-select-filled-label"
+              label="Probenabholer:In"
+              id="demo-simple-select-filled"
+              value={formData.abholer}
+              onChange={handleChange}
+            >
+              <MenuItem value="">
+                <em>None</em>
+              </MenuItem>
+              {abholer.map((abholer) => (
+                <MenuItem key={abholer.id} value={abholer.name}>{abholer.name}</MenuItem>
+              ))}
+            </Select>
+          </FormControl>
 
           {/* Raum */}
           <TextField
