@@ -46,7 +46,7 @@ export default function SampleForm() {
     probenart: '',
     time: '',
     abholer: '',
-    lagerraum: raumnummer,
+    lagerraum: '',
     boxspalte: '',
     boxzeile: '',
     barcode_id: '',
@@ -89,6 +89,23 @@ export default function SampleForm() {
     };
     getCategorias();
   }, []);
+
+  useEffect(() => {
+    const raumZuordnung = {
+      paraffin: "1012",
+      urin: "1029",
+      serum: "1029",
+      gewebe: "1029",
+    };
+  
+    // Lagerraum wird gesetzt, wenn probenart geändert wird
+    if (formData.probenart) {
+      setFormData((prevData) => ({
+        ...prevData,
+        lagerraum: raumZuordnung[formData.probenart] || raumnummer, // Standardwert oder Fallback
+      }));
+    }
+  }, [formData.probenart]);
 
   useEffect(() => {
     if (formData.probenart) {
