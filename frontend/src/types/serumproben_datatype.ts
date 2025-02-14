@@ -4,7 +4,6 @@ export type serumprobenData = {
     created_at: string;	
     probenart?: string;
     untergeordnete_probenart?: string;
-    uebergeordnete_probenart?: string; 	
     boxnummer?: number; 
     boxzeile?: string; 
     boxspalte?: number; 	

@@ -68,8 +68,8 @@ class UrinprobenBase(BaseModel):
     boxspalte: Optional[int] = None
     anmerkungen: Optional[str] = None
     created_at: Optional[str] = None
-    uebergeordnete_probenart: Optional[int] = None  # added this
-    untergeordnete_probenart: Optional[int] = None  # anded this
+    uebergeordnete_probenart: Optional[int] = None 
+    untergeordnete_probenart: Optional[int] = None  
 
 class TableDataUrinproben(UrinprobenBase):
     status: Optional[int] = 1
@@ -81,6 +81,8 @@ class TableDataParaffinproben(BaseModel):
     lagerraum: Optional[str] = 1012
     anmerkungen: Optional[str] = None
     created_at: Optional[str] = None
+    uebergeordnete_probenart: Optional[int] = None 
+    untergeordnete_probenart: Optional[int] = None 
 
 class TableDataParaffinproben(TableDataParaffinproben):
     status: Optional[int] = 1

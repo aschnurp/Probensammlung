@@ -17,7 +17,9 @@ import {
 import { IoMdArrowRoundBack } from "react-icons/io";
 import { suggestBoxData } from '../components/custom_functions/suggestBoxData';
 import dayjs from 'dayjs';
+import 'dayjs/locale/de';
 import DateObject from "react-date-object";
+dayjs.locale('de');
 import { getProbeOptions } from '../components/custom_functions/getProbeOPtions';
 
 //default time management
@@ -97,7 +99,7 @@ export default function SampleForm() {
       serum: "1029",
       gewebe: "1029",
     };
-  
+
     // Lagerraum wird gesetzt, wenn probenart geändert wird
     if (formData.probenart) {
       setFormData((prevData) => ({
@@ -106,6 +108,21 @@ export default function SampleForm() {
       }));
     }
   }, [formData.probenart]);
+
+  useEffect(() => {
+    // Setze das aktuelle Datum im ISO-Format (YYYY-MM-DD)
+    const currentDate = dayjs().format('YYYY-MM-DD');
+    // Setze die aktuelle Uhrzeit im deutschen Format (HH:mm)
+    const currentTime = dayjs().format('HH:mm');
+
+    setFormData((prevData) => ({
+      ...prevData,
+      created_at: currentDate, // Setze das Datum im ISO-Format
+      uhrzeit: currentTime,    // Setze die Uhrzeit im deutschen Format
+    }));
+  }, []); // Dieser Effekt wird nur einmal beim Laden der Seite ausgeführt
+
+
 
   useEffect(() => {
     if (formData.probenart) {
@@ -206,17 +223,8 @@ export default function SampleForm() {
   const handleSubmit = async () => {
     const newErrors = {};
     const isValidInteger = (value) => /^\d+$/.test(value);
-    const isValidDate = (value) => /^\d{4}-\d{2}-\d{2}$/.test(value);
-    const isValidTime = (value) => /^([0-1]\d|2[0-3]):([0-5]\d)$/.test(value);
-    //Test
-    console.log('handleSubmit called:', formData);
 
-    if (!formData.probenart) newErrors.probenart = 'Probenart ist erforderlich.';
-    if (!formData.patient_Id_intern) newErrors.patient_Id_intern = 'Patienten ID ist erforderlich.';
-    if (!formData.lagerraum) newErrors.lagerraum = 'Lagerraum ist erforderlich.';
-    if (!formData.created_at || !isValidDate(formData.created_at)) {
-      newErrors.created_at = 'Datum ist erforderlich und muss im Format JJJJ-MM-TT sein.';
-    }
+    console.log('handleSubmit called:', formData);
 
     // New validation for Übergeordnete Probe and Untergeordnete Probe
     const sampleTypes = ['gewebe', 'serum', 'urin', 'paraffin'];
@@ -247,10 +255,6 @@ export default function SampleForm() {
         boxspalteNumber === 0
       ) {
         newErrors.boxspalte = 'Boxspalte ist erforderlich und muss eine ganze Zahl zwischen 1-9 sein.';
-      }
-
-      if (!formData.uhrzeit || !isValidTime(formData.uhrzeit)) {
-        newErrors.uhrzeit = 'Uhrzeit ist erforderlich und muss im Format HH:MM sein.';
       }
 
       if (!formData.abholer) {
@@ -295,11 +299,6 @@ export default function SampleForm() {
 
     setErrors({});
 
-    // Format created_at as a string in YYYY-MM-DD
-    const formattedCreatedAt = formData.created_at
-      ? dayjs(formData.created_at).format('YYYY-MM-DD')
-      : '';
-
     const filteredData = {
       probenart: formData.probenart,
       barcode_id: formData.barcode_id,
@@ -309,7 +308,7 @@ export default function SampleForm() {
       boxzeile: formData.boxzeile,
       boxspalte: parseInt(formData.boxspalte, 10),
       anmerkungen: formData.anmerkungen,
-      created_at: formattedCreatedAt,
+      created_at: formData.created_at,
       uhrzeit: formData.uhrzeit,
       sap_id: formData.sap_id,
       abholer: formData.abholer,
@@ -522,7 +521,7 @@ export default function SampleForm() {
             label="Datum"
             name="created_at"
             type="date"
-            value={formData.created_at || dayjs().format("YYYY-MM-DD")}
+            value={formData.created_at}  // Hier ist der Wert im ISO-Format
             onChange={handleChange}
             fullWidth
             margin="normal"
@@ -533,10 +532,10 @@ export default function SampleForm() {
 
           {/* Uhrzeit */}
           <TextField
-            label="Probe erhalten (Uhrzeit)"
+            label="Uhrzeit"
             name="uhrzeit"
             type="time"
-            value={formData.uhrzeit || dayjs().format("HH:mm")}
+            value={formData.uhrzeit}
             onChange={handleChange}
             fullWidth
             margin="normal"
@@ -544,6 +543,7 @@ export default function SampleForm() {
             error={Boolean(errors.uhrzeit)}
             helperText={errors.uhrzeit}
           />
+
           {/* Probenabholer*in Select Field */}
           <FormControl
             variant="outlined"
@@ -710,7 +710,7 @@ export default function SampleForm() {
             label="Datum"
             name="created_at"
             type="date"
-            value={formData.created_at || dayjs().format("YYYY-MM-DD")}
+            value={formData.created_at}
             onChange={handleChange}
             fullWidth
             margin="normal"
@@ -718,6 +718,7 @@ export default function SampleForm() {
             error={Boolean(errors.created_at)}
             helperText={errors.created_at}
           />
+
 
           {/* Raum */}
           <TextField
@@ -874,12 +875,13 @@ export default function SampleForm() {
             helperText={errors.barcode_id}
           />
 
+
           {/* Datum */}
           <TextField
             label="Datum"
             name="created_at"
             type="date"
-            value={formData.created_at || dayjs().format("YYYY-MM-DD")}
+            value={formData.created_at}
             onChange={handleChange}
             fullWidth
             margin="normal"
@@ -887,6 +889,7 @@ export default function SampleForm() {
             error={Boolean(errors.created_at)}
             helperText={errors.created_at}
           />
+
 
           {/* Raum */}
           <TextField
@@ -1031,19 +1034,19 @@ export default function SampleForm() {
             )}
           </FormControl>
 
-
           {/* Datum */}
           <TextField
             label="Datum"
             name="created_at"
             type="date"
-            value={formData.created_at || dayjs().format("YYYY-MM-DD")}
+            value={formData.created_at}  // Hier ist der Wert im ISO-Format
             onChange={handleChange}
             fullWidth
             margin="normal"
             InputLabelProps={{ shrink: true }}
             error={Boolean(errors.created_at)}
             helperText={errors.created_at}
+
           />
 
           {/* Raum */}

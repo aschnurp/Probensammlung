@@ -127,6 +127,8 @@ export default function Uebersicht() {
         selectedTableName = "serum";
       } else if (selectedTable === "gewebeproben") {
         selectedTableName = "gewebe";
+      } else if (selectedTable === "paraffinproben") {
+        selectedTableName = "paraffin";
       } else {
         selectedTableName = selectedTable;
       }
@@ -489,7 +491,7 @@ export default function Uebersicht() {
                             </DialogContent>
                             <DialogActions>
                               <Button onClick={handleClosePASSW}>Abbrechen</Button>
-                              <Button type="submit">Speichern</Button>
+                              <Button type="submit">Bestätigen</Button>
                             </DialogActions>
                           </Dialog>
                           {/* Dialog for Check Field */}
@@ -615,9 +617,6 @@ export default function Uebersicht() {
           >
             <Typography variant='caption' fontWeight={'fontWeightBold'} sx={{ display: 'block' }}>
               Anmerkungen zum Filter:
-            </Typography>
-            <Typography variant='caption' sx={{ display: 'block' }}>
-              Erstellungsdatum: yyyy-mm-dd
             </Typography>
             <Typography variant='caption' sx={{ display: 'block' }}>
               Probenstatus:   1: eingeschleust   ---
