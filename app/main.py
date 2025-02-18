@@ -13,7 +13,7 @@ from app.seed import seed_status_data
 app = FastAPI()
 
 #origin list for websites
-origins = ["*"]
+origins = ["http://localhost:3000", "http://api:8000", "http://api:3000", "http://localhost:8000"]
 
 app.add_middleware(
     CORSMiddleware,

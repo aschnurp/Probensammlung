@@ -57,7 +57,6 @@ export default function SampleForm() {
     uhrzeit: '',
     sap_id: '',
     remarks: '',
-    übergeordneteProbe: '',
     untergeordneteProbe: '',
   });
 
@@ -316,12 +315,15 @@ export default function SampleForm() {
       sap_id: formData.sap_id,
       abholer: formData.abholer,
       remarks: formData.remarks,
-      uebergeordnete_probenart: formData.übergeordneteProbe,
       untergeordnete_probenart: formData.untergeordneteProbe,
     };
 
-    console.log('Filtered data beim EINSCHLEUSEN:', filteredData);
-    console.log("Selected probenart:", formData.probenart);
+// Falls die Probenart nicht "serum" ist, füge die übergeordnete Probenart hinzu
+if (formData.probenart !== "serum") {
+  filteredData.uebergeordnete_probenart = formData.übergeordneteProbe;
+}
+
+console.log('Filtered data beim EINSCHLEUSEN:', filteredData);
     
     try {
       let endpoint = '';
