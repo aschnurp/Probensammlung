@@ -4,6 +4,7 @@ The Laboratory Sample Collection
 
 ## Get started - Docker
 // modify the .env files according to your needs //
+
 // run docker-compose file //
 
 ## Docker Setup
