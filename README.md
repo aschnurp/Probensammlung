@@ -1,45 +1,34 @@
 ## Overview
 
-The final concept of this database solution is to provide the user with data in a secure yet convenient way. 
-Research data will be made available to users through a web-based front-end using the latest high-security standards.
+The Laboratory Sample Collection
 
-## Get started
-_uvicorn app.main:app --host 0.0.0.0 --port 8000_
+## Get started - Docker
+// modify the .env files according to your needs //
+// run docker-compose file //
 
-for the Frontend:
-
-_npm run dev_ 
-
-// do not forget to locate the correct frontend folder first //
-
-## Docker setup
-Create an environment file for docker `.env` with the following environment variables and set the password
+## Docker Setup
+Required Environment file number one: `~.env`
 ```bash
 DATABASE_HOSTNAME=mysql
 DATABASE_PORT=3456
 DATABASE_NAME=test_db
 DATABASE_USERNAME=test_db
 DATABASE_PASSWORD=***********
-FRONTEND_PATH=path/to/frontend.dockerfile
+FRONTEND_PATH= `~\frontend\.env`
 ```
 
-Create an second environment file for docker `\frontend\.env` with the following environment variables 
+Required Environment file number two `~\frontend\.env` with the following environment variables 
 ```bash
 NEXT_PUBLIC_CONTACT_NAME_ONE=Your Name
 NEXT_PUBLIC_CONTACT_MAIL_ONE=Your EMail
 NEXT_PUBLIC_CONTACT_NAME_TWO=Your Name
 NEXT_PUBLIC_CONTACT_MAIL_TWO=Your EMail
-NEXT_PUBLIC_ABHOLER_ONE=Your Name
-NEXT_PUBLIC_ABHOLER_TWO=Your Name
-NEXT_PUBLIC_ABHOLER_THREE=Your Name
-NEXT_PUBLIC_ABHOLER_FOUR=Your Name
-NEXT_PUBLIC_ABHOLER_FIVE=Your Name
-NEXT_PUBLIC_ABHOLER_SIX=Your Name
+NEXT_PUBLIC_DELETE_PASSCODE=1111
 ```
 
 Run the local test environment
 ```bash
-sudo docker-compose -f docker-compose-develop.yml up
+sudo docker-compose -f docker-compose.yaml up
 ```
 
 ## License
