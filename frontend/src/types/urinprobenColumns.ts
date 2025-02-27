@@ -7,7 +7,7 @@ export const urinprobenDataColumns = [
     { key: "created_at", label: "Erstellungsdatum" },
     { key: "uhrzeit", label: "Probe erhalten (Uhrzeit)" },
     { key: "abholer", label: "Abholer:In" },
-    { key: "boxnummer", label: "Boxnummer" },
+    { key: "boxnummer", label: "Boxname (Boxnummer)" },
     { key: "boxzeile", label: "Boxzeile" },
     { key: "boxspalte", label: "Boxspalte" },
     { key: "lagerraum", label: "Lagerraum" },

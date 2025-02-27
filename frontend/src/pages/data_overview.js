@@ -399,9 +399,34 @@ export default function Uebersicht() {
                           
                           return unterProbenartText;
                         })()
-                      )
 
-                        : (col.key === "created_at" ? (
+                        ) : col.key === "probenart" ? (
+                          (() => {
+                            const probenartMapping = {
+                              gewebe: "Gewebe",
+                              urin: "Urin",
+                              serum: "Serum",
+                              paraffin: "Paraffin"
+                            };
+                            return probenartMapping[row["probenart"]] || "N/A";
+                          })()
+
+                          ) : col.key === "boxnummer" ? (
+                            (() => {
+                              const BOXMapping = {
+                                gewebe: "Cryo",
+                                urin: "Urin",
+                                serum: "Blut"
+                              };
+                              
+                              const boxType = BOXMapping[row["probenart"]] || "N/A";  
+                              const boxNumber = row["boxnummer"] || "N/A";  
+                          
+                              return `${boxType} (${boxNumber})`;
+                            })()
+                          
+
+                      ): (col.key === "created_at" ? (
                           // Formatierung für das Datum, falls "created_at"
                           dayjs(row[col.key]).format("DD.MM.YYYY")
                         ) : col.key === "status" && row[col.key] in STATUS_MAPPING ? (
