@@ -57,8 +57,7 @@ export default function SampleForm() {
     uhrzeit: '',
     sap_id: '',
     remarks: '',
-    untergeordneteProbe: '',
-  });
+  });}
 
 
   /////////////// useEffect here ///////////////
@@ -71,9 +70,8 @@ export default function SampleForm() {
   const [updateBox, setUpdateBox] = useState(false);
 
   // adding new variable sto the form 
-  // State to store options for Übergeordnete Probe and Untergeordnete Probe
+  // State to store options for differenzierungsmerkmal
   const [overgeordneteProbeOptions, setOvergeordneteProbeOptions] = useState([]);
-  const [untergeordneteProbeOptions, setUntergeordneteProbeOptions] = useState([]);
   const [abholer, setCategorias] = useState([]);
 
   useEffect(() => {
@@ -129,17 +127,14 @@ export default function SampleForm() {
 
   useEffect(() => {
     if (formData.probenart) {
-      const { übergeordnete, untergeordnete } = getProbeOptions(formData.probenart);
-      setOvergeordneteProbeOptions(übergeordnete);
-      setUntergeordneteProbeOptions(untergeordnete);
+      const { differenzierungsmerkmal } = getProbeOptions(formData.probenart);
+      setOvergeordneteProbeOptions(differenzierungsmerkmal);
     } else {
       // Clear options if no valid probenart
       setOvergeordneteProbeOptions([]);
-      setUntergeordneteProbeOptions([]);
       setFormData(prevData => ({
         ...prevData,
-        übergeordneteProbe: '',
-        untergeordneteProbe: '',
+        differenzierungsmerkmal: '',
       }));
     }
   }, [formData.probenart]);
@@ -201,16 +196,14 @@ export default function SampleForm() {
 
   const handleClear = () => {
     setFormData((prevData) => ({
-      ...prevData, // Spread the previous formData to keep existing fields
-      // Only clear the fields you want to reset
+      ...prevData,
       boxspalte: '',
       boxzeile: '',
       barcode_id: '',
       boxnummer: '',
       anmerkungen: '',
       remarks: '',
-      übergeordneteProbe: '',
-      untergeordneteProbe: '',
+      differenzierungsmerkmal: '',
     }));
     setErrors({});
     setUpdateBox(prev => !prev);
@@ -222,21 +215,11 @@ export default function SampleForm() {
 
     console.log('handleSubmit called:', formData);
 
-    // New validation for Übergeordnete Probe and Untergeordnete Probe
+    // New validation for differenzierungsmerkmal
     const sampleTypes = ['gewebe', 'urin', 'paraffin'];
     if (formData.probenart && sampleTypes.includes(formData.probenart)) {
-      if (!formData.übergeordneteProbe) {
-        newErrors.übergeordneteProbe = 'Übergeordnete Probe is erforderlich.';
-      }
-      if (!formData.untergeordneteProbe) {
-        newErrors.untergeordneteProbe = 'Untergeordnete Probe ist erforderlich.';
-      }
-    }
-    const sampleTypeSerum = ['serum'];
-    if (formData.probenart && sampleTypes.includes(formData.probenart)) {
-      if (!formData.untergeordneteProbe) {
-        newErrors.untergeordneteProbe = 'Untergeordnete Probe ist erforderlich.';
-      }
+      if (!formData.differenzierungsmerkmal) {
+        newErrors.differenzierungsmerkmal = 'differenzierungsmerkmal Probe is erforderlich.';
     }
 
     // Validation for "gewebe"
@@ -315,12 +298,12 @@ export default function SampleForm() {
       sap_id: formData.sap_id,
       abholer: formData.abholer,
       remarks: formData.remarks,
-      untergeordnete_probenart: formData.untergeordneteProbe,
+      //differenzierungsmerkmal: formData.differenzierungsmerkmal,
     };
 
-// Falls die Probenart nicht "serum" ist, füge die übergeordnete Probenart hinzu
+// Falls die Probenart nicht "serum" ist, füge die differenzierungsmerkmal Probenart hinzu
 if (formData.probenart !== "serum") {
-  filteredData.uebergeordnete_probenart = formData.übergeordneteProbe;
+  filteredData.differenzierungsmerkmal = formData.differenzierungsmerkmal;
 }
 
 console.log('Filtered data beim EINSCHLEUSEN:', filteredData);
@@ -462,15 +445,15 @@ console.log('Filtered data beim EINSCHLEUSEN:', filteredData);
             variant="outlined"
             fullWidth
             margin="normal"
-            error={Boolean(errors.übergeordneteProbe)}
+            error={Boolean(errors.differenzierungsmerkmal)}
           >
-            <InputLabel>Übergeordnete Probenart</InputLabel>
+            <InputLabel>Differenzierungsmerkmal</InputLabel>
             <Select
               id="uebergeordnet"
-              name="übergeordneteProbe"
-              value={formData.übergeordneteProbe}
+              name="differenzierungsmerkmal"
+              value={formData.differenzierungsmerkmal}
               onChange={handleChange}
-              label="Übergeordnete Probenart"
+              label="differenzierungsmerkmal"
             >
               <MenuItem value="">-- Bitte auswählen --</MenuItem>
               {Array.isArray(overgeordneteProbeOptions) && overgeordneteProbeOptions.length > 0 ? (
@@ -483,41 +466,9 @@ console.log('Filtered data beim EINSCHLEUSEN:', filteredData);
                 <MenuItem disabled>Keine Optionen verfügbar</MenuItem>
               )}
             </Select>
-            {errors.übergeordneteProbe && (
+            {errors.differenzierungsmerkmal && (
               <Typography variant="caption" color="error">
-                {errors.übergeordneteProbe}
-              </Typography>
-            )}
-          </FormControl>
-
-          <FormControl
-            variant="outlined"
-            fullWidth
-            margin="normal"
-            error={Boolean(errors.untergeordneteProbe)}
-          >
-            <InputLabel>Untergeordnete Probenart</InputLabel>
-            <Select
-              id="untergeordnet"
-              name="untergeordneteProbe"
-              value={formData.untergeordneteProbe}
-              onChange={handleChange}
-              label="Untergeordnet Probenart"
-            >
-              <MenuItem value="">-- Bitte auswählen --</MenuItem>
-              {Array.isArray(untergeordneteProbeOptions) && untergeordneteProbeOptions.length > 0 ? (
-                untergeordneteProbeOptions.map((option) => (
-                  <MenuItem key={option.id} value={option.id}>
-                    {option.text}
-                  </MenuItem>
-                ))
-              ) : (
-                <MenuItem disabled>Keine Optionen verfügbar</MenuItem>
-              )}
-            </Select>
-            {errors.untergeordneteProbe && (
-              <Typography variant="caption" color="error">
-                {errors.untergeordneteProbe}
+                {errors.differenzierungsmerkmal}
               </Typography>
             )}
           </FormControl>
@@ -666,38 +617,6 @@ console.log('Filtered data beim EINSCHLEUSEN:', filteredData);
       {/* Conditional Fields for Serum */}
       {formData.probenart === 'serum' && (
         <Box sx={{ mt: 2 }}>
-          <FormControl
-            variant="outlined"
-            fullWidth
-            margin="normal"
-            error={Boolean(errors.untergeordneteProbe)}
-          >
-            <InputLabel>Untergeordnete Probenart</InputLabel>
-            <Select
-              id="untergeordnet"
-              name="untergeordneteProbe"
-              value={formData.untergeordneteProbe}
-              onChange={handleChange}
-              label="Untergeordnet Probenart"
-            >
-              <MenuItem value="">-- Bitte auswählen --</MenuItem>
-              {Array.isArray(untergeordneteProbeOptions) && untergeordneteProbeOptions.length > 0 ? (
-                untergeordneteProbeOptions.map((option) => (
-                  <MenuItem key={option.id} value={option.id}>
-                    {option.text}
-                  </MenuItem>
-                ))
-              ) : (
-                <MenuItem disabled>Keine Optionen verfügbar</MenuItem>
-              )}
-            </Select>
-            {errors.untergeordneteProbe && (
-              <Typography variant="caption" color="error">
-                {errors.untergeordneteProbe}
-              </Typography>
-            )}
-          </FormControl>
-
 
           {/* Barcode ID */}
           <TextField
@@ -846,15 +765,15 @@ console.log('Filtered data beim EINSCHLEUSEN:', filteredData);
             variant="outlined"
             fullWidth
             margin="normal"
-            error={Boolean(errors.übergeordneteProbe)}
+            error={Boolean(errors.differenzierungsmerkmal)}
           >
-            <InputLabel>Übergeordnete Probenart</InputLabel>
+            <InputLabel>Differenzierungsmerkmal</InputLabel>
             <Select
               id="uebergeordnet"
-              name="übergeordneteProbe"
-              value={formData.übergeordneteProbe}
+              name="differenzierungsmerkmal"
+              value={formData.differenzierungsmerkmal}
               onChange={handleChange}
-              label="Übergeordnete Probenart"
+              label="differenzierungsmerkmal"
             >
               <MenuItem value="">-- Bitte auswählen --</MenuItem>
               {Array.isArray(overgeordneteProbeOptions) && overgeordneteProbeOptions.length > 0 ? (
@@ -867,44 +786,13 @@ console.log('Filtered data beim EINSCHLEUSEN:', filteredData);
                 <MenuItem disabled>Keine Optionen verfügbar</MenuItem>
               )}
             </Select>
-            {errors.übergeordneteProbe && (
+            {errors.differenzierungsmerkmal && (
               <Typography variant="caption" color="error">
-                {errors.übergeordneteProbe}
+                {errors.differenzierungsmerkmal}
               </Typography>
             )}
           </FormControl>
 
-          <FormControl
-            variant="outlined"
-            fullWidth
-            margin="normal"
-            error={Boolean(errors.untergeordneteProbe)}
-          >
-            <InputLabel>Untergeordnete Probenart</InputLabel>
-            <Select
-              id="untergeordnet"
-              name="untergeordneteProbe"
-              value={formData.untergeordneteProbe}
-              onChange={handleChange}
-              label="Untergeordnet Probenart"
-            >
-              <MenuItem value="">-- Bitte auswählen --</MenuItem>
-              {Array.isArray(untergeordneteProbeOptions) && untergeordneteProbeOptions.length > 0 ? (
-                untergeordneteProbeOptions.map((option) => (
-                  <MenuItem key={option.id} value={option.id}>
-                    {option.text}
-                  </MenuItem>
-                ))
-              ) : (
-                <MenuItem disabled>Keine Optionen verfügbar</MenuItem>
-              )}
-            </Select>
-            {errors.untergeordneteProbe && (
-              <Typography variant="caption" color="error">
-                {errors.untergeordneteProbe}
-              </Typography>
-            )}
-          </FormControl>
 
           {/* Barcode ID */}
           <TextField
@@ -1053,15 +941,15 @@ console.log('Filtered data beim EINSCHLEUSEN:', filteredData);
             variant="outlined"
             fullWidth
             margin="normal"
-            error={Boolean(errors.übergeordneteProbe)}
+            error={Boolean(errors.differenzierungsmerkmal)}
           >
-            <InputLabel>Übergeordnete Probenart</InputLabel>
+            <InputLabel>Differenzierungsmerkmal </InputLabel>
             <Select
               id="uebergeordnet"
-              name="übergeordneteProbe"
-              value={formData.übergeordneteProbe}
+              name="differenzierungsmerkmal"
+              value={formData.differenzierungsmerkmal}
               onChange={handleChange}
-              label="Übergeordnete Probenart"
+              label="differenzierungsmerkmal"
             >
               <MenuItem value="">-- Bitte auswählen --</MenuItem>
               {Array.isArray(overgeordneteProbeOptions) && overgeordneteProbeOptions.length > 0 ? (
@@ -1074,44 +962,13 @@ console.log('Filtered data beim EINSCHLEUSEN:', filteredData);
                 <MenuItem disabled>Keine Optionen verfügbar</MenuItem>
               )}
             </Select>
-            {errors.übergeordneteProbe && (
+            {errors.differenzierungsmerkmal && (
               <Typography variant="caption" color="error">
-                {errors.übergeordneteProbe}
+                {errors.differenzierungsmerkmal}
               </Typography>
             )}
           </FormControl>
 
-          <FormControl
-            variant="outlined"
-            fullWidth
-            margin="normal"
-            error={Boolean(errors.untergeordneteProbe)}
-          >
-            <InputLabel>Untergeordnete Probenart</InputLabel>
-            <Select
-              id="untergeordnet"
-              name="untergeordneteProbe"
-              value={formData.untergeordneteProbe}
-              onChange={handleChange}
-              label="Untergeordnet Probenart"
-            >
-              <MenuItem value="">-- Bitte auswählen --</MenuItem>
-              {Array.isArray(untergeordneteProbeOptions) && untergeordneteProbeOptions.length > 0 ? (
-                untergeordneteProbeOptions.map((option) => (
-                  <MenuItem key={option.id} value={option.id}>
-                    {option.text}
-                  </MenuItem>
-                ))
-              ) : (
-                <MenuItem disabled>Keine Optionen verfügbar</MenuItem>
-              )}
-            </Select>
-            {errors.untergeordneteProbe && (
-              <Typography variant="caption" color="error">
-                {errors.untergeordneteProbe}
-              </Typography>
-            )}
-          </FormControl>
 
           {/* Datum */}
           <TextField
