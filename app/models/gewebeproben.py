@@ -14,7 +14,7 @@ class Gewebeproben(Base):
     created_at = Column(TEXT)
     differenzierungsmerkmal	= Column(TINYINT, ForeignKey("differenzierungsmerkmal_gewebe.id"), nullable=True)
     probenart = Column(TEXT)
-    probeninformation	= Column(TINYINT, ForeignKey("probeninformation.id"), nullable=True)
+    probeninformation	= Column(Integer, ForeignKey("probeninformation.id"), nullable=True)
     abholer = Column(TEXT)
     uhrzeit = Column(TEXT)		
     boxnummer = Column(Integer) 

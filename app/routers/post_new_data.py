@@ -10,6 +10,7 @@ from ..models.gewebeproben import Gewebeproben
 from ..models.urinproben import Urinproben
 from ..models.paraffinproben import Paraffinproben
 from ..models.probenabholer import Probenabholer
+from ..models.vorlaeufige_proben import VorlaeufigeProben
 from datetime import datetime
 
 
@@ -119,3 +120,34 @@ def create_probenabholer(post: schemas.TableDataProbenabholer, db: Session = Dep
     db.commit()
     db.refresh(new_item)
     return new_item
+
+
+#router for new vorlaeufige_proben.py entry -- plus create a new patient, when no one exists
+@router.post("/vorlaeufige_proben", status_code=status.HTTP_201_CREATED, response_model=schemas.TableVorlaeufigeProben)
+def create_vorlaeufigeproben(post: schemas.TableVorlaeufigeProben, db: Session = Depends(get_db)):
+    post_data = post.dict()
+
+    # Prüfen, ob der Patient existiert
+    existing_patient = db.query(Patient).filter(Patient.patient_Id_intern == post.patient_Id_intern).first()
+    
+    if not existing_patient:
+        # Neuen Patienten anlegen
+        new_patient = Patient(patient_Id_intern=post.patient_Id_intern)  
+        db.add(new_patient)
+        db.commit()
+        db.refresh(new_patient)
+        print(f"Patient mit ID {post.patient_Id_intern} wurde erstellt.")
+
+    # Prüfen, ob die Probe bereits existiert
+    existing_item = db.query(VorlaeufigeProben).filter(VorlaeufigeProben.barcode_id == post.barcode_id).first()
+    if existing_item:
+        raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail=f"Entry with barcode_id: {post.barcode_id} already exists")
+
+    # Neue Probe hinzufügen
+    new_item = VorlaeufigeProben(**post_data)
+    db.add(new_item)
+    db.commit()
+    db.refresh(new_item)
+
+    return new_item
+

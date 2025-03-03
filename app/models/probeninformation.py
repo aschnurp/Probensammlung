@@ -8,6 +8,6 @@ from sqlalchemy.sql.expression import text
 
 class Probeninformation(Base):
     __tablename__ = "probeninformation"
-    id = Column(TINYINT, primary_key= True, nullable=False, autoincrement=True)
+    id = Column(Integer, primary_key= True, nullable=False, autoincrement=True)
     probeninformation_text = Column(TEXT)
     probenart = Column(TEXT)

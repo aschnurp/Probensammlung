@@ -98,6 +98,12 @@ class TableDatapatient(BaseModel):
     bemerkung: Optional[str] = None
     created_at: Optional[str] = None
 
+class TableVorlaeufigeProben(BaseModel):
+    barcode_id: str 
+    patient_Id_intern: str = None 
+    probeninformation: int = None
+
+
 class LastBoxInfo(BaseModel):
     boxnummer: int
     boxzeile: str

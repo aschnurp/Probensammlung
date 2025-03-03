@@ -11,6 +11,6 @@ class VorlaeufigeProben(Base):
     barcode_id = Column(VARCHAR(200), primary_key= True, nullable=False)
     timestamp = Column(TIMESTAMP(timezone=True), nullable=False, server_default=text("now()"))
     patient_Id_intern = Column(VARCHAR(200), ForeignKey("patient.patient_Id_intern")) 
-    probeninformation	= Column(TINYINT, ForeignKey("probeninformation.id"), nullable=True)
+    probeninformation	= Column(Integer, ForeignKey("probeninformation.id"), nullable=True)
 
 

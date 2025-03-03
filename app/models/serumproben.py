@@ -15,7 +15,7 @@ class Serumproben(Base):
     abholer = Column(TEXT)
     uhrzeit = Column(TEXT)			
     probenart = Column(TEXT)
-    probeninformation	= Column(TINYINT, ForeignKey("probeninformation.id"), nullable=True)
+    probeninformation	= Column(Integer, ForeignKey("probeninformation.id"), nullable=True)
     differenzierungsmerkmal	= Column(TINYINT, ForeignKey("differenzierungsmerkmal_serum.id"), nullable=True)
     boxnummer = Column(Integer) 
     boxzeile = Column(TEXT) 

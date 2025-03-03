@@ -14,7 +14,7 @@ class Urinproben(Base):
     created_at = Column(TEXT)
     abholer = Column(TEXT)
     uhrzeit = Column(TEXT)		
-    probeninformation	= Column(TINYINT, ForeignKey("probeninformation.id"), nullable=True)
+    probeninformation	= Column(Integer, ForeignKey("probeninformation.id"), nullable=True)
     differenzierungsmerkmal	= Column(TINYINT, ForeignKey("differenzierungsmerkmal_urin.id"), nullable=True)
     probenart = Column(TEXT)
     boxnummer = Column(Integer) 
