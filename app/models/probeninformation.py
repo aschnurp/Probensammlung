@@ -6,8 +6,8 @@ from sqlalchemy.sql.sqltypes import TIMESTAMP
 from sqlalchemy.sql.expression import text
 
 
-class Untergeordnete_probenart_serum(Base):
-    __tablename__ = "untergeordnete_probenart_serum"
+class Probeninformation(Base):
+    __tablename__ = "probeninformation"
     id = Column(TINYINT, primary_key= True, nullable=False, autoincrement=True)
-    untergeordnete_probenart_text = Column(TEXT)
-
+    probeninformation_text = Column(TEXT)
+    probenart = Column(TEXT)

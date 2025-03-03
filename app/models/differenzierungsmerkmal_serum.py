@@ -6,7 +6,7 @@ from sqlalchemy.sql.sqltypes import TIMESTAMP
 from sqlalchemy.sql.expression import text
 
 
-class Untergeordnete_probenart_urin(Base):
-    __tablename__ = "untergeordnete_probenart_urin"
+class Differenzierungsmerkmal_serum(Base):
+    __tablename__ = "differenzierungsmerkmal_serum"
     id = Column(TINYINT, primary_key= True, nullable=False, autoincrement=True)
-    untergeordnete_probenart_text = Column(TEXT)
+    differenzierungsmerkmal_text = Column(TEXT)

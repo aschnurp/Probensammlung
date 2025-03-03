@@ -29,7 +29,6 @@ class SerumprobenBase(BaseModel):
     created_at: Optional[str] = None
     abholer: Optional[str] = None
     uhrzeit: Optional[str] = None
-    untergeordnete_probenart: Optional[int] = None  # anded this
 
 class TableDataSerumproben(SerumprobenBase):
     status: Optional[int] = 1
@@ -47,8 +46,7 @@ class GewebeprobenBase(BaseModel):
     anmerkungen: Optional[str] = None
     remarks: Optional[str] = None
     created_at: Optional[str] = None
-    uebergeordnete_probenart: Optional[int] = None  # added this
-    untergeordnete_probenart: Optional[int] = None  # anded this
+
       
 
 class TableDataGewebeproben(GewebeprobenBase):
@@ -71,8 +69,6 @@ class UrinprobenBase(BaseModel):
     created_at: Optional[str] = None
     abholer: Optional[str] = None
     uhrzeit: Optional[str] = None
-    uebergeordnete_probenart: Optional[int] = None 
-    untergeordnete_probenart: Optional[int] = None  
 
 class TableDataUrinproben(UrinprobenBase):
     status: Optional[int] = 1
