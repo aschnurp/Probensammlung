@@ -82,7 +82,7 @@ def delete_probenabholer(delete_post: schemas.TableDataProbenabholer, db: Sessio
     db.commit()
     return {"message": "Successfully deleted"} 
 
-#router for new serum entry
+#router for new proben entry
 @router.delete("/vorlaeufigeproben", status_code=status.HTTP_200_OK)  # No content on successful delete
 def delete_vorlaeufige_proben(delete_post: schemas.TableVorlaeufigeProben, db: Session = Depends(get_db)):
     existing_item_query = db.query(VorlaeufigeProben).filter(VorlaeufigeProben.barcode_id == delete_post.barcode_id)

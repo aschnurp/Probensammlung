@@ -4,11 +4,6 @@ import {
   TextField,
   Button,
   Typography,
-  RadioGroup,
-  FormControl,
-  FormLabel,
-  FormControlLabel,
-  Radio,
   Snackbar,
   Alert,
 } from '@mui/material';
@@ -17,7 +12,6 @@ import axios from 'axios';
 
 export default function ProbeAusschleusen() {
   const [barcodeId, setBarcodeId] = useState('');
-  const [selectedProbe, setSelectedProbe] = useState('serum'); // Default probe type
   const [errors, setErrors] = useState({});
   const [snackbarMessage, setSnackbarMessage] = useState('');
   const [snackbarSeverity, setSnackbarSeverity] = useState('success');
@@ -27,52 +21,50 @@ export default function ProbeAusschleusen() {
     setBarcodeId(e.target.value);
   };
 
-  const handleProbeChange = (e) => {
-    setSelectedProbe(e.target.value);
-  };
-
   const validateForm = () => {
     const newErrors = {};
-
     if (!barcodeId.trim()) {
       newErrors.barcodeId = 'Barcode ID darf nicht leer sein.';
     }
-
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
 
   const handleSubmit = async () => {
-    if (!validateForm()) return;
-
+    if (!validateForm()) {
+      setSnackbarMessage("Bitte füllen Sie alle erforderlichen Felder aus.");
+      setSnackbarSeverity("error");
+      setSnackbarOpen(true);
+      return;
+    }
+  
+    const payload = { barcode_id: barcodeId };
+  
     try {
-      console.log('Trying to submit data:', barcodeId);
-
-      const response = await axios.patch(
-        `http://localhost:8000/ausschleusen/${selectedProbe}/${barcodeId}`,
-        null, // No body required as per your backend logic
+      const response = await axios.delete(
+        `http://localhost:8000/delete/vorlaeufigeproben`,
         {
-          headers: { 'Content-Type': 'application/json' },
+          headers: { "Content-Type": "application/json" },
+          data: payload, // Richtige Übergabe der Daten
         }
       );
-      console.log('Data submitted successfully:', response.data);
-
-      // Show success snackbar notification
-      setSnackbarMessage(`Probe mit der Barcode Nummer ${barcodeId} erfolgreich Ausgeschleust!`);
-      setSnackbarSeverity('success');
+  
+      console.log("Response after delete:", response);
+  
+      setSnackbarMessage("Probe erfolgreich entfernt!");
+      setSnackbarSeverity("success");
       setSnackbarOpen(true);
-
-      // Clear the form
-      setBarcodeId('');
+      
+      setBarcodeId(""); // Scannerfeld leeren
+  
     } catch (error) {
-      console.error('Error submitting data:', error);
-
-      // Show error snackbar notification
-      setSnackbarMessage('Falsche Barcode ID oder Probenart!');
-      setSnackbarSeverity('error');
+      console.error("Fehler beim Entfernen:", error);
+      setSnackbarMessage("Fehler beim Entfernen der Probe.");
+      setSnackbarSeverity("error");
       setSnackbarOpen(true);
     }
   };
+  
 
   return (
     <Box sx={{ p: 3, maxWidth: 600, mx: 'auto' }}>
@@ -89,11 +81,10 @@ export default function ProbeAusschleusen() {
         <Typography variant="h5" sx={{ fontWeight: 'bold', color: 'text.primary' }}>
           Proben Entfernen
         </Typography>
-        <Typography variant="h7" sx={{ color: 'text.primary' }}>
+        <Typography variant="body1" sx={{ color: 'text.primary' }}>
           Nicht verwendete Probengefäße (Probenröhrchen) können hier gelöscht werden.
         </Typography>
       </Box>
-
 
       <TextField
         label="Scannerfeld für Barcode ID"
@@ -116,7 +107,7 @@ export default function ProbeAusschleusen() {
         Probe Entfernen
       </Button>
 
-      {/* Snackbar for notifications */}
+      {/* Snackbar für Meldungen */}
       <Snackbar
         open={snackbarOpen}
         autoHideDuration={3000}

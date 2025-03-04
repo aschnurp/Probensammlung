@@ -3,6 +3,7 @@ import { patientDataColumns } from '../types/patientColumns';
 import { serumprobenDataColumns } from '../types/serumprobenColumns';
 import { urinprobenDataColumns } from '../types/urinprobenColumns';
 import { paraffinprobenDataColumns } from '../types/paraffinprobenColumns';
+import { vorlaeufigeprobenDataColumns } from '../types/vorlaeufigeprobenColumns';
 import dayjs from 'dayjs';
 import axios from 'axios';
 import React, { useState, useEffect, useRef } from 'react';
@@ -32,6 +33,7 @@ const TABLE_COLUMNS = {
   serumproben: serumprobenDataColumns,
   urinproben: urinprobenDataColumns,
   patient: patientDataColumns,
+  vorlaeufigeproben: vorlaeufigeprobenDataColumns
 };
 
 // definition für probenstatus mapping
@@ -111,6 +113,8 @@ export default function Uebersicht() {
       setTable_header("Paraffinproben");
     } else if (selectedTable === "patient") {
       setTable_header("Patient");
+    } else if (selectedTable === "vorlaeufigeproben") {
+      setTable_header("Vorlaeufigeproben");
     } else {
       setTable_header("");
     }
@@ -129,6 +133,8 @@ export default function Uebersicht() {
         selectedTableName = "gewebe";
       } else if (selectedTable === "paraffinproben") {
         selectedTableName = "paraffin";
+      } else if (selectedTable === "vorlaeufigeproben") {
+        selectedTableName = "vorlaeufigeproben";
       } else {
         selectedTableName = selectedTable;
       }
@@ -295,9 +301,9 @@ export default function Uebersicht() {
         `http://localhost:8000/delete/${selectedTable}`,
         {
           headers: {
-            "Content-Type": "application/json", // Set the content type
+            "Content-Type": "application/json",
           },
-          data: payload, // Send the payload as 'data'
+          data: payload, 
         }
       );
       console.log("Response after delete:", response); // Log the response

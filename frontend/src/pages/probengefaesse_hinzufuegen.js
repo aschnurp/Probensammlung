@@ -199,26 +199,26 @@ export default function SampleForm() {
         <Table sx={{ minWidth: 650 }} aria-label="simple table">
           <TableHead>
             <TableRow>
-            <TableCell align="left" style={{width: 100}}>Barcode</TableCell>
-              <TableCell align="left" style={{width: 100}}>Patient ID</TableCell>
-                <TableCell align="left" style={{width: 100}}>Probeninformation</TableCell>
+              <TableCell align="left" style={{ width: 100 }}>Barcode</TableCell>
+              <TableCell align="left" style={{ width: 100 }}>Patient ID</TableCell>
+              <TableCell align="left" style={{ width: 100 }}>Probeninformation</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-  {data
-    .sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp)) // Sortiert nach dem timestamp-Feld (neueste zuerst)
-    .slice(0, 10) // Nimmt nur die ersten 10
-    .map((row) => ( // Zeigt die ersten 10 an
-      <TableRow key={row.id}>
-        <TableCell align="left" style={{ width: 100 }}>{row.barcode_id}</TableCell>
-        <TableCell align="left" style={{ width: 100 }}>{row.patient_Id_intern}</TableCell>
-        <TableCell align="left" style={{ width: 100 }}>
-  {probeninformation.find((probe) => probe.id === row.probeninformation)?.probeninformation_text || "Keine Info"}
-</TableCell>
+            {data
+              .sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp)) // Sortiert nach dem timestamp-Feld (neueste zuerst)
+              .slice(0, 10) // Nimmt nur die ersten 10
+              .map((row) => ( // Zeigt die ersten 10 an
+                <TableRow key={row.id}>
+                  <TableCell align="left" style={{ width: 100 }}>{row.barcode_id}</TableCell>
+                  <TableCell align="left" style={{ width: 100 }}>{row.patient_Id_intern}</TableCell>
+                  <TableCell align="left" style={{ width: 100 }}>
+                    {probeninformation.find((probe) => probe.id === row.probeninformation)?.probeninformation_text || "Keine Info"}
+                  </TableCell>
 
-      </TableRow>
-    ))}
-</TableBody>
+                </TableRow>
+              ))}
+          </TableBody>
         </Table>
       </TableContainer>
 
