@@ -25,7 +25,7 @@ export default function SampleForm() {
   const [formData, setFormData] = useState({
     patient_Id_intern: "",
     barcode_id: "",
-    probeninformation: "",
+    probeninformation: "", // Initialwert für probeninformation
   });
 
   const [errors, setErrors] = useState({});
@@ -102,20 +102,20 @@ export default function SampleForm() {
       const currentIndex = probeninformation.findIndex(
         (probe) => probe.id === formData.probeninformation
       );
-      const nextIndex = (currentIndex + 1) % probeninformation.length;
-      const nextProbe = probeninformation[nextIndex]?.id || "";
+      const nextIndex = (currentIndex + 1) % probeninformation.length; // Zyklische Rotation
+      const nextProbe = probeninformation[nextIndex]?.id || ""; // Hole das nächste Element
 
       setFormData({
         patient_Id_intern: formData.patient_Id_intern,
-        barcode_id: "",
-        probeninformation: nextProbe,
+        barcode_id: "", // Barcode nach dem Absenden zurücksetzen
+        probeninformation: nextProbe, // Nächste Probeninformation
       });
 
       // Refresh table after submission
       const updatedTableData = await axios.get(
         `http://localhost:8000/table/data?table_name=vorlaeufigeproben`
       );
-      setData(updatedTableData.data);
+      setData(updatedTableData.data); // Setze die neuen Daten in die Tabelle
     } catch (error) {
       console.error("Error submitting form:", error);
       setSnackbarMessage("Fehler beim Senden der Daten.");
@@ -208,14 +208,13 @@ export default function SampleForm() {
             {data
               .sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp)) // Sortiert nach dem timestamp-Feld (neueste zuerst)
               .slice(0, 10) // Nimmt nur die ersten 10
-              .map((row) => ( // Zeigt die ersten 10 an
+              .map((row) => (
                 <TableRow key={row.id}>
                   <TableCell align="left" style={{ width: 100 }}>{row.barcode_id}</TableCell>
                   <TableCell align="left" style={{ width: 100 }}>{row.patient_Id_intern}</TableCell>
                   <TableCell align="left" style={{ width: 100 }}>
                     {probeninformation.find((probe) => probe.id === row.probeninformation)?.probeninformation_text || "Keine Info"}
                   </TableCell>
-
                 </TableRow>
               ))}
           </TableBody>
