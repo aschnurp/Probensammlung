@@ -1,9 +1,9 @@
 export const urinprobenDataColumns = [
     { key: "barcode_id", label: "Barcode ID" },
     { key: "patient_Id_intern", label: "Patienten ID (intern)" },
-    { key: "uebergeordnete_probenart", label: "Probenart (Übergeordnet)" },
+    { key: "differenzierungsmerkmal", label: "Differenzierungsmerkmal" },
     { key: "probenart", label: "Probenart" },
-    { key: "untergeordnete_probenart", label: "Probenart (Untergeordnet)" },    
+    { key: "probeninformation", label: "Probeninformation" },   
     { key: "created_at", label: "Erstellungsdatum" },
     { key: "uhrzeit", label: "Probe erhalten (Uhrzeit)" },
     { key: "abholer", label: "Abholer:In" },

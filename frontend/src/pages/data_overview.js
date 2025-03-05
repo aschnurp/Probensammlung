@@ -148,10 +148,6 @@ export default function Uebersicht() {
       } else {
         selectedTableName = selectedTable;
       }
-
-      const probeOptions = getProbeOptions(selectedTableName);
-      setUebergeordneteOptionsToRender(probeOptions.übergeordnete);
-      setUntergeordneteOptionsToRender(probeOptions.untergeordnete);
     }
   }, [selectedTable]);
 
@@ -449,7 +445,7 @@ export default function Uebersicht() {
                         })()
 
 
-                      ) : (col.key === "created_at" ? (
+                      ) : (col.key === 'created_at' || col.key === 'timestamp' ? (
                         // Formatierung für das Datum, falls "created_at"
                         dayjs(row[col.key]).format("DD.MM.YYYY")
                       ) : col.key === "status" && row[col.key] in STATUS_MAPPING ? (
