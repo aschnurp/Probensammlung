@@ -62,10 +62,11 @@ export default function Uebersicht() {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [openPsw, setOpen] = useState()
   const [openCheck, setOpenCheck] = useState()
+  const [rowToDelete, setRowToDelete] = useState(null);
+
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
-  // Use two separate states:
   const [uebergeordneteOptionsToRender, setUebergeordneteOptionsToRender] = useState([]);
   const [untergeordneteOptionsToRender, setUntergeordneteOptionsToRender] = useState([]);
 
@@ -77,7 +78,8 @@ export default function Uebersicht() {
     setAnchorEl(null);
   };
 
-  const handleClickOpenPASSW = () => {
+  const handleClickOpenPASSW = (row) => {
+    setRowToDelete(row);
     setOpen(true);
   };
 
@@ -98,11 +100,19 @@ export default function Uebersicht() {
     setError(""); // Reset error state when closing
   };
 
+  const DISPLAY_NAMES = {
+    paraffinproben: "Paraffinproben",
+    gewebeproben: "Gewebeproben",
+    serumproben: "Serumproben",
+    urinproben: "Urinproben",
+    patient: "Patientendaten",
+    vorlaeufigeproben: "Vorläufige Proben"
+  };
 
   const open = Boolean(anchorEl);
   const id = open ? 'simple-popover' : undefined;
   useEffect(() => {
-    // Dynamically update Table_header whenever selectedTable changes
+    console.log("Selected table:", selectedTable); // Ausgabe des ausgewählten Tabellenwerts
     if (selectedTable === "urinproben") {
       setTable_header("Urinproben");
     } else if (selectedTable === "serumproben") {
@@ -112,13 +122,13 @@ export default function Uebersicht() {
     } else if (selectedTable === "paraffinproben") {
       setTable_header("Paraffinproben");
     } else if (selectedTable === "patient") {
-      setTable_header("Patient");
+      setTable_header("Patientendaten");
     } else if (selectedTable === "vorlaeufigeproben") {
-      setTable_header("Vorlaeufigeproben");
+      setTable_header("Vorläufige Proben");
     } else {
       setTable_header("");
     }
-  }, [selectedTable]); // Dependency on selectedTable
+  }, [selectedTable]);
 
   // import probeOPtions for the selected table
 
@@ -142,8 +152,6 @@ export default function Uebersicht() {
       const probeOptions = getProbeOptions(selectedTableName);
       setUebergeordneteOptionsToRender(probeOptions.übergeordnete);
       setUntergeordneteOptionsToRender(probeOptions.untergeordnete);
-      console.log("Uebergeordnete Options:", probeOptions.übergeordnete);
-      console.log("Untergeordnete Options:", probeOptions.untergeordnete);
     }
   }, [selectedTable]);
 
@@ -152,40 +160,45 @@ export default function Uebersicht() {
 
   const handleTable = async (e) => {
     e.preventDefault();
-    const tableName = e.currentTarget.textContent?.trim().toLowerCase();  // Tabellenname in Kleinbuchstaben
-    setSelectedTable(tableName);
 
+    let tableName = e.currentTarget.textContent?.trim().toLowerCase();
+
+    if (tableName === "patientendaten") {
+      tableName = "patient"; 
+    } else if (tableName === "vorläufige proben") {
+      tableName = "vorlaeufigeproben"; 
+    }
+  
+    setSelectedTable(tableName);
+  
     if (!TABLE_COLUMNS[tableName]) {
       setError("Invalid table name");
       return;
     }
-
+  
     setLoading(true);
     setError(null);
-
+  
     try {
       const response = await axios.get(`http://localhost:8000/table/data?table_name=${tableName}`);
       const sorted = response.data.sort(
-        (a, b) => new Date(b.timestamp) - new Date(a.timestamp)
+        (a, b) => new Date(b.timestamp) - new Date(a.timestamp) 
       );
       setData(sorted);
-      setFilteredData(sorted);
-
+      setFilteredData(sorted);  // Update der gefilterten Daten
     } catch (error) {
       setError('Failed to fetch data');
     } finally {
       setLoading(false);
-      console.log("sucsessful change table");
     }
   };
-
   // Handle search for specific column
   const handleSearchChange = (e) => {
     const query = e.target.value;
     setSearchQuery(query);
 
     if (query === "") {
-      setFilteredData(data); // If the search query is empty, show all data
+      setFilteredData(data); 
     } else {
       const lowercasedQuery = query.toLowerCase();
       const filtered = data.filter((row) => {
@@ -227,7 +240,7 @@ export default function Uebersicht() {
   // Handle Edit Click
   const handleEditClick = (index, rowData) => {
     setEditRowIndex(index);
-    setFormData({ ...rowData }); // Die aktuellen Zeilendaten im Bearbeitungsformular laden
+    setFormData({ ...rowData });
     handleCloseCheck();
   };
 
@@ -274,7 +287,6 @@ export default function Uebersicht() {
   };
 
 
-
   const handleDelete = async (row) => {
     console.log(row);
     let payload;
@@ -283,8 +295,10 @@ export default function Uebersicht() {
       if (selectedTable === "paraffinproben") {
         payload = {
           id: row.id,
-          probenart: row.probenart,
-          patient_Id_intern: row.patient_Id_intern,
+        };
+      } else if (selectedTable === "vorlaeufigeproben") {
+        payload = {
+          barcode_id: row.barcode_id
         };
       } else {
         payload = {
@@ -294,31 +308,34 @@ export default function Uebersicht() {
         };
       }
 
-      console.log("Payload to delete:", payload); // Log the payload for debugging
-
       // Make the DELETE request
       const response = await axios.delete(
         `http://localhost:8000/delete/${selectedTable}`,
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-          data: payload, 
-        }
+        { data: payload }
       );
-      console.log("Response after delete:", response); // Log the response
 
-      // Update data after successful delete
-      setData((prevData) => prevData.filter((r) => r.rowId !== row.rowId));
-      setFilteredData((prevFiltered) => prevFiltered.filter((r) => r.rowId !== row.rowId));
 
-      // Fetch updated data after deletion
-      const response_update = await axios.get(`http://localhost:8000/table/data?table_name=${selectedTable}`);
+      if (selectedTable === "paraffinproben") {
+        setData((prevData) =>
+          prevData.filter((r) => r.id !== row.id)
+        );
+        setFilteredData((prevFiltered) =>
+          prevFiltered.filter((r) => r.id !== row.id)
+        );
+      } else {
+        setData((prevData) =>
+          prevData.filter((r) => r.barcode_id !== row.barcode_id)
+        );
+        setFilteredData((prevFiltered) =>
+          prevFiltered.filter((r) => r.barcode_id !== row.barcode_id)
+        );
+      }
 
-      // Update state with the new data
+      const response_update = await axios.get(
+        `http://localhost:8000/table/data?table_name=${selectedTable}`
+      );
       setData(response_update.data);
       setFilteredData(response_update.data);
-      console.log('Here is the updated data after deletion:', response_update.data);
     } catch (error) {
       console.error('Error deleting data:', error);
     }
@@ -388,61 +405,61 @@ export default function Uebersicht() {
                       ) : col.key === "uebergeordnete_probenart" ? (
                         (() => {
                           const ueberProbenartId = row["uebergeordnete_probenart"];
-                          
+
                           const ueberProbenartText = uebergeordneteOptionsToRender.find(
                             (option) => option.id === ueberProbenartId
                           )?.text || "N/A";
-                          
+
                           return ueberProbenartText;
                         })()
                       ) : col.key === "untergeordnete_probenart" ? (
                         (() => {
                           const unterProbenartId = row["untergeordnete_probenart"];
-                          
+
                           const unterProbenartText = untergeordneteOptionsToRender.find(
                             (option) => option.id === unterProbenartId
                           )?.text || "N/A";
-                          
+
                           return unterProbenartText;
                         })()
 
-                        ) : col.key === "probenart" ? (
-                          (() => {
-                            const probenartMapping = {
-                              gewebe: "Gewebe",
-                              urin: "Urin",
-                              serum: "Serum",
-                              paraffin: "Paraffin"
-                            };
-                            return probenartMapping[row["probenart"]] || "N/A";
-                          })()
+                      ) : col.key === "probenart" ? (
+                        (() => {
+                          const probenartMapping = {
+                            gewebe: "Gewebe",
+                            urin: "Urin",
+                            serum: "Serum",
+                            paraffin: "Paraffin"
+                          };
+                          return probenartMapping[row["probenart"]] || "N/A";
+                        })()
 
-                          ) : col.key === "boxnummer" ? (
-                            (() => {
-                              const BOXMapping = {
-                                gewebe: "Cryo",
-                                urin: "Urin",
-                                serum: "Blut"
-                              };
-                              
-                              const boxType = BOXMapping[row["probenart"]] || "N/A";  
-                              const boxNumber = row["boxnummer"] || "N/A";  
-                          
-                              return `${boxType} (${boxNumber})`;
-                            })()
-                          
+                      ) : col.key === "boxnummer" ? (
+                        (() => {
+                          const BOXMapping = {
+                            gewebe: "Cryo",
+                            urin: "Urin",
+                            serum: "Blut"
+                          };
 
-                      ): (col.key === "created_at" ? (
-                          // Formatierung für das Datum, falls "created_at"
-                          dayjs(row[col.key]).format("DD.MM.YYYY")
-                        ) : col.key === "status" && row[col.key] in STATUS_MAPPING ? (
-                          // Status anzeigen, falls Status vorhanden
-                          STATUS_MAPPING[row[col.key]]
-                        ) : row[col.key] !== null ? (
-                          row[col.key]
-                        ) : (
-                          "N/A"
-                        ))}
+                          const boxType = BOXMapping[row["probenart"]] || "N/A";
+                          const boxNumber = row["boxnummer"] || "N/A";
+
+                          return `${boxType} (${boxNumber})`;
+                        })()
+
+
+                      ) : (col.key === "created_at" ? (
+                        // Formatierung für das Datum, falls "created_at"
+                        dayjs(row[col.key]).format("DD.MM.YYYY")
+                      ) : col.key === "status" && row[col.key] in STATUS_MAPPING ? (
+                        // Status anzeigen, falls Status vorhanden
+                        STATUS_MAPPING[row[col.key]]
+                      ) : row[col.key] !== null ? (
+                        row[col.key]
+                      ) : (
+                        "N/A"
+                      ))}
                     </td>
                   ))}
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
@@ -476,7 +493,7 @@ export default function Uebersicht() {
                           Bearbeiten
                         </Button>
                         <React.Fragment>
-                          <Button variant="outlined" color="error" size='small' onClick={handleClickOpenPASSW}>
+                          <Button variant="outlined" color="error" size='small' onClick={() => handleClickOpenPASSW(row)}>
                             Löschen
                           </Button>
                           <Dialog
@@ -490,24 +507,19 @@ export default function Uebersicht() {
                                 const formJson = Object.fromEntries(formData.entries());
                                 const passcode = formJson.passcode;
 
-                                // Überprüfen, ob der Passcode korrekt ist
                                 if (passcode === process.env.NEXT_PUBLIC_DELETE_PASSCODE) {
-                                  handleDelete(row); // Eintrag löschen
+                                  // Hier rufst du handleDelete(...) mit rowToDelete auf
+                                  handleDelete(rowToDelete);
                                 } else {
-                                  alert("Incorrect passcode!"); // Fehlermeldung ausgeben
+                                  alert("Incorrect passcode!");
                                 }
                                 handleClosePASSW();
-                              },
-                            }}
-                            BackdropProps={{
-                              style: {
-                                backgroundColor: "rgba(0, 0, 0, 0.2)", // Weniger dunkles Overlay
                               },
                             }}
                           >
                             <DialogTitle>Passwort</DialogTitle>
                             <DialogContent>
-                              <DialogContentText></DialogContentText>
+                              <DialogContentText>Bitte geben Sie das Passwort ein</DialogContentText>
                               <TextField
                                 autoFocus
                                 required
@@ -581,7 +593,7 @@ export default function Uebersicht() {
             className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center"
             type="button"
           >
-            Tabellenname auswählen
+            {DISPLAY_NAMES[selectedTable] || "Tabellenname auswählen"}
             <svg className="w-2.5 h-2.5 ms-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
               <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m1 1 4 4 4-4" />
             </svg>
@@ -595,9 +607,9 @@ export default function Uebersicht() {
                     <a
                       href="#"
                       className="block px-4 py-2 hover:bg-gray-100"
-                      onClick={(e) => handleTable(e)}
+                      onClick={(e) => handleTable(e, tableName)}
                     >
-                      {tableName.charAt(0).toUpperCase() + tableName.slice(1)}
+                      {DISPLAY_NAMES[tableName] || tableName}
                     </a>
                   </li>
                 ))}

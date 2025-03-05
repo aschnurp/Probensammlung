@@ -100,8 +100,8 @@ class TableDatapatient(BaseModel):
 
 class TableVorlaeufigeProben(BaseModel):
     barcode_id: str 
-    patient_Id_intern: str = None 
-    probeninformation: int = None
+    patient_Id_intern: Optional[str] = None 
+    probeninformation: Optional[int] = None
 
 
 class LastBoxInfo(BaseModel):
