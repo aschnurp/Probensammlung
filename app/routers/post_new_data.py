@@ -122,7 +122,7 @@ def create_probenabholer(post: schemas.TableDataProbenabholer, db: Session = Dep
     return new_item
 
 
-#router for new vorlaeufige_proben.py entry -- plus create a new patient, when no one exists
+#router for new vorlaeufige_proben.py entry
 @router.post("/vorlaeufige_proben", status_code=status.HTTP_201_CREATED, response_model=schemas.TableVorlaeufigeProben)
 def create_vorlaeufigeproben(post: schemas.TableVorlaeufigeProben, db: Session = Depends(get_db)):
     post_data = post.dict()
