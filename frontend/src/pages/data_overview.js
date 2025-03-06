@@ -69,11 +69,31 @@ export default function Uebersicht() {
   };
   const [uebergeordneteOptionsToRender, setUebergeordneteOptionsToRender] = useState([]);
   const [untergeordneteOptionsToRender, setUntergeordneteOptionsToRender] = useState([]);
+  const [differenzierungsmerkmaleOptionsToRender, setDifferenzierungsmerkmalOptionsToRender] = useState([]);
+  const [probeninformationOptionsToRender, setProbeninformationOptionsToRender] = useState([]);
 
   useEffect(() => {
     console.log('FILTERED DATA:', filteredData);
   }, [filteredData]);
 
+  useEffect(() => {
+    const getProbeninformation = async () => {
+      try {
+        const res = await fetch(
+          `http://localhost:8000/table/data?table_name=probeninformation`
+        );
+        if (!res.ok) throw new Error("Fehler beim Abrufen der Probeninformation");
+
+        const response = await res.json();
+        setProbeninformationOptionsToRender(response);
+      } catch (error) {
+        console.error("Error fetching probeninformation:", error);
+      }
+    };
+
+    getProbeninformation();
+  }, []);
+  
   const handleClose = () => {
     setAnchorEl(null);
   };
@@ -418,6 +438,28 @@ export default function Uebersicht() {
 
                           return unterProbenartText;
                         })()
+
+
+//differenzierungsmerkmal
+                        ) : col.key === "differenzierungsmerkmal" ? (
+                          (() => {
+                            const differenzierungsmerkmalId = row["differenzierungsmerkmal"];
+  
+                            const differenzierungsmerkmalText = differenzierungsmerkmaleOptionsToRender.find(
+                              (option) => option.id === differenzierungsmerkmalId
+                            )?.text || "N/A";
+  
+                            return differenzierungsmerkmalText;
+                          })()
+
+//probeninformation                         
+) : col.key === "probeninformation" ? (
+  probeninformationOptionsToRender.find((probe) => probe.id === row.probeninformation)?.probeninformation_text || "N/A"
+
+
+
+
+
 
                       ) : col.key === "probenart" ? (
                         (() => {

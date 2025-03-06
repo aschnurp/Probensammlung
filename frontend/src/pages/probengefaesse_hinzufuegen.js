@@ -25,7 +25,7 @@ export default function SampleForm() {
   const [formData, setFormData] = useState({
     patient_Id_intern: "",
     barcode_id: "",
-    probeninformation: "", // Initialwert für probeninformation
+    probeninformation: "",
   });
 
   const [errors, setErrors] = useState({});
@@ -208,13 +208,13 @@ export default function SampleForm() {
             {data
               .sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp)) // Sortiert nach dem timestamp-Feld (neueste zuerst)
               .slice(0, 10) // Nimmt nur die ersten 10
-              .map((row) => (
+              .map((row) => ( //mapping probeninformation_text on row.probeninformation
                 <TableRow key={row.id}>
                   <TableCell align="left" style={{ width: 100 }}>{row.barcode_id}</TableCell>
                   <TableCell align="left" style={{ width: 100 }}>{row.patient_Id_intern}</TableCell>
                   <TableCell align="left" style={{ width: 100 }}>
-                    {probeninformation.find((probe) => probe.id === row.probeninformation)?.probeninformation_text || "Keine Info"}
-                  </TableCell>
+                    {probeninformation.find((probe) => probe.id === row.probeninformation)?.probeninformation_text || "Keine Info"} 
+                  </TableCell> 
                 </TableRow>
               ))}
           </TableBody>
