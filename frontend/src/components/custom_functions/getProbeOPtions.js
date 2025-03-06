@@ -31,44 +31,43 @@ export const getProbeOptions = (probenart) => {
       { id: 2, text: "Paraffinblock (A/B)" },
     ];
   } else if (probenart === 'serum') {
-    probeninformationOptions = [
-      { id: 1, probeninformation_text: "Serum prä OP I" },
-      { id: 2, probeninformation_text: "Serum prä OP II" },
-      { id: 3, probeninformation_text: "Serum prä OP III" },
-      { id: 4, probeninformation_text: "Serum prä OP IV" },
-      { id: 5, probeninformation_text: "Serum intra OP I" },
-      { id: 6, probeninformation_text: "Serum intra OP II" },
-    ];
+    probeninformationOptions = Array.from({ length: 42 }, (_, i) => ({
+      id: i + 1,
+      probeninformation_text: [
+        'Serum prä OP I', 'Serum prä OP II', 'Serum prä OP III', 'Serum prä OP IV',
+        'Serum intra OP I', 'Serum intra OP II', 'Serum intra OP III', 'Serum intra OP IV',
+        'Serum post OP 1d I', 'Serum post OP 1d II', 'Serum post OP 1d III', 'Serum post OP 1d IV',
+        'Serum post OP 2d I', 'Serum post OP 2d II', 'Serum post OP 2d III', 'Serum post OP 2d IV',
+        'Serum post OP 7d I', 'Serum post OP 7d II', 'Serum post OP 7d III', 'Serum post OP 7d IV',
+        'Serum post OP 14d I', 'Serum post OP 14d II', 'Serum post OP 14d III', 'Serum post OP 14d IV'
+      ][i]
+    }));
   } else if (probenart === 'urin') {
-    probeninformationOptions = [
-      { id: 7, probeninformation_text: "Urin prä OP I" },
-      { id: 8, probeninformation_text: "Urin prä OP II" },
-      { id: 9, probeninformation_text: "Urin prä OP III" },
-      { id: 10, probeninformation_text: "Urin prä OP IV" },
-      { id: 11, probeninformation_text: "Urin intra OP I" },
-      { id: 12, probeninformation_text: "Urin intra OP II" },
-    ];
+    probeninformationOptions = Array.from({ length: 24 }, (_, i) => ({
+      id: i + 5,
+      probeninformation_text: [
+        'Urin prä OP I', 'Urin prä OP II', 'Urin prä OP III', 'Urin prä OP IV',
+        'Urin intra OP I', 'Urin intra OP II', 'Urin intra OP III', 'Urin intra OP IV',
+        'Urin post OP 1d I', 'Urin post OP 1d II', 'Urin post OP 1d III', 'Urin post OP 1d IV',
+        'Urin post OP 2d I', 'Urin post OP 2d II', 'Urin post OP 2d III', 'Urin post OP 2d IV',
+        'Urin post OP 7d I', 'Urin post OP 7d II', 'Urin post OP 7d III', 'Urin post OP 7d IV',
+        'Urin post OP 14d I', 'Urin post OP 14d II', 'Urin post OP 14d III', 'Urin post OP 14d IV'
+      ][i]
+    }));
     differenzierungsmerkmalOptions = [
       { id: 1, text: "Katheter" },
       { id: 2, text: "Spontan" },
     ];
   } else if (probenart === 'gewebe') {
-    probeninformationOptions = [
-      { id: 13, probeninformation_text: "Normal Cryo I (MF)" },
-      { id: 14, probeninformation_text: "Normal Cryo II (SF)" },
-      { id: 15, probeninformation_text: "Normal Cryo III (SF)" },
-      { id: 16, probeninformation_text: "Normal Cryo IV (SF)" },
-      { id: 17, probeninformation_text: "Normal Cryo V (SF)" },
-      { id: 18, probeninformation_text: "Normal Cryo VI (SF)" },
-      { id: 19, probeninformation_text: "Normal Trizol" },
-      { id: 20, probeninformation_text: "Tumor Cryo I (MF)" },
-      { id: 21, probeninformation_text: "Tumor Cryo II (SF)" },
-      { id: 22, probeninformation_text: "Tumor Cryo III (SF)" },
-      { id: 23, probeninformation_text: "Tumor Cryo IV (SF)" },
-      { id: 24, probeninformation_text: "Tumor Cryo V (SF)" },
-      { id: 25, probeninformation_text: "Tumor Cryo VI (SF)" },
-      { id: 26, probeninformation_text: "Tumor Trizol" },
-    ];
+    probeninformationOptions = Array.from({ length: 14 }, (_, i) => ({
+      id: i + 9,
+      probeninformation_text: [
+        'Normal Cryo I (MF)', 'Normal Cryo II (SF)', 'Normal Cryo III (SF)', 'Normal Cryo IV (SF)',
+        'Normal Cryo V (SF)', 'Normal Cryo VI (SF)', 'Normal Trizol',
+        'Tumor Cryo I (MF)', 'Tumor Cryo II (SF)', 'Tumor Cryo III (SF)', 'Tumor Cryo IV (SF)',
+        'Tumor Cryo V (SF)', 'Tumor Cryo VI (SF)', 'Tumor Trizol'
+      ][i]
+    }));
     differenzierungsmerkmalOptions = [
       { id: 1, text: "Regeneriert" },
       { id: 2, text: "Embolisiert" },

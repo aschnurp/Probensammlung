@@ -58,8 +58,6 @@ def get_table_data(
 def row_to_dict(row):
     return dict(row)
 
-#@router.post("/filter") --implement filter?
-
 @router.put("/data")
 
 

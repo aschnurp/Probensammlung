@@ -72,8 +72,6 @@ export default function SampleForm() {
   const [snackbarSeverity, setSnackbarSeverity] = useState('success'); // 'success' or 'error'
   const [updateBox, setUpdateBox] = useState(false);
 
-  // adding new variable sto the form 
-  // State to store options for Übergeordnete Probe and Untergeordnete Probe
   const [overgeordneteProbeOptions, setOvergeordneteProbeOptions] = useState([]);
   const [differenzierungsmerkmalOptions, setDifferenzierungsmerkmalOptions] = useState([]);
   const [probeninformationOptions, setProbeninformationOptions] = useState([]);
@@ -122,6 +120,38 @@ export default function SampleForm() {
     }));
   }, []);
 
+
+  useEffect(() => {
+    const fetchAllData = async () => {
+      try {
+        const response = await axios.get("http://localhost:8000/table/data?table_name=vorlaeufigeproben",
+        );
+  
+        if (response.data && formData.barcode_id) {
+          const foundItem = response.data.find(item => item.barcode_id === formData.barcode_id);
+  
+          if (foundItem) {
+            setFormData((prevData) => ({
+              ...prevData,
+              patient_Id_intern: foundItem.patient_Id_intern,
+              probeninformation: foundItem.probeninformation,
+            }));
+          } else {
+            setSnackbarMessage("Barcode nicht gefunden.");
+            setSnackbarSeverity("error");
+            setSnackbarOpen(true);
+          }
+        }
+      } catch (error) {
+        setSnackbarMessage("Fehler beim Abrufen der Daten.");
+        setSnackbarSeverity("error");
+        setSnackbarOpen(true);
+      }
+    };
+  
+    fetchAllData();
+  }, [formData.barcode_id]);
+  
 
 
   useEffect(() => {
@@ -440,29 +470,25 @@ export default function SampleForm() {
         <Box sx={{ mt: 2 }}>
           {/* Barcode ID */}
           <TextField
-            label="Scannerfeld für Barcode ID"
-            name="barcode_id"
-            value={formData.barcode_id}
-            onChange={handleChange}
-            fullWidth
-            margin="normal"
-            error={Boolean(errors.barcode_id)}
-            helperText={errors.barcode_id}
-          />
-
-
-          {/* Patienten ID TextField */}
-          <TextField
-            label="Patienten ID (Intern)"
-            name="patient_Id_intern"
-            value={formData.patient_Id_intern}
-            onChange={handleChange}
-            fullWidth
-            margin="normal"
-            error={Boolean(errors.patient_Id_intern)}
-            helperText={errors.patient_Id_intern}
-          />
-
+        label="Barcode ID"
+        name="barcode_id"
+        value={formData.barcode_id}
+        onChange={handleChange}
+        fullWidth
+        margin="normal"
+        error={Boolean(errors.barcode_id)}
+        helperText={errors.barcode_id}
+      />
+      <TextField
+        label="Patienten ID (Intern)"
+        name="patient_Id_intern"
+        value={formData.patient_Id_intern}
+        onChange={handleChange}
+        fullWidth
+        margin="normal"
+        error={Boolean(errors.patient_Id_intern)}
+        helperText={errors.patient_Id_intern}
+      />
 
 <FormControl
             variant="outlined"
