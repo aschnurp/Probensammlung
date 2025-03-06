@@ -9,6 +9,7 @@ from ..models.gewebeproben import Gewebeproben
 from ..models.urinproben import Urinproben
 from ..models.paraffinproben import Paraffinproben
 from ..models.probenabholer import Probenabholer
+from ..models.vorlaeufige_proben import VorlaeufigeProben
 
 router = APIRouter(
     prefix="/update",
@@ -81,6 +82,20 @@ def update_probenabholer(updated_post: schemas.TableDataProbenabholer, db: Sessi
     existing_item_query.update(updated_post.dict(), synchronize_session = False)
     db.commit()
     return existing_item_query.first()
+
+
+#router for new vorläufige proben entry
+@router.put("/vorlaeufigeproben", status_code=status.HTTP_201_CREATED, response_model= schemas.TableVorlaeufigeProben)
+def update_vorlaeufigeproben(updated_post: schemas.TableVorlaeufigeProben, db: Session = Depends(get_db)):
+    existing_item_query = db.query(VorlaeufigeProben).filter(VorlaeufigeProben.barcode_id == updated_post.barcode_id)
+    existing_item = existing_item_query.first()
+    if existing_item == None:
+        raise HTTPException(status_code= status.HTTP_403_FORBIDDEN, detail= f"entery with id: {updated_post.barcode_id} does not exist") 
+    existing_item_query.update(updated_post.dict(), synchronize_session = False)
+    db.commit()
+    return existing_item_query.first()
+
+
 
 
 
