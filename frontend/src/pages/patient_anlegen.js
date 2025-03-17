@@ -336,10 +336,10 @@ export default function PatientForm() {
       {/* Action Buttons */}
       <Box sx={{ mt: 3, display: 'flex', justifyContent: 'space-between' }}>
         <Button variant="outlined" color="secondary" onClick={handleClear}>
-          Clear All
+          Zurücksetzen
         </Button>
-        <Button variant="contained" color="primary" onClick={handleSubmit}>
-          Senden
+        <Button variant="contained" color="success" onClick={handleSubmit}>
+          Speichern
         </Button>
       </Box>
 

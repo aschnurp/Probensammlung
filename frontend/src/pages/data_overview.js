@@ -93,7 +93,7 @@ export default function Uebersicht() {
 
     getProbeninformation();
   }, []);
-  
+
   const handleClose = () => {
     setAnchorEl(null);
   };
@@ -180,25 +180,25 @@ export default function Uebersicht() {
     let tableName = e.currentTarget.textContent?.trim().toLowerCase();
 
     if (tableName === "patientendaten") {
-      tableName = "patient"; 
+      tableName = "patient";
     } else if (tableName === "vorläufige proben") {
-      tableName = "vorlaeufigeproben"; 
+      tableName = "vorlaeufigeproben";
     }
-  
+
     setSelectedTable(tableName);
-  
+
     if (!TABLE_COLUMNS[tableName]) {
       setError("Invalid table name");
       return;
     }
-  
+
     setLoading(true);
     setError(null);
-  
+
     try {
       const response = await axios.get(`http://localhost:8000/table/data?table_name=${tableName}`);
       const sorted = response.data.sort(
-        (a, b) => new Date(b.timestamp) - new Date(a.timestamp) 
+        (a, b) => new Date(b.timestamp) - new Date(a.timestamp)
       );
       setData(sorted);
       setFilteredData(sorted);  // Update der gefilterten Daten
@@ -214,7 +214,7 @@ export default function Uebersicht() {
     setSearchQuery(query);
 
     if (query === "") {
-      setFilteredData(data); 
+      setFilteredData(data);
     } else {
       const lowercasedQuery = query.toLowerCase();
       const filtered = data.filter((row) => {
@@ -438,27 +438,23 @@ export default function Uebersicht() {
 
                           return unterProbenartText;
                         })()
+                        
 
+                        //differenzierungsmerkmal
+                      ) : col.key === "differenzierungsmerkmal" ? (
+                        (() => {
+                          const differenzierungsmerkmalId = row["differenzierungsmerkmal"];
 
-//differenzierungsmerkmal
-                        ) : col.key === "differenzierungsmerkmal" ? (
-                          (() => {
-                            const differenzierungsmerkmalId = row["differenzierungsmerkmal"];
-  
-                            const differenzierungsmerkmalText = differenzierungsmerkmaleOptionsToRender.find(
-                              (option) => option.id === differenzierungsmerkmalId
-                            )?.text || "N/A";
-  
-                            return differenzierungsmerkmalText;
-                          })()
+                          const differenzierungsmerkmalText = differenzierungsmerkmaleOptionsToRender.find(
+                            (option) => option.id === differenzierungsmerkmalId
+                          )?.text || "N/A";
 
-//probeninformation                         
-) : col.key === "probeninformation" ? (
-  probeninformationOptionsToRender.find((probe) => probe.id === row.probeninformation)?.probeninformation_text || "N/A"
+                          return differenzierungsmerkmalText;
+                        })()
 
-
-
-
+                        //probeninformation                         
+                      ) : col.key === "probeninformation" ? (
+                        probeninformationOptionsToRender.find((probe) => probe.id === row.probeninformation)?.probeninformation_text || "N/A"
 
 
                       ) : col.key === "probenart" ? (
