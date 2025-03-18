@@ -57,6 +57,7 @@ export default function SampleForm() {
     uhrzeit: '',
     sap_id: '',
     remarks: '',
+    uebergeordneteProbe: '',
     untergeordneteProbe: '',
     probeninformation: '',
     differenzierungsmerkmal: '',
@@ -91,6 +92,11 @@ export default function SampleForm() {
     };
     getCategorias();
   }, []);
+
+  useEffect(() => {
+    console.log('FormData has changed:', formData);
+  }, [formData]); // Dieser Effect wird immer aufgerufen, wenn formData sich ändert
+  
 
   useEffect(() => {
     const raumZuordnung = {
@@ -230,11 +236,21 @@ export default function SampleForm() {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
-    // Clear the error for the field as the user types
-    setErrors({ ...errors, [name]: '' });
-    console.log('Formdata CHANGED:', formData);
+    
+    // Zustand aktualisieren
+    setFormData((prevData) => {
+      const updatedData = { ...prevData, [name]: value };
+      console.log('FormData updated:', updatedData);
+      return updatedData;
+    });
+  
+    // Fehler für das aktuelle Feld löschen
+    setErrors((prevErrors) => ({
+      ...prevErrors,
+      [name]: '',
+    }));
   };
+  
 
   const handleClear = () => {
     setFormData((prevData) => ({
@@ -245,8 +261,6 @@ export default function SampleForm() {
       boxnummer: '',
       anmerkungen: '',
       remarks: '',
-      uebergeordneteProbe: '',
-      untergeordneteProbe: '',
     }));
     setErrors({});
     setUpdateBox(prev => !prev);
@@ -262,18 +276,13 @@ export default function SampleForm() {
     const sampleTypes = ['paraffin'];
     if (formData.probenart && sampleTypes.includes(formData.probenart)) {
       if (!formData.uebergeordneteProbe) {
-        newErrors.uebergeordneteProbe = 'Übergeordnete Probenart is erforderlich.';
+        newErrors.uebergeordneteProbe = 'Übergeordnete Probenart ist erforderlich.';
       }
       if (!formData.untergeordneteProbe) {
         newErrors.untergeordneteProbe = 'Untergeordnete Probenart ist erforderlich.';
       }
     }
-    const sampleTypeSerum = ['serum'];
-    if (formData.probenart && sampleTypes.includes(formData.probenart)) {
-      if (!formData.untergeordneteProbe) {
-        newErrors.untergeordneteProbe = 'Untergeordnete Probe ist erforderlich.';
-      }
-    }
+
   
     // Validation for "gewebe"
     if (formData.probenart === 'gewebe') {
