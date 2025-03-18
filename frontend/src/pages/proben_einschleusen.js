@@ -206,7 +206,7 @@ export default function SampleForm() {
           ...prevData,
 
           boxnummer: suggestion.suggestedBoxnummer.toString(),
-          boxzeile: suggestion.suggestedBoxzeile,
+          boxzeile:  suggestion.suggestedBoxzeile,
           boxspalte: suggestion.suggestedBoxspalte.toString(),
         }));
 
@@ -245,7 +245,7 @@ export default function SampleForm() {
       boxnummer: '',
       anmerkungen: '',
       remarks: '',
-      übergeordneteProbe: '',
+      uebergeordneteProbe: '',
       untergeordneteProbe: '',
     }));
     setErrors({});
@@ -255,17 +255,17 @@ export default function SampleForm() {
   const handleSubmit = async () => {
     const newErrors = {};
     const isValidInteger = (value) => /^\d+$/.test(value);
-
+  
     console.log('handleSubmit called:', formData);
-
+  
     // New validation for Übergeordnete Probe and Untergeordnete Probe
     const sampleTypes = ['paraffin'];
     if (formData.probenart && sampleTypes.includes(formData.probenart)) {
-      if (!formData.übergeordneteProbe) {
-        newErrors.übergeordneteProbe = 'Übergeordnete Probe is erforderlich.';
+      if (!formData.uebergeordneteProbe) {
+        newErrors.uebergeordneteProbe = 'Übergeordnete Probenart is erforderlich.';
       }
       if (!formData.untergeordneteProbe) {
-        newErrors.untergeordneteProbe = 'Untergeordnete Probe ist erforderlich.';
+        newErrors.untergeordneteProbe = 'Untergeordnete Probenart ist erforderlich.';
       }
     }
     const sampleTypeSerum = ['serum'];
@@ -274,17 +274,17 @@ export default function SampleForm() {
         newErrors.untergeordneteProbe = 'Untergeordnete Probe ist erforderlich.';
       }
     }
-
+  
     // Validation for "gewebe"
     if (formData.probenart === 'gewebe') {
       if (!formData.boxnummer || !isValidInteger(formData.boxnummer)) {
         newErrors.boxnummer = 'Boxnummer ist erforderlich und muss eine ganze Zahl sein.';
       }
-
+  
       if (!formData.boxzeile) {
         newErrors.boxzeile = 'Boxzeile ist erforderlich.';
       }
-
+  
       const boxspalteNumber = parseInt(formData.boxspalte, 10); // Convert to number
       if (
         !formData.boxspalte ||
@@ -294,26 +294,26 @@ export default function SampleForm() {
       ) {
         newErrors.boxspalte = 'Boxspalte ist erforderlich und muss eine ganze Zahl zwischen 1-9 sein.';
       }
-
+  
       if (!formData.abholer) {
         newErrors.abholer = 'Abholer ist erforderlich.';
       }
-
+  
       if (!formData.barcode_id) {
         newErrors.barcode_id = 'Barcode ist erforderlich.';
       }
     }
-
+  
     // Validation for "serum" or "urin"
     else if (formData.probenart === 'serum' || formData.probenart === 'urin') {
       if (!formData.boxnummer || !isValidInteger(formData.boxnummer)) {
         newErrors.boxnummer = 'Boxnummer ist erforderlich und muss eine ganze Zahl sein.';
       }
-
+  
       if (!formData.boxzeile) {
         newErrors.boxzeile = 'Boxzeile ist erforderlich.';
       }
-
+  
       const boxspalteNumber = parseInt(formData.boxspalte, 10); // Convert to number
       if (
         !formData.boxspalte ||
@@ -323,20 +323,20 @@ export default function SampleForm() {
       ) {
         newErrors.boxspalte = 'Boxspalte ist erforderlich und muss eine ganze Zahl zwischen 1-9 sein.';
       }
-
+  
       if (!formData.barcode_id) {
         newErrors.barcode_id = 'Barcode ist erforderlich.';
       }
     }
-
+  
     // If we have collected any errors, stop here
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
       return;
     }
-
+  
     setErrors({});
-
+  
     const filteredData = {
       probenart: formData.probenart,
       barcode_id: formData.barcode_id,
@@ -352,13 +352,13 @@ export default function SampleForm() {
       abholer: formData.abholer,
       remarks: formData.remarks,
       untergeordnete_probenart: formData.untergeordneteProbe,
-      übergeordnete_probenart: formData.übergeordneteProbe,
+      uebergeordnete_probenart: formData.uebergeordneteProbe,
       differenzierungsmerkmal: formData.differenzierungsmerkmal,
       probeninformation: formData.probeninformation,
     };
-
+  
     console.log('Filtered data beim EINSCHLEUSEN:', filteredData);
-
+  
     try {
       let endpoint = '';
       switch (formData.probenart) {
@@ -377,7 +377,10 @@ export default function SampleForm() {
         default:
           throw new Error('Ungültige Probenart ausgewählt.');
       }
-      console.log(endpoint)
+    
+      console.log(endpoint);
+    
+      // Senden der neuen Daten
       const response = await axios.post(
         `http://localhost:8000/new_data/${endpoint}`,
         filteredData,
@@ -385,17 +388,29 @@ export default function SampleForm() {
           headers: { 'Content-Type': 'application/json' },
         }
       );
-
-      // Success notification
-      setSnackbarMessage('Daten erfolgreich gesendet!');
+    
+      // Nur für Serum, Gewebe und Urin vorläufige Proben löschen
+      if (['serum', 'gewebe', 'urin'].includes(formData.probenart)) {
+        const deleteResponse = await axios.delete(
+          `http://localhost:8000/delete/vorlaeufigeproben`,
+          {
+            headers: { 'Content-Type': 'application/json' },
+            data: { barcode_id: formData.barcode_id },
+          }
+        );
+        console.log('Response after delete:', deleteResponse);
+      }
+    
+      // Erfolgsbenachrichtigung
+      setSnackbarMessage('Daten erfolgreich gespeichert.');
       setSnackbarSeverity('success');
       setSnackbarOpen(true);
-
-      // Clear the form
+    
+      // Formular leeren
       handleClear();
     } catch (error) {
       console.error('Error submitting data:', error);
-
+    
       if (error.response) {
         const message = error.response.data.detail
           ? `Error: ${error.response.data.detail}`
@@ -408,7 +423,9 @@ export default function SampleForm() {
       }
       setSnackbarOpen(true);
     }
+    
   };
+  
 
 
   const handleSnackbarClose = (event, reason) => {
@@ -528,7 +545,7 @@ export default function SampleForm() {
             variant="outlined"
             fullWidth
             margin="normal"
-            error={Boolean(errors.übergeordneteProbe)}
+            error={Boolean(errors.uebergeordneteProbe)}
           >
             <InputLabel>Differenzierungsmerkmal</InputLabel>
             <Select
@@ -954,7 +971,7 @@ export default function SampleForm() {
             variant="outlined"
             fullWidth
             margin="normal"
-            error={Boolean(errors.übergeordneteProbe)}
+            error={Boolean(errors.uebergeordneteProbe)}
           >
             <InputLabel>Differenzierungsmerkmal</InputLabel>
             <Select
@@ -1114,17 +1131,32 @@ export default function SampleForm() {
       {/* Conditional Fields for Paraffin */}
       {formData.probenart === 'paraffin' && (
         <Box sx={{ mt: 2 }}>
+                      {/* Patienten ID TextField */}
+          <TextField
+            label="Patienten ID (Intern)"
+            name="patient_Id_intern"
+            value={formData.patient_Id_intern}
+            onChange={handleChange}
+            fullWidth
+            margin="normal"
+            error={Boolean(errors.patient_Id_intern)}
+            helperText={errors.patient_Id_intern}
+          />
+
+
           <FormControl
             variant="outlined"
             fullWidth
             margin="normal"
-            error={Boolean(errors.übergeordneteProbe)}
+            error={Boolean(errors.uebergeordneteProbe)}
           >
+       
+        
             <InputLabel>Übergeordnete Probenart</InputLabel>
             <Select
               id="uebergeordnet"
-              name="übergeordneteProbe"
-              value={formData.übergeordneteProbe}
+              name="uebergeordneteProbe"
+              value={formData.uebergeordneteProbe}
               onChange={handleChange}
               label="Übergeordnete Probenart"
             >
@@ -1139,9 +1171,9 @@ export default function SampleForm() {
                 <MenuItem disabled>Keine Optionen verfügbar</MenuItem>
               )}
             </Select>
-            {errors.übergeordneteProbe && (
+            {errors.uebergeordneteProbe && (
               <Typography variant="caption" color="error">
-                {errors.übergeordneteProbe}
+                {errors.uebergeordneteProbe}
               </Typography>
             )}
           </FormControl>

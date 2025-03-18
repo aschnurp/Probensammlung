@@ -4,7 +4,6 @@ export const serumprobenDataColumns = [
     { key: "created_at", label: "Erstellungsdatum" },
     { key: "uhrzeit", label: "Probe erhalten (Uhrzeit)" },
     { key: "abholer", label: "Abholer:In" },
-    { key: "differenzierungsmerkmal", label: "Differenzierungsmerkmal" },
     { key: "probenart", label: "Probenart" },
     { key: "probeninformation", label: "Probeninformation" },
     { key: "boxnummer", label: "Boxname (Boxnummer)" },

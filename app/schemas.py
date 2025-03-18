@@ -29,6 +29,8 @@ class SerumprobenBase(BaseModel):
     created_at: Optional[str] = None
     abholer: Optional[str] = None
     uhrzeit: Optional[str] = None
+    probeninformation: Optional[int] = None
+    differenzierungsmerkmal: Optional[int] = None
 
 class TableDataSerumproben(SerumprobenBase):
     status: Optional[int] = 1
@@ -46,6 +48,8 @@ class GewebeprobenBase(BaseModel):
     anmerkungen: Optional[str] = None
     remarks: Optional[str] = None
     created_at: Optional[str] = None
+    probeninformation: Optional[int] = None
+    differenzierungsmerkmal: Optional[int] = None
 
       
 
@@ -69,6 +73,8 @@ class UrinprobenBase(BaseModel):
     created_at: Optional[str] = None
     abholer: Optional[str] = None
     uhrzeit: Optional[str] = None
+    probeninformation: Optional[int] = None
+    differenzierungsmerkmal: Optional[int] = None
 
 class TableDataUrinproben(UrinprobenBase):
     status: Optional[int] = 1

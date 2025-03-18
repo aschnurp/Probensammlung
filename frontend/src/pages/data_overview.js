@@ -72,6 +72,8 @@ export default function Uebersicht() {
   const [differenzierungsmerkmaleOptionsToRender, setDifferenzierungsmerkmalOptionsToRender] = useState([]);
   const [probeninformationOptionsToRender, setProbeninformationOptionsToRender] = useState([]);
 
+
+
   useEffect(() => {
     console.log('FILTERED DATA:', filteredData);
   }, [filteredData]);
@@ -89,10 +91,26 @@ export default function Uebersicht() {
       } catch (error) {
         console.error("Error fetching probeninformation:", error);
       }
-    };
-
+    };    
     getProbeninformation();
   }, []);
+
+
+  useEffect(() => {
+    if (formData.probenart) {
+      const options = getProbeOptions(formData.probenart);
+      console.log("Probe Options:", options);
+  
+      if (options) {
+        setDifferenzierungsmerkmalOptionsToRender(options.differenzierungsmerkmal || []);
+      }
+    } else {
+      // Falls keine Probenart ausgewählt wurde
+
+      setDifferenzierungsmerkmalOptionsToRender([]);
+    }
+  }, [formData.probenart]);
+
 
   const handleClose = () => {
     setAnchorEl(null);
@@ -106,7 +124,7 @@ export default function Uebersicht() {
   // Handle closing the dialog
   const handleClosePASSW = () => {
     setOpen(false);
-    setError(""); // Reset error state when closing
+    setError(""); 
   };
 
   // Handle Check change
@@ -117,7 +135,7 @@ export default function Uebersicht() {
   // Handle Check change
   const handleCloseCheck = (e) => {
     setOpenCheck(false);
-    setError(""); // Reset error state when closing
+    setError(""); 
   };
 
   const DISPLAY_NAMES = {
@@ -452,10 +470,14 @@ export default function Uebersicht() {
                           return differenzierungsmerkmalText;
                         })()
 
-                        //probeninformation                         
-                      ) : col.key === "probeninformation" ? (
-                        probeninformationOptionsToRender.find((probe) => probe.id === row.probeninformation)?.probeninformation_text || "N/A"
-
+                        ) : col.key === "probeninformation" ? (
+                          (() => {
+                            const probeninfo = probeninformationOptionsToRender.find(
+                              (probe) => probe.id === row.probeninformation && probe.probenart === row.probenart
+                            );
+                      
+                            return probeninfo ? probeninfo.probeninformation_text : "N/A";
+                          })()
 
                       ) : col.key === "probenart" ? (
                         (() => {
