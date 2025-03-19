@@ -1,6 +1,8 @@
 from sqlalchemy.orm import Session
 from .models.status import Status
 from .models.differenzierungsmerkmal_gewebe import Differenzierungsmerkmal_gewebe
+from .models.differenzierungsmerkmal_serum import Differenzierungsmerkmal_serum
+
 from .models.differenzierungsmerkmal_urin import Differenzierungsmerkmal_urin
 from .models.uebergeordnete_probenart_paraffin import Uebergeordnete_probenart_paraffin
 
@@ -26,7 +28,6 @@ def seed_status_data(db: Session):
 
 
     if not db.query(Probeninformation).first():
-        # Seed-Daten definieren
         seed_data = [
             Probeninformation(probeninformation_text="Serum prä OP I", probenart="serum"),  
             Probeninformation(probeninformation_text="Serum prä OP II", probenart="serum"),
@@ -110,6 +111,22 @@ def seed_status_data(db: Session):
         db.add_all(seed_data)
         db.commit()
         print("Seed-Daten erfolgreich hinzugefügt.")
+
+
+    if not db.query(Differenzierungsmerkmal_serum).first():
+        # Seed-Daten definieren
+        seed_data = [
+            Differenzierungsmerkmal_serum(differenzierungsmerkmal_text="Lebervene Links"),            
+            Differenzierungsmerkmal_serum(differenzierungsmerkmal_text="Lebervene Rechts"),
+            Differenzierungsmerkmal_serum(differenzierungsmerkmal_text="ZVK"),
+            Differenzierungsmerkmal_serum(differenzierungsmerkmal_text="Vene peripher"),
+            Differenzierungsmerkmal_serum(differenzierungsmerkmal_text="Arterie peripher"),
+        ]
+        # Einfügen und speichern
+        db.add_all(seed_data)
+        db.commit()
+        print("Seed-Daten erfolgreich hinzugefügt.")
+
 
 
     if not db.query(Differenzierungsmerkmal_urin).first():

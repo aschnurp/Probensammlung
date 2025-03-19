@@ -361,7 +361,7 @@ export default function SampleForm() {
       remarks: formData.remarks,
       untergeordnete_probenart: formData.untergeordneteProbe,
       uebergeordnete_probenart: formData.uebergeordneteProbe,
-      differenzierungsmerkmal: formData.differenzierungsmerkmal,
+      differenzierungsmerkmal: parseInt(formData.differenzierungsmerkmal, 10),
       probeninformation: formData.probeninformation,
     };
 
@@ -751,8 +751,6 @@ export default function SampleForm() {
             helperText={errors.patient_Id_intern}
           />
 
-
-
           <FormControl
             variant="outlined"
             fullWidth
@@ -785,6 +783,38 @@ export default function SampleForm() {
             )}
           </FormControl>
 
+
+          <FormControl
+            variant="outlined"
+            fullWidth
+            margin="normal"
+          >
+            <InputLabel>Differenzierungsmerkmal</InputLabel>
+            <Select
+              id="Differenzierungsmerkmal"
+              name="differenzierungsmerkmal"
+              value={formData.differenzierungsmerkmal}
+              onChange={handleChange}
+              label="Differenzierungsmerkmal"
+            >
+              <MenuItem value="">-- Bitte auswählen --</MenuItem>
+              {Array.isArray(differenzierungsmerkmalOptions) && differenzierungsmerkmalOptions.length > 0 ? (
+                differenzierungsmerkmalOptions.map((option) => (
+                  <MenuItem key={option.id} value={option.id}>
+                    {option.text}
+                  </MenuItem>
+                ))
+              ) : (
+                <MenuItem disabled>Keine Optionen verfügbar</MenuItem>
+              )}
+            </Select>
+            {errors.Differenzierungsmerkmal && (
+              <Typography variant="caption" color="error">
+                {errors.Differenzierungsmerkmal}
+              </Typography>
+            )}
+          </FormControl>
+          
 
           {/* Datum */}
           <TextField
@@ -1002,8 +1032,6 @@ export default function SampleForm() {
               </Typography>
             )}
           </FormControl>
-
-
 
           {/* Datum */}
           <TextField

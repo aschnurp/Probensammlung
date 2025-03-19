@@ -87,7 +87,6 @@ export default function Uebersicht() {
       }
     };
 
-    // Hier rufst du für jede Tabelle die entsprechende Funktion auf
     getOptions("probeninformation", setProbeninformationOptionsToRender)
   }, []);
 
@@ -168,9 +167,6 @@ export default function Uebersicht() {
       }
     }
   }, [selectedTable]);
-
-  // Angenommen, probenart ist im formData gespeichert
-  const probeOptions = getProbeOptions(formData.probenart);
 
   const toggleDropdown = () => setIsOpen(!isOpen);
 
@@ -424,7 +420,6 @@ export default function Uebersicht() {
                           const probeninfo = probeninformationOptionsToRender.find(
                             (probe) => probe.id === row.probeninformation && probe.probenart === row.probenart
                           );
-
                           return probeninfo ? probeninfo.probeninformation_text : "N/A";
                         })()
 
@@ -450,7 +445,7 @@ export default function Uebersicht() {
                             return differenzierungsmerkmalMapping[row["differenzierungsmerkmal"]] || "N/A";
                           }
 
-                          return "N/A";  // Falls die Probenart weder "Urin" noch "Gewebe" ist
+                          return "N/A";  
                         })()
 
                         ) : col.key === "uebergeordnete_probenart" ? (
@@ -469,7 +464,7 @@ export default function Uebersicht() {
                               return uebergeordnete_probenart_mapping[row["uebergeordnete_probenart"]] || "N/A";
                             }
                         
-                            return "N/A"; // Falls "probenart" nicht "paraffin" ist
+                            return "N/A";
                           })()
                         
                           ) : col.key === "untergeordnete_probenart" ? (
@@ -483,10 +478,8 @@ export default function Uebersicht() {
                                 return untergeordnete_probenart_mapping[row["untergeordnete_probenart"]] || "N/A";
                               }
                           
-                              return "N/A"; // Falls "probenart" nicht "paraffin" ist
+                              return "N/A"; 
                             })()
-
-
 
                       ) : col.key === "probenart" ? (
                         (() => {

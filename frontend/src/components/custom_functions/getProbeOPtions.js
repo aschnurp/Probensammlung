@@ -43,6 +43,15 @@ export const getProbeOptions = (probenart) => {
       { id: 5, text: "Spender nach Perfusion" },
     ];
   }
+  else if (probenart === 'serum') {
+    differenzierungsmerkmalOptions = [
+      { id: 1, text: "Lebervene Links" },
+      { id: 2, text: "Lebervene Rechts" },
+      { id: 3, text: "ZVK" },
+      { id: 4, text: "Vene peripher" },
+      { id: 5, text: "Arterie peripher" },
+    ];
+  }
 
   const probeData = [
     { id: 1, text: "Serum prä OP I", type: "serum" },
