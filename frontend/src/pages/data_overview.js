@@ -417,9 +417,12 @@ export default function Uebersicht() {
 
                       ) : col.key === "probeninformation" ? (
                         (() => {
+                          // Prüfen, ob die Probenart "vorläufige Proben" ist
                           const probeninfo = probeninformationOptionsToRender.find(
-                            (probe) => probe.id === row.probeninformation && probe.probenart === row.probenart
+                            (probe) => probe.id === row.probeninformation
                           );
+                          
+                          // Wenn passende Probeninformation gefunden wurde, gib den Text zurück, sonst "N/A"
                           return probeninfo ? probeninfo.probeninformation_text : "N/A";
                         })()
 
@@ -445,41 +448,41 @@ export default function Uebersicht() {
                             return differenzierungsmerkmalMapping[row["differenzierungsmerkmal"]] || "N/A";
                           }
 
-                          return "N/A";  
+                          return "N/A";
                         })()
 
-                        ) : col.key === "uebergeordnete_probenart" ? (
-                          (() => {
-                            if (row["probenart"] === "paraffin") {
-                              const uebergeordnete_probenart_mapping = {
-                                1: "Normal",
-                                2: "Normal regeneriert",
-                                3: "Normal embolisiert",
-                                4: "Normal Empfängerleber",
-                                5: "Normal Spender der Leber",
-                                6: "Normal Spender nach Perfusion der Leber",
-                                7: "Tumor"
-                              };
-                        
-                              return uebergeordnete_probenart_mapping[row["uebergeordnete_probenart"]] || "N/A";
-                            }
-                        
-                            return "N/A";
-                          })()
-                        
-                          ) : col.key === "untergeordnete_probenart" ? (
-                            (() => {
-                              if (row["probenart"] === "paraffin") {
-                                const untergeordnete_probenart_mapping = {
-                                  1: "Paraffinblock",
-                                  2: "Paraffinblock (A/B)",
-                                };
-                          
-                                return untergeordnete_probenart_mapping[row["untergeordnete_probenart"]] || "N/A";
-                              }
-                          
-                              return "N/A"; 
-                            })()
+                      ) : col.key === "uebergeordnete_probenart" ? (
+                        (() => {
+                          if (row["probenart"] === "paraffin") {
+                            const uebergeordnete_probenart_mapping = {
+                              1: "Normal",
+                              2: "Normal regeneriert",
+                              3: "Normal embolisiert",
+                              4: "Normal Empfängerleber",
+                              5: "Normal Spender der Leber",
+                              6: "Normal Spender nach Perfusion der Leber",
+                              7: "Tumor"
+                            };
+
+                            return uebergeordnete_probenart_mapping[row["uebergeordnete_probenart"]] || "N/A";
+                          }
+
+                          return "N/A";
+                        })()
+
+                      ) : col.key === "untergeordnete_probenart" ? (
+                        (() => {
+                          if (row["probenart"] === "paraffin") {
+                            const untergeordnete_probenart_mapping = {
+                              1: "Paraffinblock",
+                              2: "Paraffinblock (A/B)",
+                            };
+
+                            return untergeordnete_probenart_mapping[row["untergeordnete_probenart"]] || "N/A";
+                          }
+
+                          return "N/A";
+                        })()
 
                       ) : col.key === "probenart" ? (
                         (() => {
