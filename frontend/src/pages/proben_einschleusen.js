@@ -431,9 +431,7 @@ export default function SampleForm() {
       }
       setSnackbarOpen(true);
     }
-
   };
-
 
 
   const handleSnackbarClose = (event, reason) => {
@@ -814,7 +812,7 @@ export default function SampleForm() {
               </Typography>
             )}
           </FormControl>
-          
+
 
           {/* Datum */}
           <TextField
@@ -989,7 +987,7 @@ export default function SampleForm() {
               <MenuItem value="">-- Bitte auswählen --</MenuItem>
               {probeninformationOptions.map((option) => (
                 <MenuItem key={option.id} value={option.id}>
-                  {option.probeninformation_text} 
+                  {option.probeninformation_text}
                 </MenuItem>
               ))}
             </Select>
