@@ -14,6 +14,36 @@ export const getProbeOptions = (probenart) => {
   let differenzierungsmerkmalOptions = [];
   let probeninformationOptions = [];
 
+  if (probenart === 'paraffin') {
+    overgeordneteProbeOptions = [
+      { id: 1, text: "Normal" },
+      { id: 2, text: "Normal regeneriert" },
+      { id: 3, text: "Normal embolisiert" },
+      { id: 4, text: "Normal Empfängerleber" },
+      { id: 5, text: "Normal Spender der Leber" },
+      { id: 6, text: "Normal Spender nach Perfusion der Leber" },
+      { id: 7, text: "Tumor" },
+    ];
+    untergeordneteOptions = [
+      { id: 1, text: "Paraffinblock" },
+      { id: 2, text: "Paraffinblock (A/B)" },
+    ];
+
+  } else if (probenart === 'urin') {
+    differenzierungsmerkmalOptions = [
+      { id: 1, text: "Katheter" },
+      { id: 2, text: "Spontan" },
+    ];
+  } else if (probenart === 'gewebe') {
+    differenzierungsmerkmalOptions = [
+      { id: 1, text: "Regeneriert" },
+      { id: 2, text: "Embolisiert" },
+      { id: 3, text: "Normal Empfänger" },
+      { id: 4, text: "Spender" },
+      { id: 5, text: "Spender nach Perfusion" },
+    ];
+  }
+
   const probeData = [
     { id: 1, text: "Serum prä OP I", type: "serum" },
     { id: 2, text: "Serum prä OP II", type: "serum" },
