@@ -421,7 +421,7 @@ export default function Uebersicht() {
                           const probeninfo = probeninformationOptionsToRender.find(
                             (probe) => probe.id === row.probeninformation
                           );
-                          
+
                           // Wenn passende Probeninformation gefunden wurde, gib den Text zurück, sonst "N/A"
                           return probeninfo ? probeninfo.probeninformation_text : "N/A";
                         })()
@@ -444,6 +444,16 @@ export default function Uebersicht() {
                               3: "Normal Empfänger",
                               4: "Spender",
                               5: "Spender nach Perfusion",
+                            };
+                            return differenzierungsmerkmalMapping[row["differenzierungsmerkmal"]] || "N/A";
+                          } else if (row["probenart"] === "serum") {
+                            // Mappings für "serum"
+                            const differenzierungsmerkmalMapping = {
+                              1: "Lebervene Links",
+                              2: "Lebervene Rechts",
+                              3: "ZVK",
+                              4: "Vene peripher",
+                              5: "Arterie peripher",
                             };
                             return differenzierungsmerkmalMapping[row["differenzierungsmerkmal"]] || "N/A";
                           }

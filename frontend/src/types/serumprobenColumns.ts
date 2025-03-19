@@ -6,6 +6,7 @@ export const serumprobenDataColumns = [
     { key: "abholer", label: "Abholer:In" },
     { key: "probenart", label: "Probenart" },
     { key: "probeninformation", label: "Probeninformation" },
+    { key: "differenzierungsmerkmal", label: "Differenzierungsmerkmal" },
     { key: "boxnummer", label: "Boxname (Boxnummer)" },
     { key: "boxzeile", label: "Boxzeile" },
     { key: "boxspalte", label: "Boxspalte" },
