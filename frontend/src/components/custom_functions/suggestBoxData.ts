@@ -15,9 +15,6 @@ export async function suggestBoxData(
       }
     );
 
-
-
-
     const { boxnummer, boxzeile, boxspalte } = response.data;
     console.log('response.data', response.data);
 
@@ -25,8 +22,6 @@ export async function suggestBoxData(
     let suggestedBoxzeile = boxzeile;
     let suggestedBoxspalte = boxspalte + 1;
     let isNewBox = false;
-
-    
 
     // Letter sequence for boxzeile
     const letters = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I'];
@@ -47,8 +42,6 @@ export async function suggestBoxData(
       }
     }
 
-    
-
     return {
       suggestedBoxnummer,
       suggestedBoxzeile,
@@ -63,7 +56,7 @@ export async function suggestBoxData(
       suggestedBoxspalte: 1,
       isNewBox: true,
     };
-    
+
   }
 }
 

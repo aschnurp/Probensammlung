@@ -91,9 +91,5 @@ export default function Sonstiges() {
         <Divider sx={{ my: 2 }} />
       </Box>
     </Box>
-
-
-
-
   )
 }

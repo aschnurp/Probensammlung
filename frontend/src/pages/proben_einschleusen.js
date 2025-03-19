@@ -126,7 +126,6 @@ export default function SampleForm() {
     }));
   }, []);
 
-
   useEffect(() => {
     const fetchAllData = async () => {
       try {
@@ -158,8 +157,6 @@ export default function SampleForm() {
 
     fetchAllData();
   }, [formData.barcode_id]);
-
-
 
   useEffect(() => {
     if (formData.probenart) {
@@ -278,10 +275,9 @@ export default function SampleForm() {
         newErrors.uebergeordneteProbe = 'Übergeordnete Probenart ist erforderlich.';
       }
       if (!formData.untergeordneteProbe) {
-        newErrors.untergeordneteProbe = 'Untergeordnete Probenart ist erforderlich.';
+        newErrors.untergeordneteProbe = 'Ist erforderlich.';
       }
     }
-
 
     // Validation for "gewebe"
     if (formData.probenart === 'gewebe') {

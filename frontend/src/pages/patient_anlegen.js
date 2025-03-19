@@ -152,9 +152,7 @@ export default function PatientForm() {
       return false;
     }
     return true;
-  };
-  
-  
+  };  
 
   const handleSubmit = async () => {
     if (!validateForm()) {
