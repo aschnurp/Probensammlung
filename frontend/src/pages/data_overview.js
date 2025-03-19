@@ -67,49 +67,29 @@ export default function Uebersicht() {
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
-  const [uebergeordneteOptionsToRender, setUebergeordneteOptionsToRender] = useState([]);
-  const [untergeordneteOptionsToRender, setUntergeordneteOptionsToRender] = useState([]);
-  const [differenzierungsmerkmaleOptionsToRender, setDifferenzierungsmerkmalOptionsToRender] = useState([]);
+
   const [probeninformationOptionsToRender, setProbeninformationOptionsToRender] = useState([]);
-
-
 
   useEffect(() => {
     console.log('FILTERED DATA:', filteredData);
   }, [filteredData]);
 
   useEffect(() => {
-    const getProbeninformation = async () => {
+    const getOptions = async (tableName, setFunction) => {
       try {
-        const res = await fetch(
-          `http://localhost:8000/table/data?table_name=probeninformation`
-        );
-        if (!res.ok) throw new Error("Fehler beim Abrufen der Probeninformation");
+        const res = await fetch(`http://localhost:8000/table/data?table_name=${tableName}`);
+        if (!res.ok) throw new Error(`Fehler beim Abrufen von ${tableName}`);
 
         const response = await res.json();
-        setProbeninformationOptionsToRender(response);
+        setFunction(response);
       } catch (error) {
-        console.error("Error fetching probeninformation:", error);
+        console.error(`Error fetching ${tableName}:`, error);
       }
-    };    
-    getProbeninformation();
+    };
+
+    // Hier rufst du für jede Tabelle die entsprechende Funktion auf
+    getOptions("probeninformation", setProbeninformationOptionsToRender)
   }, []);
-
-
-  useEffect(() => {
-    if (formData.probenart) {
-      const options = getProbeOptions(formData.probenart);
-      console.log("Probe Options:", options);
-  
-      if (options) {
-        setDifferenzierungsmerkmalOptionsToRender(options.differenzierungsmerkmal || []);
-      }
-    } else {
-      // Falls keine Probenart ausgewählt wurde
-
-      setDifferenzierungsmerkmalOptionsToRender([]);
-    }
-  }, [formData.probenart]);
 
 
   const handleClose = () => {
@@ -124,7 +104,7 @@ export default function Uebersicht() {
   // Handle closing the dialog
   const handleClosePASSW = () => {
     setOpen(false);
-    setError(""); 
+    setError("");
   };
 
   // Handle Check change
@@ -135,7 +115,7 @@ export default function Uebersicht() {
   // Handle Check change
   const handleCloseCheck = (e) => {
     setOpenCheck(false);
-    setError(""); 
+    setError("");
   };
 
   const DISPLAY_NAMES = {
@@ -189,6 +169,8 @@ export default function Uebersicht() {
     }
   }, [selectedTable]);
 
+  // Angenommen, probenart ist im formData gespeichert
+  const probeOptions = getProbeOptions(formData.probenart);
 
   const toggleDropdown = () => setIsOpen(!isOpen);
 
@@ -436,48 +418,75 @@ export default function Uebersicht() {
                           }
                           className="border border-gray-300 px-2 py-1"
                         />
-                      ) : col.key === "uebergeordnete_probenart" ? (
+
+                      ) : col.key === "probeninformation" ? (
                         (() => {
-                          const ueberProbenartId = row["uebergeordnete_probenart"];
+                          const probeninfo = probeninformationOptionsToRender.find(
+                            (probe) => probe.id === row.probeninformation && probe.probenart === row.probenart
+                          );
 
-                          const ueberProbenartText = uebergeordneteOptionsToRender.find(
-                            (option) => option.id === ueberProbenartId
-                          )?.text || "N/A";
-
-                          return ueberProbenartText;
+                          return probeninfo ? probeninfo.probeninformation_text : "N/A";
                         })()
-                      ) : col.key === "untergeordnete_probenart" ? (
-                        (() => {
-                          const unterProbenartId = row["untergeordnete_probenart"];
 
-                          const unterProbenartText = untergeordneteOptionsToRender.find(
-                            (option) => option.id === unterProbenartId
-                          )?.text || "N/A";
 
-                          return unterProbenartText;
-                        })()
-                        
-
-                        //differenzierungsmerkmal
                       ) : col.key === "differenzierungsmerkmal" ? (
                         (() => {
-                          const differenzierungsmerkmalId = row["differenzierungsmerkmal"];
+                          if (row["probenart"] === "urin") {
+                            // Mappings für "Urin"
+                            const differenzierungsmerkmalMapping = {
+                              1: "Katheter",
+                              2: "Spontan",
+                            };
+                            return differenzierungsmerkmalMapping[row["differenzierungsmerkmal"]] || "N/A";
+                          } else if (row["probenart"] === "gewebe") {
+                            // Mappings für "Gewebe"
+                            const differenzierungsmerkmalMapping = {
+                              1: "Regeneriert",
+                              2: "Embolisiert",
+                              3: "Normal Empfänger",
+                              4: "Spender",
+                              5: "Spender nach Perfusion",
+                            };
+                            return differenzierungsmerkmalMapping[row["differenzierungsmerkmal"]] || "N/A";
+                          }
 
-                          const differenzierungsmerkmalText = differenzierungsmerkmaleOptionsToRender.find(
-                            (option) => option.id === differenzierungsmerkmalId
-                          )?.text || "N/A";
-
-                          return differenzierungsmerkmalText;
+                          return "N/A";  // Falls die Probenart weder "Urin" noch "Gewebe" ist
                         })()
 
-                        ) : col.key === "probeninformation" ? (
+                        ) : col.key === "uebergeordnete_probenart" ? (
                           (() => {
-                            const probeninfo = probeninformationOptionsToRender.find(
-                              (probe) => probe.id === row.probeninformation && probe.probenart === row.probenart
-                            );
-                      
-                            return probeninfo ? probeninfo.probeninformation_text : "N/A";
+                            if (row["probenart"] === "paraffin") {
+                              const uebergeordnete_probenart_mapping = {
+                                1: "Normal",
+                                2: "Normal regeneriert",
+                                3: "Normal embolisiert",
+                                4: "Normal Empfängerleber",
+                                5: "Normal Spender der Leber",
+                                6: "Normal Spender nach Perfusion der Leber",
+                                7: "Tumor"
+                              };
+                        
+                              return uebergeordnete_probenart_mapping[row["uebergeordnete_probenart"]] || "N/A";
+                            }
+                        
+                            return "N/A"; // Falls "probenart" nicht "paraffin" ist
                           })()
+                        
+                          ) : col.key === "untergeordnete_probenart" ? (
+                            (() => {
+                              if (row["probenart"] === "paraffin") {
+                                const untergeordnete_probenart_mapping = {
+                                  1: "Paraffinblock",
+                                  2: "Paraffinblock (A/B)",
+                                };
+                          
+                                return untergeordnete_probenart_mapping[row["untergeordnete_probenart"]] || "N/A";
+                              }
+                          
+                              return "N/A"; // Falls "probenart" nicht "paraffin" ist
+                            })()
+
+
 
                       ) : col.key === "probenart" ? (
                         (() => {
@@ -564,7 +573,6 @@ export default function Uebersicht() {
                                 const passcode = formJson.passcode;
 
                                 if (passcode === process.env.NEXT_PUBLIC_DELETE_PASSCODE) {
-                                  // Hier rufst du handleDelete(...) mit rowToDelete auf
                                   handleDelete(rowToDelete);
                                 } else {
                                   alert("Incorrect passcode!");
