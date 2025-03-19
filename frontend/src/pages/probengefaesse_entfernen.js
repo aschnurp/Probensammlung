@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Box,
   TextField,
@@ -16,6 +16,7 @@ export default function ProbeAusschleusen() {
   const [snackbarMessage, setSnackbarMessage] = useState('');
   const [snackbarSeverity, setSnackbarSeverity] = useState('success');
   const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [typingTimeout, setTypingTimeout] = useState(null);
 
   const handleScan = (e) => {
     setBarcodeId(e.target.value);
@@ -37,26 +38,26 @@ export default function ProbeAusschleusen() {
       setSnackbarOpen(true);
       return;
     }
-  
+
     const payload = { barcode_id: barcodeId };
-  
+
     try {
       const response = await axios.delete(
         `http://localhost:8000/delete/vorlaeufigeproben`,
         {
           headers: { "Content-Type": "application/json" },
-          data: payload, // Richtige Übergabe der Daten
+          data: payload, // Correctly passing the data
         }
       );
-  
+
       console.log("Response after delete:", response);
-  
+
       setSnackbarMessage("Probe erfolgreich entfernt!");
       setSnackbarSeverity("success");
       setSnackbarOpen(true);
-      
-      setBarcodeId(""); // Scannerfeld leeren
-  
+
+      setBarcodeId(""); // Clear the input field after success
+
     } catch (error) {
       console.error("Fehler beim Entfernen:", error);
       setSnackbarMessage("Fehler beim Entfernen der Probe.");
@@ -64,7 +65,25 @@ export default function ProbeAusschleusen() {
       setSnackbarOpen(true);
     }
   };
-  
+
+  // Effect hook to handle timeout for auto-submit after 2 seconds
+  useEffect(() => {
+    if (typingTimeout) {
+      clearTimeout(typingTimeout); // Clear the previous timeout when barcodeId changes
+    }
+
+    if (barcodeId.trim()) {
+      const timeout = setTimeout(() => {
+        handleSubmit();
+      }, 2000); // 2 seconds delay after the last input
+
+      setTypingTimeout(timeout); // Store the timeout ID for clearing it later
+    }
+
+    return () => {
+      clearTimeout(typingTimeout); // Clean up timeout on component unmount
+    };
+  }, [barcodeId]); // This will run every time barcodeId changes
 
   return (
     <Box sx={{ p: 3, maxWidth: 600, mx: 'auto' }}>
@@ -82,7 +101,7 @@ export default function ProbeAusschleusen() {
           Proben Entfernen
         </Typography>
         <Typography variant="body1" sx={{ color: 'text.primary' }}>
-          Nicht verwendete Probengefäße (Probenröhrchen) können hier gelöscht werden.
+          Nicht verwendete Probengefäße (Probenröhrchen) können hier gelöscht werden. Die Löschung erfolgt 2 sekunden nach dem Scan.
         </Typography>
       </Box>
 
@@ -97,15 +116,6 @@ export default function ProbeAusschleusen() {
         helperText={errors.barcodeId}
         autoFocus
       />
-      <Button
-        variant="contained"
-        color="primary"
-        onClick={handleSubmit}
-        fullWidth
-        sx={{ mt: 2 }}
-      >
-        Probe Entfernen
-      </Button>
 
       {/* Snackbar für Meldungen */}
       <Snackbar
