@@ -70,7 +70,7 @@ export default function SampleForm() {
   const [errors, setErrors] = useState({});
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState('');
-  const [snackbarSeverity, setSnackbarSeverity] = useState('success'); // 'success' or 'error'
+  const [snackbarSeverity, setSnackbarSeverity] = useState('success');
   const [updateBox, setUpdateBox] = useState(false);
 
   const [overgeordneteProbeOptions, setOvergeordneteProbeOptions] = useState([]);
@@ -95,8 +95,8 @@ export default function SampleForm() {
 
   useEffect(() => {
     console.log('FormData has changed:', formData);
-  }, [formData]); // Dieser Effect wird immer aufgerufen, wenn formData sich ändert
-  
+  }, [formData]);
+
 
   useEffect(() => {
     const raumZuordnung = {
@@ -132,20 +132,21 @@ export default function SampleForm() {
       try {
         const response = await axios.get("http://localhost:8000/table/data?table_name=vorlaeufigeproben",
         );
-  
+
         if (response.data && formData.barcode_id) {
           const foundItem = response.data.find(item => item.barcode_id === formData.barcode_id);
-  
+
           if (foundItem) {
             setFormData((prevData) => ({
               ...prevData,
               patient_Id_intern: foundItem.patient_Id_intern,
               probeninformation: foundItem.probeninformation,
-            }));
-          } else {
-            setSnackbarMessage("Barcode nicht gefunden.");
-            setSnackbarSeverity("error");
+            }))
+            setSnackbarMessage("Barcode gefunden.");
+            setSnackbarSeverity("success");
             setSnackbarOpen(true);
+          } else {
+            setSnackbarOpen(false);
           }
         }
       } catch (error) {
@@ -154,24 +155,23 @@ export default function SampleForm() {
         setSnackbarOpen(true);
       }
     };
-  
+
     fetchAllData();
   }, [formData.barcode_id]);
-  
+
 
 
   useEffect(() => {
     if (formData.probenart) {
       fetchAndSuggestBoxData(formData.probenart);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [formData.probenart, updateBox]);
 
   useEffect(() => {
     if (formData.probenart) {
       const options = getProbeOptions(formData.probenart);
       console.log("Probe Options:", options);
-  
+
       if (options) {
         setOvergeordneteProbeOptions(options.übergeordnete || []);
         setUntergeordneteProbeOptions(options.untergeordnete || []);
@@ -186,13 +186,12 @@ export default function SampleForm() {
       setProbeninformationOptions([]);
     }
   }, [formData.probenart]);
-  
+
 
   ///////////////////////////////////////////////////////////
   // Function to fetch and suggest box data
   const fetchAndSuggestBoxData = async (probenart) => {
     try {
-      // Map probenart to the corresponding table name
       const tableName =
         probenart === 'gewebe'
           ? 'gewebeproben'
@@ -212,7 +211,7 @@ export default function SampleForm() {
           ...prevData,
 
           boxnummer: suggestion.suggestedBoxnummer.toString(),
-          boxzeile:  suggestion.suggestedBoxzeile,
+          boxzeile: suggestion.suggestedBoxzeile,
           boxspalte: suggestion.suggestedBoxspalte.toString(),
         }));
 
@@ -236,21 +235,21 @@ export default function SampleForm() {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    
+
     // Zustand aktualisieren
     setFormData((prevData) => {
       const updatedData = { ...prevData, [name]: value };
       console.log('FormData updated:', updatedData);
       return updatedData;
     });
-  
+
     // Fehler für das aktuelle Feld löschen
     setErrors((prevErrors) => ({
       ...prevErrors,
       [name]: '',
     }));
   };
-  
+
 
   const handleClear = () => {
     setFormData((prevData) => ({
@@ -269,9 +268,9 @@ export default function SampleForm() {
   const handleSubmit = async () => {
     const newErrors = {};
     const isValidInteger = (value) => /^\d+$/.test(value);
-  
+
     console.log('handleSubmit called:', formData);
-  
+
     // New validation for Übergeordnete Probe and Untergeordnete Probe
     const sampleTypes = ['paraffin'];
     if (formData.probenart && sampleTypes.includes(formData.probenart)) {
@@ -283,17 +282,17 @@ export default function SampleForm() {
       }
     }
 
-  
+
     // Validation for "gewebe"
     if (formData.probenart === 'gewebe') {
       if (!formData.boxnummer || !isValidInteger(formData.boxnummer)) {
         newErrors.boxnummer = 'Boxnummer ist erforderlich und muss eine ganze Zahl sein.';
       }
-  
+
       if (!formData.boxzeile) {
         newErrors.boxzeile = 'Boxzeile ist erforderlich.';
       }
-  
+
       const boxspalteNumber = parseInt(formData.boxspalte, 10); // Convert to number
       if (
         !formData.boxspalte ||
@@ -303,26 +302,26 @@ export default function SampleForm() {
       ) {
         newErrors.boxspalte = 'Boxspalte ist erforderlich und muss eine ganze Zahl zwischen 1-9 sein.';
       }
-  
+
       if (!formData.abholer) {
         newErrors.abholer = 'Abholer ist erforderlich.';
       }
-  
+
       if (!formData.barcode_id) {
         newErrors.barcode_id = 'Barcode ist erforderlich.';
       }
     }
-  
+
     // Validation for "serum" or "urin"
     else if (formData.probenart === 'serum' || formData.probenart === 'urin') {
       if (!formData.boxnummer || !isValidInteger(formData.boxnummer)) {
         newErrors.boxnummer = 'Boxnummer ist erforderlich und muss eine ganze Zahl sein.';
       }
-  
+
       if (!formData.boxzeile) {
         newErrors.boxzeile = 'Boxzeile ist erforderlich.';
       }
-  
+
       const boxspalteNumber = parseInt(formData.boxspalte, 10); // Convert to number
       if (
         !formData.boxspalte ||
@@ -332,20 +331,20 @@ export default function SampleForm() {
       ) {
         newErrors.boxspalte = 'Boxspalte ist erforderlich und muss eine ganze Zahl zwischen 1-9 sein.';
       }
-  
+
       if (!formData.barcode_id) {
         newErrors.barcode_id = 'Barcode ist erforderlich.';
       }
     }
-  
+
     // If we have collected any errors, stop here
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
       return;
     }
-  
+
     setErrors({});
-  
+
     const filteredData = {
       probenart: formData.probenart,
       barcode_id: formData.barcode_id,
@@ -365,9 +364,9 @@ export default function SampleForm() {
       differenzierungsmerkmal: formData.differenzierungsmerkmal,
       probeninformation: formData.probeninformation,
     };
-  
+
     console.log('Filtered data beim EINSCHLEUSEN:', filteredData);
-  
+
     try {
       let endpoint = '';
       switch (formData.probenart) {
@@ -386,9 +385,9 @@ export default function SampleForm() {
         default:
           throw new Error('Ungültige Probenart ausgewählt.');
       }
-    
+
       console.log(endpoint);
-    
+
       // Senden der neuen Daten
       const response = await axios.post(
         `http://localhost:8000/new_data/${endpoint}`,
@@ -397,7 +396,7 @@ export default function SampleForm() {
           headers: { 'Content-Type': 'application/json' },
         }
       );
-    
+
       // Nur für Serum, Gewebe und Urin vorläufige Proben löschen
       if (['serum', 'gewebe', 'urin'].includes(formData.probenart)) {
         const deleteResponse = await axios.delete(
@@ -409,17 +408,17 @@ export default function SampleForm() {
         );
         console.log('Response after delete:', deleteResponse);
       }
-    
+
       // Erfolgsbenachrichtigung
       setSnackbarMessage('Daten erfolgreich gespeichert.');
       setSnackbarSeverity('success');
       setSnackbarOpen(true);
-    
+
       // Formular leeren
       handleClear();
     } catch (error) {
       console.error('Error submitting data:', error);
-    
+
       if (error.response) {
         const message = error.response.data.detail
           ? `Error: ${error.response.data.detail}`
@@ -432,9 +431,9 @@ export default function SampleForm() {
       }
       setSnackbarOpen(true);
     }
-    
+
   };
-  
+
 
 
   const handleSnackbarClose = (event, reason) => {
@@ -496,27 +495,27 @@ export default function SampleForm() {
         <Box sx={{ mt: 2 }}>
           {/* Barcode ID */}
           <TextField
-        label="Barcode ID"
-        name="barcode_id"
-        value={formData.barcode_id}
-        onChange={handleChange}
-        fullWidth
-        margin="normal"
-        error={Boolean(errors.barcode_id)}
-        helperText={errors.barcode_id}
-      />
-      <TextField
-        label="Patienten ID (Intern)"
-        name="patient_Id_intern"
-        value={formData.patient_Id_intern}
-        onChange={handleChange}
-        fullWidth
-        margin="normal"
-        error={Boolean(errors.patient_Id_intern)}
-        helperText={errors.patient_Id_intern}
-      />
+            label="Barcode ID"
+            name="barcode_id"
+            value={formData.barcode_id}
+            onChange={handleChange}
+            fullWidth
+            margin="normal"
+            error={Boolean(errors.barcode_id)}
+            helperText={errors.barcode_id}
+          />
+          <TextField
+            label="Patienten ID (Intern)"
+            name="patient_Id_intern"
+            value={formData.patient_Id_intern}
+            onChange={handleChange}
+            fullWidth
+            margin="normal"
+            error={Boolean(errors.patient_Id_intern)}
+            helperText={errors.patient_Id_intern}
+          />
 
-<FormControl
+          <FormControl
             variant="outlined"
             fullWidth
             margin="normal"
@@ -754,7 +753,7 @@ export default function SampleForm() {
 
 
 
-<FormControl
+          <FormControl
             variant="outlined"
             fullWidth
             margin="normal"
@@ -958,19 +957,15 @@ export default function SampleForm() {
               label="Probeninformation"
             >
               <MenuItem value="">-- Bitte auswählen --</MenuItem>
-              {Array.isArray(probeninformationOptions) && probeninformationOptions.length > 0 ? (
-                probeninformationOptions.map((option) => (
-                  <MenuItem key={option.id} value={option.id}>
-                    {option.probeninformation_text}
-                  </MenuItem>
-                ))
-              ) : (
-                <MenuItem disabled>Keine Optionen verfügbar</MenuItem>
-              )}
+              {probeninformationOptions.map((option) => (
+                <MenuItem key={option.id} value={option.id}>
+                  {option.probeninformation_text} 
+                </MenuItem>
+              ))}
             </Select>
-            {errors.Probeninformation && (
+            {errors.probeninformation && (
               <Typography variant="caption" color="error">
-                {errors.Probeninformation}
+                {errors.probeninformation}
               </Typography>
             )}
           </FormControl>
@@ -1140,7 +1135,7 @@ export default function SampleForm() {
       {/* Conditional Fields for Paraffin */}
       {formData.probenart === 'paraffin' && (
         <Box sx={{ mt: 2 }}>
-                      {/* Patienten ID TextField */}
+          {/* Patienten ID TextField */}
           <TextField
             label="Patienten ID (Intern)"
             name="patient_Id_intern"
@@ -1159,8 +1154,8 @@ export default function SampleForm() {
             margin="normal"
             error={Boolean(errors.uebergeordneteProbe)}
           >
-       
-        
+
+
             <InputLabel>Übergeordnete Probenart</InputLabel>
             <Select
               id="uebergeordnet"
