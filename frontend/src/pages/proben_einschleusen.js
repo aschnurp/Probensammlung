@@ -265,9 +265,9 @@ export default function SampleForm() {
   const handleSubmit = async () => {
     const newErrors = {};
     const isValidInteger = (value) => /^\d+$/.test(value);
-
+  
     console.log('handleSubmit called:', formData);
-
+  
     // New validation for Übergeordnete Probe and Untergeordnete Probe
     const sampleTypes = ['paraffin'];
     if (formData.probenart && sampleTypes.includes(formData.probenart)) {
@@ -278,17 +278,17 @@ export default function SampleForm() {
         newErrors.untergeordneteProbe = 'Ist erforderlich.';
       }
     }
-
+  
     // Validation for "gewebe"
     if (formData.probenart === 'gewebe') {
       if (!formData.boxnummer || !isValidInteger(formData.boxnummer)) {
         newErrors.boxnummer = 'Boxnummer ist erforderlich und muss eine ganze Zahl sein.';
       }
-
+  
       if (!formData.boxzeile) {
         newErrors.boxzeile = 'Boxzeile ist erforderlich.';
       }
-
+  
       const boxspalteNumber = parseInt(formData.boxspalte, 10); // Convert to number
       if (
         !formData.boxspalte ||
@@ -298,26 +298,26 @@ export default function SampleForm() {
       ) {
         newErrors.boxspalte = 'Boxspalte ist erforderlich und muss eine ganze Zahl zwischen 1-9 sein.';
       }
-
+  
       if (!formData.abholer) {
         newErrors.abholer = 'Abholer ist erforderlich.';
       }
-
+  
       if (!formData.barcode_id) {
         newErrors.barcode_id = 'Barcode ist erforderlich.';
       }
     }
-
+  
     // Validation for "serum" or "urin"
     else if (formData.probenart === 'serum' || formData.probenart === 'urin') {
       if (!formData.boxnummer || !isValidInteger(formData.boxnummer)) {
         newErrors.boxnummer = 'Boxnummer ist erforderlich und muss eine ganze Zahl sein.';
       }
-
+  
       if (!formData.boxzeile) {
         newErrors.boxzeile = 'Boxzeile ist erforderlich.';
       }
-
+  
       const boxspalteNumber = parseInt(formData.boxspalte, 10); // Convert to number
       if (
         !formData.boxspalte ||
@@ -327,20 +327,39 @@ export default function SampleForm() {
       ) {
         newErrors.boxspalte = 'Boxspalte ist erforderlich und muss eine ganze Zahl zwischen 1-9 sein.';
       }
-
+  
       if (!formData.barcode_id) {
         newErrors.barcode_id = 'Barcode ist erforderlich.';
       }
     }
-
+  
+    // Check if probeninformationen are the same as the fetched one
+    if (formData.barcode_id && formData.probenart !== 'paraffin') {
+      try {
+        const response = await axios.get(`http://localhost:8000/table/data?table_name=vorlaeufigeproben`);
+        const foundItem = response.data.find(item => item.barcode_id === formData.barcode_id);
+  
+        if (foundItem && formData.probeninformation !== foundItem.probeninformation) {
+          newErrors.probeninformation = 'Die Probeninformationen stimmen nicht überein.';
+        }
+      } catch (error) {
+        console.error('Error fetching probeninformationen:', error);
+        newErrors.probeninformation = 'Fehler beim Überprüfen der Probeninformationen.';
+      }
+    }
+  
     // If we have collected any errors, stop here
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
+      // Show snackbar for the specific error
+      setSnackbarMessage(newErrors.probeninformation || 'Fehler beim Validieren der Daten');
+      setSnackbarSeverity('error');
+      setSnackbarOpen(true);
       return;
     }
-
+  
     setErrors({});
-
+  
     const filteredData = {
       probenart: formData.probenart,
       barcode_id: formData.barcode_id,
@@ -360,9 +379,9 @@ export default function SampleForm() {
       differenzierungsmerkmal: parseInt(formData.differenzierungsmerkmal, 10),
       probeninformation: formData.probeninformation,
     };
-
+  
     console.log('Filtered data beim EINSCHLEUSEN:', filteredData);
-
+  
     try {
       let endpoint = '';
       switch (formData.probenart) {
@@ -381,9 +400,9 @@ export default function SampleForm() {
         default:
           throw new Error('Ungültige Probenart ausgewählt.');
       }
-
+  
       console.log(endpoint);
-
+  
       // Senden der neuen Daten
       const response = await axios.post(
         `http://localhost:8000/new_data/${endpoint}`,
@@ -392,11 +411,11 @@ export default function SampleForm() {
           headers: { 'Content-Type': 'application/json' },
         }
       );
-
+  
       // Nur für Serum, Gewebe und Urin vorläufige Proben löschen
       if (['serum', 'gewebe', 'urin'].includes(formData.probenart)) {
         const deleteResponse = await axios.delete(
-          `http://localhost:8000/delete/vorlaeufigeproben`,
+          'http://localhost:8000/delete/vorlaeufigeproben',
           {
             headers: { 'Content-Type': 'application/json' },
             data: { barcode_id: formData.barcode_id },
@@ -404,17 +423,17 @@ export default function SampleForm() {
         );
         console.log('Response after delete:', deleteResponse);
       }
-
+  
       // Erfolgsbenachrichtigung
       setSnackbarMessage('Daten erfolgreich gespeichert.');
       setSnackbarSeverity('success');
       setSnackbarOpen(true);
-
+  
       // Formular leeren
       handleClear();
     } catch (error) {
       console.error('Error submitting data:', error);
-
+  
       if (error.response) {
         const message = error.response.data.detail
           ? `Error: ${error.response.data.detail}`
@@ -429,14 +448,12 @@ export default function SampleForm() {
     }
   };
 
-
   const handleSnackbarClose = (event, reason) => {
     if (reason === 'clickaway') {
       return;
     }
     setSnackbarOpen(false);
   };
-
 
   ///////////////////////////////////////////////////////////
   ///////////////////////////////////////////////////////////
