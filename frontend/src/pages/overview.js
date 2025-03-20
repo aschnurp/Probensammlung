@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { Box, Typography, Divider } from '@mui/material';
+import { Box, Typography, Divider, Button } from '@mui/material';
 import Link from 'next/link';
 import ReusableButton from '../components/button';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
@@ -12,6 +12,19 @@ import { getSerumCount } from '../services/api';
 import { getGewebeCount } from '../services/api';
 import { getUrinCount } from '../services/api';
 import { getParaffinCount } from '../services/api';
+import AddCircleRoundedIcon from '@mui/icons-material/AddCircleRounded';
+import InputRoundedIcon from '@mui/icons-material/InputRounded';
+import OutputRoundedIcon from '@mui/icons-material/OutputRounded';
+import EditRoundedIcon from '@mui/icons-material/EditRounded';
+import RepeatRoundedIcon from '@mui/icons-material/RepeatRounded';
+
+
+const sections = [
+  { title: 'Patient anlegen', link: '/patient_anlegen', icon: <AddCircleRoundedIcon />, iconName: 'Neu' },
+  { title: 'Proben einschleusen', link: '/proben_einschleusen', icon: <InputRoundedIcon />, iconName: 'Neu' },
+  { title: 'Proben ausschleusen', link: '/proben_ausscheusen', icon: <OutputRoundedIcon />, iconName: 'Neu', color: 'error' },
+  { title: 'Proben wieder einschleusen', link: '/proben_wiedereinschleusen', icon: <RepeatRoundedIcon />, iconName: 'Neu' },
+];
 
 const theme = createTheme({
   palette: {
@@ -184,62 +197,6 @@ export default function Overview() {
         </Box>
       </Box>
 
-
-      <Box
-        sx={{
-          textAlign: 'center',
-          mt: 4,
-          mb: 2,
-          height: 0,
-        }}
-      >
-        <Typography variant="h5" sx={{ fontWeight: 'bold', color: 'text.primary' }}>
-          Neue Daten Eintragen
-        </Typography>
-      </Box>
-
-      {[
-        { title: 'Patient anlegen', link: '/patient_anlegen' },
-        { title: 'Proben einschleusen', link: '/proben_einschleusen' },
-        { title: 'Proben ausschleusen', link: '/proben_ausscheusen' },
-        { title: 'Proben wieder einschleusen', link: '/proben_wiedereinschleusen' },
-      ].map((section, index) => (
-        <Box
-          key={index}
-          sx={{
-            bgcolor: 'background.paper',
-            boxShadow: 3,
-            borderRadius: 4,
-            p: 3,
-            m: 10,
-          }}
-        >
-          <Box
-            sx={{
-              display: 'flex',
-              justifyContent: 'space-between',
-              alignItems: 'center', // Ensures alignment of title and button
-            }}
-          >
-            <Typography variant="h6" sx={{ fontWeight: 'medium', color: 'text.primary' }}>
-              {section.title}
-            </Typography>
-            <Link
-              href={section.link}
-              className={clsx('text-white font-semibold hover:text-blue-200', {
-                underline: location === section.link,
-              })}
-            >
-              <ReusableButton
-                buttonVariant="contained"
-                buttonColor="primary"
-                buttonText="Neu"
-              />
-            </Link>
-          </Box>
-          <Divider sx={{ my: 2 }} />
-        </Box>
-      ))}
       <Box
         sx={{
           textAlign: 'center',
@@ -247,7 +204,7 @@ export default function Overview() {
         }}
       >
         <Typography variant="h5" sx={{ fontWeight: 'bold', color: 'text.primary' }}>
-          Weitere Funktionen
+          Vorbereitung
         </Typography>
       </Box>
       <Box
@@ -267,30 +224,112 @@ export default function Overview() {
           }}
         >
           <Typography variant="h6" sx={{ fontWeight: 'medium', color: 'text.primary' }}>
-            Probenabholer Bearbeiten
+            Probengefäße Hinzufügen
           </Typography>
           <Link
-            href={'/proben_abholer_aendern'}
+            href={'/probengefaesse_hinzufuegen'}
             className={clsx('text-white font-semibold hover:text-blue-200', {
-              underline: location === '/proben_abholer_aendern',
+              underline: location === '/probengefaesse_hinzufuegen',
             })}
           >
-            <ReusableButton
-              buttonVariant="contained"
-              buttonColor="primary"
-              buttonText="Bearbeiten"
-            />
+
+            <Button variant="contained" startIcon={<AddCircleRoundedIcon />}   sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+>
+              Neu
+            </Button>
+
           </Link>
         </Box>
         <Divider sx={{ my: 2 }} />
       </Box>
+
+
       <Box
         sx={{
-          height: 10,
-        }}>
-
+          bgcolor: 'background.paper',
+          boxShadow: 3,
+          borderRadius: 4,
+          p: 3,
+          m: 10,
+        }}
+      >
+        <Box
+          sx={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+          }}
+        >
+          <Typography variant="h6" sx={{ fontWeight: 'medium', color: 'text.primary' }}>
+            Probengefäße Entfernen
+          </Typography>
+          <Link
+            href={'/probengefaesse_entfernen'}
+            className={clsx('text-white font-semibold hover:text-blue-200', {
+              underline: location === '/probengefaesse_entfernen',
+            })}
+          >
+            <Button variant="contained" color='error' startIcon={<OutputRoundedIcon />}>
+              Neu
+            </Button>
+          </Link>
+        </Box>
+        <Divider sx={{ my: 2 }} />
       </Box>
 
+
+      <Box sx={{ textAlign: 'center', height: 0 }}>
+        <Typography variant="h5" sx={{ fontWeight: 'bold', color: 'text.primary' }}>
+          Neue Daten Eintragen
+        </Typography>
+      </Box>
+
+      {sections.map((section, index) => (
+  <Box key={index} sx={{ bgcolor: 'background.paper', boxShadow: 3, borderRadius: 4, p: 3, m: 10 }}>
+    <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+      <Typography variant="h6" sx={{ fontWeight: 'medium', color: 'text.primary' }}>
+        {section.title}
+      </Typography>
+      <Box sx={{ display: 'flex', gap: 1 }}>
+        <Link href={section.link} className={clsx('text-white font-semibold hover:text-blue-200')}>
+          <Button variant="contained" startIcon={section.icon} color={section.color || 'primary'}>
+            {/* Hier den benutzerdefinierten Namen des Icons anzeigen */}
+            {section.iconName}
+          </Button>
+        </Link>
+        {section.extraButton && (
+          <Link href={section.link} className={clsx('text-white font-semibold hover:text-blue-200')}>
+            <Button variant="outlined" startIcon={<EditRoundedIcon />}>
+              Bearbeiten
+            </Button>
+          </Link>
+        )}
+      </Box>
+    </Box>
+    <Divider sx={{ my: 2 }} />
+  </Box>
+))}
+
+<Box sx={{ textAlign: 'center', height: 0 }}>
+        <Typography variant="h5" sx={{ fontWeight: 'bold', color: 'text.primary' }}>
+          Weitere Funktionen
+        </Typography>
+      </Box>
+      <Box sx={{ bgcolor: 'background.paper', boxShadow: 3, borderRadius: 4, p: 3, m: 10 }}>
+        <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <Typography variant="h6" sx={{ fontWeight: 'medium', color: 'text.primary' }}>
+            Probenabholer Bearbeiten
+          </Typography>
+          <Link href={'/proben_abholer_aendern'} className={clsx('text-white font-semibold hover:text-blue-200')}>
+            <Button variant="contained" startIcon={<EditRoundedIcon />}>
+              Bearbeiten
+            </Button>
+          </Link>
+        </Box>
+        <Divider sx={{ my: 2 }} />
+      </Box>
+
+      <Box sx={{ height: 10 }} />
     </ThemeProvider>
   );
 }

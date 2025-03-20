@@ -51,6 +51,7 @@ def patch_gewebeproben(barcode_id: str, db: Session = Depends(get_db)):
             status_code=status.HTTP_404_NOT_FOUND,
             detail=f"Eintrag mit barcode_id: {barcode_id} existiert nicht.",
         )
+    
     # Aktualisieren des Eintrags mit dem Standardwert 2 für status
     try:
         item_query.update({"status": 2}, synchronize_session=False)

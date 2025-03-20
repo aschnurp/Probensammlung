@@ -1,9 +1,9 @@
 export type gewebeprobenData = {
     barcode_ID?: string;
     patient_Id_intern?: string;
-    uebergeordnete_probenart?: string;
+    differenzierungsmerkmal?: number;
     probenart?: string;
-    untergeordnete_probenart?: string;
+    probeninformation?: number;
     boxnummer?: number;
     boxzeile?: string;
     boxspalte?: number;

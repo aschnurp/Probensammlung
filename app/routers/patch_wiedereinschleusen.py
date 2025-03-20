@@ -38,7 +38,7 @@ def patch_serumproben(barcode_id: str, db: Session = Depends(get_db)):
     return item_query.first()
 
 
-#router for new serum entry
+#router for new gewebe entry
 @router.patch("/gewebe/{barcode_id}", status_code=status.HTTP_200_OK,response_model=schemas.TableDataSerumproben)
 def patch_gewebeproben(barcode_id: str, db: Session = Depends(get_db)):
     # Suche nach dem bestehenden Eintrag
@@ -64,7 +64,7 @@ def patch_gewebeproben(barcode_id: str, db: Session = Depends(get_db)):
     return item_query.first()
 
 
-#router for new serum entry
+#router for new urin entry
 @router.patch("/urin/{barcode_id}", status_code=status.HTTP_200_OK,response_model=schemas.TableDataSerumproben)
 def patch_urinproben(barcode_id: str, db: Session = Depends(get_db)):
     # Suche nach dem bestehenden Eintrag

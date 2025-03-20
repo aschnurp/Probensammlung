@@ -3,7 +3,7 @@ from sqlalchemy.sql import text
 from fastapi import Depends, FastAPI
 from .database import get_db, engine, SessionLocal, Base
 from sqlalchemy.orm import Session
-from .models import status, gewebeproben, probenabholer, serumproben, uebergeordnete_probenart_gewebe, uebergeordnete_probenart_urin, untergeordnete_probenart_gewebe, untergeordnete_probenart_serum, urinproben, patient, paraffinproben, untergeordnete_probenart_urin, probenquelle_urin
+from .models import differenzierungsmerkmal_gewebe, differenzierungsmerkmal_urin, differenzierungsmerkmal_serum , probeninformation, status, gewebeproben, probenabholer, serumproben, urinproben, patient, paraffinproben, probenquelle_urin, vorlaeufige_proben, uebergeordnete_probenart_paraffin, untergeordnete_probenart_paraffin
 from .config import settings
 from .routers import post_new_data, put_tabledata, tables, number_entrys, patch_ausschleusen, patch_wiedereinschleusen, delete_tabledata
 from fastapi.middleware.cors import CORSMiddleware
@@ -27,15 +27,16 @@ app.add_middleware(
 
 #initalize database !order! Child-Tables first
 status.Base.metadata.create_all(bind=engine)
-uebergeordnete_probenart_gewebe.Base.metadata.create_all(bind=engine)
-uebergeordnete_probenart_urin.Base.metadata.create_all(bind=engine)
-
-untergeordnete_probenart_urin.Base.metadata.create_all(bind=engine)
-untergeordnete_probenart_gewebe.Base.metadata.create_all(bind=engine)
-untergeordnete_probenart_serum.Base.metadata.create_all(bind=engine)
+differenzierungsmerkmal_gewebe.Base.metadata.create_all(bind=engine)
+differenzierungsmerkmal_urin.Base.metadata.create_all(bind=engine)
+differenzierungsmerkmal_serum.Base.metadata.create_all(bind=engine)
+untergeordnete_probenart_paraffin.Base.metadata.create_all(bind=engine)
+uebergeordnete_probenart_paraffin.Base.metadata.create_all(bind=engine)
+probeninformation.Base.metadata.create_all(bind=engine)
 
 probenquelle_urin.Base.metadata.create_all(bind=engine)
 probenabholer.Base.metadata.create_all(bind=engine)
+vorlaeufige_proben.Base.metadata.create_all(bind=engine)
 
 gewebeproben.Base.metadata.create_all(bind=engine)
 paraffinproben.Base.metadata.create_all(bind=engine)

@@ -5,6 +5,6 @@ export const patientDataColumns = [
     { key: "geschlecht", label: "Geschlecht" },
     { key: "alter", label: "Alter" },
     { key: "op_diagnose", label: "OP Diagnose" },
-    { key: "bemerkung", label: "Bemerkung" },
-    { key: "op_geplant", label: "Geplante OP"}
+    { key: "op_geplant", label: "Geplante OP"},
+    { key: "bemerkung", label: "Bemerkung" }
 ];

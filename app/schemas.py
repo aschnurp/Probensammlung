@@ -29,7 +29,8 @@ class SerumprobenBase(BaseModel):
     created_at: Optional[str] = None
     abholer: Optional[str] = None
     uhrzeit: Optional[str] = None
-    untergeordnete_probenart: Optional[int] = None  # anded this
+    probeninformation: Optional[int] = None
+    differenzierungsmerkmal: Optional[int] = None
 
 class TableDataSerumproben(SerumprobenBase):
     status: Optional[int] = 1
@@ -47,8 +48,9 @@ class GewebeprobenBase(BaseModel):
     anmerkungen: Optional[str] = None
     remarks: Optional[str] = None
     created_at: Optional[str] = None
-    uebergeordnete_probenart: Optional[int] = None  # added this
-    untergeordnete_probenart: Optional[int] = None  # anded this
+    probeninformation: Optional[int] = None
+    differenzierungsmerkmal: Optional[int] = None
+
       
 
 class TableDataGewebeproben(GewebeprobenBase):
@@ -71,8 +73,8 @@ class UrinprobenBase(BaseModel):
     created_at: Optional[str] = None
     abholer: Optional[str] = None
     uhrzeit: Optional[str] = None
-    uebergeordnete_probenart: Optional[int] = None 
-    untergeordnete_probenart: Optional[int] = None  
+    probeninformation: Optional[int] = None
+    differenzierungsmerkmal: Optional[int] = None
 
 class TableDataUrinproben(UrinprobenBase):
     status: Optional[int] = 1
@@ -101,6 +103,12 @@ class TableDatapatient(BaseModel):
     sap_id: Optional[int] = None
     bemerkung: Optional[str] = None
     created_at: Optional[str] = None
+
+class TableVorlaeufigeProben(BaseModel):
+    barcode_id: str 
+    patient_Id_intern: Optional[str] = None 
+    probeninformation: Optional[int] = None
+
 
 class LastBoxInfo(BaseModel):
     boxnummer: int

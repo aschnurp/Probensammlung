@@ -2,8 +2,9 @@ export type serumprobenData = {
     barcode_id?: string;
     patient_Id_intern?: string;
     created_at: string;	
+    differenzierungsmerkmal?: number;
     probenart?: string;
-    untergeordnete_probenart?: string;
+    probeninformation?: number;
     boxnummer?: number; 
     boxzeile?: string; 
     boxspalte?: number; 	

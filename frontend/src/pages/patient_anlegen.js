@@ -1,5 +1,4 @@
-// src/PatientForm.js
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import {
   Box,
@@ -16,19 +15,16 @@ import {
 } from '@mui/material';
 import { IoMdArrowRoundBack } from "react-icons/io";
 import DateObject from "react-date-object";
+import dayjs from 'dayjs';
 
-//default time management
+
 var date = new DateObject();
 var nowtime = new DateObject();
 
-date
-  .setFormat("YYYY-MM-DD")
-
-nowtime
-  .setFormat("HH:mm")
+date.setFormat("YYYY-MM-DD");
+nowtime.setFormat("HH:mm");
 
 export default function PatientForm() {
-  // Corrected initial state keys to match input field names
   const [formData, setFormData] = useState({
     patient_Id_intern: '',
     geschlecht: '',
@@ -37,67 +33,101 @@ export default function PatientForm() {
     op_diagnose: '',
     plannedSurgery: '',
     bemerkung: '',
-    created_at: date.format(),
+    created_at: '',
     op_geplant: '',
   });
 
-  // State for handling field errors
   const [errors, setErrors] = useState({});
+  const [snackbarMessage, setSnackbarMessage] = useState('');
+  const [snackbarSeverity, setSnackbarSeverity] = useState('success');
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
 
-  // State for handling notifications
-  const [notification, setNotification] = useState({
-    open: false,
-    message: '',
-    severity: 'success', // 'success', 'error', 'info', 'warning'
-  });
-
-  // Handle input changes
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
-
-    // Clear the error for the field as the user types
-    if (errors[name]) {
-      setErrors({ ...errors, [name]: '' });
-    }
+  // Funktion zum Setzen der Formulardaten
+  const handleChange = (event) => {
+    const { name, value } = event.target;
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
   };
 
-  // Clear the form fields and errors
+  useEffect(() => {
+    const fetchPatientData = async () => {
+      if (!formData.patient_Id_intern) return; 
+  
+      try {
+        const response = await axios.get("http://localhost:8000/table/data?table_name=patient");
+  
+        if (response.data) {
+          // Suchen nach der Patienten-ID in den erhaltenen Daten
+          const foundItem = response.data.find(item => item.patient_Id_intern === formData.patient_Id_intern);
+  
+          if (foundItem) {
+            setFormData((prevData) => ({
+              ...prevData,
+              ...foundItem,
+              patient_Id_intern: prevData.patient_Id_intern, 
+            }));
+          } else {
+            setFormData({
+              patient_Id_intern: prevData.patient_Id_intern,
+              geschlecht: '',
+              alter: '',
+              sap_id: '',
+              op_diagnose: '',
+              bemerkung: '',
+              op_geplant: '',
+              created_at: '',
+            });
+          }
+        }
+      } catch (error) {
+        console.error("Error fetching patient data:", error);
+      }
+    };
+  
+    fetchPatientData();
+  }, [formData.patient_Id_intern]);
+
+  useEffect(() => {
+    if (!formData.created_at) {  
+        const currentDate = dayjs().format('YYYY-MM-DD');
+        setFormData((prevData) => ({
+            ...prevData,
+            created_at: currentDate,  
+        }));
+    }
+}, [formData.created_at]);
+
   const handleClear = () => {
     setFormData({
-      patient_Id_intern: '',
       geschlecht: '',
       alter: '',
       sap_id: '',
       op_diagnose: '',
-      plannedSurgery: '',
       bemerkung: '',
-      created_at: '',
       op_geplant: '',
     });
     setErrors({});
   };
 
-  // Close the notification Snackbar
   const handleNotificationClose = (event, reason) => {
     if (reason === 'clickaway') return;
-    setNotification({ ...notification, open: false });
+    setSnackbarOpen(false);
   };
 
-  // Validate the form data
   const validateForm = () => {
     const newErrors = {};
     const { patient_Id_intern, geschlecht, alter, op_diagnose, op_geplant, created_at, sap_id } = formData;
-
-    // Required fields except 'bemerkung'
-    if (!patient_Id_intern.trim()) {
+  
+    if (!patient_Id_intern || !patient_Id_intern.trim()) {
       newErrors.patient_Id_intern = 'Patienten ID ist erforderlich.';
     }
-
-    if (!geschlecht.trim()) {
+  
+    if (!geschlecht || !geschlecht.trim()) {
       newErrors.geschlecht = 'Geschlecht ist erforderlich.';
     }
-
+  
     if (!alter.toString().trim()) {
       newErrors.alter = 'Alter ist erforderlich.';
     } else {
@@ -106,96 +136,74 @@ export default function PatientForm() {
         newErrors.alter = 'Bitte geben Sie ein gültiges Alter ein.';
       }
     }
-
-    if (!op_diagnose.trim()) {
+  
+    if (!op_diagnose || !op_diagnose.trim()) {
       newErrors.op_diagnose = 'Diagnose ist erforderlich.';
     }
-
-    if (!op_geplant.trim()) {
+  
+    if (!op_geplant || !op_geplant.trim()) {
       newErrors.op_geplant = 'Art der OP ist erforderlich.';
     }
-
-    if (!sap_id.trim()) {
+  
+    if (!String(sap_id).trim()) {
       newErrors.sap_id = 'SAP ID ist erforderlich.';
     }
-
-    if (!created_at.trim()) {
-      newErrors.created_at = 'Datum ist erforderlich.';
-    } else {
-      // Optional: Validate date format (YYYY-MM-DD)
-      const isValidDate = /^\d{4}-\d{2}-\d{2}$/.test(created_at);
-      if (!isValidDate) {
-        newErrors.created_at = 'Datum muss im Format JJJJ-MM-TT sein.';
-      }
-    }
-
-    // Add more validations if necessary for other fields
-
+  
+  
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
       return false;
     }
     return true;
-  };
+  };  
 
-  // Handle form submission
   const handleSubmit = async () => {
-    console.log('Button clicked');
-
-    // Perform validation
+    console.log(formData)
     if (!validateForm()) {
-      // Show error notification
-      setNotification({
-        open: true,
-        message: 'Bitte beheben Sie die Fehler im Formular.',
-        severity: 'error',
-      });
+      setSnackbarMessage('Bitte beheben Sie die Fehler im Formular.');
+      setSnackbarSeverity('error');
+      setSnackbarOpen(true);
       return;
     }
-
-    // Prepare data to send (convert 'alter' to integer)
+  
     const dataToSend = {
       ...formData,
       alter: Number(formData.alter),
     };
-
+  
     try {
-      console.log('formData before sending:', dataToSend);
-      const response = await axios.post(
-        `http://localhost:8000/new_data/patient`,
-        dataToSend,
-        {
-          headers: { 'Content-Type': 'application/json' },
-        }
-      );
-      console.log('Data submitted successfully:', response.data);
-
-      // Show success notification
-      setNotification({
-        open: true,
-        message: 'Patientendaten erfolgreich gesendet!',
-        severity: 'success',
-      });
-
-      // Optionally, clear the form after successful submission
-      handleClear();
+      // First, check if the patient exists
+      const checkResponse = await axios.get(`http://localhost:8000/table/data?table_name=patient`);
+      const existingPatient = checkResponse.data.find(patient => patient.patient_Id_intern === formData.patient_Id_intern);
+  
+      let response;
+  
+      if (existingPatient) {
+        // If the patient exists, update using PUT
+        response = await axios.put(
+          `http://localhost:8000/update/patient`,
+          dataToSend,
+          { headers: { 'Content-Type': 'application/json' } }
+        );
+        setSnackbarMessage('Patientendaten erfolgreich aktualisiert!');
+        setSnackbarSeverity('success');
+      } else {
+        response = await axios.post(
+          `http://localhost:8000/new_data/patient`,
+          dataToSend,
+          { headers: { 'Content-Type': 'application/json' } }
+        );
+        setSnackbarMessage('Patientendaten erfolgreich gesendet!');
+        setSnackbarSeverity('success');
+      }
+  
+      setSnackbarOpen(true);
+      handleClear(); 
     } catch (error) {
-      console.error('Error submitting data:', error);
-      console.log(error.response.data);
-
-      // Extract error message from response if available
-      const errorMessage =
-        `${error.response?.data?.detail || 'Fehler beim Senden der Daten.'} ${error.response?.data?.detail && error.response.data.detail.length > 0
-          ? `: ${error.response.data.detail[0].msg}, ${error.response.data.detail[0].loc?.[1] || ''}`
-          : ''
-        }`;
-
-      // Show error notification
-      setNotification({
-        open: true,
-        message: errorMessage,
-        severity: 'error',
-      });
+      const errorMessage = `${error.response?.data?.detail || 'Fehler beim Senden der Daten.'}`;
+      setSnackbarMessage(errorMessage);
+      setSnackbarSeverity('error');
+      setSnackbarOpen(true);
     }
   };
 
@@ -206,23 +214,16 @@ export default function PatientForm() {
           <IoMdArrowRoundBack className='text-2xl' />
         </Button>
       </Box>
-      <Box
-        sx={{
-          textAlign: 'center',
-          mt: 4,
-          mb: 2,
-        }}
-      >
+      <Box sx={{ textAlign: 'center', mt: 4, mb: 2 }}>
         <Typography variant="h5" sx={{ fontWeight: 'bold', color: 'text.primary' }}>
           Patienten Anlegen
         </Typography>
       </Box>
 
-      {/* Patienten ID TextField */}
       <TextField
         label="Patienten ID (intern)"
         name="patient_Id_intern"
-        value={formData.patient_Id_intern}
+        value={formData.patient_Id_intern || ''}
         onChange={handleChange}
         fullWidth
         margin="normal"
@@ -231,7 +232,6 @@ export default function PatientForm() {
         helperText={errors.patient_Id_intern}
       />
 
-      {/* Datum TextField */}
       <TextField
         label="Datum"
         name="created_at"
@@ -246,7 +246,6 @@ export default function PatientForm() {
         helperText={errors.created_at}
       />
 
-      {/* Geschlecht RadioGroup */}
       <FormControl component="fieldset" margin="normal" required error={Boolean(errors.geschlecht)}>
         <FormLabel id="geschlecht-label">Geschlecht</FormLabel>
         <RadioGroup
@@ -260,11 +259,6 @@ export default function PatientForm() {
           <FormControlLabel value="Männlich" control={<Radio />} label="Männlich" />
           <FormControlLabel value="Divers" control={<Radio />} label="Divers" />
         </RadioGroup>
-        {errors.geschlecht && (
-          <Typography variant="caption" color="error">
-            {errors.geschlecht}
-          </Typography>
-        )}
       </FormControl>
 
       {/* Alter TextField */}
@@ -272,7 +266,7 @@ export default function PatientForm() {
         label="Alter"
         name="alter"
         type="number"
-        value={formData.alter}
+        value={formData.alter || ''}
         onChange={handleChange}
         fullWidth
         margin="normal"
@@ -287,7 +281,7 @@ export default function PatientForm() {
         label="Pat. ID im SAP"
         name="sap_id"
         type="number"
-        value={formData.sap_id}
+        value={formData.sap_id || ''}
         onChange={handleChange}
         fullWidth
         margin="normal"
@@ -300,7 +294,7 @@ export default function PatientForm() {
       <TextField
         label="OP Diagnose"
         name="op_diagnose"
-        value={formData.op_diagnose}
+        value={formData.op_diagnose || ''}
         onChange={handleChange}
         fullWidth
         margin="normal"
@@ -309,10 +303,10 @@ export default function PatientForm() {
         helperText={errors.op_diagnose}
       />
 
-        <TextField
+      <TextField
         label="Geplante OP"
         name="op_geplant"
-        value={formData.op_geplant}
+        value={formData.op_geplant || ''}
         onChange={handleChange}
         fullWidth
         margin="normal"
@@ -325,7 +319,7 @@ export default function PatientForm() {
       <TextField
         label="Bemerkungen"
         name="bemerkung"
-        value={formData.bemerkung}
+        value={formData.bemerkung || ''}
         onChange={handleChange}
         fullWidth
         margin="normal"
@@ -336,28 +330,28 @@ export default function PatientForm() {
       {/* Action Buttons */}
       <Box sx={{ mt: 3, display: 'flex', justifyContent: 'space-between' }}>
         <Button variant="outlined" color="secondary" onClick={handleClear}>
-          Clear All
+          Zurücksetzen
         </Button>
-        <Button variant="contained" color="primary" onClick={handleSubmit}>
-          Senden
+        <Button variant="contained" color="success" onClick={handleSubmit}>
+          Speichern
         </Button>
       </Box>
 
       {/* Notification Snackbar */}
       <Snackbar
-        open={notification.open}
+        open={snackbarOpen}
         autoHideDuration={6000}
         onClose={handleNotificationClose}
         anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
       >
         <Alert
           onClose={handleNotificationClose}
-          severity={notification.severity}
+          severity={snackbarSeverity}
           sx={{ width: '100%' }}
           elevation={6}
           variant="filled"
         >
-          {notification.message}
+          {snackbarMessage}
         </Alert>
       </Snackbar>
     </Box>
