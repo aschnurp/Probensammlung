@@ -305,12 +305,15 @@ export default function Uebersicht() {
     try {
       // Prepare the payload to send, including the required fields
       if (selectedTable === "paraffinproben") {
+        // Include all required fields: 'id', 'patient_Id_intern', and 'probenart'
         payload = {
           id: row.id,
+          patient_Id_intern: row.patient_Id_intern,  // Add patient_Id_intern
+          probenart: row.probenart,  // Add probenart
         };
       } else if (selectedTable === "vorlaeufigeproben") {
         payload = {
-          barcode_id: row.barcode_id
+          barcode_id: row.barcode_id,
         };
       } else {
         payload = {
@@ -319,35 +322,29 @@ export default function Uebersicht() {
           barcode_id: row.barcode_id,
         };
       }
-
-      // Make the DELETE request
+  
+      // Make the DELETE request with the payload
       const response = await axios.delete(
         `http://localhost:8000/delete/${selectedTable}`,
-        { data: payload }
+        { data: payload }  // Sending the payload in the 'data' field
       );
-
-
+  
+      // Handle successful deletion
       if (selectedTable === "paraffinproben") {
-        setData((prevData) =>
-          prevData.filter((r) => r.id !== row.id)
-        );
-        setFilteredData((prevFiltered) =>
-          prevFiltered.filter((r) => r.id !== row.id)
-        );
+        setData((prevData) => prevData.filter((r) => r.id !== row.id));
+        setFilteredData((prevFiltered) => prevFiltered.filter((r) => r.id !== row.id));
       } else {
-        setData((prevData) =>
-          prevData.filter((r) => r.barcode_id !== row.barcode_id)
-        );
-        setFilteredData((prevFiltered) =>
-          prevFiltered.filter((r) => r.barcode_id !== row.barcode_id)
-        );
+        setData((prevData) => prevData.filter((r) => r.barcode_id !== row.barcode_id));
+        setFilteredData((prevFiltered) => prevFiltered.filter((r) => r.barcode_id !== row.barcode_id));
       }
-
+  
+      // Fetch the updated data for the selected table
       const response_update = await axios.get(
         `http://localhost:8000/table/data?table_name=${selectedTable}`
       );
       setData(response_update.data);
       setFilteredData(response_update.data);
+  
     } catch (error) {
       console.error('Error deleting data:', error);
     }

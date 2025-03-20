@@ -66,24 +66,23 @@ export default function ProbeAusschleusen() {
     }
   };
 
-  // Effect hook to handle timeout for auto-submit after 2 seconds
   useEffect(() => {
     if (typingTimeout) {
-      clearTimeout(typingTimeout); // Clear the previous timeout when barcodeId changes
+      clearTimeout(typingTimeout);
     }
 
     if (barcodeId.trim()) {
       const timeout = setTimeout(() => {
         handleSubmit();
-      }, 2000); // 2 seconds delay after the last input
+      }, 2000); 
 
-      setTypingTimeout(timeout); // Store the timeout ID for clearing it later
+      setTypingTimeout(timeout);
     }
 
     return () => {
-      clearTimeout(typingTimeout); // Clean up timeout on component unmount
+      clearTimeout(typingTimeout);
     };
-  }, [barcodeId]); // This will run every time barcodeId changes
+  }, [barcodeId]); 
 
   return (
     <Box sx={{ p: 3, maxWidth: 600, mx: 'auto' }}>
@@ -101,7 +100,7 @@ export default function ProbeAusschleusen() {
           Proben Entfernen
         </Typography>
         <Typography variant="body1" sx={{ color: 'text.primary' }}>
-          Nicht verwendete Probengefäße (Probenröhrchen) können hier gelöscht werden. Die Löschung erfolgt 2 sekunden nach dem Scan.
+          Nicht verwendete Probengefäße (Probenröhrchen) können hier gelöscht werden. Die Löschung erfolgt 2 Sekunden nach dem Scan.
         </Typography>
       </Box>
 
