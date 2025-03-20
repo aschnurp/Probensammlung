@@ -15,6 +15,8 @@ import {
 } from '@mui/material';
 import { IoMdArrowRoundBack } from "react-icons/io";
 import DateObject from "react-date-object";
+import dayjs from 'dayjs';
+
 
 var date = new DateObject();
 var nowtime = new DateObject();
@@ -31,7 +33,7 @@ export default function PatientForm() {
     op_diagnose: '',
     plannedSurgery: '',
     bemerkung: '',
-    created_at: date.format(),
+    created_at: '',
     op_geplant: '',
   });
 
@@ -87,6 +89,17 @@ export default function PatientForm() {
     fetchPatientData();
   }, [formData.patient_Id_intern]);
 
+  useEffect(() => {
+    const currentDate = dayjs().format('YYYY-MM-DD');
+    const currentTime = dayjs().format('HH:mm');
+
+    setFormData((prevData) => ({
+      ...prevData,
+      created_at: currentDate,
+      uhrzeit: currentTime,
+    }));
+  }, []);
+
   const handleClear = () => {
     setFormData({
       geschlecht: '',
@@ -138,14 +151,6 @@ export default function PatientForm() {
       newErrors.sap_id = 'SAP ID ist erforderlich.';
     }
   
-    if (!created_at || !created_at.trim()) {
-      newErrors.created_at = 'Datum ist erforderlich.';
-    } else {
-      const isValidDate = /^\d{4}-\d{2}-\d{2}$/.test(created_at);
-      if (!isValidDate) {
-        newErrors.created_at = 'Datum muss im Format JJJJ-MM-TT sein.';
-      }
-    }
   
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
@@ -184,7 +189,6 @@ export default function PatientForm() {
         setSnackbarMessage('Patientendaten erfolgreich aktualisiert!');
         setSnackbarSeverity('success');
       } else {
-        // If the patient does not exist, create a new one using POST
         response = await axios.post(
           `http://localhost:8000/new_data/patient`,
           dataToSend,
@@ -195,7 +199,7 @@ export default function PatientForm() {
       }
   
       setSnackbarOpen(true);
-      handleClear(); // Reset the form after successful submission
+      handleClear(); 
     } catch (error) {
       const errorMessage = `${error.response?.data?.detail || 'Fehler beim Senden der Daten.'}`;
       setSnackbarMessage(errorMessage);
