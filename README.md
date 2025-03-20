@@ -52,9 +52,7 @@ PARTICULAR PURPOSE. See the GNU General Public License for more details.
 ## Funding
 
 This project is supported by the Federal Ministry of Education and Research (BMBF, Germany)
-within the research network Systems Medicine of the Liver (**LiSyM**, grant number 031L0054) 
-and by the German Research Foundation (DFG) within the Research Unit Programme FOR 5151 
-"`QuaLiPerF <https://qualiperf.de>`__ (Quantifying Liver Perfusion-Function Relationship in Complex Resection - A Systems Medicine Approach)" by grant number 436883643 by grant number 
+within the research network Systems Medicine of the Liver (Quantifying Liver Perfusion-Function Relationship in Complex Resection - A Systems Medicine Approach)" by grant number 436883643 and by grant number 
 465194077 (Priority Programme SPP 2311, Subproject SimLivA).
 
-© 2024 Anton Schnurpel
+© 2025 Anton Schnurpel
