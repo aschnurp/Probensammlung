@@ -75,9 +75,9 @@ export default function PatientForm() {
               alter: '',
               sap_id: '',
               op_diagnose: '',
-              plannedSurgery: '',
               bemerkung: '',
               op_geplant: '',
+              created_at: '',
             });
           }
         }
@@ -90,15 +90,14 @@ export default function PatientForm() {
   }, [formData.patient_Id_intern]);
 
   useEffect(() => {
-    const currentDate = dayjs().format('YYYY-MM-DD');
-    const currentTime = dayjs().format('HH:mm');
-
-    setFormData((prevData) => ({
-      ...prevData,
-      created_at: currentDate,
-      uhrzeit: currentTime,
-    }));
-  }, []);
+    if (!formData.created_at) {  
+        const currentDate = dayjs().format('YYYY-MM-DD');
+        setFormData((prevData) => ({
+            ...prevData,
+            created_at: currentDate,  
+        }));
+    }
+}, [formData.created_at]);
 
   const handleClear = () => {
     setFormData({
@@ -106,7 +105,6 @@ export default function PatientForm() {
       alter: '',
       sap_id: '',
       op_diagnose: '',
-      plannedSurgery: '',
       bemerkung: '',
       op_geplant: '',
     });
@@ -160,6 +158,7 @@ export default function PatientForm() {
   };  
 
   const handleSubmit = async () => {
+    console.log(formData)
     if (!validateForm()) {
       setSnackbarMessage('Bitte beheben Sie die Fehler im Formular.');
       setSnackbarSeverity('error');
@@ -233,7 +232,6 @@ export default function PatientForm() {
         helperText={errors.patient_Id_intern}
       />
 
-      {/* Weitere Felder */}
       <TextField
         label="Datum"
         name="created_at"
