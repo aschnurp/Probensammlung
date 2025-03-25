@@ -317,7 +317,7 @@ export default function PatientForm() {
 
       {/* Bemerkungen TextField (Optional) */}
       <TextField
-        label="Bemerkungen"
+        label="SAP Fallnummer / Bemerkungen"
         name="bemerkung"
         value={formData.bemerkung || ''}
         onChange={handleChange}

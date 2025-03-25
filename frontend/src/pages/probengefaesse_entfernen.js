@@ -42,6 +42,7 @@ export default function ProbeAusschleusen() {
     const payload = { barcode_id: barcodeId };
 
     try {
+      await new Promise(resolve => setTimeout(resolve, 500));
       const response = await axios.delete(
         `http://localhost:8000/delete/vorlaeufigeproben`,
         {
@@ -67,22 +68,30 @@ export default function ProbeAusschleusen() {
   };
 
   useEffect(() => {
+    // Wenn bereits ein Timeout gesetzt wurde, wird es gelöscht
     if (typingTimeout) {
       clearTimeout(typingTimeout);
     }
-
+  
     if (barcodeId.trim()) {
-      const timeout = setTimeout(() => {
-        handleSubmit();
-      }, 2000); 
-
-      setTypingTimeout(timeout);
+      // Timeout setzen, der nach 2 Sekunden die Funktion ausführt
+      const newTimeout = setTimeout(() => {
+        if (validateForm()) {
+          handleSubmit();
+        }
+      }, 2000);
+  
+      setTypingTimeout(newTimeout);
     }
-
+  
+    // Cleanup-Funktion: Timeout löschen, wenn der Effekt neu ausgeführt wird
     return () => {
-      clearTimeout(typingTimeout);
+      if (typingTimeout) {
+        clearTimeout(typingTimeout);
+      }
     };
-  }, [barcodeId]); 
+  }, [barcodeId]);
+  
 
   return (
     <Box sx={{ p: 3, maxWidth: 600, mx: 'auto' }}>

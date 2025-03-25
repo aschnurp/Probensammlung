@@ -438,7 +438,7 @@ export default function Uebersicht() {
                             const differenzierungsmerkmalMapping = {
                               1: "Regeneriert",
                               2: "Embolisiert",
-                              3: "Normal Empfänger",
+                              3: "Empfänger",
                               4: "Spender",
                               5: "Spender nach Perfusion",
                             };

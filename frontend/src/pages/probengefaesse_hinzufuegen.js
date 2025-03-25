@@ -71,6 +71,8 @@ export default function SampleForm() {
     setErrors({ ...errors, [name]: "" });
   };
 
+
+
   const validateForm = () => {
     let newErrors = {};
     if (!formData.patient_Id_intern) newErrors.patient_Id_intern = "Patienten ID ist erforderlich.";
@@ -111,6 +113,13 @@ export default function SampleForm() {
         probeninformation: nextProbe, // Nächste Probeninformation
       });
 
+      const handleKeyPress = (event) => {
+        if (event.key === "Enter") {
+          event.preventDefault();
+          handleSubmit();
+        }
+      }
+
       // Refresh table after submission
       const updatedTableData = await axios.get(
         `http://localhost:8000/table/data?table_name=vorlaeufigeproben`
@@ -123,6 +132,8 @@ export default function SampleForm() {
       setSnackbarOpen(true);
     }
   };
+
+
 
   return (
     <Box sx={{ p: 3, maxWidth: 600, mx: "auto" }}>
@@ -141,52 +152,66 @@ export default function SampleForm() {
         </Typography>
       </Box>
 
-      <TextField
-        label="Patienten ID (Intern)"
-        name="patient_Id_intern"
-        value={formData.patient_Id_intern}
-        onChange={handleChange}
-        fullWidth
-        margin="normal"
-        error={Boolean(errors.patient_Id_intern)}
-        helperText={errors.patient_Id_intern}
-      />
-
-      <TextField
-        label="Scannerfeld für Barcode ID"
-        name="barcode_id"
-        value={formData.barcode_id}
-        onChange={handleChange}
-        fullWidth
-        margin="normal"
-        error={Boolean(errors.barcode_id)}
-        helperText={errors.barcode_id}
-      />
-
-      <FormControl variant="outlined" fullWidth margin="normal" error={Boolean(errors.probeninformation)}>
-        <InputLabel id="label-select-label">Probeninformation</InputLabel>
-        <Select
-          label="probeninformation"
-          name="probeninformation"
-          labelId="label-select-label"
-          value={formData.probeninformation}
+      <Box
+        component="form"
+        onSubmit={(event) => {
+          event.preventDefault(); // Verhindert das Standardverhalten (z. B. Seiten-Reload)
+          handleSubmit(); // Ruft die gewünschte Funktion auf
+        }}
+        sx={{ mt: 3 }}
+      >
+        <TextField
+          label="Patienten ID (Intern)"
+          name="patient_Id_intern"
+          value={formData.patient_Id_intern}
           onChange={handleChange}
-        >
-          <MenuItem value=""><em>None</em></MenuItem>
-          {probeninformation.map((probe) => (
-            <MenuItem key={probe.id} value={probe.id}>
-              {probe.probeninformation_text}
-            </MenuItem>
-          ))}
-        </Select>
-        {errors.probeninformation && <Typography color="error" variant="caption">{errors.probeninformation}</Typography>}
-      </FormControl>
+          fullWidth
+          margin="normal"
+          error={Boolean(errors.patient_Id_intern)}
+          helperText={errors.patient_Id_intern}
+        />
 
-      <Box sx={{ mt: 3, display: "flex", justifyContent: "space-between" }}>
-        <Button variant="contained" color="primary" onClick={handleSubmit}>
+        <TextField
+          label="Scannerfeld für Barcode ID"
+          name="barcode_id"
+          value={formData.barcode_id}
+          onChange={handleChange}
+          fullWidth
+          margin="normal"
+          error={Boolean(errors.barcode_id)}
+          helperText={errors.barcode_id}
+        />
+
+        <FormControl variant="outlined" fullWidth margin="normal" error={Boolean(errors.probeninformation)}>
+          <InputLabel id="label-select-label">Probeninformation</InputLabel>
+          <Select
+            label="probeninformation"
+            name="probeninformation"
+            labelId="label-select-label"
+            value={formData.probeninformation}
+            onChange={handleChange}
+          >
+            <MenuItem value=""><em>None</em></MenuItem>
+            {probeninformation.map((probe) => (
+              <MenuItem key={probe.id} value={probe.id}>
+                {probe.probeninformation_text}
+              </MenuItem>
+            ))}
+          </Select>
+          {errors.probeninformation && <Typography color="error" variant="caption">{errors.probeninformation}</Typography>}
+        </FormControl>
+
+        <Button
+          type="submit" // WICHTIG: Dadurch wird Enter unterstützt!
+          variant="contained"
+          color="primary"
+          fullWidth
+          sx={{ mt: 2 }}
+        >
           Senden
         </Button>
       </Box>
+
 
       <Box sx={{ textAlign: "center", mt: 10 }}>
         <Typography variant="h6" sx={{ fontWeight: "bold", color: "text.primary" }}>
@@ -213,8 +238,8 @@ export default function SampleForm() {
                   <TableCell align="left" style={{ width: 100 }}>{row.barcode_id}</TableCell>
                   <TableCell align="left" style={{ width: 100 }}>{row.patient_Id_intern}</TableCell>
                   <TableCell align="left" style={{ width: 100 }}>
-                    {probeninformation.find((probe) => probe.id === row.probeninformation)?.probeninformation_text || "Keine Info"} 
-                  </TableCell> 
+                    {probeninformation.find((probe) => probe.id === row.probeninformation)?.probeninformation_text || "Keine Info"}
+                  </TableCell>
                 </TableRow>
               ))}
           </TableBody>
@@ -228,4 +253,5 @@ export default function SampleForm() {
       </Snackbar>
     </Box>
   );
+
 }

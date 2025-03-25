@@ -38,7 +38,7 @@ export const getProbeOptions = (probenart) => {
     differenzierungsmerkmalOptions = [
       { id: 1, text: "Regeneriert" },
       { id: 2, text: "Embolisiert" },
-      { id: 3, text: "Normal Empfänger" },
+      { id: 3, text: "Empfänger" },
       { id: 4, text: "Spender" },
       { id: 5, text: "Spender nach Perfusion" },
     ];
