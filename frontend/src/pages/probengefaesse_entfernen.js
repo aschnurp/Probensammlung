@@ -57,7 +57,7 @@ export default function ProbeAusschleusen() {
       setSnackbarSeverity("success");
       setSnackbarOpen(true);
 
-      setBarcodeId(""); // Clear the input field after success
+      setBarcodeId(""); 
 
     } catch (error) {
       console.error("Fehler beim Entfernen:", error);
@@ -68,29 +68,19 @@ export default function ProbeAusschleusen() {
   };
 
   useEffect(() => {
-    // Wenn bereits ein Timeout gesetzt wurde, wird es gelöscht
-    if (typingTimeout) {
-      clearTimeout(typingTimeout);
-    }
+    if (!barcodeId.trim()) return; // Falls barcodeId leer ist, nicht ausführen.
   
-    if (barcodeId.trim()) {
-      // Timeout setzen, der nach 2 Sekunden die Funktion ausführt
-      const newTimeout = setTimeout(() => {
-        if (validateForm()) {
-          handleSubmit();
-        }
-      }, 2000);
-  
-      setTypingTimeout(newTimeout);
-    }
-  
-    // Cleanup-Funktion: Timeout löschen, wenn der Effekt neu ausgeführt wird
-    return () => {
-      if (typingTimeout) {
-        clearTimeout(typingTimeout);
+    const newTimeout = setTimeout(() => {
+      if (validateForm()) {
+        handleSubmit();
       }
-    };
-  }, [barcodeId]);
+    }, 2000);
+  
+    setTypingTimeout(newTimeout);
+  
+    return () => clearTimeout(newTimeout); // Bereinigung des alten Timeouts
+  
+  }, [barcodeId]); // Wird nur ausgeführt, wenn barcodeId sich ändert.
   
 
   return (
