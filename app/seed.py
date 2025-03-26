@@ -103,7 +103,7 @@ def seed_status_data(db: Session):
         seed_data = [
             Differenzierungsmerkmal_gewebe(differenzierungsmerkmal_text="Regeneriert"),            
             Differenzierungsmerkmal_gewebe(differenzierungsmerkmal_text="Embolisiert"),
-            Differenzierungsmerkmal_gewebe(differenzierungsmerkmal_text="Normal Empfänger"),
+            Differenzierungsmerkmal_gewebe(differenzierungsmerkmal_text="Empfänger"),
             Differenzierungsmerkmal_gewebe(differenzierungsmerkmal_text="Spender"),
             Differenzierungsmerkmal_gewebe(differenzierungsmerkmal_text="Spender nach Perfusion"),
         ]

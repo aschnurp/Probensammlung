@@ -6,5 +6,5 @@ export const patientDataColumns = [
     { key: "alter", label: "Alter" },
     { key: "op_diagnose", label: "OP Diagnose" },
     { key: "op_geplant", label: "Geplante OP"},
-    { key: "bemerkung", label: "Bemerkung" }
+    { key: "bemerkung", label: "SAP Fallnummer / Bemerkungen" }
 ];

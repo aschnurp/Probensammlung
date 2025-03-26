@@ -42,6 +42,7 @@ export default function ProbeAusschleusen() {
     const payload = { barcode_id: barcodeId };
 
     try {
+      await new Promise(resolve => setTimeout(resolve, 500));
       const response = await axios.delete(
         `http://localhost:8000/delete/vorlaeufigeproben`,
         {
@@ -56,7 +57,7 @@ export default function ProbeAusschleusen() {
       setSnackbarSeverity("success");
       setSnackbarOpen(true);
 
-      setBarcodeId(""); // Clear the input field after success
+      setBarcodeId(""); 
 
     } catch (error) {
       console.error("Fehler beim Entfernen:", error);
@@ -67,22 +68,20 @@ export default function ProbeAusschleusen() {
   };
 
   useEffect(() => {
-    if (typingTimeout) {
-      clearTimeout(typingTimeout);
-    }
-
-    if (barcodeId.trim()) {
-      const timeout = setTimeout(() => {
+    if (!barcodeId.trim()) return; // Falls barcodeId leer ist, nicht ausführen.
+  
+    const newTimeout = setTimeout(() => {
+      if (validateForm()) {
         handleSubmit();
-      }, 2000); 
-
-      setTypingTimeout(timeout);
-    }
-
-    return () => {
-      clearTimeout(typingTimeout);
-    };
-  }, [barcodeId]); 
+      }
+    }, 2000);
+  
+    setTypingTimeout(newTimeout);
+  
+    return () => clearTimeout(newTimeout); // Bereinigung des alten Timeouts
+  
+  }, [barcodeId]); // Wird nur ausgeführt, wenn barcodeId sich ändert.
+  
 
   return (
     <Box sx={{ p: 3, maxWidth: 600, mx: 'auto' }}>
