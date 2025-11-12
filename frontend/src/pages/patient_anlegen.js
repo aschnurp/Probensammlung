@@ -221,7 +221,7 @@ export default function PatientForm() {
       </Box>
 
       <TextField
-        label="Patienten ID (intern)"
+        label="Patienten ID (intern) z.B. HL1234"
         name="patient_Id_intern"
         value={formData.patient_Id_intern || ''}
         onChange={handleChange}
