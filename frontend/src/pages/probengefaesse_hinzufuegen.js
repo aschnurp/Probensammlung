@@ -155,8 +155,8 @@ export default function SampleForm() {
       <Box
         component="form"
         onSubmit={(event) => {
-          event.preventDefault(); // Verhindert das Standardverhalten (z. B. Seiten-Reload)
-          handleSubmit(); // Ruft die gewünschte Funktion auf
+          event.preventDefault(); // Verhindert (z. B. Seiten-Reload)
+          handleSubmit();
         }}
         sx={{ mt: 3 }}
       >
@@ -166,6 +166,7 @@ export default function SampleForm() {
           value={formData.patient_Id_intern}
           onChange={handleChange}
           fullWidth
+          onFocus={(e) => e.target.setAttribute("autoComplete", "one-time-code")}
           margin="normal"
           error={Boolean(errors.patient_Id_intern)}
           helperText={errors.patient_Id_intern}
@@ -177,6 +178,7 @@ export default function SampleForm() {
           value={formData.barcode_id}
           onChange={handleChange}
           fullWidth
+          onFocus={(e) => e.target.setAttribute("autoComplete", "one-time-code")}
           margin="normal"
           error={Boolean(errors.barcode_id)}
           helperText={errors.barcode_id}
