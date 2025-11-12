@@ -752,7 +752,7 @@ export default function SampleForm() {
 
           {/* Patienten ID TextField */}
           <TextField
-            label="Patienten ID (Intern)"
+            label="Patienten ID (intern) z.B. HL1234"
             name="patient_Id_intern"
             value={formData.patient_Id_intern}
             onChange={handleChange}
@@ -973,7 +973,7 @@ export default function SampleForm() {
 
           {/* Patienten ID TextField */}
           <TextField
-            label="Patienten ID (Intern)"
+            label="Patienten ID (intern) z.B. HL1234"
             name="patient_Id_intern"
             value={formData.patient_Id_intern}
             onChange={handleChange}
@@ -1176,7 +1176,7 @@ export default function SampleForm() {
         <Box sx={{ mt: 2 }}>
           {/* Patienten ID TextField */}
           <TextField
-            label="Patienten ID (Intern)"
+            label="Patienten ID (intern) z.B. HL1234"
             name="patient_Id_intern"
             value={formData.patient_Id_intern}
             onChange={handleChange}
