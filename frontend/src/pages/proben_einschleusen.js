@@ -516,7 +516,7 @@ export default function SampleForm() {
             helperText={errors.barcode_id}
           />
           <TextField
-            label="Patienten ID (Intern)"
+            label="Patienten ID (intern) z.B. HL1234"
             name="patient_Id_intern"
             value={formData.patient_Id_intern}
             onChange={handleChange}
