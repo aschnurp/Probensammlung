@@ -459,8 +459,14 @@ export default function SampleForm() {
   ///////////////////////////////////////////////////////////
 
   return (
-    <Box sx={{ p: 3, maxWidth: 600, mx: 'auto' }}>
-
+    <Box sx={{ p: 3, maxWidth: 600, mx: 'auto' }}
+      onKeyDown={(e) => {
+        if (e.key === 'Enter') {
+          e.preventDefault();
+          handleSubmit();
+        }
+      }}
+    >
       <Box sx={{ position: 'absolute', top: 90, left: 16 }}>
         <Button variant="contained" color="primary" onClick={() => window.location.href = '/overview'}>
           <IoMdArrowRoundBack className='text-2xl' />
@@ -526,6 +532,7 @@ export default function SampleForm() {
             helperText={errors.patient_Id_intern}
           />
 
+          {/* Probeninformation */}
           <FormControl
             variant="outlined"
             fullWidth
@@ -558,8 +565,7 @@ export default function SampleForm() {
             )}
           </FormControl>
 
-
-
+          {/* Differenzierungsmerkmal */}
           <FormControl
             variant="outlined"
             fullWidth
@@ -592,13 +598,12 @@ export default function SampleForm() {
             )}
           </FormControl>
 
-
           {/* Datum */}
           <TextField
             label="Datum"
             name="created_at"
             type="date"
-            value={formData.created_at}  // Hier ist der Wert im ISO-Format
+            value={formData.created_at} 
             onChange={handleChange}
             fullWidth
             margin="normal"
@@ -762,6 +767,7 @@ export default function SampleForm() {
             helperText={errors.patient_Id_intern}
           />
 
+          {/* Probeninformationen */}
           <FormControl
             variant="outlined"
             fullWidth
@@ -794,7 +800,7 @@ export default function SampleForm() {
             )}
           </FormControl>
 
-
+          {/* Differenzierungsmerkmal */}
           <FormControl
             variant="outlined"
             fullWidth
@@ -983,6 +989,7 @@ export default function SampleForm() {
             helperText={errors.patient_Id_intern}
           />
 
+          {/* Probeninformation */}
           <FormControl
             variant="outlined"
             fullWidth
@@ -1011,7 +1018,7 @@ export default function SampleForm() {
             )}
           </FormControl>
 
-
+          {/* Differenzierungsmerkmal */}
           <FormControl
             variant="outlined"
             fullWidth
@@ -1186,15 +1193,13 @@ export default function SampleForm() {
             helperText={errors.patient_Id_intern}
           />
 
-
+          {/* Übergeordnete Probenart */}
           <FormControl
             variant="outlined"
             fullWidth
             margin="normal"
             error={Boolean(errors.uebergeordneteProbe)}
           >
-
-
             <InputLabel>Übergeordnete Probenart</InputLabel>
             <Select
               id="uebergeordnet"
@@ -1221,6 +1226,7 @@ export default function SampleForm() {
             )}
           </FormControl>
 
+          {/* Untergeordnete Probenart */}
           <FormControl
             variant="outlined"
             fullWidth
@@ -1258,14 +1264,13 @@ export default function SampleForm() {
             label="Datum"
             name="created_at"
             type="date"
-            value={formData.created_at}  // Hier ist der Wert im ISO-Format
+            value={formData.created_at}
             onChange={handleChange}
             fullWidth
             margin="normal"
             InputLabelProps={{ shrink: true }}
             error={Boolean(errors.created_at)}
             helperText={errors.created_at}
-
           />
 
           {/* Uhrzeit */}
@@ -1350,7 +1355,7 @@ export default function SampleForm() {
         <Button variant="outlined" color="secondary" onClick={handleClear}>
           Zurücksetzen
         </Button>
-        <Button variant="contained" color="success" onClick={handleSubmit}>
+        <Button type="submit" variant="contained" color="success" onClick={handleSubmit}>
           Speichern
         </Button>
       </Box>

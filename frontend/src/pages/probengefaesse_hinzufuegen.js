@@ -204,7 +204,7 @@ export default function SampleForm() {
         </FormControl>
 
         <Button
-          type="submit" // WICHTIG: Dadurch wird Enter unterstützt!
+          type="submit" // enter activates the function
           variant="contained"
           color="primary"
           fullWidth
