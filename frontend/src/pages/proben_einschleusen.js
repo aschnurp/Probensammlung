@@ -459,13 +459,17 @@ export default function SampleForm() {
   ///////////////////////////////////////////////////////////
 
   return (
-    <Box sx={{ p: 3, maxWidth: 600, mx: 'auto' }}
+    <Box   
+      sx={{ p: 3, maxWidth: 600, mx: "auto" }}
       onKeyDown={(e) => {
-        if (e.key === 'Enter') {
-          e.preventDefault();
-          handleSubmit();
+      if (e.key === "Enter") { //bei press-enter
+        const active = document.activeElement; // Cursor Element
+        if (active.name === "barcode_id") { // Bei Feld barcode_id
+          e.preventDefault(); //aendere default funktion
+          handleSubmit();    //submit
         }
-      }}
+      }
+    }}
     >
       <Box sx={{ position: 'absolute', top: 90, left: 16 }}>
         <Button variant="contained" color="primary" onClick={() => window.location.href = '/overview'}>
