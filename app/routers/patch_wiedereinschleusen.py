@@ -28,6 +28,7 @@ def patch_serumproben(barcode_id: str, db: Session = Depends(get_db)):
     # Aktualisieren des Eintrags mit dem Standardwert 2 für status
     try:
         item_query.update({"status": 3}, synchronize_session=False)
+        item_query.update({Serumproben.anzahl_statuswechsel: Serumproben.anzahl_statuswechsel + 1}, synchronize_session=False)
         db.commit()
     except Exception as e:
         db.rollback()
@@ -54,6 +55,7 @@ def patch_gewebeproben(barcode_id: str, db: Session = Depends(get_db)):
     # Aktualisieren des Eintrags mit dem Standardwert 2 für status
     try:
         item_query.update({"status": 3}, synchronize_session=False)
+        item_query.update({Gewebeproben.anzahl_statuswechsel: Gewebeproben.anzahl_statuswechsel + 1}, synchronize_session=False)
         db.commit()
     except Exception as e:
         db.rollback()
@@ -80,6 +82,7 @@ def patch_urinproben(barcode_id: str, db: Session = Depends(get_db)):
     # Aktualisieren des Eintrags mit dem Standardwert 2 für status
     try:
         item_query.update({"status": 3}, synchronize_session=False)
+        item_query.update({Urinproben.anzahl_statuswechsel: Urinproben.anzahl_statuswechsel + 1}, synchronize_session=False)
         db.commit()
     except Exception as e:
         db.rollback()

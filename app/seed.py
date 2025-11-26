@@ -151,10 +151,6 @@ def seed_status_data(db: Session):
         db.add_all(seed_data)
         db.commit()
         print("Seed-Daten erfolgreich hinzugefügt.")
-    
-    else:
-        print("Tabelle ist bereits gefüllt. Keine Seed-Daten hinzugefügt.")
-
 
     if not db.query(Uebergeordnete_probenart_paraffin).first():
         # Seed-Daten definieren

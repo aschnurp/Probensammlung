@@ -13,5 +13,5 @@ export const urinprobenDataColumns = [
     { key: "lagerraum", label: "Lagerraum" },
     { key: "anmerkungen", label: "Anmerkungen" },
     { key: "status", label: "Probenstatus" },
-
+    { key: "anzahl_statuswechsel", label: "Anzahl Statuswechsel" },
 ];

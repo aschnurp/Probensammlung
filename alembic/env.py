@@ -3,32 +3,30 @@ from logging.config import fileConfig
 from sqlalchemy import engine_from_config
 from sqlalchemy import pool
 from app.config import settings
+from app.models.patient import Patient
+from app.models.serumproben import Serumproben
+from app.models.paraffinproben import Paraffinproben
+from app.models.urinproben import Urinproben
+from app.models.gewebeproben import Gewebeproben
+from app.models.differenzierungsmerkmal_gewebe import Differenzierungsmerkmal_gewebe
+from app.models.differenzierungsmerkmal_serum import Differenzierungsmerkmal_serum
+from app.models.differenzierungsmerkmal_urin import Differenzierungsmerkmal_urin
+from app.models.probenabholer import Probenabholer
+from app.models.probeninformation import Probeninformation
+from app.models.probenquelle_urin import Probenquelle_urin
+from app.models.status import Status
+from app.models.uebergeordnete_probenart_paraffin import Uebergeordnete_probenart_paraffin
+from app.models.untergeordnete_probenart_paraffin import Untergeordnete_probenart_paraffin
+from app.models.vorlaeufige_proben import VorlaeufigeProben
+
 
 from alembic import context
-
-from app.models.child_stadium import Base
-from app.models.clavien_dindo import Base
-from app.models.complication import Base
-from app.models.dekubitus_grade import Base
-from app.models.diabetes_mellitus import Base
-from app.models.histology_general import Base
-from app.models.ICD import Base
-from app.models.labour import Base
-from app.models.medical_history import Base
-from app.models.medical_history import Base
-from app.models.medication import Base
-from app.models.metastases import Base
-from app.models.patient_data import Base
-from app.models.sex import Base
-from app.models.user import Base
-
-
-
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
 config = context.config
 config.set_main_option("sqlalchemy.url", f"mariadb://{settings.database_username}:{settings.database_password}@{settings.database_hostname}:{settings.database_port}/{settings.database_name}")
+
 
 # Interpret the config file for Python logging.
 # This line sets up loggers basically.
@@ -39,6 +37,11 @@ if config.config_file_name is not None:
 # for 'autogenerate' support
 # from myapp import mymodel
 # target_metadata = mymodel.Base.metadata
+from app.database import Base
+import app.models
+
+print("DEBUG TABLES:", list(Base.metadata.tables.keys()))
+
 target_metadata = Base.metadata
 
 # other values from the config, defined by the needs of env.py,

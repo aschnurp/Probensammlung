@@ -31,6 +31,7 @@ class SerumprobenBase(BaseModel):
     uhrzeit: Optional[str] = None
     probeninformation: Optional[int] = None
     differenzierungsmerkmal: Optional[int] = None
+    anzahl_statuswechsel: Optional[int] = 0
 
 class TableDataSerumproben(SerumprobenBase):
     status: Optional[int] = 1
@@ -50,8 +51,7 @@ class GewebeprobenBase(BaseModel):
     created_at: Optional[str] = None
     probeninformation: Optional[int] = None
     differenzierungsmerkmal: Optional[int] = None
-
-      
+    anzahl_statuswechsel: Optional[int] = 0      
 
 class TableDataGewebeproben(GewebeprobenBase):
     status: Optional[int] = 1
@@ -59,7 +59,6 @@ class TableDataGewebeproben(GewebeprobenBase):
 class TableDataProbenabholer(BaseModel):
     id: Optional[int] = None
     name: Optional[str] = None
-
 
 class UrinprobenBase(BaseModel):
     patient_Id_intern: str
@@ -75,6 +74,7 @@ class UrinprobenBase(BaseModel):
     uhrzeit: Optional[str] = None
     probeninformation: Optional[int] = None
     differenzierungsmerkmal: Optional[int] = None
+    anzahl_statuswechsel: Optional[int] = 0
 
 class TableDataUrinproben(UrinprobenBase):
     status: Optional[int] = 1
@@ -89,7 +89,7 @@ class TableDataParaffinproben(BaseModel):
     uebergeordnete_probenart: Optional[int] = None 
     untergeordnete_probenart: Optional[int] = None
     abholer: Optional[str] = None
-    uhrzeit: Optional[str] = None 
+    uhrzeit: Optional[str] = None
 
 class TableDataParaffinproben(TableDataParaffinproben):
     status: Optional[int] = 1
@@ -108,7 +108,6 @@ class TableVorlaeufigeProben(BaseModel):
     barcode_id: str 
     patient_Id_intern: Optional[str] = None 
     probeninformation: Optional[int] = None
-
 
 class LastBoxInfo(BaseModel):
     boxnummer: int

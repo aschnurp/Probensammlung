@@ -6,7 +6,7 @@ export type paraffinprobenData = {
     uebergeordnete_probenart?: string; 	
     lagerraum?: string;	
     anmerkungen?: string;
-    abholer?: string;	
+    abholer?: string; 
 }
 
 

@@ -13,4 +13,5 @@ export const serumprobenDataColumns = [
     { key: "abholer", label: "Abholer:In" },
     { key: "anmerkungen", label: "Anmerkungen"},
     { key: "status", label: "Probenstatus" },
+    { key: "anzahl_statuswechsel", label: "Anzahl Statuswechsel" },
 ];

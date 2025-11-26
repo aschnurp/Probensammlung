@@ -4,7 +4,7 @@ from sqlalchemy.orm import relationship
 from ..database import Base
 from sqlalchemy.sql.sqltypes import TIMESTAMP
 from sqlalchemy.sql.expression import text
-
+import sqlalchemy as sa
 
 class Serumproben(Base):
     __tablename__ = "serumproben"
@@ -22,4 +22,5 @@ class Serumproben(Base):
     boxspalte = Column(Integer) 	
     lagerraum = Column(TEXT)
     anmerkungen = Column(TEXT)
+    anzahl_statuswechsel = Column(Integer, server_default="0")
     status = Column(TINYINT, ForeignKey("status.id"))

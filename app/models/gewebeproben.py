@@ -23,5 +23,6 @@ class Gewebeproben(Base):
     lagerraum = Column(TEXT)
     anmerkungen = Column(TEXT)
     remarks = Column(TEXT)
+    anzahl_statuswechsel = Column(Integer, server_default="0")
     status = Column(TINYINT, ForeignKey("status.id"), nullable=True)
 
