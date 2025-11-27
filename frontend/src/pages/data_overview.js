@@ -8,6 +8,9 @@ import dayjs from 'dayjs';
 import axios from 'axios';
 import React, { useState, useEffect, useRef } from 'react';
 import InfoIcon from '@mui/icons-material/Info';
+import PropTypes from 'prop-types';
+
+
 //import InfoIcon from '@mui/icons-material/Info';
 import {
   Box,
@@ -22,6 +25,9 @@ import {
   DialogActions,
   Dialog,
   Snackbar,
+  AppBar,
+  Tabs,
+  Tab
 } from '@mui/material';
 import { getProbeOptions } from '../components/custom_functions/getProbeOPtions';
 
@@ -45,9 +51,28 @@ const STATUS_MAPPING = {
 
 require('dotenv').config();
 
+function TabPanel({ children, value, index, ...other }) {
+  return (
+    <div
+      role="tabpanel"
+      hidden={value !== index}
+      id={`simple-tabpanel-${index}`}
+      aria-labelledby={`simple-tab-${index}`}
+      {...other}
+    >
+      {value === index && (
+        <Box sx={{ p: 3 }}>
+          {children}
+        </Box>
+      )}
+    </div>
+  );
+}
+
+
 export default function Uebersicht() {
   const [isOpen, setIsOpen] = useState(false);
-  const [selectedTable, setSelectedTable] = useState(null);
+  const [selectedTable, setSelectedTable] = useState("paraffinproben");
   const [data, setData] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
   const [editRowIndex, setEditRowIndex] = useState(null);
@@ -58,17 +83,55 @@ export default function Uebersicht() {
   const [selectedColumn, setSelectedColumn] = useState("");
   const dropdownRef = useRef(null);
   const tableScrollRef = useRef(null);
-  const [Table_header, setTable_header] = useState(""); // Keep React state setter
+  const [Table_header, setTable_header] = useState("");
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [openPsw, setOpen] = useState()
   const [openCheck, setOpenCheck] = useState()
   const [rowToDelete, setRowToDelete] = useState(null);
+  const tableKeys = Object.keys(TABLE_COLUMNS);
+  const [tabIndex, setTabIndex] = useState(0);
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
 
+  //handle tab change
+  const handleTabChange = (event, newValue) => {
+    setTabIndex(newValue);
+    setSelectedTable(tableKeys[newValue]);
+  };
+
   const [probeninformationOptionsToRender, setProbeninformationOptionsToRender] = useState([]);
+
+  useEffect(() => {
+    if (!selectedTable) return;
+
+    const fetchData = async () => {
+      setLoading(true);
+      setError(null);
+
+      try {
+        const response = await axios.get(
+          `http://localhost:8000/table/data?table_name=${selectedTable}`
+        );
+
+        const sorted = response.data.sort(
+          (a, b) => new Date(b.timestamp) - new Date(a.timestamp)
+        );
+
+        setData(sorted);
+        setFilteredData(sorted);
+      } catch (error) {
+        console.error(error);
+        setError("Failed to fetch data");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, [selectedTable]);
+
 
   useEffect(() => {
     console.log('FILTERED DATA:', filteredData);
@@ -107,11 +170,6 @@ export default function Uebersicht() {
   };
 
   // Handle Check change
-  const handleOpenCheck = () => {
-    setOpenCheck(true);
-  };
-
-  // Handle Check change
   const handleCloseCheck = (e) => {
     setOpenCheck(false);
     setError("");
@@ -129,7 +187,7 @@ export default function Uebersicht() {
   const open = Boolean(anchorEl);
   const id = open ? 'simple-popover' : undefined;
   useEffect(() => {
-    console.log("Selected table:", selectedTable); // Ausgabe des ausgewählten Tabellenwerts
+    console.log("Selected table:", selectedTable);
     if (selectedTable === "urinproben") {
       setTable_header("Urinproben");
     } else if (selectedTable === "serumproben") {
@@ -168,42 +226,7 @@ export default function Uebersicht() {
     }
   }, [selectedTable]);
 
-  const toggleDropdown = () => setIsOpen(!isOpen);
 
-  const handleTable = async (e) => {
-    e.preventDefault();
-
-    let tableName = e.currentTarget.textContent?.trim().toLowerCase();
-
-    if (tableName === "patientendaten") {
-      tableName = "patient";
-    } else if (tableName === "vorläufige proben") {
-      tableName = "vorlaeufigeproben";
-    }
-
-    setSelectedTable(tableName);
-
-    if (!TABLE_COLUMNS[tableName]) {
-      setError("Invalid table name");
-      return;
-    }
-
-    setLoading(true);
-    setError(null);
-
-    try {
-      const response = await axios.get(`http://localhost:8000/table/data?table_name=${tableName}`);
-      const sorted = response.data.sort(
-        (a, b) => new Date(b.timestamp) - new Date(a.timestamp)
-      );
-      setData(sorted);
-      setFilteredData(sorted);  // Update der gefilterten Daten
-    } catch (error) {
-      setError('Failed to fetch data');
-    } finally {
-      setLoading(false);
-    }
-  };
   // Handle search for specific column
   const handleSearchChange = (e) => {
     const query = e.target.value;
@@ -322,13 +345,13 @@ export default function Uebersicht() {
           barcode_id: row.barcode_id,
         };
       }
-  
+
       // Make the DELETE request with the payload
       const response = await axios.delete(
         `http://localhost:8000/delete/${selectedTable}`,
         { data: payload }  // Sending the payload in the 'data' field
       );
-  
+
       // Handle successful deletion
       if (selectedTable === "paraffinproben") {
         setData((prevData) => prevData.filter((r) => r.id !== row.id));
@@ -337,19 +360,20 @@ export default function Uebersicht() {
         setData((prevData) => prevData.filter((r) => r.barcode_id !== row.barcode_id));
         setFilteredData((prevFiltered) => prevFiltered.filter((r) => r.barcode_id !== row.barcode_id));
       }
-  
+
       // Fetch the updated data for the selected table
       const response_update = await axios.get(
         `http://localhost:8000/table/data?table_name=${selectedTable}`
       );
       setData(response_update.data);
       setFilteredData(response_update.data);
-  
+
     } catch (error) {
       console.error('Error deleting data:', error);
     }
   };
 
+  // reder table view
   const renderTable = () => {
     const columns = TABLE_COLUMNS[selectedTable];
 
@@ -626,40 +650,64 @@ export default function Uebersicht() {
 
   return (
     <>
-      <div className="flex justify-center items-center mt-12">
-        <div className="relative" ref={dropdownRef}>
-          <button
-            onClick={toggleDropdown}
-            className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center"
-            type="button"
+
+      <Box sx={{ width: "100%", mt: 4 }}>
+        <AppBar
+          position="static"
+          sx={{
+            backgroundColor: "#1976d2",
+            borderRadius: 7,
+            width: "66%",
+            margin: "0 auto",
+            boxShadow: "0 4px 30px rgba(0,0,0,0.1)",
+            padding: "1px",
+          }}
+        >
+          <Tabs
+            value={tabIndex}
+            onChange={handleTabChange}
+            centered
+            TabIndicatorProps={{
+              style: { backgroundColor: "transparent" }
+            }}
           >
-            {DISPLAY_NAMES[selectedTable] || "Tabellenname auswählen"}
-            <svg className="w-2.5 h-2.5 ms-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
-              <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m1 1 4 4 4-4" />
-            </svg>
-          </button>
+            {tableKeys.map((key, index) => (
+              <Tab
+                key={key}
+                label={DISPLAY_NAMES[key] || key}
+                sx={{
+                  fontFamily: "IBM Plex Sans, sans-serif",
+                  fontSize: "0.925rem",
+                  fontWeight: 600,
+                  textTransform: "none",
 
-          {isOpen && (
-            <div className="absolute z-20 mt-2 bg-white divide-y divide-gray-100 rounded-lg shadow w-44">
-              <ul className="py-2 text-sm text-gray-700">
-                {Object.keys(TABLE_COLUMNS).map((tableName) => (
-                  <li key={tableName}>
-                    <a
-                      href="#"
-                      className="block px-4 py-2 hover:bg-gray-100"
-                      onClick={(e) => handleTable(e, tableName)}
-                    >
-                      {DISPLAY_NAMES[tableName] || tableName}
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          )}
-        </div>
-      </div>
+                  color: "#fff",
+                  padding: "10px 22px",
+                  margin: "6px",
+                  border: "none",
+                  borderRadius: 7,
 
-      {/* Filter Input */}
+                  "&:hover": {
+                    backgroundColor: "#173A5E",
+                  },
+
+                  "&.Mui-selected": {
+                    backgroundColor: "#fff",
+                    color: "#173A5E",
+                    fontWeight: "700",
+                  },
+                }}
+              />
+            ))}
+          </Tabs>
+        </AppBar>
+
+        {tableKeys.map((key, index) => (
+          <TabPanel key={key} value={tabIndex} index={index}>
+          </TabPanel>
+        ))}
+      </Box>
+
       {selectedTable && (
         <div className="flex margin-left auto mt-4">
           <div className="mr-4">
@@ -685,9 +733,10 @@ export default function Uebersicht() {
             className="border border-gray-300 px-4 py-2 rounded"
           />
 
-          <IconButton onClick={handleClick}><InfoIcon />
+          <IconButton onClick={handleClick}>
+            <InfoIcon />
+          </IconButton>
 
-          </IconButton >
           <Popover
             id={id}
             open={open}
@@ -702,24 +751,11 @@ export default function Uebersicht() {
               Anmerkungen zum Filter:
             </Typography>
             <Typography variant='caption' sx={{ display: 'block' }}>
-              Probenstatus:   1: eingeschleust   ---
-              2: ausgeschleust  ---
-              3: wiedereingeschleust
+              Siehe Dokumentation der Probensammlung
             </Typography>
           </Popover>
         </div>
       )}
-      <Box
-        sx={{
-          textAlign: 'center',
-          mt: 5,
-          height: 10,
-        }}
-      >
-        <Typography variant="h5" sx={{ fontWeight: 'bold', color: 'text.primary' }}>
-          {Table_header}
-        </Typography>
-      </Box>
       {renderTable()}
     </>
   );
