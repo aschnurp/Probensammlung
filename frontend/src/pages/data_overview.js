@@ -350,19 +350,6 @@ export default function Uebersicht() {
     }
   };
 
-  // Table horizontal Scroll logic
-  const scrollLeft = () => {
-    if (tableScrollRef.current) {
-      tableScrollRef.current.scrollBy({ left: -100, behavior: 'smooth' });
-    }
-  };
-
-  const scrollRight = () => {
-    if (tableScrollRef.current) {
-      tableScrollRef.current.scrollBy({ left: 100, behavior: 'smooth' });
-    }
-  };
-
   const renderTable = () => {
     const columns = TABLE_COLUMNS[selectedTable];
 
@@ -371,13 +358,6 @@ export default function Uebersicht() {
 
     return (
       <div className="flex justify-center items-center mt-12">
-        {/* Left Scroll Button */}
-        <button
-          onClick={scrollLeft}
-          className="absolute left-20 top-1/2 transform -translate-y-1/2 bg-gray-200 p-2 rounded-full shadow-md hover:bg-gray-300"
-        >
-          ←
-        </button>
         <div className="w-full h-[700px] overflow-y-auto" ref={tableScrollRef}>
           <table className="min-w-full divide-y divide-gray-200">
             <thead className="bg-gray-100 sticky top-0 z-10">
@@ -640,13 +620,6 @@ export default function Uebersicht() {
             </tbody>
           </table>
         </div>
-        {/* Right Scroll Button */}
-        <button
-          onClick={scrollRight}
-          className="absolute right-20 top-1/2 transform -translate-y-1/2 bg-gray-200 p-2 rounded-full shadow-md hover:bg-gray-300"
-        >
-          →
-        </button>
       </div>
     );
   };
