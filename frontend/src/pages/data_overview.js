@@ -401,7 +401,7 @@ export default function Uebersicht() {
                   {columns.map((col) => (
                     <td
                       key={col.key}
-                      className="px-6 py-4 whitespace-nowrap text-sm text-gray-500"
+                      className="px-6 py-4 whitespace-normal break-words text-sm text-gray-500 max-w-[250px]"
                     >
                       {editRowIndex === rowIndex ? (
                         <input
