@@ -772,7 +772,7 @@ export default function Uebersicht() {
       )}
       {renderTable()}
       <div>
-        <Box sx={{
+        <Box margin={4} sx={{
           display: 'flex',
           justifyContent: 'center'
         }}>
