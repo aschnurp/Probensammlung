@@ -327,6 +327,7 @@ export default function Uebersicht() {
                           variant="outlined"
                           color="success" // Matches "text-green" style
                           size='small'
+                          sx = {{margin:1}}
                         >
                           Speichern
                         </Button>
@@ -346,6 +347,7 @@ export default function Uebersicht() {
                           variant="outlined"
                           color="primary"
                           size='small'
+                          sx = {{margin:1}}
                         >
                           Bearbeiten
                         </Button>
