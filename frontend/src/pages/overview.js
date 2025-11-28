@@ -17,6 +17,8 @@ import InputRoundedIcon from '@mui/icons-material/InputRounded';
 import OutputRoundedIcon from '@mui/icons-material/OutputRounded';
 import EditRoundedIcon from '@mui/icons-material/EditRounded';
 import RepeatRoundedIcon from '@mui/icons-material/RepeatRounded';
+import SearchIcon from '@mui/icons-material/Search';
+
 
 
 const sections = [
@@ -129,7 +131,7 @@ export default function Overview() {
           sx={{
             display: 'flex',
             justifyContent: 'space-between',
-            alignItems: 'center', // This ensures alignment
+            alignItems: 'center', 
           }}
         >
           <Typography variant="h6" sx={{ fontWeight: 'medium', color: 'text.primary' }}>
@@ -141,11 +143,10 @@ export default function Overview() {
               underline: location === '/data_overview',
             })}
           >
-            <ReusableButton
-              buttonVariant="contained"
-              buttonColor="primary"
-              buttonText="Öffnen"
-            />
+            <Button variant="contained" color='primary' startIcon={<SearchIcon />}>
+              Öffnen
+              </Button>   
+
           </Link>
         </Box>
         <Divider sx={{ my: 2 }} />
@@ -220,7 +221,7 @@ export default function Overview() {
           sx={{
             display: 'flex',
             justifyContent: 'space-between',
-            alignItems: 'center', // Ensures alignment of title and button
+            alignItems: 'center', 
           }}
         >
           <Typography variant="h6" sx={{ fontWeight: 'medium', color: 'text.primary' }}>
@@ -232,17 +233,14 @@ export default function Overview() {
               underline: location === '/probengefaesse_hinzufuegen',
             })}
           >
-
             <Button variant="contained" startIcon={<AddCircleRoundedIcon />}   sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}
 >
               Neu
             </Button>
-
           </Link>
         </Box>
         <Divider sx={{ my: 2 }} />
       </Box>
-
 
       <Box
         sx={{
