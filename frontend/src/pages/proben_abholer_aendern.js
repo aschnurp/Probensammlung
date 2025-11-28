@@ -304,13 +304,13 @@ export default function Uebersicht() {
                         />
                       ) : (
                         col.key === "created_at" ? (
-                          // Formatierung für das Datum, falls "created_at"
+                          // Date Format falls "created_at"
                           dayjs(row[col.key]).format("DD.MM.YYYY")
                         ) : col.key === "status" && row[col.key] in STATUS_MAPPING ? (
-                          // Status anzeigen, falls Status vorhanden
+                          // Map Status
                           STATUS_MAPPING[row[col.key]]
                         ) : col.key === "abholer" && row[col.key] in ABHOLER_MAPPING ? (
-                          // Mapping der Abholer
+                          // Map Abholer
                           ABHOLER_MAPPING[row[col.key]]
                         ) : row[col.key] !== null ? (
                           row[col.key]
@@ -325,7 +325,7 @@ export default function Uebersicht() {
                         <Button
                           onClick={() => handleSave(row.id)}
                           variant="outlined"
-                          color="success" // Matches "text-green" style
+                          color="success" // green
                           size='small'
                           sx = {{margin:1}}
                         >
@@ -334,7 +334,7 @@ export default function Uebersicht() {
                         <Button
                           onClick={handleCancelEdit}
                           variant="outlined"
-                          color="error" // Matches "text-green" style
+                          color="error" // red
                           size='small'
                         >
                           Abbrechen
@@ -366,18 +366,18 @@ export default function Uebersicht() {
                                 const formJson = Object.fromEntries(formData.entries());
                                 const passcode = formJson.passcode;
 
-                                // Überprüfen, ob der Passcode korrekt ist
+                                // Check Passcode
                                 if (passcode === process.env.NEXT_PUBLIC_DELETE_PASSCODE) {
-                                  handleDelete(row); // Eintrag löschen
+                                  handleDelete(row);
                                 } else {
-                                  alert("Incorrect passcode!"); // Fehlermeldung ausgeben
+                                  alert("Incorrect passcode!"); 
                                 }
                                 handleClosePASSW();
                               },
                             }}
                             BackdropProps={{
                               style: {
-                                backgroundColor: "rgba(0, 0, 0, 0.2)", // Weniger dunkles Overlay
+                                backgroundColor: "rgba(0, 0, 0, 0.2)", 
                               },
                             }}
                           >

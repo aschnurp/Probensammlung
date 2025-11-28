@@ -398,7 +398,7 @@ export default function Uebersicht() {
       <div className="flex justify-center items-center mt-4">
         <div className="w-full h-[720px] overflow-y-auto" ref={tableScrollRef}>
           <table className="min-w-full divide-y divide-gray-200">
-            <thead className="bg-gray-100 sticky top-0 z-0">
+            <thead className="bg-gray-100 sticky top-0 z-10">
               <tr>
                 {columns.map((col) => (
                   <th
