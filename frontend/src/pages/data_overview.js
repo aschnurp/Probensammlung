@@ -395,10 +395,10 @@ export default function Uebersicht() {
     if (error) return <p className="text-red-500">{error}</p>;
 
     return (
-      <div className="flex justify-center items-center mt-12">
-        <div className="w-full h-[700px] overflow-y-auto" ref={tableScrollRef}>
+      <div className="flex justify-center items-center mt-4">
+        <div className="w-full h-[720px] overflow-y-auto" ref={tableScrollRef}>
           <table className="min-w-full divide-y divide-gray-200">
-            <thead className="bg-gray-100 sticky top-0 z-10">
+            <thead className="bg-gray-100 sticky top-0 z-0">
               <tr>
                 {columns.map((col) => (
                   <th
@@ -556,6 +556,7 @@ export default function Uebersicht() {
                           variant="outlined"
                           color="success" //green
                           size='small'
+                          sx = {{margin:1}}
                         >
                           Speichern
                         </Button>
@@ -575,6 +576,7 @@ export default function Uebersicht() {
                           variant="outlined"
                           color="primary"
                           size='small'
+                          sx = {{margin:1}}
                         >
                           Bearbeiten
                         </Button>
@@ -664,7 +666,7 @@ export default function Uebersicht() {
 
   return (
     <>
-      <Box sx={{ width: "100%", mt: 4 }}>
+      <Box sx={{ width: "100%", mt: 1 }}>
         <AppBar
           position="static"
           sx={{
@@ -722,7 +724,7 @@ export default function Uebersicht() {
       </Box>
 
       {selectedTable && (
-        <div className="flex margin-left auto mt-4">
+        <div className="flex margin-left auto mt-0">
           <div className="mr-4">
             <select
               value={selectedColumn}
@@ -772,7 +774,7 @@ export default function Uebersicht() {
       )}
       {renderTable()}
       <div>
-        <Box margin={4} sx={{
+        <Box margin={2} sx={{
           display: 'flex',
           justifyContent: 'center'
         }}>
