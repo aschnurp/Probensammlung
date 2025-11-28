@@ -3,7 +3,6 @@
 import React, { useState, useEffect } from 'react';
 import { Box, Typography, Divider, Button } from '@mui/material';
 import Link from 'next/link';
-import ReusableButton from '../components/button';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import clsx from 'clsx';
 import { usePathname } from 'next/navigation';

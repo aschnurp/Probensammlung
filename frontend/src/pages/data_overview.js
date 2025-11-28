@@ -8,7 +8,6 @@ import dayjs from 'dayjs';
 import axios from 'axios';
 import React, { useState, useEffect, useRef } from 'react';
 import InfoIcon from '@mui/icons-material/Info';
-import PropTypes from 'prop-types';
 
 
 //import InfoIcon from '@mui/icons-material/Info';
@@ -27,9 +26,11 @@ import {
   Snackbar,
   AppBar,
   Tabs,
-  Tab
+  Tab,
+  Pagination,
+  PaginationItem,
+  Link
 } from '@mui/material';
-import { getProbeOptions } from '../components/custom_functions/getProbeOPtions';
 
 
 // Mapping der Tabellen-Spalten für dynamisches Rendern
@@ -69,7 +70,6 @@ function TabPanel({ children, value, index, ...other }) {
   );
 }
 
-
 export default function Uebersicht() {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedTable, setSelectedTable] = useState("paraffinproben");
@@ -90,7 +90,24 @@ export default function Uebersicht() {
   const [rowToDelete, setRowToDelete] = useState(null);
   const tableKeys = Object.keys(TABLE_COLUMNS);
   const [tabIndex, setTabIndex] = useState(0);
+  const [currentPage, setCurrentPage] = useState(1);
+  const rowsPerPage = 20;
 
+
+  //handle table pegination
+  const indexOfLastRow = currentPage * rowsPerPage;
+  const indexOfFirstRow = indexOfLastRow - rowsPerPage;
+  const currentRows = filteredData.slice(indexOfFirstRow, indexOfLastRow);
+  const totalPages = Math.ceil(filteredData.length / rowsPerPage);
+
+
+  const handlePaginationChange = (event, value) => {
+    setCurrentPage(value);
+    console.log(`Page changed to ${value}`);
+  };
+
+
+  //handle click
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
@@ -205,8 +222,7 @@ export default function Uebersicht() {
     }
   }, [selectedTable]);
 
-  // import probeOPtions for the selected table
-
+  // import Sample-Options for the selected table
   useEffect(() => {
     if (selectedTable) {
       let selectedTableName;
@@ -225,7 +241,6 @@ export default function Uebersicht() {
       }
     }
   }, [selectedTable]);
-
 
   // Handle search for specific column
   const handleSearchChange = (e) => {
@@ -321,7 +336,6 @@ export default function Uebersicht() {
     }
   };
 
-
   const handleDelete = async (row) => {
     console.log(row);
     let payload;
@@ -400,7 +414,7 @@ export default function Uebersicht() {
               </tr>
             </thead>
             <tbody className="bg-white divide-y divide-gray-200">
-              {filteredData.map((row, rowIndex) => (
+              {currentRows.map((row, rowIndex) => (
                 <tr key={rowIndex}>
                   {columns.map((col) => (
                     <td
@@ -540,7 +554,7 @@ export default function Uebersicht() {
                         <Button
                           onClick={() => handleSave(row.id)}
                           variant="outlined"
-                          color="success" // Matches "text-green" style
+                          color="success" //green
                           size='small'
                         >
                           Speichern
@@ -548,7 +562,7 @@ export default function Uebersicht() {
                         <Button
                           onClick={handleCancelEdit}
                           variant="outlined"
-                          color="error" // Matches "text-green" style
+                          color="error" //red 
                           size='small'
                         >
                           Abbrechen
@@ -615,7 +629,7 @@ export default function Uebersicht() {
                             PaperProps={{
                               component: "form",
                               onSubmit: (event) => {
-                                event.preventDefault(); // Verhindert das Standard-Formularverhalten
+                                event.preventDefault(); // Stoppt Standart Funktion
                                 handleEditClick(rowIndex, row); // Bearbeitungsmodus aktivieren
                               },
                             }}
@@ -650,7 +664,6 @@ export default function Uebersicht() {
 
   return (
     <>
-
       <Box sx={{ width: "100%", mt: 4 }}>
         <AppBar
           position="static"
@@ -755,8 +768,28 @@ export default function Uebersicht() {
             </Typography>
           </Popover>
         </div>
+
       )}
       {renderTable()}
+      <div>
+        <Box sx={{
+          display: 'flex',
+          justifyContent: 'center'
+        }}>
+          <Pagination
+            count={totalPages} siblingCount={0} onChange={handlePaginationChange}
+            renderItem={(item) => (
+              <PaginationItem
+                component={Link}
+                to={`/inbox${item.page === 1 ? '' : `?page=${item.page}`}`}
+                {...item}
+              />
+            )}
+          />
+        </Box>
+      </div>
+
     </>
   );
 }
+
