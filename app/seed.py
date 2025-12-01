@@ -5,6 +5,7 @@ from .models.differenzierungsmerkmal_serum import Differenzierungsmerkmal_serum
 
 from .models.differenzierungsmerkmal_urin import Differenzierungsmerkmal_urin
 from .models.uebergeordnete_probenart_paraffin import Uebergeordnete_probenart_paraffin
+from .models.differenzierungsmerkmal_stuhl import Differenzierungsmerkmal_stuhl
 
 from .models.probeninformation import Probeninformation
 from .models.untergeordnete_probenart_paraffin import Untergeordnete_probenart_paraffin
@@ -162,6 +163,18 @@ def seed_status_data(db: Session):
             Uebergeordnete_probenart_paraffin(uebergeordnete_probenart_text="Normal Spender der Leber"),
             Uebergeordnete_probenart_paraffin(uebergeordnete_probenart_text="Normal Spender nach Perfusion der Leber"),
             Uebergeordnete_probenart_paraffin(uebergeordnete_probenart_text="Tumor"),
+        ]
+        # Einfügen und speichern
+        db.add_all(seed_data)
+        db.commit()
+        print("Seed-Daten erfolgreich hinzugefügt.")
+
+
+    if not db.query(Differenzierungsmerkmal_stuhl).first():
+        # Seed-Daten definieren
+        seed_data = [
+            Differenzierungsmerkmal_stuhl(differenzierungsmerkmal_text="präOP"),            
+            Differenzierungsmerkmal_stuhl(differenzierungsmerkmal_text="1 bis 14 d postOP"),
         ]
         # Einfügen und speichern
         db.add_all(seed_data)
