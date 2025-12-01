@@ -22,6 +22,70 @@ def get_patients(db: Session = Depends(get_db)):
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail= f"no item in this list")
     return item
 
+#number of serum entries per patient
+@router.get("/patient/serumentries", status_code=status.HTTP_200_OK)
+def get_patient_entries_serum(patient_Id_intern: str, db: Session = Depends(get_db)):
+    count_entries = (
+        db.query(Serumproben)
+        .filter(Serumproben.patient_Id_intern == patient_Id_intern)
+        .count()
+    )
+    if count_entries == 0:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"No entries found for patient_Id_intern {patient_Id_intern}"
+        )
+    return {"count": count_entries}
+
+#number of gewebe entries per patient
+@router.get("/patient/gewebeentries", status_code=status.HTTP_200_OK)
+def get_patient_entries_serum(patient_Id_intern: str, db: Session = Depends(get_db)):
+    count_entries = (
+        db.query(Gewebeproben)
+        .filter(Gewebeproben.patient_Id_intern == patient_Id_intern)
+        .count()
+    )
+    if count_entries == 0:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"No entries found for patient_Id_intern {patient_Id_intern}"
+        )
+    return {"count": count_entries}
+
+#number of paraffin entries per patient
+@router.get("/patient/paraffinentries", status_code=status.HTTP_200_OK)
+def get_patient_entries_serum(patient_Id_intern: str, db: Session = Depends(get_db)):
+    count_entries = (
+        db.query(Paraffinproben)
+        .filter(Paraffinproben.patient_Id_intern == patient_Id_intern)
+        .count()
+    )
+    if count_entries == 0:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"No entries found for patient_Id_intern {patient_Id_intern}"
+        )
+    return {"count": count_entries}
+
+#number of urin entries per patient
+@router.get("/patient/urinentries", status_code=status.HTTP_200_OK)
+def get_patient_entries_serum(patient_Id_intern: str, db: Session = Depends(get_db)):
+    count_entries = (
+        db.query(Urinproben)
+        .filter(Urinproben.patient_Id_intern == patient_Id_intern)
+        .count()
+    )
+    if count_entries == 0:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"No entries found for patient_Id_intern {patient_Id_intern}"
+        )
+    return {"count": count_entries}
+
+
+
+
+
 #Get number of all serumproben
 @router.get("/serumproben", status_code=status.HTTP_201_CREATED)
 def get_serumproben(db: Session = Depends(get_db)):

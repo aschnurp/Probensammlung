@@ -67,7 +67,53 @@ export const getParaffinCount = async () => {
     }
 };
 
+// patient specific call of data
+export const getPatientParaffinCount = async (patientID: string) => {
+    try {
+        const response = await axios.get(
+            `${API_BASE_URL}/number/patient/paraffinentries`,
+            { params: { patient_Id_intern: patientID } }
+        );
+        return response.data.count;
+    } catch (error) {
+        console.error('Error fetching paraffin count:', error);
+        throw error;
+    }
+};
 
+export const getPatientSerumCount = async (patientID: string) => {
+    try {
+        const response = await axios.get(`${API_BASE_URL}/number/patient/serumentries`,
+        { params: { patient_Id_intern: patientID } }
+        );
+        return response.data.count;  
+    } catch (error) {
+        console.error('Error fetching - count:', error);
+        throw error; 
+    }
+};
+
+export const getPatientGewebeCount = async (patientID: string) => {
+    try {
+        const response = await axios.get(`${API_BASE_URL}/number/patient/gewebeentries`,
+        { params: { patient_Id_intern: patientID } });
+        return response.data.count;  
+    } catch (error) {
+        console.error('Error fetching - count:', error);
+        throw error; 
+    }
+};
+
+export const getPatientUrinCount = async (patientID: string) => {
+    try {
+        const response = await axios.get(`${API_BASE_URL}/number/patient/urinentries`,
+        { params: { patient_Id_intern: patientID } });
+        return response.data.count;  
+    } catch (error) {
+        console.error('Error fetching - count:', error);
+        throw error; 
+    }
+};
 
 
 

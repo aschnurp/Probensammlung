@@ -71,8 +71,8 @@ export default function Overview() {
   const [urin_count, setUrinCount] = useState(0);
   const [paraffin_count, setParaffinCount] = useState(0);
   const location = usePathname();
-  const [loading, setLoading] = useState(false); // Ladezustand
-  const [error, setError] = useState(null); // Fehlerzustand
+  const [loading, setLoading] = useState(false); 
+  const [error, setError] = useState(null); 
 
 
   useEffect(() => {
@@ -195,9 +195,44 @@ export default function Overview() {
             </Typography>
           </Box>
         </Box>
-      </Box>
-
+      </Box> 
+     
       <Box
+        sx={{
+          bgcolor: 'background.paper',
+          boxShadow: 3,
+          borderRadius: 4,
+          p: 3,
+          m: 10,
+        }}
+      >
+        <Box
+          sx={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center', 
+          }}
+        >
+          <Typography variant="h6" sx={{ fontWeight: 'medium', color: 'text.primary' }}>
+            Patientenübersicht 
+          </Typography>
+          <Link
+            href={'/patientenuebersicht'}
+            className={clsx('text-white font-semibold hover:text-blue-200', {
+              underline: location === '/patientenuebersicht',
+            })}
+          >
+            <Button variant="contained" startIcon={<SearchIcon />}   sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+>
+              Öffnen
+            </Button>
+          </Link>
+        </Box>
+        <Divider sx={{ my: 2 }} />
+      </Box>      
+    
+
+      <Box 
         sx={{
           textAlign: 'center',
           height: 0,
