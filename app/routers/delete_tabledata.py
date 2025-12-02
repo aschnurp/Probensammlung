@@ -11,6 +11,7 @@ from ..models.paraffinproben import Paraffinproben
 from ..models.probenabholer import Probenabholer
 from ..models.vorlaeufige_proben import VorlaeufigeProben
 from ..models.stuhlproben import Stuhlproben
+from ..models.galleproben import Galleproben
 
 router = APIRouter(
     prefix="/delete",
@@ -101,6 +102,17 @@ def delete_stuhl_proben(delete_post: schemas.TableDataStuhlproben, db: Session =
     existing_item = existing_item_query.first()
     if not existing_item:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"Entry with barcode_id: {delete_post.id} not found.")
+    existing_item_query.delete(synchronize_session=False)
+    db.commit()
+    return {"message": "Successfully deleted"} 
+
+#router for deleting galleproben entry
+@router.delete("/galleproben", status_code=status.HTTP_200_OK)  # No content on successful delete
+def delete_galle_proben(delete_post: schemas.TableDataGalleproben, db: Session = Depends(get_db)):
+    existing_item_query = db.query(Galleproben).filter(Galleproben.barcode_id == delete_post.barcode_id)
+    existing_item = existing_item_query.first()
+    if not existing_item:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"Entry with barcode_id: {delete_post.barcode_id} not found.")
     existing_item_query.delete(synchronize_session=False)
     db.commit()
     return {"message": "Successfully deleted"} 

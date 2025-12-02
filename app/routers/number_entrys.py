@@ -9,6 +9,7 @@ from ..models.gewebeproben import Gewebeproben
 from ..models.urinproben import Urinproben
 from ..models.paraffinproben import Paraffinproben
 from ..models.stuhlproben import Stuhlproben
+from ..models.galleproben import Galleproben
 
 router = APIRouter(
     prefix="/number",
@@ -98,6 +99,22 @@ def get_patient_entries_stuhl(patient_Id_intern: str, db: Session = Depends(get_
         )
     return {"count": count_entries}
 
+#number of galleproben entries per patient
+@router.get("/patient/galleentries", status_code=status.HTTP_200_OK)
+def get_patient_entries_galle(patient_Id_intern: str, db: Session = Depends(get_db)):
+    count_entries = (
+        db.query(Galleproben)
+        .filter(Galleproben.patient_Id_intern == patient_Id_intern)
+        .count()
+    )
+    if count_entries == 0:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"No entries found for patient_Id_intern {patient_Id_intern}"
+        )
+    return {"count": count_entries}
+
+
 #Get number of all serumproben
 @router.get("/serumproben", status_code=status.HTTP_201_CREATED)
 def get_serumproben(db: Session = Depends(get_db)):
@@ -134,6 +151,14 @@ def get_paraffinproben(db: Session = Depends(get_db)):
 @router.get("/stuhlproben", status_code=status.HTTP_201_CREATED)
 def get_stuhlproben(db: Session = Depends(get_db)):
     item = db.query(Stuhlproben).count()
+    if item == None:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail= f"no item in this list")
+    return item
+
+#Get number of all galleproben
+@router.get("/galleproben", status_code=status.HTTP_201_CREATED)
+def get_stuhlproben(db: Session = Depends(get_db)):
+    item = db.query(Galleproben).count()
     if item == None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail= f"no item in this list")
     return item

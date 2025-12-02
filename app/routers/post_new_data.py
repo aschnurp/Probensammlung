@@ -12,6 +12,7 @@ from ..models.paraffinproben import Paraffinproben
 from ..models.probenabholer import Probenabholer
 from ..models.vorlaeufige_proben import VorlaeufigeProben
 from ..models.stuhlproben import Stuhlproben
+from ..models.galleproben import Galleproben
 from datetime import datetime
 
 
@@ -153,7 +154,7 @@ def create_vorlaeufigeproben(post: schemas.TableVorlaeufigeProben, db: Session =
     if existing_item:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail=f"Entry with barcode_id: {post.barcode_id} already exists")
 
-    # Neue Probe hinzufüge
+    # Neue Probe hinzufügen
     new_item = VorlaeufigeProben(**post_data)
     db.add(new_item)
     db.commit()
@@ -171,9 +172,28 @@ def create_stuhlproben(post: schemas.TableDataStuhlproben, db: Session = Depends
     if existing_item:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail=f"Entry with barcode_id: {post.id} already exists")
     
-    # Neue Probe hinzufüge
+    # Neue Probe hinzufügen
     db.add(new_item)
     db.commit()
     db.refresh(new_item)
     return new_item
+
+
+#router for new galle entry
+@router.post("/galle", status_code=status.HTTP_201_CREATED, response_model= schemas.TableDataGalleproben)
+def create_galleproben(post: schemas.TableDataGalleproben, db: Session = Depends(get_db)):
+    new_item = Galleproben(**post.dict())
+
+        # Prüfen, ob die Probe bereits existiert
+    existing_item = db.query(Galleproben).filter(Galleproben.barcode_id == post.barcode_id).first()
+    if existing_item:
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail=f"Entry with barcode_id: {post.barcode_id} already exists")
+    
+    # Neue Probe hinzufügen
+    db.add(new_item)
+    db.commit()
+    db.refresh(new_item)
+    return new_item
+
+
 

@@ -18,7 +18,7 @@ router = APIRouter(
 )
 
 #requestable tables
-ALLOWED_TABLE_NAMES = {"patient", "serumproben", "gewebeproben", "urinproben", "paraffinproben", "probenabholer", "vorlaeufigeproben", "probeninformation, stuhlproben"}
+ALLOWED_TABLE_NAMES = {"patient", "serumproben", "gewebeproben", "urinproben", "paraffinproben", "probenabholer", "vorlaeufigeproben", "probeninformation, stuhlproben, galleproben"}
 
 #get table content dynamicly
 @router.get("/data", response_model=None)
@@ -37,7 +37,7 @@ def get_table_data(
         table = Table(table_name, metadata, autoload_with=db.get_bind())
 
         # Build and execute the select statement
-        stmt = table.select().limit(10000)
+        stmt = table.select().limit(100000)
         results = db.execute(stmt).fetchall()
 
         # Extract column names and convert rows to dictionaries
@@ -53,14 +53,11 @@ def get_table_data(
         # Handle general errors
         raise HTTPException(status_code=400, detail=f"Error fetching data from table '{table_name}': {str(e)}")
     
-
 # Helper function to convert SQLAlchemy results to dictionaries
 def row_to_dict(row):
     return dict(row)
 
 @router.put("/data")
-
-
 
 #get all table names
 @router.get("/name")
@@ -76,9 +73,7 @@ def get_table_names():
         raise HTTPException(status_code=400, detail=f"Error fetching table names: {str(e)}")
     
 
-
 # app/routers/tables.py
-
 @router.get("/last_box_info", response_model=LastBoxInfo)
 def get_last_box_info(
     table_name: str,
@@ -87,11 +82,11 @@ def get_last_box_info(
     """
     Retrieve the boxnummer, boxzeile, and boxspalte from the last entry of the specified table.
 
-    - **table_name**: Must be one of "gewebeproben", "serumproben", "urinproben".
+    - **table_name**: Must be one of "gewebeproben", "serumproben", "urinproben", "galleproben"
     """
 
     # Define allowed tables for this endpoint
-    ALLOWED_LAST_BOX_INFO_TABLES = {"gewebeproben", "serumproben", "urinproben"}
+    ALLOWED_LAST_BOX_INFO_TABLES = {"gewebeproben", "serumproben", "urinproben", "galleproben"}
 
     if table_name not in ALLOWED_LAST_BOX_INFO_TABLES:
         raise HTTPException(

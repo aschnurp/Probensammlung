@@ -6,6 +6,7 @@ from sqlalchemy.orm import Session
 from ..models.serumproben import Serumproben
 from ..models.gewebeproben import Gewebeproben
 from ..models.urinproben import Urinproben
+from ..models.galleproben import Galleproben
 
 router = APIRouter(
     prefix="/wiedereingeschleusen",
@@ -25,7 +26,7 @@ def patch_serumproben(barcode_id: str, db: Session = Depends(get_db)):
             status_code=status.HTTP_404_NOT_FOUND,
             detail=f"Eintrag mit barcode_id: {barcode_id} existiert nicht.",
         )
-    # Aktualisieren des Eintrags mit dem Standardwert 2 für status
+    # Aktualisieren des Eintrags mit dem Standardwert 3 für status
     try:
         item_query.update({"status": 3}, synchronize_session=False)
         item_query.update({Serumproben.anzahl_statuswechsel: Serumproben.anzahl_statuswechsel + 1}, synchronize_session=False)
@@ -52,7 +53,7 @@ def patch_gewebeproben(barcode_id: str, db: Session = Depends(get_db)):
             status_code=status.HTTP_404_NOT_FOUND,
             detail=f"Eintrag mit barcode_id: {barcode_id} existiert nicht.",
         )
-    # Aktualisieren des Eintrags mit dem Standardwert 2 für status
+    # Aktualisieren des Eintrags mit dem Standardwert 3 für status
     try:
         item_query.update({"status": 3}, synchronize_session=False)
         item_query.update({Gewebeproben.anzahl_statuswechsel: Gewebeproben.anzahl_statuswechsel + 1}, synchronize_session=False)
@@ -79,7 +80,7 @@ def patch_urinproben(barcode_id: str, db: Session = Depends(get_db)):
             status_code=status.HTTP_404_NOT_FOUND,
             detail=f"Eintrag mit barcode_id: {barcode_id} existiert nicht.",
         )
-    # Aktualisieren des Eintrags mit dem Standardwert 2 für status
+    # Aktualisieren des Eintrags mit dem Standardwert 3 für status
     try:
         item_query.update({"status": 3}, synchronize_session=False)
         item_query.update({Urinproben.anzahl_statuswechsel: Urinproben.anzahl_statuswechsel + 1}, synchronize_session=False)
@@ -91,4 +92,32 @@ def patch_urinproben(barcode_id: str, db: Session = Depends(get_db)):
             detail=f"Fehler beim Aktualisieren: {str(e)}",
         )
     return item_query.first()
+
+
+#router for new galle entry
+@router.patch("/galle/{barcode_id}", status_code=status.HTTP_200_OK,response_model=schemas.TableDataGalleproben)
+def patch_galleproben(barcode_id: str, db: Session = Depends(get_db)):
+    # Suche nach dem bestehenden Eintrag
+    item_query = db.query(Galleproben).filter(Galleproben.barcode_id == barcode_id)
+    existing_item = item_query.first()
+
+    #test ob item existiert
+    if not existing_item:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"Eintrag mit barcode_id: {barcode_id} existiert nicht.",
+        )
+    # Aktualisieren des Eintrags mit dem Standardwert 3 für status
+    try:
+        item_query.update({"status": 3}, synchronize_session=False)
+        item_query.update({Galleproben.anzahl_statuswechsel: Galleproben.anzahl_statuswechsel + 1}, synchronize_session=False)
+        db.commit()
+    except Exception as e:
+        db.rollback()
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Fehler beim Aktualisieren: {str(e)}",
+        )
+    return item_query.first()
+
 
