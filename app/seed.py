@@ -2,12 +2,13 @@ from sqlalchemy.orm import Session
 from .models.status import Status
 from .models.differenzierungsmerkmal_gewebe import Differenzierungsmerkmal_gewebe
 from .models.differenzierungsmerkmal_serum import Differenzierungsmerkmal_serum
-
 from .models.differenzierungsmerkmal_urin import Differenzierungsmerkmal_urin
 from .models.uebergeordnete_probenart_paraffin import Uebergeordnete_probenart_paraffin
 from .models.differenzierungsmerkmal_stuhl import Differenzierungsmerkmal_stuhl
 
 from .models.probeninformation import Probeninformation
+from .models.probeninformation_ltx import Probeninformation_ltx
+
 from .models.untergeordnete_probenart_paraffin import Untergeordnete_probenart_paraffin
 from . database import get_db, Base
 from sqlalchemy.orm import Session
@@ -98,6 +99,39 @@ def seed_status_data(db: Session):
         db.commit()
         print("Seed-Daten erfolgreich hinzugefügt.")
 
+
+    if not db.query(Probeninformation_ltx).first():
+        seed_data = [
+            Probeninformation_ltx(probeninformation_text="Galle intra OP von expl. Leber (PCR) I", probenart="galle"),  
+            Probeninformation_ltx(probeninformation_text="Galle intra OP von expl. Leber (PCR) II", probenart="galle"),
+            Probeninformation_ltx(probeninformation_text="Galle intra OP von expl. Leber III", probenart="galle"),
+            Probeninformation_ltx(probeninformation_text="Galle intra OP von expl. Leber IV", probenart="galle"),
+            Probeninformation_ltx(probeninformation_text="Galle intra OP von expl. Leber (Rest)", probenart="galle"),
+            Probeninformation_ltx(probeninformation_text="Galle intra OP von impl. Leber (PCR) I", probenart="galle"),  
+            Probeninformation_ltx(probeninformation_text="Galle intra OP von impl. Leber (PCR) II", probenart="galle"),
+            Probeninformation_ltx(probeninformation_text="Galle intra OP von impl. Leber III", probenart="galle"),
+            Probeninformation_ltx(probeninformation_text="Galle intra OP von impl. Leber IV", probenart="galle"),
+            Probeninformation_ltx(probeninformation_text="Galle intra OP von impl. Leber (Rest)", probenart="galle"),
+            Probeninformation_ltx(probeninformation_text="Galle post OP 1d von impl. Leber (PCR) I", probenart="galle"),
+            Probeninformation_ltx(probeninformation_text="Galle post OP 1d von impl. Leber (PCR) II", probenart="galle"),
+            Probeninformation_ltx(probeninformation_text="Galle post OP 1d von impl. Leber III", probenart="galle"),
+            Probeninformation_ltx(probeninformation_text="Galle post OP 1d von impl. Leber IV", probenart="galle"),
+            Probeninformation_ltx(probeninformation_text="Galle post OP 1d von impl. Leber (Rest)", probenart="galle"),
+            Probeninformation_ltx(probeninformation_text="Galle post OP 7d von impl. Leber (PCR) I", probenart="galle"),
+            Probeninformation_ltx(probeninformation_text="Galle post OP 7d von impl. Leber (PCR) II", probenart="galle"),
+            Probeninformation_ltx(probeninformation_text="Galle post OP 7d von impl. Leber III", probenart="galle"),
+            Probeninformation_ltx(probeninformation_text="Galle post OP 7d von impl. Leber IV", probenart="galle"),
+            Probeninformation_ltx(probeninformation_text="Galle post OP 7d von impl. Leber (Rest)", probenart="galle"),
+            Probeninformation_ltx(probeninformation_text="Galle post OP 14d von impl. Leber (PCR) I", probenart="galle"),
+            Probeninformation_ltx(probeninformation_text="Galle post OP 14d von impl. Leber (PCR) II", probenart="galle"),
+            Probeninformation_ltx(probeninformation_text="Galle post OP 14d von impl. Leber III", probenart="galle"),
+            Probeninformation_ltx(probeninformation_text="Galle post OP 14d von impl. Leber IV", probenart="galle"),
+            Probeninformation_ltx(probeninformation_text="Galle post OP 14d von impl. Leber (Rest)", probenart="galle")
+        ]
+        # Einfügen und speichern
+        db.add_all(seed_data)
+        db.commit()
+        print("Seed-Daten erfolgreich hinzugefügt.")
     
     if not db.query(Differenzierungsmerkmal_gewebe).first():
         # Seed-Daten definieren
@@ -174,7 +208,7 @@ def seed_status_data(db: Session):
         # Seed-Daten definieren
         seed_data = [
             Differenzierungsmerkmal_stuhl(differenzierungsmerkmal_text="präOP"),            
-            Differenzierungsmerkmal_stuhl(differenzierungsmerkmal_text="1 bis 14 d postOP"),
+            Differenzierungsmerkmal_stuhl(differenzierungsmerkmal_text="1d bis 14d postOP"),
         ]
         # Einfügen und speichern
         db.add_all(seed_data)

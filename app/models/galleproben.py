@@ -6,15 +6,14 @@ from sqlalchemy.sql.sqltypes import TIMESTAMP
 from sqlalchemy.sql.expression import text
 
 
-class Gewebeproben(Base):
-    __tablename__ = "gewebeproben"
+class Galleproben(Base):
+    __tablename__ = "galleproben"
     barcode_id = Column(VARCHAR(200), primary_key= True, nullable=False)
     timestamp = Column(TIMESTAMP(timezone=True), nullable=False, server_default=text("now()"))
-    patient_Id_intern = Column(VARCHAR(200), ForeignKey("patient.patient_Id_intern")) 
+    patient_Id_intern = Column(VARCHAR(200),  ForeignKey("patient.patient_Id_intern"))  
     created_at = Column(TEXT)
-    differenzierungsmerkmal	= Column(TINYINT, ForeignKey("differenzierungsmerkmal_gewebe.id"), nullable=True)
     probenart = Column(TEXT)
-    probeninformation = Column(Integer, ForeignKey("probeninformation.id"), nullable=True)
+    probeninformation_ltx = Column(Integer, ForeignKey("probeninformation_ltx.id"), nullable=True)
     abholer = Column(TEXT)
     uhrzeit = Column(TEXT)		
     boxnummer = Column(Integer) 

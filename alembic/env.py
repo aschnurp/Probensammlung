@@ -18,7 +18,10 @@ from app.models.status import Status
 from app.models.uebergeordnete_probenart_paraffin import Uebergeordnete_probenart_paraffin
 from app.models.untergeordnete_probenart_paraffin import Untergeordnete_probenart_paraffin
 from app.models.vorlaeufige_proben import VorlaeufigeProben
-
+from app.models.differenzierungsmerkmal_stuhl import Differenzierungsmerkmal_stuhl
+from app.models.stuhlproben import Stuhlproben
+from app.models.galleproben import Galleproben
+from app.models.probeninformation_ltx import Probeninformation_ltx
 
 from alembic import context
 
