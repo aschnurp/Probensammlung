@@ -693,7 +693,7 @@ export default function Uebersicht() {
           sx={{
             backgroundColor: "#1976d2",
             borderRadius: 7,
-            width: "96%",
+            width: "99.4%",
             margin: "0 auto",
             boxShadow: "0 4px 30px rgba(0,0,0,0.1)",
             padding: "1px",
