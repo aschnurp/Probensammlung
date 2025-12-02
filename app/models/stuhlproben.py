@@ -15,6 +15,7 @@ class Stuhlproben(Base):
     abholer = Column(TEXT)
     uhrzeit = Column(TEXT)
     probenart = Column(TEXT)
+    lagerraum = Column(TEXT)
     differenzierungsmerkmal	= Column(TINYINT, ForeignKey("differenzierungsmerkmal_stuhl.id"), nullable=True)
     anmerkungen = Column(TEXT)
     status = Column(TINYINT, ForeignKey("status.id"))

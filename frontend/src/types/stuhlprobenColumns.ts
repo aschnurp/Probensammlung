@@ -8,5 +8,6 @@ export const stuhlprobenDataColumns = [
     { key: "uhrzeit", label: "Probe erhalten (Uhrzeit)" },
     { key: "probenart", label: "Probenart" },
     { key: "differenzierungsmerkmal", label: "Differenzierungsmerkmal" },
+    { key: "lagerraum", label: "Lagerraum" },
     { key: "anmerkungen", label: "Anmerkungen" }
 ]

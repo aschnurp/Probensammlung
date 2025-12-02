@@ -118,6 +118,7 @@ class TableDataStuhlproben(BaseModel):
     created_at: Optional[str] = None
     differenzierungsmerkmal: Optional[int] = None
     abholer: Optional[str] = None
+    lagerraum: Optional[str] = None	
     uhrzeit: Optional[str] = None
 
 class GalleprobenBase(BaseModel):

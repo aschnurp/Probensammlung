@@ -5,6 +5,7 @@ export type stuhlprobenData = {
     abholer?: string;
     uhrzeit?: string;
     probenart?: string;
+    lagerraum?: string;	
     differenzierungsmerkmal?: number;
     anmerkungen?: string;
 }
