@@ -148,7 +148,7 @@ export default function SampleForm() {
           Probengefäße Hinzufügen
         </Typography>
         <Typography variant="h7" sx={{ color: "text.primary" }}>
-          Probengefäße (Probenröhrchen) können hier zur Vorbereitung hinzugefügt werden.
+          Probengefäße (Probenröhrchen) können hier zur Vorbereitung hinzugefügt werden. Dies ist nötig um diese später Einschleusen zu können.
         </Typography>
       </Box>
 
