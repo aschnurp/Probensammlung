@@ -3,7 +3,7 @@ from sqlalchemy.sql import text
 from fastapi import Depends, FastAPI
 from .database import get_db, engine, SessionLocal, Base
 from sqlalchemy.orm import Session
-from .models import stuhlproben, probeninformation_ltx, galleproben , differenzierungsmerkmal_stuhl ,differenzierungsmerkmal_gewebe, differenzierungsmerkmal_urin, differenzierungsmerkmal_serum , probeninformation, status, gewebeproben, probenabholer, serumproben, urinproben, patient, paraffinproben, probenquelle_urin, vorlaeufige_proben, uebergeordnete_probenart_paraffin, untergeordnete_probenart_paraffin
+from .models import edtaplasma, stuhlproben, probeninformation_ltx, galleproben , differenzierungsmerkmal_stuhl ,differenzierungsmerkmal_gewebe, differenzierungsmerkmal_urin, differenzierungsmerkmal_serum , probeninformation, status, gewebeproben, probenabholer, serumproben, urinproben, patient, paraffinproben, probenquelle_urin, vorlaeufige_proben, uebergeordnete_probenart_paraffin, untergeordnete_probenart_paraffin
 from .config import settings
 from .routers import post_new_data, put_tabledata, tables, number_entrys, patch_ausschleusen, patch_wiedereinschleusen, delete_tabledata
 from fastapi.middleware.cors import CORSMiddleware
@@ -45,6 +45,8 @@ urinproben.Base.metadata.create_all(bind=engine)
 patient.Base.metadata.create_all(bind=engine)
 stuhlproben.Base.metadata.create_all(bind=engine)
 galleproben.Base.metadata.create_all(bind=engine)
+edtaplasma.Base.metadata.create_all(bind=engine)
+
 try:
     db = SessionLocal()
     seed_status_data(db)

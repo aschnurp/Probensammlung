@@ -126,7 +126,27 @@ def seed_status_data(db: Session):
             Probeninformation_ltx(probeninformation_text="Galle post OP 14d von impl. Leber (PCR) II", probenart="galle"),
             Probeninformation_ltx(probeninformation_text="Galle post OP 14d von impl. Leber III", probenart="galle"),
             Probeninformation_ltx(probeninformation_text="Galle post OP 14d von impl. Leber IV", probenart="galle"),
-            Probeninformation_ltx(probeninformation_text="Galle post OP 14d von impl. Leber (Rest)", probenart="galle")
+            Probeninformation_ltx(probeninformation_text="Galle post OP 14d von impl. Leber (Rest)", probenart="galle"),
+            Probeninformation_ltx(probeninformation_text="EDTA-Plasma bei Aufklährung I", probenart="edtaplasma"),
+            Probeninformation_ltx(probeninformation_text="EDTA-Plasma bei Aufklährung II", probenart="edtaplasma"),
+            Probeninformation_ltx(probeninformation_text="EDTA-Plasma bei Aufklährung III", probenart="edtaplasma"),
+            Probeninformation_ltx(probeninformation_text="EDTA-Plasma bei Aufklährung IV", probenart="edtaplasma"),
+            Probeninformation_ltx(probeninformation_text="EDTA-Plasma prä OP I", probenart="edtaplasma"),
+            Probeninformation_ltx(probeninformation_text="EDTA-Plasma prä OP II", probenart="edtaplasma"),
+            Probeninformation_ltx(probeninformation_text="EDTA-Plasma prä OP III", probenart="edtaplasma"),
+            Probeninformation_ltx(probeninformation_text="EDTA-Plasma prä OP IV", probenart="edtaplasma"),
+            Probeninformation_ltx(probeninformation_text="EDTA-Plasma post OP 1 I", probenart="edtaplasma"),
+            Probeninformation_ltx(probeninformation_text="EDTA-Plasma post OP 1 II", probenart="edtaplasma"),
+            Probeninformation_ltx(probeninformation_text="EDTA-Plasma post OP 1 III", probenart="edtaplasma"),
+            Probeninformation_ltx(probeninformation_text="EDTA-Plasma post OP 1 IV", probenart="edtaplasma"),
+            Probeninformation_ltx(probeninformation_text="EDTA-Plasma post OP 7 I", probenart="edtaplasma"),
+            Probeninformation_ltx(probeninformation_text="EDTA-Plasma post OP 7 II", probenart="edtaplasma"),
+            Probeninformation_ltx(probeninformation_text="EDTA-Plasma post OP 7 III", probenart="edtaplasma"),
+            Probeninformation_ltx(probeninformation_text="EDTA-Plasma post OP 7 IV", probenart="edtaplasma"),
+            Probeninformation_ltx(probeninformation_text="EDTA-Plasma post OP 14 I", probenart="edtaplasma"),
+            Probeninformation_ltx(probeninformation_text="EDTA-Plasma post OP 14 II", probenart="edtaplasma"),
+            Probeninformation_ltx(probeninformation_text="EDTA-Plasma post OP 14 III", probenart="edtaplasma"),
+            Probeninformation_ltx(probeninformation_text="EDTA-Plasma post OP 14 IV", probenart="edtaplasma"),
         ]
         # Einfügen und speichern
         db.add_all(seed_data)
