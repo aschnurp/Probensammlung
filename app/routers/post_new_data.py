@@ -13,6 +13,7 @@ from ..models.probenabholer import Probenabholer
 from ..models.vorlaeufige_proben import VorlaeufigeProben
 from ..models.stuhlproben import Stuhlproben
 from ..models.galleproben import Galleproben
+from ..models.edtaplasmaproben import Edtaplasmaproben
 from datetime import datetime
 
 
@@ -196,4 +197,18 @@ def create_galleproben(post: schemas.TableDataGalleproben, db: Session = Depends
     return new_item
 
 
+#router for new edtaplasma entry
+@router.post("/edtaplasma", status_code=status.HTTP_201_CREATED, response_model= schemas.TableDataEdtaplasmaproben)
+def create_galleproben(post: schemas.TableDataEdtaplasmaproben, db: Session = Depends(get_db)):
+    new_item = Edtaplasmaproben(**post.dict())
 
+        # Prüfen, ob die Probe bereits existiert
+    existing_item = db.query(Edtaplasmaproben).filter(Edtaplasmaproben.barcode_id == post.barcode_id).first()
+    if existing_item:
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail=f"Entry with barcode_id: {post.barcode_id} already exists")
+    
+    # Neue Probe hinzufügen
+    db.add(new_item)
+    db.commit()
+    db.refresh(new_item)
+    return new_item

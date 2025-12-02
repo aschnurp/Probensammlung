@@ -6,7 +6,7 @@ import { paraffinprobenDataColumns } from '../types/paraffinprobenColumns';
 import { vorlaeufigeprobenDataColumns } from '../types/vorlaeufigeprobenColumns';
 import { galleprobenDataColumns } from '../types/galleprobenColumns';
 import { stuhlprobenDataColumns } from '../types/stuhlprobenColumns';
-import { edtaprobenDataColumns } from '../types/edtaprobenColumns';
+import { edtaplasmaprobenDataColumns } from '../types/edtaplasmaprobenColumns';
 import dayjs from 'dayjs';
 import axios from 'axios';
 import React, { useState, useEffect, useRef } from 'react';
@@ -46,7 +46,7 @@ const TABLE_COLUMNS = {
   vorlaeufigeproben: vorlaeufigeprobenDataColumns,
   galleproben: galleprobenDataColumns,
   stuhlproben: stuhlprobenDataColumns,
-  edtaproben: edtaprobenDataColumns
+  edtaplasmaproben: edtaplasmaprobenDataColumns
 };
 
 // definition für probenstatus mapping
@@ -207,7 +207,7 @@ export default function Uebersicht() {
     vorlaeufigeproben: "Vorläufige Proben",
     galleproben: "Galleproben",
     stuhlproben: "Stuhlproben",
-    edtaproben: "EDTA-Proben"
+    edtaplasmaproben: "EDTA-Plasmaproben"
   };
 
   const open = Boolean(anchorEl);
@@ -230,8 +230,8 @@ export default function Uebersicht() {
       setTable_header("Galleproben");
     } else if (selectedTable === "stuhlproben") {
       setTable_header("Stuhlproben");
-    } else if (selectedTable === "edtaproben") {
-      setTable_header("EDTA-Proben");
+    } else if (selectedTable === "edtaplasmaproben") {
+      setTable_header("EDTA-Plasmaproben");
     } else {
       setTable_header("");
     }
@@ -255,8 +255,8 @@ export default function Uebersicht() {
         selectedTableName = "galleproben";
       } else if (selectedTable === "stuhlproben") {
         selectedTableName = "stuhlproben";
-      } else if (selectedTable === "edtaproben") {
-        selectedTableName = "edtaproben";
+      } else if (selectedTable === "edtaplasmaproben") {
+        selectedTableName = "edtaplasmaproben";
       } else {
         selectedTableName = selectedTable;
       }

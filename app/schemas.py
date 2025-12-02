@@ -138,6 +138,26 @@ class GalleprobenBase(BaseModel):
 class TableDataGalleproben(GalleprobenBase):
     status: Optional[int] = 1
 
+class EdtaplasmaprobenBase(BaseModel):
+    patient_Id_intern: str
+    probenart: str	
+    barcode_id: str 	
+    lagerraum: Optional[str] = 1029
+    boxnummer: Optional[int] = None
+    boxzeile: Optional[str] = None
+    boxspalte: Optional[int] = None
+    anmerkungen: Optional[str] = None
+    created_at: Optional[str] = None
+    differenzierungsmerkmal: Optional[int] = None
+    abholer: Optional[str] = None
+    uhrzeit: Optional[str] = None
+    probeninformation_ltx: Optional[int] = None
+    anzahl_statuswechsel: Optional[int] = 0
+
+class TableDataEdtaplasmaproben(EdtaplasmaprobenBase):
+    status: Optional[int] = 1
+
+
 class LastBoxInfo(BaseModel):
     boxnummer: int
     boxzeile: str

@@ -6,8 +6,8 @@ from sqlalchemy.sql.sqltypes import TIMESTAMP
 from sqlalchemy.sql.expression import text
 import sqlalchemy as sa
 
-class Edtaplasma(Base):
-    __tablename__ = "edtaplasma"
+class Edtaplasmaproben(Base):
+    __tablename__ = "edtaplasmaproben"
     barcode_id = Column(VARCHAR(200), primary_key= True, nullable=False)
     timestamp = Column(TIMESTAMP(timezone=True), nullable=False, server_default=text("now()"))	
     patient_Id_intern = Column(VARCHAR(200), ForeignKey("patient.patient_Id_intern"))

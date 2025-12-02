@@ -12,6 +12,7 @@ from ..models.probenabholer import Probenabholer
 from ..models.vorlaeufige_proben import VorlaeufigeProben
 from ..models.stuhlproben import Stuhlproben
 from ..models.galleproben import Galleproben
+from ..models.edtaplasmaproben import Edtaplasmaproben
 
 router = APIRouter(
     prefix="/update",
@@ -110,6 +111,17 @@ def update_stuhlproben(updated_post: schemas.TableDataStuhlproben, db: Session =
 @router.put("/galleproben", status_code=status.HTTP_201_CREATED, response_model= schemas.TableDataGalleproben)
 def update_galleproben(updated_post: schemas.TableDataGalleproben, db: Session = Depends(get_db)):
     existing_item_query = db.query(Galleproben).filter(Galleproben.barcode_id == updated_post.barcode_id)
+    existing_item = existing_item_query.first()
+    if existing_item == None:
+        raise HTTPException(status_code= status.HTTP_403_FORBIDDEN, detail= f"entery with barcode_id: {updated_post.barcode_id} does not exist") 
+    existing_item_query.update(updated_post.dict(), synchronize_session = False)
+    db.commit()
+    return existing_item_query.first()
+
+#router for patch edta entry
+@router.put("/edtaplasmaproben", status_code=status.HTTP_201_CREATED, response_model= schemas.TableDataEdtaplasmaproben)
+def update_edtaplasmaproben(updated_post: schemas.TableDataEdtaplasmaproben, db: Session = Depends(get_db)):
+    existing_item_query = db.query(Edtaplasmaproben).filter(Edtaplasmaproben.barcode_id == updated_post.barcode_id)
     existing_item = existing_item_query.first()
     if existing_item == None:
         raise HTTPException(status_code= status.HTTP_403_FORBIDDEN, detail= f"entery with barcode_id: {updated_post.barcode_id} does not exist") 

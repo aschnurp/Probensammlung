@@ -1,4 +1,4 @@
-export type edtaprobenData = {
+export type edtaplasmaprobennData = {
     barcode_id?: string;
     patient_Id_intern?: string;
     created_at?: string;

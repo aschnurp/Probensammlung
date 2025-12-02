@@ -22,7 +22,7 @@ from app.models.differenzierungsmerkmal_stuhl import Differenzierungsmerkmal_stu
 from app.models.stuhlproben import Stuhlproben
 from app.models.galleproben import Galleproben
 from app.models.probeninformation_ltx import Probeninformation_ltx
-from app.models.edtaplasma import Edtaplasma
+from app.models.edtaplasmaproben import Edtaplasmaproben
 
 from alembic import context
 

@@ -1,6 +1,6 @@
 //label for data overview
 // variable .... displayd text
-export const edtaprobenDataColumns = [
+export const edtaplasmaprobenDataColumns = [
     { key: "barcode_id", label: "Barcode ID" },
     { key: "patient_Id_intern", label: "Patient/Innen ID (intern)" },
     { key: "created_at", label: "Erstellungsdatum" },
