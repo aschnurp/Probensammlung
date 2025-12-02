@@ -11,6 +11,7 @@ from ..models.urinproben import Urinproben
 from ..models.paraffinproben import Paraffinproben
 from ..models.probenabholer import Probenabholer
 from ..models.vorlaeufige_proben import VorlaeufigeProben
+from ..models.stuhlproben import Stuhlproben
 from datetime import datetime
 
 
@@ -49,6 +50,7 @@ def create_serumproben(post: schemas.TableDataSerumproben, db: Session = Depends
 @router.post("/gewebe", status_code=status.HTTP_201_CREATED, response_model=schemas.TableDataGewebeproben)
 def create_gewebeproben(post: schemas.TableDataGewebeproben, db: Session = Depends(get_db)):
     new_item = Gewebeproben(**post.dict())
+    
     existing_item = db.query(Gewebeproben).filter(Gewebeproben.barcode_id == post.barcode_id).first()
     if existing_item:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail=f"Entry with barcode_id: {post.barcode_id} already exists") 
@@ -94,6 +96,12 @@ def create_urinproben(post: schemas.TableDataUrinproben, db: Session = Depends(g
 @router.post("/paraffin", status_code=status.HTTP_201_CREATED, response_model= schemas.TableDataParaffinproben)
 def create_paraffinproben(post: schemas.TableDataParaffinproben, db: Session = Depends(get_db)):
     new_item = Paraffinproben(**post.dict())
+
+    # Prüfen, ob die Probe bereits existiert
+    existing_item = db.query(Paraffinproben).filter(Paraffinproben.id == post.id).first()
+    if existing_item:
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail=f"Entry with barcode_id: {post.id} already exists")
+
     db.add(new_item)
     db.commit()
     db.refresh(new_item)
@@ -104,9 +112,11 @@ def create_paraffinproben(post: schemas.TableDataParaffinproben, db: Session = D
 @router.post("/patient", status_code=status.HTTP_201_CREATED, response_model= schemas.TableDatapatient)
 def create_patient(post: schemas.TableDatapatient, db: Session = Depends(get_db)):
     new_item = Patient(**post.dict())
+
     existing_item = db.query(Patient).filter(Patient.patient_Id_intern == post.patient_Id_intern).first()
     if existing_item:
         raise HTTPException(status_code= status.HTTP_403_FORBIDDEN, detail= f"entery with barcode_id: {post.patient_Id_intern} already exists") 
+    
     db.add(new_item)
     db.commit()
     db.refresh(new_item)
@@ -141,13 +151,29 @@ def create_vorlaeufigeproben(post: schemas.TableVorlaeufigeProben, db: Session =
     # Prüfen, ob die Probe bereits existiert
     existing_item = db.query(VorlaeufigeProben).filter(VorlaeufigeProben.barcode_id == post.barcode_id).first()
     if existing_item:
-        raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail=f"Entry with barcode_id: {post.barcode_id} already exists")
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail=f"Entry with barcode_id: {post.barcode_id} already exists")
 
-    # Neue Probe hinzufügen
+    # Neue Probe hinzufüge
     new_item = VorlaeufigeProben(**post_data)
     db.add(new_item)
     db.commit()
     db.refresh(new_item)
 
+    return new_item
+
+#router for new stuhl entry
+@router.post("/stuhl", status_code=status.HTTP_201_CREATED, response_model= schemas.TableDataStuhlproben)
+def create_stuhlproben(post: schemas.TableDataStuhlproben, db: Session = Depends(get_db)):
+    new_item = Stuhlproben(**post.dict())
+
+        # Prüfen, ob die Probe bereits existiert
+    existing_item = db.query(Stuhlproben).filter(Stuhlproben.id == post.id).first()
+    if existing_item:
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail=f"Entry with barcode_id: {post.id} already exists")
+    
+    # Neue Probe hinzufüge
+    db.add(new_item)
+    db.commit()
+    db.refresh(new_item)
     return new_item
 

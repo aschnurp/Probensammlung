@@ -101,6 +101,7 @@ class TableDatapatient(BaseModel):
     op_diagnose: Optional[str] = None
     op_geplant: Optional[str] = None
     sap_id: Optional[int] = None
+    sap_fallnummer: Optional[int] = None
     bemerkung: Optional[str] = None
     created_at: Optional[str] = None
 
@@ -108,6 +109,17 @@ class TableVorlaeufigeProben(BaseModel):
     barcode_id: str 
     patient_Id_intern: Optional[str] = None 
     probeninformation: Optional[int] = None
+
+class TableDataStuhlproben(BaseModel):
+    id: Optional[int] = None
+    patient_Id_intern: str
+    probenart: str			
+    anmerkungen: Optional[str] = None
+    created_at: Optional[str] = None
+    differenzierungsmerkmal: Optional[int] = None
+    abholer: Optional[str] = None
+    uhrzeit: Optional[str] = None
+
 
 class LastBoxInfo(BaseModel):
     boxnummer: int

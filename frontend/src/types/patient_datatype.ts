@@ -1,6 +1,7 @@
 export type PatientData = {
     patient_Id_intern?: string;
     sap_id?: number;
+    sap_fallnummer?: number;
     created_at: string;
     geschlecht?: string;
     alter?: number;
