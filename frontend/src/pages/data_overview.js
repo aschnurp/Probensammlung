@@ -4,6 +4,9 @@ import { serumprobenDataColumns } from '../types/serumprobenColumns';
 import { urinprobenDataColumns } from '../types/urinprobenColumns';
 import { paraffinprobenDataColumns } from '../types/paraffinprobenColumns';
 import { vorlaeufigeprobenDataColumns } from '../types/vorlaeufigeprobenColumns';
+import { galleprobenDataColumns } from '../types/galleprobenColumns';
+import { stuhlprobenDataColumns } from '../types/stuhlprobenColumns';
+import { edtaprobenDataColumns } from '../types/edtaprobenColumns';
 import dayjs from 'dayjs';
 import axios from 'axios';
 import React, { useState, useEffect, useRef } from 'react';
@@ -40,7 +43,10 @@ const TABLE_COLUMNS = {
   serumproben: serumprobenDataColumns,
   urinproben: urinprobenDataColumns,
   patient: patientDataColumns,
-  vorlaeufigeproben: vorlaeufigeprobenDataColumns
+  vorlaeufigeproben: vorlaeufigeprobenDataColumns,
+  galleproben: galleprobenDataColumns,
+  stuhlproben: stuhlprobenDataColumns,
+  edtaproben: edtaprobenDataColumns
 };
 
 // definition für probenstatus mapping
@@ -198,7 +204,10 @@ export default function Uebersicht() {
     serumproben: "Serumproben",
     urinproben: "Urinproben",
     patient: "Patientendaten",
-    vorlaeufigeproben: "Vorläufige Proben"
+    vorlaeufigeproben: "Vorläufige Proben",
+    galleproben: "Galleproben",
+    stuhlproben: "Stuhlproben",
+    edtaproben: "EDTA-Proben"
   };
 
   const open = Boolean(anchorEl);
@@ -217,6 +226,12 @@ export default function Uebersicht() {
       setTable_header("Patientendaten");
     } else if (selectedTable === "vorlaeufigeproben") {
       setTable_header("Vorläufige Proben");
+    } else if (selectedTable === "galleproben") {
+      setTable_header("Galleproben");
+    } else if (selectedTable === "stuhlproben") {
+      setTable_header("Stuhlproben");
+    } else if (selectedTable === "edtaproben") {
+      setTable_header("EDTA-Proben");
     } else {
       setTable_header("");
     }
@@ -236,6 +251,12 @@ export default function Uebersicht() {
         selectedTableName = "paraffin";
       } else if (selectedTable === "vorlaeufigeproben") {
         selectedTableName = "vorlaeufigeproben";
+      } else if (selectedTable === "galleproben") {
+        selectedTableName = "galleproben";
+      } else if (selectedTable === "stuhlproben") {
+        selectedTableName = "stuhlproben";
+      } else if (selectedTable === "edtaproben") {
+        selectedTableName = "edtaproben";
       } else {
         selectedTableName = selectedTable;
       }
@@ -672,7 +693,7 @@ export default function Uebersicht() {
           sx={{
             backgroundColor: "#1976d2",
             borderRadius: 7,
-            width: "66%",
+            width: "96%",
             margin: "0 auto",
             boxShadow: "0 4px 30px rgba(0,0,0,0.1)",
             padding: "1px",
