@@ -62,7 +62,6 @@ def update_paraffinproben(updated_post: schemas.TableDataParaffinproben, db: Ses
     db.commit()
     return existing_item_query.first()
 
-
 #router for patch patient entry
 @router.put("/patient", status_code=status.HTTP_201_CREATED, response_model= schemas.TableDatapatient)
 def update_patient(updated_post: schemas.TableDatapatient, db: Session = Depends(get_db)):
@@ -85,7 +84,6 @@ def update_probenabholer(updated_post: schemas.TableDataProbenabholer, db: Sessi
     db.commit()
     return existing_item_query.first()
 
-
 #router for patch vorläufige proben entry
 @router.put("/vorlaeufigeproben", status_code=status.HTTP_201_CREATED, response_model= schemas.TableVorlaeufigeProben)
 def update_vorlaeufigeproben(updated_post: schemas.TableVorlaeufigeProben, db: Session = Depends(get_db)):
@@ -96,7 +94,6 @@ def update_vorlaeufigeproben(updated_post: schemas.TableVorlaeufigeProben, db: S
     existing_item_query.update(updated_post.dict(), synchronize_session = False)
     db.commit()
     return existing_item_query.first()
-
 
 #router for patch stuhl entry
 @router.put("/stuhlproben", status_code=status.HTTP_201_CREATED, response_model= schemas.TableDataStuhlproben)
@@ -119,11 +116,3 @@ def update_galleproben(updated_post: schemas.TableDataGalleproben, db: Session =
     existing_item_query.update(updated_post.dict(), synchronize_session = False)
     db.commit()
     return existing_item_query.first()
-
-
-
-
-
-
-
-
