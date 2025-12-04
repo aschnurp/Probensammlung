@@ -18,6 +18,9 @@ import {
   TableHead,
   TableRow,
   Paper,
+  Checkbox,
+  FormGroup,
+  FormControlLabel
 } from "@mui/material";
 import { IoMdArrowRoundBack } from "react-icons/io";
 
@@ -26,14 +29,17 @@ export default function SampleForm() {
     patient_Id_intern: "",
     barcode_id: "",
     probeninformation: "",
+    probeninformation_ltx: "",
   });
 
   const [errors, setErrors] = useState({});
   const [probeninformation, setProbeninformation] = useState([]);
+  const [probeninformationLTX, setProbeninformationLTX] = useState([]);
   const [snackbarMessage, setSnackbarMessage] = useState("");
   const [snackbarSeverity, setSnackbarSeverity] = useState("success");
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [data, setData] = useState([]);
+  const [checked, setChecked] = useState(false);
 
   useEffect(() => {
     const getProbeninformation = async () => {
@@ -46,7 +52,21 @@ export default function SampleForm() {
         const response = await res.json();
         setProbeninformation(response);
       } catch (error) {
-        console.error("Error fetching probeninformation:", error);
+        console.error("Error fetching Probeninformation:", error);
+      }
+    };
+
+    const getProbeninformationLTX = async () => {
+      try {
+        const res = await fetch(
+          `http://localhost:8000/table/data?table_name=probeninformation_ltx`
+        );
+        if (!res.ok) throw new Error("Fehler beim Abrufen der Probeninformation-LTX");
+
+        const response = await res.json();
+        setProbeninformationLTX(response);
+      } catch (error) {
+        console.error("Error fetching Probeninformation:", error);
       }
     };
 
@@ -62,69 +82,106 @@ export default function SampleForm() {
     };
 
     getProbeninformation();
-    getTableData(); // Fetch table data on component mount
+    getProbeninformationLTX();
+    getTableData();
   }, []);
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
+    const { name, value, type, checked: isChecked } = e.target;
+
+    if (type === "checkbox") {
+      setChecked(isChecked);
+      return;
+    }
+
     setFormData({ ...formData, [name]: value });
     setErrors({ ...errors, [name]: "" });
   };
 
 
-
   const validateForm = () => {
     let newErrors = {};
-    if (!formData.patient_Id_intern) newErrors.patient_Id_intern = "Patienten ID ist erforderlich.";
-    if (!formData.barcode_id) newErrors.barcode_id = "Barcode ID ist erforderlich.";
-    if (!formData.probeninformation) newErrors.probeninformation = "Probeninformation ist erforderlich.";
+
+    if (!formData.patient_Id_intern)
+      newErrors.patient_Id_intern = "Patienten ID ist erforderlich.";
+
+    if (!formData.barcode_id)
+      newErrors.barcode_id = "Barcode ID ist erforderlich.";
+
+    if (checked) {
+      if (!formData.probeninformation_ltx)
+        newErrors.probeninformation_ltx = "LTX Probeninformation ist erforderlich.";
+    } else {
+      if (!formData.probeninformation)
+        newErrors.probeninformation = "Probeninformation ist erforderlich.";
+    }
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
-
   const handleSubmit = async () => {
-    if (!validateForm()) {
-      setSnackbarMessage("Bitte füllen Sie alle erforderlichen Felder aus.");
-      setSnackbarSeverity("error");
-      setSnackbarOpen(true);
-      return;
-    }
-
+    if (!validateForm()) return;
+    const payload = checked
+      ? {
+          ...formData,
+          probeninformation: null,        
+        }
+      : {
+          ...formData,
+          probeninformation_ltx: null,    
+        };
+  
     try {
-      await axios.post(`http://localhost:8000/new_data/vorlaeufige_proben`, formData, {
-        headers: { "Content-Type": "application/json" },
-      });
-
+      await axios.post(
+        `http://localhost:8000/new_data/vorlaeufige_proben`,
+        payload,
+        { headers: { "Content-Type": "application/json" } }
+      );
+  
       setSnackbarMessage("Daten erfolgreich gesendet!");
       setSnackbarSeverity("success");
       setSnackbarOpen(true);
-
-      // Find next probeninformation (cyclic rotation)
-      const currentIndex = probeninformation.findIndex(
-        (probe) => probe.id === formData.probeninformation
-      );
-      const nextIndex = (currentIndex + 1) % probeninformation.length; // Zyklische Rotation
-      const nextProbe = probeninformation[nextIndex]?.id || ""; // Hole das nächste Element
-
-      setFormData({
-        patient_Id_intern: formData.patient_Id_intern,
-        barcode_id: "", // Barcode nach dem Absenden zurücksetzen
-        probeninformation: nextProbe, // Nächste Probeninformation
-      });
-
-      const handleKeyPress = (event) => {
-        if (event.key === "Enter") {
-          event.preventDefault();
-          handleSubmit();
-        }
+  
+      // --- NEXT PROBE LOGIC ---
+      let nextProbe = "";
+  
+      if (checked) {
+        // LTX-mode → rotate in probeninformationLTX
+        const currentIndex = probeninformationLTX.findIndex(
+          (probe) => probe.id === formData.probeninformation_ltx
+        );
+        const nextIndex = (currentIndex + 1) % probeninformationLTX.length;
+        nextProbe = probeninformationLTX[nextIndex]?.id || "";
+  
+        setFormData({
+          patient_Id_intern: formData.patient_Id_intern,
+          barcode_id: "",
+          probeninformation: "",       // always empty in LTX mode
+          probeninformation_ltx: nextProbe,
+        });
+  
+      } else {
+        // Normal mode → rotate in probeninformation
+        const currentIndex = probeninformation.findIndex(
+          (probe) => probe.id === formData.probeninformation
+        );
+        const nextIndex = (currentIndex + 1) % probeninformation.length;
+        nextProbe = probeninformation[nextIndex]?.id || "";
+  
+        setFormData({
+          patient_Id_intern: formData.patient_Id_intern,
+          barcode_id: "",
+          probeninformation: nextProbe,
+          probeninformation_ltx: "",   // always empty in NORMAL mode
+        });
       }
-
-      // Refresh table after submission
+  
+      // Refresh table
       const updatedTableData = await axios.get(
         `http://localhost:8000/table/data?table_name=vorlaeufigeproben`
       );
-      setData(updatedTableData.data); // Setze die neuen Daten in die Tabelle
+      setData(updatedTableData.data);
+  
     } catch (error) {
       console.error("Error submitting form:", error);
       setSnackbarMessage("Fehler beim Senden der Daten.");
@@ -132,8 +189,7 @@ export default function SampleForm() {
       setSnackbarOpen(true);
     }
   };
-
-
+  
 
   return (
     <Box sx={{ p: 3, maxWidth: 600, mx: "auto" }}>
@@ -172,6 +228,7 @@ export default function SampleForm() {
           helperText={errors.patient_Id_intern}
         />
 
+
         <TextField
           label="Scannerfeld für Barcode ID"
           name="barcode_id"
@@ -183,25 +240,61 @@ export default function SampleForm() {
           error={Boolean(errors.barcode_id)}
           helperText={errors.barcode_id}
         />
-
-        <FormControl variant="outlined" fullWidth margin="normal" error={Boolean(errors.probeninformation)}>
-          <InputLabel id="label-select-label">Probeninformation</InputLabel>
-          <Select
-            label="probeninformation"
-            name="probeninformation"
-            labelId="label-select-label"
-            value={formData.probeninformation}
+        <FormGroup>
+          <FormControlLabel control={<Checkbox
+            checked={checked}
             onChange={handleChange}
-          >
-            <MenuItem value=""><em>None</em></MenuItem>
-            {probeninformation.map((probe) => (
-              <MenuItem key={probe.id} value={probe.id}>
-                {probe.probeninformation_text}
-              </MenuItem>
-            ))}
-          </Select>
-          {errors.probeninformation && <Typography color="error" variant="caption">{errors.probeninformation}</Typography>}
-        </FormControl>
+            slotProps={{
+              input: { 'aria-label': 'controlled' },
+            }}
+          />} label="LTX-Probe" />
+        </FormGroup>
+
+
+
+        {/* Normale Probeninformation */}
+        {!checked && (
+          <FormControl variant="outlined" fullWidth margin="normal" error={Boolean(errors.probeninformation)}>
+            <InputLabel id="label-select-label">Probeninformation</InputLabel>
+            <Select
+              label="probeninformation"
+              name="probeninformation"
+              labelId="label-select-label"
+              value={formData.probeninformation}
+              onChange={handleChange}
+            >
+              <MenuItem value=""><em>None</em></MenuItem>
+              {probeninformation.map((probe) => (
+                <MenuItem key={probe.id} value={probe.id}>
+                  {probe.probeninformation_text}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+        )}
+
+        {/* LTX-Probeninformation */}
+        {checked && (
+          <FormControl variant="outlined" fullWidth margin="normal" error={Boolean(errors.probeninformation_ltx)}>
+            <InputLabel id="label-select-ltx-label">LTX Probeninformation</InputLabel>
+            <Select
+              label="probeninformation_ltx"
+              name="probeninformation_ltx"
+              labelId="label-select-ltx-label"
+              value={formData.probeninformation_ltx}
+              onChange={handleChange}
+            >
+              <MenuItem value=""><em>None</em></MenuItem>
+              {probeninformationLTX.map((probe) => (
+                <MenuItem key={probe.id} value={probe.id}>
+                  {probe.probeninformation_text}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+        )}
+
+
 
         <Button
           type="submit" // enter activates the function
@@ -213,7 +306,6 @@ export default function SampleForm() {
           Senden
         </Button>
       </Box>
-
 
       <Box sx={{ textAlign: "center", mt: 10 }}>
         <Typography variant="h6" sx={{ fontWeight: "bold", color: "text.primary" }}>

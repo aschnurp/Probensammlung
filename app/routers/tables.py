@@ -18,7 +18,7 @@ router = APIRouter(
 )
 
 #requestable tables
-ALLOWED_TABLE_NAMES = {"patient", "serumproben", "gewebeproben", "urinproben", "paraffinproben", "probenabholer", "vorlaeufigeproben", "probeninformation", "stuhlproben", "galleproben", "edtaplasmaproben"}
+ALLOWED_TABLE_NAMES = {"patient", "serumproben", "gewebeproben", "urinproben", "paraffinproben", "probenabholer", "vorlaeufigeproben", "probeninformation", "probeninformation_ltx" ,"stuhlproben", "galleproben", "edtaplasmaproben"}
 
 #get table content dynamicly
 @router.get("/data", response_model=None)
