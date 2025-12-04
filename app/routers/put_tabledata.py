@@ -99,10 +99,10 @@ def update_vorlaeufigeproben(updated_post: schemas.TableVorlaeufigeProben, db: S
 #router for patch stuhl entry
 @router.put("/stuhlproben", status_code=status.HTTP_201_CREATED, response_model= schemas.TableDataStuhlproben)
 def update_stuhlproben(updated_post: schemas.TableDataStuhlproben, db: Session = Depends(get_db)):
-    existing_item_query = db.query(Stuhlproben).filter(Stuhlproben.id == updated_post.id)
+    existing_item_query = db.query(Stuhlproben).filter(Stuhlproben.barcode_id == updated_post.barcode_id)
     existing_item = existing_item_query.first()
     if existing_item == None:
-        raise HTTPException(status_code= status.HTTP_403_FORBIDDEN, detail= f"entery with barcode_id: {updated_post.id} does not exist") 
+        raise HTTPException(status_code= status.HTTP_403_FORBIDDEN, detail= f"entery with barcode_id: {updated_post.barcode_id} does not exist") 
     existing_item_query.update(updated_post.dict(), synchronize_session = False)
     db.commit()
     return existing_item_query.first()

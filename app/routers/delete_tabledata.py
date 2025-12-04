@@ -99,10 +99,10 @@ def delete_vorlaeufige_proben(delete_post: schemas.TableVorlaeufigeProben, db: S
 #router for deleting stuhlproben entry
 @router.delete("/stuhlproben", status_code=status.HTTP_200_OK)  # No content on successful delete
 def delete_stuhl_proben(delete_post: schemas.TableDataStuhlproben, db: Session = Depends(get_db)):
-    existing_item_query = db.query(Stuhlproben).filter(Stuhlproben.id == delete_post.id)
+    existing_item_query = db.query(Stuhlproben).filter(Stuhlproben.barcode_id == delete_post.barcode_id)
     existing_item = existing_item_query.first()
     if not existing_item:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"Entry with barcode_id: {delete_post.id} not found.")
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"Entry with barcode_id: {delete_post.barcode_id} not found.")
     existing_item_query.delete(synchronize_session=False)
     db.commit()
     return {"message": "Successfully deleted"} 

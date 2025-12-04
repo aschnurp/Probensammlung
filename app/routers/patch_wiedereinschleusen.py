@@ -8,6 +8,7 @@ from ..models.gewebeproben import Gewebeproben
 from ..models.urinproben import Urinproben
 from ..models.galleproben import Galleproben
 from ..models.edtaplasmaproben import Edtaplasmaproben
+from ..models.stuhlproben import Stuhlproben
 
 router = APIRouter(
     prefix="/wiedereingeschleusen",
@@ -121,6 +122,31 @@ def patch_galleproben(barcode_id: str, db: Session = Depends(get_db)):
         )
     return item_query.first()
 
+#router for new stuhl entry
+@router.patch("/stuhl/{barcode_id}", status_code=status.HTTP_200_OK,response_model=schemas.TableDataStuhlproben)
+def patch_stuhlproben(barcode_id: str, db: Session = Depends(get_db)):
+    # Suche nach dem bestehenden Eintrag
+    item_query = db.query(Stuhlproben).filter(Stuhlproben.barcode_id == barcode_id)
+    existing_item = item_query.first()
+
+    #test ob item existiert
+    if not existing_item:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"Eintrag mit barcode_id: {barcode_id} existiert nicht.",
+        )
+    # Aktualisieren des Eintrags mit dem Standardwert 3 für status
+    try:
+        item_query.update({"status": 3}, synchronize_session=False)
+        item_query.update({Stuhlproben.anzahl_statuswechsel: Stuhlproben.anzahl_statuswechsel + 1}, synchronize_session=False)
+        db.commit()
+    except Exception as e:
+        db.rollback()
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Fehler beim Aktualisieren: {str(e)}",
+        )
+    return item_query.first()
 
 #router for new edtaplasma entry
 @router.patch("/edtaplasma/{barcode_id}", status_code=status.HTTP_200_OK,response_model=schemas.TableDataEdtaplasmaproben)

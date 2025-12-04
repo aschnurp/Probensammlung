@@ -219,7 +219,7 @@ export default function PatientForm() {
           Patienten Anlegen
         </Typography>
         <Typography variant="body1" sx={{ color: 'text.primary' }}>
-          Hier können Patientendaten vervollständigt sowie neue Patienten angelegt werden.
+          Hier können Patientendaten vervollständigt, sowie neue Patienten angelegt werden.
         </Typography>
       </Box>
 

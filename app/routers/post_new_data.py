@@ -169,9 +169,9 @@ def create_stuhlproben(post: schemas.TableDataStuhlproben, db: Session = Depends
     new_item = Stuhlproben(**post.dict())
 
         # Prüfen, ob die Probe bereits existiert
-    existing_item = db.query(Stuhlproben).filter(Stuhlproben.id == post.id).first()
+    existing_item = db.query(Stuhlproben).filter(Stuhlproben.barcode_id == post.barcode_id).first()
     if existing_item:
-        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail=f"Entry with barcode_id: {post.id} already exists")
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail=f"Entry with barcode_id: {post.barcode_id} already exists")
     
     # Neue Probe hinzufügen
     db.add(new_item)
