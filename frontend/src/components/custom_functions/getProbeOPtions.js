@@ -101,7 +101,22 @@ export const getProbeOptions = (probenart) => {
     { id: 43, text: "EDTA-Plasma post OP 14d II", type: "edtaplasma" },
     { id: 44, text: "EDTA-Plasma post OP 14d III", type: "edtaplasma" },
     { id: 45, text: "EDTA-Plasma post OP 14d IV", type: "edtaplasma" },
-  ]
+    {id: 46, text:"Stuhl prä OP I", type:"stuhl"},
+    {id: 47, text:"Stuhl prä OP III", type:"stuhl"},
+    {id: 48, text:"Stuhl prä OP IV", type:"stuhl"},
+    {id: 49, text:"Stuhl post OP 1d I", type:"stuhl"},
+    {id: 50, text:"Stuhl post OP 1d II", type:"stuhl"},
+    {id: 51, text:"Stuhl post OP 1d III", type:"stuhl"},
+    {id: 52, text:"Stuhl post OP 1d IV", type:"stuhl"},
+    {id: 53, text:"Stuhl post OP 7d I", type:"stuhl"},
+    {id: 54, text:"Stuhl post OP 7d II", type:"stuhl"},
+    {id: 55, text:"Stuhl post OP 7d III", type:"stuhl"},
+    {id: 56, text:"Stuhl post OP 7d IV", type:"stuhl"},
+    {id: 57, text:"Stuhl post OP 14d I", type:"stuhl"},
+    {id: 58, text:"Stuhl post OP 14d II", type:"stuhl"},
+    {id: 59, text:"Stuhl post OP 14d III", type:"stuhl"},
+    {id: 60, text:"Stuhl post OP 14d IV", type:"stuhl"},
+]
 
   probeninformationLTXOptions = probeDataLTX
   .filter((probe) => probe.type === probenart)

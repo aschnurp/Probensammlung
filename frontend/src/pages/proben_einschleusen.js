@@ -1564,7 +1564,35 @@ export default function SampleForm() {
             helperText={errors.patient_Id_intern}
           />
 
-      
+          {/* Probeninformation_LTX */}
+          <FormControl
+            variant="outlined"
+            fullWidth
+            margin="normal"
+            error={Boolean(errors.untergeordneteProbe)}
+          >
+            <InputLabel>Probeninformation-LTX</InputLabel>
+            <Select
+              id="Probeninformation_ltx"
+              name="probeninformation_ltx"
+              value={formData.probeninformation_ltx}
+              onChange={handleChange}
+              label="Probeninformation_ltx"
+            >
+              <MenuItem value="">-- Bitte auswählen --</MenuItem>
+              {probeninformationLTXOptions.map((option) => (
+                <MenuItem key={option.id} value={option.id}>
+                  {option.probeninformation_text} 
+                </MenuItem>
+              ))}
+            </Select>
+            {errors.probeninformation && (
+              <Typography variant="caption" color="error">
+                {errors.probeninformation}
+              </Typography>
+            )}
+          </FormControl>
+
           {/* Datum */}
           <TextField
             label="Datum"
@@ -1626,6 +1654,55 @@ export default function SampleForm() {
             margin="normal"
             error={Boolean(errors.lagerraum)}
             helperText={errors.lagerraum}
+          />
+
+
+          {/* Boxnummer */}
+          <TextField
+            label="Boxnummer"
+            name="boxnummer"
+            type="number"
+            value={formData.boxnummer}
+            onChange={handleChange}
+            fullWidth
+            margin="normal"
+            error={Boolean(errors.boxnummer)}
+            helperText={errors.boxnummer}
+          />
+
+          {/* Boxzeile */}
+          <FormControl variant="outlined" fullWidth margin="normal" error={Boolean(errors.boxzeile)}>
+            <InputLabel>Boxzeile</InputLabel>
+            <Select
+              name="boxzeile"
+              value={formData.boxzeile}
+              onChange={handleChange}
+              label="Boxzeile"
+            >
+              {['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I'].map((letter) => (
+                <MenuItem key={letter} value={letter}>
+                  {letter}
+                </MenuItem>
+              ))}
+            </Select>
+            {errors.boxzeile && (
+              <Typography variant="caption" color="error">
+                {errors.boxzeile}
+              </Typography>
+            )}
+          </FormControl>
+
+          {/* Boxspalte */}
+          <TextField
+            label="Boxspalte"
+            name="boxspalte"
+            type="number"
+            value={formData.boxspalte}
+            onChange={handleChange}
+            fullWidth
+            margin="normal"
+            error={Boolean(errors.boxspalte)}
+            helperText={errors.boxspalte}
           />
 
           {/* Besonderheiten */}

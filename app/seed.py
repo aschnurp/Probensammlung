@@ -147,6 +147,22 @@ def seed_status_data(db: Session):
             Probeninformation_ltx(probeninformation_text="EDTA-Plasma post OP 14d II", probenart="edtaplasma"),
             Probeninformation_ltx(probeninformation_text="EDTA-Plasma post OP 14d III", probenart="edtaplasma"),
             Probeninformation_ltx(probeninformation_text="EDTA-Plasma post OP 14d IV", probenart="edtaplasma"),
+            Probeninformation_ltx(probeninformation_text="Stuhl prä OP I", probenart="stuhl"),
+            Probeninformation_ltx(probeninformation_text="Stuhl prä OP II", probenart="stuhl"),
+            Probeninformation_ltx(probeninformation_text="Stuhl prä OP III", probenart="stuhl"),
+            Probeninformation_ltx(probeninformation_text="Stuhl prä OP IV", probenart="stuhl"),
+            Probeninformation_ltx(probeninformation_text="Stuhl post OP 1d I", probenart="stuhl"),
+            Probeninformation_ltx(probeninformation_text="Stuhl post OP 1d II", probenart="stuhl"),
+            Probeninformation_ltx(probeninformation_text="Stuhl post OP 1d III", probenart="stuhl"),
+            Probeninformation_ltx(probeninformation_text="Stuhl post OP 1d IV", probenart="stuhl"),
+            Probeninformation_ltx(probeninformation_text="Stuhl post OP 7d I", probenart="stuhl"),
+            Probeninformation_ltx(probeninformation_text="Stuhl post OP 7d II", probenart="stuhl"),
+            Probeninformation_ltx(probeninformation_text="Stuhl post OP 7d III", probenart="stuhl"),
+            Probeninformation_ltx(probeninformation_text="Stuhl post OP 7d IV", probenart="stuhl"),
+            Probeninformation_ltx(probeninformation_text="Stuhl post OP 14d I", probenart="stuhl"),
+            Probeninformation_ltx(probeninformation_text="Stuhl post OP 14d II", probenart="stuhl"),
+            Probeninformation_ltx(probeninformation_text="Stuhl post OP 14d III", probenart="stuhl"),
+            Probeninformation_ltx(probeninformation_text="Stuhl post OP 14d IV", probenart="stuhl"),
         ]
         # Einfügen und speichern
         db.add_all(seed_data)
