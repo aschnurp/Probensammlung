@@ -87,6 +87,9 @@ export default function patientenuebersicht() {
         <Typography variant="h5" sx={{ fontWeight: 'bold', color: 'text.primary' }}>
           Patientenübersicht
         </Typography>
+        <Typography variant="body1" sx={{ color: 'text.primary' }}>
+          Nach Eingabe einer Patientennummer (HL-Nummer) werden alle Daten zu dieser Person angezeigt.
+        </Typography>
       </Box>
       <TextField
         label="Patientennummer z.b.HL0125"

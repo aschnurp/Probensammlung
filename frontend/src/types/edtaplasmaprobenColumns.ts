@@ -14,5 +14,6 @@ export const edtaplasmaprobenDataColumns = [
     { key: "boxspalte", label: "Boxspalte" },
     { key: "lagerraum", label: "Lagerraum" },
     { key: "anmerkungen", label: "Anmerkungen" },
+    { key: "status", label: "Probenstatus" },
     { key: "anzahl_statuswechsel", label: "Anzahl Statuswechsel" },
 ];

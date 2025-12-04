@@ -86,6 +86,9 @@ export default function ProbeAusschleusen() {
         <Typography variant="h5" sx={{ fontWeight: 'bold', color: 'text.primary' }}>
           Proben wieder einschleusen
         </Typography>
+        <Typography variant="body1" sx={{ color: 'text.primary' }}>
+          Ausgeschleuste Proben in das System wieder einschleusen. 
+        </Typography>
       </Box>
 
       {/* Proben RadioGroup */}
@@ -96,14 +99,19 @@ export default function ProbeAusschleusen() {
           name="proben"
           value={selectedProbe}
           onChange={handleProbeChange}
-          row
+          col
         >
           <FormControlLabel value="serum" control={<Radio />} label="Serumproben" />
           <FormControlLabel value="gewebe" control={<Radio />} label="Gewebeproben" />
           <FormControlLabel value="urin" control={<Radio />} label="Urinproben" />
+          <FormControlLabel value="galle" control={<Radio />} label="Galleproben" />
+          <FormControlLabel value="edtaplasma" control={<Radio />} label="EDTA-Plasmaproben" />
         </RadioGroup>
       </FormControl>
 
+      <Box sx={{ textAlign: 'left', mt: 4}}>
+      <FormLabel id="proben-label">Barcode</FormLabel>
+      </Box>
       <TextField
         label="Scannerfeld für Barcode ID"
         name="barcodeId"
@@ -122,7 +130,7 @@ export default function ProbeAusschleusen() {
         fullWidth
         sx={{ mt: 2 }}
       >
-        Probe ausschleusen
+        Einschleusen
       </Button>
 
       {/* Snackbar for notifications */}

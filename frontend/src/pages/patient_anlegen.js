@@ -218,6 +218,9 @@ export default function PatientForm() {
         <Typography variant="h5" sx={{ fontWeight: 'bold', color: 'text.primary' }}>
           Patienten Anlegen
         </Typography>
+        <Typography variant="body1" sx={{ color: 'text.primary' }}>
+          Hier können Patientendaten vervollständigt sowie neue Patienten angelegt werden.
+        </Typography>
       </Box>
 
       <TextField
