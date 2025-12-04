@@ -82,11 +82,11 @@ def get_last_box_info(
     """
     Retrieve the boxnummer, boxzeile, and boxspalte from the last entry of the specified table.
 
-    - **table_name**: Must be one of "gewebeproben", "serumproben", "urinproben", "galleproben"
+    - **table_name**: Must be one of "gewebeproben", "serumproben", "urinproben", "galleproben", "stuhlproben", "edtaplasmaproben"
     """
 
     # Define allowed tables for this endpoint
-    ALLOWED_LAST_BOX_INFO_TABLES = {"gewebeproben", "serumproben", "urinproben", "galleproben"}
+    ALLOWED_LAST_BOX_INFO_TABLES = {"gewebeproben", "serumproben", "urinproben", "galleproben", "stuhlproben", "edtaplasmaproben"}
 
     if table_name not in ALLOWED_LAST_BOX_INFO_TABLES:
         raise HTTPException(

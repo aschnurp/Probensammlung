@@ -204,7 +204,13 @@ export default function SampleForm() {
             ? 'serumproben'
             : probenart === 'urin'
               ? 'urinproben'
-              : null;
+              : probenart === 'galle'
+              ? 'galleproben'
+                : probenart === 'stuhl'
+                ? 'stuhlproben'
+                  : probenart === 'edtaplasma'
+                  ? 'edtaplasmaproben'
+                  : null;
 
       if (!tableName) return;
 
