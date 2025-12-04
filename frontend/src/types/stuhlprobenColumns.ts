@@ -1,7 +1,7 @@
 //label for data overview
 // variable .... displayd text
 export const stuhlprobenDataColumns = [
-    { key: "id", label: "ID" },
+    { key: "barcode_id", label: "Barcode ID" },
     { key: "patient_Id_intern", label: "Patient/Innen ID (intern)" },
     { key: "created_at", label: "Erstellungsdatum" },
     { key: "abholer", label: "Abholer:In" },
@@ -9,5 +9,10 @@ export const stuhlprobenDataColumns = [
     { key: "probenart", label: "Probenart" },
     { key: "differenzierungsmerkmal", label: "Differenzierungsmerkmal" },
     { key: "lagerraum", label: "Lagerraum" },
-    { key: "anmerkungen", label: "Anmerkungen" }
+    { key: "boxnummer", label: "Boxname (Boxnummer)" },
+    { key: "boxzeile", label: "Boxzeile" },
+    { key: "boxspalte", label: "Boxspalte" },
+    { key: "anmerkungen", label: "Anmerkungen" },
+    { key: "status", label: "Probenstatus" },
+    { key: "anzahl_statuswechsel", label: "Anzahl Statuswechsel" },
 ]

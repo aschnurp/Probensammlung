@@ -22,4 +22,5 @@ class Stuhlproben(Base):
     lagerraum = Column(TEXT)
     differenzierungsmerkmal	= Column(TINYINT, ForeignKey("differenzierungsmerkmal_stuhl.id"), nullable=True)
     anmerkungen = Column(TEXT)
+    anzahl_statuswechsel = Column(Integer, server_default="0")
     status = Column(TINYINT, ForeignKey("status.id"))
