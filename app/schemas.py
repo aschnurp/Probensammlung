@@ -109,6 +109,7 @@ class TableVorlaeufigeProben(BaseModel):
     barcode_id: str 
     patient_Id_intern: Optional[str] = None 
     probeninformation: Optional[int] = None
+    probeninformation_ltx: Optional[int] = None
 
 class TableDataStuhlproben(BaseModel):
     barcode_id: str

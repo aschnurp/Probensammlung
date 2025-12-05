@@ -12,5 +12,5 @@ class VorlaeufigeProben(Base):
     timestamp = Column(TIMESTAMP(timezone=True), nullable=False, server_default=text("now()"))
     patient_Id_intern = Column(VARCHAR(200), ForeignKey("patient.patient_Id_intern")) 
     probeninformation	= Column(Integer, ForeignKey("probeninformation.id"), nullable=True)
-
+    probeninformation_ltx = Column(Integer, ForeignKey("probeninformation_ltx.id"), nullable=True)
 
