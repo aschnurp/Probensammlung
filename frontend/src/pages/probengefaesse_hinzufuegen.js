@@ -192,7 +192,7 @@ export default function SampleForm() {
   
 
   return (
-    <Box sx={{ p: 3, maxWidth: 600, mx: "auto" }}>
+    <Box sx={{ p: 3, maxWidth: 900, mx: "auto" }}>
       <Box sx={{ position: "absolute", top: 90, left: 16 }}>
         <Button variant="contained" color="primary" onClick={() => window.location.href = "/overview"}>
           <IoMdArrowRoundBack className="text-2xl" />
@@ -294,8 +294,6 @@ export default function SampleForm() {
           </FormControl>
         )}
 
-
-
         <Button
           type="submit" // enter activates the function
           variant="contained"
@@ -315,12 +313,13 @@ export default function SampleForm() {
 
       {/* Table for displaying data */}
       <TableContainer component={Paper} sx={{ mt: 5 }}>
-        <Table sx={{ minWidth: 650 }} aria-label="simple table">
+        <Table sx={{ minWidth: 90 }} aria-label="simple table">
           <TableHead>
             <TableRow>
-              <TableCell align="left" style={{ width: 100 }}>Barcode</TableCell>
-              <TableCell align="left" style={{ width: 100 }}>Patient ID</TableCell>
-              <TableCell align="left" style={{ width: 100 }}>Probeninformation</TableCell>
+              <TableCell align="left" style={{ width: 220 }}>Barcode</TableCell>
+              <TableCell align="left" style={{ width: 220 }}>Patient ID</TableCell>
+              <TableCell align="left" style={{ width: 220 }}>Probeninformation</TableCell>
+              <TableCell align="left" style={{ width: 220 }}>Probeninformation-LTX</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -329,10 +328,13 @@ export default function SampleForm() {
               .slice(0, 10) // Nimmt nur die ersten 10
               .map((row) => ( //mapping probeninformation_text on row.probeninformation
                 <TableRow key={row.id}>
-                  <TableCell align="left" style={{ width: 100 }}>{row.barcode_id}</TableCell>
-                  <TableCell align="left" style={{ width: 100 }}>{row.patient_Id_intern}</TableCell>
-                  <TableCell align="left" style={{ width: 100 }}>
-                    {probeninformation.find((probe) => probe.id === row.probeninformation)?.probeninformation_text || "Keine Info"}
+                  <TableCell align="left" style={{ width: 220 }}>{row.barcode_id}</TableCell>
+                  <TableCell align="left" style={{ width: 220 }}>{row.patient_Id_intern}</TableCell>
+                  <TableCell align="left" style={{ width: 220 }}>
+                    {probeninformation.find((probe) => probe.id === row.probeninformation)?.probeninformation_text || "-"}
+                  </TableCell>
+                  <TableCell align="left" style={{ width: 220 }}>
+                    {probeninformationLTX.find((probe) => probe.id === row.probeninformation_ltx)?.probeninformation_text || "-"}
                   </TableCell>
                 </TableRow>
               ))}
