@@ -11,6 +11,9 @@ import { getSerumCount } from '../services/api';
 import { getGewebeCount } from '../services/api';
 import { getUrinCount } from '../services/api';
 import { getParaffinCount } from '../services/api';
+import { getGalleCount } from '../services/api';
+import { getStuhlCount } from '../services/api';
+import { getEdtaplasmaCount } from '../services/api';
 import AddCircleRoundedIcon from '@mui/icons-material/AddCircleRounded';
 import InputRoundedIcon from '@mui/icons-material/InputRounded';
 import OutputRoundedIcon from '@mui/icons-material/OutputRounded';
@@ -70,6 +73,9 @@ export default function Overview() {
   const [gewebe_count, setGewebeCount] = useState(0);
   const [urin_count, setUrinCount] = useState(0);
   const [paraffin_count, setParaffinCount] = useState(0);
+  const [galle_count, setGalleCount] = useState(0);
+  const [stuhl_count, setStuhlCount] = useState(0);
+  const [edtaplasma_count, setEdtaplasmaCount] = useState(0);
   const location = usePathname();
   const [loading, setLoading] = useState(false); 
   const [error, setError] = useState(null); 
@@ -96,6 +102,9 @@ export default function Overview() {
         fetchData(getGewebeCount, setGewebeCount, 'Failed to fetch geweb count'),
         fetchData(getUrinCount, setUrinCount, 'Failed to fetch urin count'),
         fetchData(getParaffinCount, setParaffinCount, 'Failed to fetch urin count'),
+        fetchData(getGalleCount, setGalleCount, 'Failed to fetch galle count'),
+        fetchData(getStuhlCount, setStuhlCount, 'Failed to fetch stuhl count'),
+        fetchData(getEdtaplasmaCount, setEdtaplasmaCount, 'Failed to fetch edtaplasma count'),
       ]);
     };
 
@@ -192,6 +201,30 @@ export default function Overview() {
             </Typography>
             <Typography variant="body2" sx={{ color: 'text.secondary' }}>
               Paraffinproben
+            </Typography>
+          </Box>
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+            <Typography variant="body2" sx={{ color: 'success.dark', fontWeight: 'bold' }}>
+              {galle_count}
+            </Typography>
+            <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+              Gallproben
+            </Typography>
+          </Box>
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+            <Typography variant="body2" sx={{ color: 'success.dark', fontWeight: 'bold' }}>
+              {stuhl_count}
+            </Typography>
+            <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+              Stuhlproben
+            </Typography>
+          </Box>
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+            <Typography variant="body2" sx={{ color: 'success.dark', fontWeight: 'bold' }}>
+              {edtaplasma_count}
+            </Typography>
+            <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+              EDTA-Plasmaproben
             </Typography>
           </Box>
         </Box>

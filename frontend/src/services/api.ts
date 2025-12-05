@@ -67,6 +67,36 @@ export const getParaffinCount = async () => {
     }
 };
 
+export const getGalleCount = async () => {
+    try {
+        const response = await axios.get(`${API_BASE_URL}/number/galleproben`);
+        return response.data;  
+    } catch (error) {
+        console.error('Error fetching patient count:', error);
+        throw error; 
+    }
+};
+
+export const getStuhlCount = async () => {
+    try {
+        const response = await axios.get(`${API_BASE_URL}/number/stuhlproben`);
+        return response.data;  
+    } catch (error) {
+        console.error('Error fetching patient count:', error);
+        throw error; 
+    }
+};
+
+export const getEdtaplasmaCount = async () => {
+    try {
+        const response = await axios.get(`${API_BASE_URL}/number/edtaplasmaproben`);
+        return response.data;  
+    } catch (error) {
+        console.error('Error fetching patient count:', error);
+        throw error; 
+    }
+};
+
 // patient specific call of data
 export const getPatientParaffinCount = async (patientID: string) => {
     try {
