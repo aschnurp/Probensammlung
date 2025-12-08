@@ -1,154 +1,171 @@
-// tabelle oder andere übersicht
-// count?
-// deault - eingabefeld -> tabellen
-
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import {
   Box,
   TextField,
   Button,
   Typography,
-  RadioGroup,
-  FormControl,
-  FormLabel,
-  FormControlLabel,
-  Radio,
   Snackbar,
   Alert,
+  TableContainer,
+  Paper,
+  Table,
+  TableHead,
+  TableRow,
+  TableCell,
+  TableBody,
 } from '@mui/material';
 import { IoMdArrowRoundBack } from "react-icons/io";
 import axios from 'axios';
-import { getPatientSerumCount } from '../services/api';
-import { getPatientGewebeCount } from '../services/api';
-import { getPatientUrinCount } from '../services/api';
-import { getPatientParaffinCount } from '../services/api';
 
-export default function patientenuebersicht() {
-  const [errors, setErrors] = useState({});
+// Tabellen-Namen laut Backend
+const TABLE_NAMES = [
+  "gewebeproben",
+  "serumproben",
+  "urinproben",
+  "galleproben",
+  "stuhlproben",
+  "edtaplasmaproben"
+];
+
+export default function Patientenuebersicht() {
+  const [patientID, setPatientID] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [sampleData, setSampleData] = useState({});
   const [snackbarMessage, setSnackbarMessage] = useState('');
   const [snackbarSeverity, setSnackbarSeverity] = useState('success');
   const [snackbarOpen, setSnackbarOpen] = useState(false);
-  const [patientID, setSelectedpatientID] = useState('');
-  
-  // count states
-  const [patient_serum_count, setPatientSerumCount] = useState(0);
-  const [patient_gewebe_count, setPatientGewebeCount] = useState(0);
-  const [patient_urin_count, setPatientUrinCount] = useState(0);
-  const [patient_paraffin_count, setPatientParaffinCount] = useState(0);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null); 
 
-  const handleChange= (e) => {
-    setSelectedpatientID(e.target.value);
-  };
-
-  const fetchData = async (fetchFunction, setFunction, errorMessage) => {
-    try {
-      const count = await fetchFunction();
-      setFunction(count);
-    } catch (error) {
-      console.error(errorMessage, error);
-    }
-  };
-
-  const handleSubmit = async () => {
+  // --- Hauptfunktion: Daten holen ---
+  const fetchSampleData = async () => {
     if (!patientID) {
-      setSnackbarMessage("Bitte Patientennummer eingeben!");
       setSnackbarSeverity("warning");
+      setSnackbarMessage("Bitte eine Patientennummer eingeben.");
       setSnackbarOpen(true);
       return;
     }
-  
+
+    setLoading(true);
+
     try {
-      await Promise.all([
-        fetchData(() => getPatientSerumCount(patientID), setPatientSerumCount, "Fehler Serum"),
-        fetchData(() => getPatientGewebeCount(patientID), setPatientGewebeCount, "Fehler Gewebe"),
-        fetchData(() => getPatientUrinCount(patientID), setPatientUrinCount, "Fehler Urin"),
-        fetchData(() => getPatientParaffinCount(patientID), setPatientParaffinCount, "Fehler Paraffin"),
-      ]);
-  
-    } catch (error) {
-      console.error(error);
+      const responses = await Promise.all(
+        TABLE_NAMES.map(async (table) => {
+          const url = `http://localhost:8000/table/data?table_name=${table}`;
+          const res = await axios.get(url);
+
+          // Filter direkt im Frontend nach patient_id
+          const filtered = res.data.filter(
+            (row) => row.patient_id === patientID
+          );
+
+          return { table, data: filtered };
+        })
+      );
+
+      const collected = {};
+      responses.forEach(({ table, data }) => {
+        collected[table] = data;
+      });
+
+      setSampleData(collected);
+
+      setSnackbarSeverity("success");
+      setSnackbarMessage("Daten erfolgreich geladen.");
+      setSnackbarOpen(true);
+
+    } catch (err) {
+      console.error(err);
+      setSnackbarSeverity("error");
+      setSnackbarMessage("Fehler beim Laden der Daten.");
+      setSnackbarOpen(true);
+
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    <Box sx={{ p: 3, maxWidth: 600, mx: 'auto' }}>
+    <Box sx={{ p: 3, maxWidth: 1300, mx: 'auto' }}>
       <Box sx={{ position: 'absolute', top: 90, left: 16 }}>
-        <Button
-          variant="contained"
-          color="primary"
-          onClick={() => (window.location.href = '/overview')}
-        >
+        <Button variant="contained" color="primary" onClick={() => (window.location.href = '/overview')}>
           <IoMdArrowRoundBack className="text-2xl" />
         </Button>
       </Box>
+
       <Box sx={{ textAlign: 'center', mt: 4, mb: 2 }}>
         <Typography variant="h5" sx={{ fontWeight: 'bold', color: 'text.primary' }}>
           Patientenübersicht
         </Typography>
         <Typography variant="body1" sx={{ color: 'text.primary' }}>
-          Nach Eingabe einer Patientennummer (HL-Nummer) werden alle Daten zu dieser Person angezeigt.
+          Nach Eingabe einer Patientennummer werden alle Probenarten gleichzeitig geladen.
         </Typography>
       </Box>
-      <TextField
-        label="Patientennummer z.b.HL0125"
-        name="patientID"
-        value={patientID}
-        onChange={handleChange}
-        fullWidth
-        margin="normal"
-        error={Boolean(errors.patientID)}
-        helperText={errors.patientID}
-        autoFocus
-      />
-      <Button
-        variant="contained"
-        color="primary"
-        onClick={handleSubmit}
-        fullWidth
-        sx={{ mt: 2 }}
+
+      <Box sx={{ display: 'flex', gap: 2, maxWidth: 600, mx: 'auto' }}>
+        <TextField
+          label="Patientennummer (z. B. HL0125)"
+          value={patientID}
+          onChange={(e) => setPatientID(e.target.value)}
+          fullWidth
+        />
+
+        <Button 
+          variant="contained" 
+          color="primary" 
+          onClick={fetchSampleData} 
+          disabled={loading}
+        >
+          {loading ? 'Lade...' : 'Laden'}
+        </Button>
+      </Box>
+
+      <TableContainer component={Paper} sx={{ mt: 5 }}>
+        <Table>
+          <TableHead>
+            <TableRow>
+              <TableCell align="center">Gewebe</TableCell>
+              <TableCell align="center">Serum</TableCell>
+              <TableCell align="center">Urin</TableCell>
+              <TableCell align="center">Galle</TableCell>
+              <TableCell align="center">Stuhl</TableCell>
+              <TableCell align="center">EDTA-Plasma</TableCell>
+            </TableRow>
+          </TableHead>
+
+          <TableBody>
+            <TableRow>
+              {TABLE_NAMES.map((table) => (
+                <TableCell key={table} align="left">
+                  {sampleData[table] && sampleData[table].length > 0 ? (
+                    <ul style={{ paddingLeft: "20px", margin: 0 }}>
+                      {sampleData[table].map((entry) => (
+                        <li key={entry.id}>
+                          {entry.probeninformation_text ?? "(Keine Beschreibung)"}
+                        </li>
+                      ))}
+                    </ul>
+                  ) : (
+                    <span>-</span>
+                  )}
+                </TableCell>
+              ))}
+            </TableRow>
+          </TableBody>
+        </Table>
+      </TableContainer>
+
+      <Snackbar 
+        open={snackbarOpen}
+        autoHideDuration={4000}
+        onClose={() => setSnackbarOpen(false)}
       >
-        Suchen
-      </Button>
-
-      <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 1, mt: 5}}>
-          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-            <Typography variant="h7" sx={{ color: 'success.dark', fontWeight: 'bold' }}>
-              {patient_serum_count}
-            </Typography>
-            <Typography variant="h7" sx={{ color: 'text.secondary' }}>
-              Serumproben
-            </Typography>
-          </Box>
-
-          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-            <Typography variant="h7" sx={{ color: 'success.dark', fontWeight: 'bold' }}>
-              {patient_gewebe_count}
-            </Typography>
-            <Typography variant="h7" sx={{ color: 'text.secondary' }}>
-              Gewebeproben
-            </Typography>
-          </Box>
-
-          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-            <Typography variant="h7" sx={{ color: 'success.dark', fontWeight: 'bold' }}>
-              {patient_urin_count}
-            </Typography>
-            <Typography variant="h7" sx={{ color: 'text.secondary' }}>
-              Urinproben
-            </Typography>
-          </Box>
-
-          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-            <Typography variant="h7" sx={{ color: 'success.dark', fontWeight: 'bold' }}>
-              {patient_paraffin_count}
-            </Typography>
-            <Typography variant="h7" sx={{ color: 'text.secondary' }}>
-              Paraffinproben
-            </Typography>
-          </Box>
-        </Box>
+        <Alert 
+          onClose={() => setSnackbarOpen(false)} 
+          severity={snackbarSeverity} 
+          sx={{ width: '100%' }}
+        >
+          {snackbarMessage}
+        </Alert>
+      </Snackbar>
     </Box>
   );
 }

@@ -125,6 +125,7 @@ export default function Uebersicht() {
   };
 
   const [probeninformationOptionsToRender, setProbeninformationOptionsToRender] = useState([]);
+  const [probeninformationLTXOptionsToRender, setProbeninformationLTXOptionsToRender] = useState([]);
 
   useEffect(() => {
     if (!selectedTable) return;
@@ -174,6 +175,22 @@ export default function Uebersicht() {
     };
 
     getOptions("probeninformation", setProbeninformationOptionsToRender)
+  }, []);
+
+  useEffect(() => {
+    const getOptions = async (tableName, setFunction) => {
+      try {
+        const res = await fetch(`http://localhost:8000/table/data?table_name=${tableName}`);
+        if (!res.ok) throw new Error(`Fehler beim Abrufen von ${tableName}`);
+
+        const response = await res.json();
+        setFunction(response);
+      } catch (error) {
+        console.error(`Error fetching ${tableName}:`, error);
+      }
+    };
+
+    getOptions("probeninformation_ltx", setProbeninformationLTXOptionsToRender)
   }, []);
 
 
@@ -301,7 +318,6 @@ export default function Uebersicht() {
         setIsOpen(false);
       }
     };
-
     document.addEventListener("mousedown", handleClickOutside);
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
@@ -461,6 +477,19 @@ export default function Uebersicht() {
                           // Wenn passende Probeninformation gefunden wurde, gib den Text zurück, sonst "N/A"
                           return probeninfo ? probeninfo.probeninformation_text : "N/A";
                         })()
+
+
+                        ) : col.key === "probeninformation_ltx" ? (
+                          (() => {
+                            // Prüfen, ob die Probenart "vorläufige Proben" ist
+                            const probeninfo = probeninformationLTXOptionsToRender.find(
+                              (probe) => probe.id === row.probeninformation_ltx
+                            );
+  
+                            // Wenn passende Probeninformation gefunden wurde, gib den Text zurück, sonst "N/A"
+                            return probeninfo ? probeninfo.probeninformation_text : "N/A";
+                          })()
+
 
 
                       ) : col.key === "differenzierungsmerkmal" ? (

@@ -4,12 +4,11 @@ export type stuhlprobenData = {
     created_at?: string;
     abholer?: string;
     uhrzeit?: string;
-    probenart?: string;
+    probeninformation_ltx?: string;
     lagerraum?: string;
     boxnummer?: number; 
     boxzeile?: string; 
     boxspalte?: number;	
-    differenzierungsmerkmal?: number;
     anmerkungen?: string;
     anzahl_statuswechsel?: number;
 }

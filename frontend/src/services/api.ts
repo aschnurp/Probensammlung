@@ -2,7 +2,7 @@ import axios from 'axios';
 
 const API_BASE_URL = 'http://localhost:8000'; 
 
-//Get Routes
+//Get number of content entrys in table
 export const getTableData = async (tableName: string) => {
     try {
         const response = await axios.get(`${API_BASE_URL}/table/data`, {

@@ -5,7 +5,7 @@ from .database import get_db, engine, SessionLocal, Base
 from sqlalchemy.orm import Session
 from .models import edtaplasmaproben, stuhlproben, probeninformation_ltx, galleproben , differenzierungsmerkmal_stuhl ,differenzierungsmerkmal_gewebe, differenzierungsmerkmal_urin, differenzierungsmerkmal_serum , probeninformation, status, gewebeproben, probenabholer, serumproben, urinproben, patient, paraffinproben, probenquelle_urin, vorlaeufige_proben, uebergeordnete_probenart_paraffin, untergeordnete_probenart_paraffin
 from .config import settings
-from .routers import post_new_data, put_tabledata, tables, number_entrys, patch_ausschleusen, patch_wiedereinschleusen, delete_tabledata
+from .routers import post_new_data, put_tabledata, tables, number_entrys, patch_ausschleusen, patch_wiedereinschleusen, delete_tabledata, get_patients_samples
 from fastapi.middleware.cors import CORSMiddleware
 from app.seed import seed_status_data
 
@@ -60,6 +60,7 @@ app.include_router(put_tabledata.router)
 app.include_router(patch_wiedereinschleusen.router)
 app.include_router(patch_ausschleusen.router)
 app.include_router(delete_tabledata.router)
+app.include_router(get_patients_samples.router)
 
 
 @app.get("/")

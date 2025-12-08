@@ -99,9 +99,9 @@ export default function Overview() {
       await Promise.all([
         fetchData(getPatientCount, setPatientCount, 'Failed to fetch patient count'),
         fetchData(getSerumCount, setSerumCount, 'Failed to fetch serum count'),
-        fetchData(getGewebeCount, setGewebeCount, 'Failed to fetch geweb count'),
+        fetchData(getGewebeCount, setGewebeCount, 'Failed to fetch gewebe count'),
         fetchData(getUrinCount, setUrinCount, 'Failed to fetch urin count'),
-        fetchData(getParaffinCount, setParaffinCount, 'Failed to fetch urin count'),
+        fetchData(getParaffinCount, setParaffinCount, 'Failed to fetch paraffin count'),
         fetchData(getGalleCount, setGalleCount, 'Failed to fetch galle count'),
         fetchData(getStuhlCount, setStuhlCount, 'Failed to fetch stuhl count'),
         fetchData(getEdtaplasmaCount, setEdtaplasmaCount, 'Failed to fetch edtaplasma count'),

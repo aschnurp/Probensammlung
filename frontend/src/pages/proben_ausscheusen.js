@@ -108,6 +108,7 @@ export default function ProbeAusschleusen() {
           <FormControlLabel value="gewebe" control={<Radio />} label="Gewebeproben" />
           <FormControlLabel value="urin" control={<Radio />} label="Urinproben" />
           <FormControlLabel value="galle" control={<Radio />} label="Galleproben" />
+          <FormControlLabel value="stuhl" control={<Radio />} label="Stuhlproben" />
           <FormControlLabel value="edtaplasma" control={<Radio />} label="EDTA-Plasmaproben" />
         </RadioGroup>
       </FormControl>
