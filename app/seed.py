@@ -177,6 +177,7 @@ def seed_status_data(db: Session):
             Differenzierungsmerkmal_gewebe(differenzierungsmerkmal_text="Empfänger"),
             Differenzierungsmerkmal_gewebe(differenzierungsmerkmal_text="Spender"),
             Differenzierungsmerkmal_gewebe(differenzierungsmerkmal_text="Spender nach Perfusion"),
+            Differenzierungsmerkmal_gewebe(differenzierungsmerkmal_text="LTX-Biopsie 1 Jahr post OP"),
         ]
         # Einfügen und speichern
         db.add_all(seed_data)
@@ -233,18 +234,7 @@ def seed_status_data(db: Session):
             Uebergeordnete_probenart_paraffin(uebergeordnete_probenart_text="Normal Spender der Leber"),
             Uebergeordnete_probenart_paraffin(uebergeordnete_probenart_text="Normal Spender nach Perfusion der Leber"),
             Uebergeordnete_probenart_paraffin(uebergeordnete_probenart_text="Tumor"),
-        ]
-        # Einfügen und speichern
-        db.add_all(seed_data)
-        db.commit()
-        print("Seed-Daten erfolgreich hinzugefügt.")
-
-
-    if not db.query(Differenzierungsmerkmal_stuhl).first():
-        # Seed-Daten definieren
-        seed_data = [
-            Differenzierungsmerkmal_stuhl(differenzierungsmerkmal_text="präOP"),            
-            Differenzierungsmerkmal_stuhl(differenzierungsmerkmal_text="1d bis 14d postOP"),
+            Uebergeordnete_probenart_paraffin(uebergeordnete_probenart_text="LTX-Biopsie 1 Jahr post OP"),
         ]
         # Einfügen und speichern
         db.add_all(seed_data)
