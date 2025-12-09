@@ -509,6 +509,7 @@ export default function Uebersicht() {
                               3: "Empfänger",
                               4: "Spender",
                               5: "Spender nach Perfusion",
+                              6: "LTX-Biopsie 1 Jahr post OP",
                             };
                             return differenzierungsmerkmalMapping[row["differenzierungsmerkmal"]] || "N/A";
                           } else if (row["probenart"] === "serum") {
@@ -536,7 +537,8 @@ export default function Uebersicht() {
                               4: "Normal Empfängerleber",
                               5: "Normal Spender der Leber",
                               6: "Normal Spender nach Perfusion der Leber",
-                              7: "Tumor"
+                              7: "Tumor",
+                              8: "LTX-Biopsie 1 Jahr post OP"
                             };
 
                             return uebergeordnete_probenart_mapping[row["uebergeordnete_probenart"]] || "N/A";
