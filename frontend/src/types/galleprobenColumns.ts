@@ -5,7 +5,7 @@ export const galleprobenDataColumns = [
     { key: "patient_Id_intern", label: "Patienten ID (intern)" },
     { key: "created_at", label: "Erstellungsdatum" },
     { key: "probenart", label: "Probenart" },
-    { key: "probeninformation_ltx", label: "Probeninformation" },
+    { key: "probeninformation_ltx", label: "Probeninformation-LTX" },
     { key: "abholer", label: "Abholer:In" },
     { key: "uhrzeit", label: "Probe erhalten (Uhrzeit)" },
     { key: "boxnummer", label: "Boxname (Boxnummer)" },
