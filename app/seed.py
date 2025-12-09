@@ -4,7 +4,7 @@ from .models.differenzierungsmerkmal_gewebe import Differenzierungsmerkmal_geweb
 from .models.differenzierungsmerkmal_serum import Differenzierungsmerkmal_serum
 from .models.differenzierungsmerkmal_urin import Differenzierungsmerkmal_urin
 from .models.uebergeordnete_probenart_paraffin import Uebergeordnete_probenart_paraffin
-from .models.differenzierungsmerkmal_stuhl import Differenzierungsmerkmal_stuhl
+from .models.differenzierungsmerkmal_edtaplasma import Differenzierungsmerkmal_edtaplasma
 
 from .models.probeninformation import Probeninformation
 from .models.probeninformation_ltx import Probeninformation_ltx
@@ -193,6 +193,21 @@ def seed_status_data(db: Session):
             Differenzierungsmerkmal_serum(differenzierungsmerkmal_text="ZVK"),
             Differenzierungsmerkmal_serum(differenzierungsmerkmal_text="Vene peripher"),
             Differenzierungsmerkmal_serum(differenzierungsmerkmal_text="Arterie peripher"),
+        ]
+        # Einfügen und speichern
+        db.add_all(seed_data)
+        db.commit()
+        print("Seed-Daten erfolgreich hinzugefügt.")
+
+
+    if not db.query(Differenzierungsmerkmal_edtaplasma).first():
+        # Seed-Daten definieren
+        seed_data = [
+            Differenzierungsmerkmal_edtaplasma(differenzierungsmerkmal_text="Lebervene Links"),            
+            Differenzierungsmerkmal_edtaplasma(differenzierungsmerkmal_text="Lebervene Rechts"),
+            Differenzierungsmerkmal_edtaplasma(differenzierungsmerkmal_text="ZVK"),
+            Differenzierungsmerkmal_edtaplasma(differenzierungsmerkmal_text="Vene peripher"),
+            Differenzierungsmerkmal_edtaplasma(differenzierungsmerkmal_text="Arterie peripher"),
         ]
         # Einfügen und speichern
         db.add_all(seed_data)

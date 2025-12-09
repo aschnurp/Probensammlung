@@ -567,7 +567,10 @@ export default function Uebersicht() {
                             gewebe: "Gewebe",
                             urin: "Urin",
                             serum: "Serum",
-                            paraffin: "Paraffin"
+                            paraffin: "Paraffin",
+                            galle: "Galle",
+                            stuhl: "Stuhl",
+                            edtaplasma: "EDTA-Plasma",
                           };
                           return probenartMapping[row["probenart"]] || "N/A";
                         })()

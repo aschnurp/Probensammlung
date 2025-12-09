@@ -3,7 +3,7 @@ from sqlalchemy.sql import text
 from fastapi import Depends, FastAPI
 from .database import get_db, engine, SessionLocal, Base
 from sqlalchemy.orm import Session
-from .models import edtaplasmaproben, stuhlproben, probeninformation_ltx, galleproben , differenzierungsmerkmal_stuhl ,differenzierungsmerkmal_gewebe, differenzierungsmerkmal_urin, differenzierungsmerkmal_serum , probeninformation, status, gewebeproben, probenabholer, serumproben, urinproben, patient, paraffinproben, probenquelle_urin, vorlaeufige_proben, uebergeordnete_probenart_paraffin, untergeordnete_probenart_paraffin
+from .models import edtaplasmaproben, stuhlproben, differenzierungsmerkmal_edtaplasma ,probeninformation_ltx, galleproben , differenzierungsmerkmal_stuhl ,differenzierungsmerkmal_gewebe, differenzierungsmerkmal_urin, differenzierungsmerkmal_serum , probeninformation, status, gewebeproben, probenabholer, serumproben, urinproben, patient, paraffinproben, probenquelle_urin, vorlaeufige_proben, uebergeordnete_probenart_paraffin, untergeordnete_probenart_paraffin
 from .config import settings
 from .routers import post_new_data, put_tabledata, tables, number_entrys, patch_ausschleusen, patch_wiedereinschleusen, delete_tabledata, get_patients_samples
 from fastapi.middleware.cors import CORSMiddleware
@@ -29,6 +29,7 @@ differenzierungsmerkmal_gewebe.Base.metadata.create_all(bind=engine)
 differenzierungsmerkmal_urin.Base.metadata.create_all(bind=engine)
 differenzierungsmerkmal_serum.Base.metadata.create_all(bind=engine)
 differenzierungsmerkmal_stuhl.Base.metadata.create_all(bind=engine)
+differenzierungsmerkmal_edtaplasma.Base.metadata.create_all(bind=engine)
 untergeordnete_probenart_paraffin.Base.metadata.create_all(bind=engine)
 uebergeordnete_probenart_paraffin.Base.metadata.create_all(bind=engine)
 probeninformation.Base.metadata.create_all(bind=engine)
