@@ -57,6 +57,17 @@ export const getProbeOptions = (probenart) => {
     ];
   }
 
+  else if (probenart === 'edtaplasma') {
+    differenzierungsmerkmalOptions = [
+      { id: 1, text: "Lebervene Links" },
+      { id: 2, text: "Lebervene Rechts" },
+      { id: 3, text: "ZVK" },
+      { id: 4, text: "Vene peripher" },
+      { id: 5, text: "Arterie peripher" },
+    ];
+  }
+
+
   const probeDataLTX = [
     { id: 1, text: "Galle intra OP von expl. Leber (PCR) I", type: "galle" },
     { id: 2, text: "Galle intra OP von expl. Leber (PCR) II", type: "galle" },
