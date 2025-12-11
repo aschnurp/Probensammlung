@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Box,
   TextField,
@@ -17,27 +17,62 @@ import {
 import { IoMdArrowRoundBack } from "react-icons/io";
 import axios from 'axios';
 
-// Tabellen-Namen laut Backend
-const TABLE_NAMES = [
-  "gewebeproben",
-  "serumproben",
-  "urinproben",
-  "galleproben",
-  "stuhlproben",
-  "edtaplasmaproben"
-];
-
 export default function Patientenuebersicht() {
   const [patientID, setPatientID] = useState('');
   const [loading, setLoading] = useState(false);
-  const [sampleData, setSampleData] = useState({});
   const [snackbarMessage, setSnackbarMessage] = useState('');
   const [snackbarSeverity, setSnackbarSeverity] = useState('success');
   const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [sampleData, setSampleData] = useState({});
 
-  // --- Hauptfunktion: Daten holen ---
+  const [probeninformationOptionsToRender, setProbeninformationOptionsToRender] = useState([]);
+  const [probeninformationLTXOptionsToRender, setProbeninformationLTXOptionsToRender] = useState([]);
+
+  const ROUTES = {
+    gewebeproben: "/samples/gewebeentries",
+    serumproben: "/samples/serumentries",
+    urinproben: "/samples/urinentries",
+    galleproben: "/samples/galleentries",
+    stuhlproben: "/samples/stuhlentries",
+    edtaplasmaproben: "/samples/edtaentries"
+  };
+
+  const TABLE_NAMES = Object.keys(ROUTES);
+
+  const DISPLAY_NAMES = {
+    gewebeproben: "Gewebeproben",
+    serumproben: "Serumproben",
+    urinproben: "Urinproben",
+    galleproben: "Galleproben",
+    stuhlproben: "Stuhlproben",
+    edtaplasmaproben: "EDTA-Plasmaproben"
+  };
+
+  // Hier manuell festlegen, welche Tabellen LTX-Mapping verwenden sollen
+  const LTX_TABLES = ["galleproben", "stuhlproben", "edtaplasmaproben"];
+  // Rest sind normale Tabellen (z.B. serum, gewebe, urin)
+  const NORMAL_TABLES = TABLE_NAMES.filter(t => !LTX_TABLES.includes(t));
+
+  // Optionen laden
+  useEffect(() => {
+    const getOptions = async (tableName, setFunction) => {
+      try {
+        const res = await fetch(`http://localhost:8000/table/data?table_name=${tableName}`);
+        if (!res.ok) throw new Error(`Fehler beim Abrufen von ${tableName}`);
+        const response = await res.json();
+        setFunction(response);
+      } catch (error) {
+        console.error(`Error fetching ${tableName}:`, error);
+      }
+    };
+
+    getOptions("probeninformation", setProbeninformationOptionsToRender);
+    getOptions("probeninformation_ltx", setProbeninformationLTXOptionsToRender);
+  }, []);
+
+  // Proben-Daten laden
   const fetchSampleData = async () => {
-    if (!patientID) {
+    if (!patientID.trim()) {
       setSnackbarSeverity("warning");
       setSnackbarMessage("Bitte eine Patientennummer eingeben.");
       setSnackbarOpen(true);
@@ -49,15 +84,10 @@ export default function Patientenuebersicht() {
     try {
       const responses = await Promise.all(
         TABLE_NAMES.map(async (table) => {
-          const url = `http://localhost:8000/table/data?table_name=${table}`;
+          const route = ROUTES[table];
+          const url = `http://localhost:8000${route}/${patientID}`;
           const res = await axios.get(url);
-
-          // Filter direkt im Frontend nach patient_id
-          const filtered = res.data.filter(
-            (row) => row.patient_id === patientID
-          );
-
-          return { table, data: filtered };
+          return { table, data: res.data || [] };
         })
       );
 
@@ -83,6 +113,19 @@ export default function Patientenuebersicht() {
     }
   };
 
+  // Helfer: Mapping-Find mit sicherer Rückgabe
+  const findNormalText = (id) => {
+    if (id === undefined || id === null) return null;
+    const found = probeninformationOptionsToRender.find(p => String(p.id) === String(id));
+    return found ? found.probeninformation_text : String(id);
+  };
+
+  const findLtxText = (id) => {
+    if (id === undefined || id === null) return null;
+    const found = probeninformationLTXOptionsToRender.find(p => String(p.id) === String(id));
+    return found ? found.probeninformation_text : String(id);
+  };
+
   return (
     <Box sx={{ p: 3, maxWidth: 1300, mx: 'auto' }}>
       <Box sx={{ position: 'absolute', top: 90, left: 16 }}>
@@ -96,7 +139,7 @@ export default function Patientenuebersicht() {
           Patientenübersicht
         </Typography>
         <Typography variant="body1" sx={{ color: 'text.primary' }}>
-          Nach Eingabe einer Patientennummer werden alle Probenarten gleichzeitig geladen.
+          Aller Proben eines Patienten.
         </Typography>
       </Box>
 
@@ -108,10 +151,10 @@ export default function Patientenuebersicht() {
           fullWidth
         />
 
-        <Button 
-          variant="contained" 
-          color="primary" 
-          onClick={fetchSampleData} 
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={fetchSampleData}
           disabled={loading}
         >
           {loading ? 'Lade...' : 'Laden'}
@@ -122,26 +165,55 @@ export default function Patientenuebersicht() {
         <Table>
           <TableHead>
             <TableRow>
-              <TableCell align="center">Gewebe</TableCell>
-              <TableCell align="center">Serum</TableCell>
-              <TableCell align="center">Urin</TableCell>
-              <TableCell align="center">Galle</TableCell>
-              <TableCell align="center">Stuhl</TableCell>
-              <TableCell align="center">EDTA-Plasma</TableCell>
+              {TABLE_NAMES.map((table) => (
+                <TableCell key={table} align="center" sx={{ fontWeight: "bold" }}>
+                  {DISPLAY_NAMES[table] || table}
+                </TableCell>
+              ))}
             </TableRow>
           </TableHead>
 
           <TableBody>
             <TableRow>
               {TABLE_NAMES.map((table) => (
-                <TableCell key={table} align="left">
-                  {sampleData[table] && sampleData[table].length > 0 ? (
-                    <ul style={{ paddingLeft: "20px", margin: 0 }}>
-                      {sampleData[table].map((entry) => (
-                        <li key={entry.id}>
-                          {entry.probeninformation_text ?? "(Keine Beschreibung)"}
-                        </li>
-                      ))}
+                <TableCell key={table} align="left" sx={{ verticalAlign: 'top' }}>
+                  {sampleData[table]?.length > 0 ? (
+                    <ul style={{ paddingLeft: 20, margin: 0 }}>
+                      {sampleData[table].map((row) => {
+                        if (LTX_TABLES.includes(table)) {
+
+                          console.log("ROW LTX:", row);
+                          console.log("LTX OPTIONS:", probeninformationLTXOptionsToRender);
+
+                          const incomingID = row.probeninformation_ltx;
+                          const mappingHit = probeninformationLTXOptionsToRender.find(
+                            (p) => String(p.id) === String(incomingID)
+                          );
+
+                          return (
+                            <li key={row.id}>
+                              {(() => {
+                                // Mapping-Auswahl basierend auf Tabelle
+                                const isLTX = ["galleproben", "stuhlproben", "edtaplasmaproben"].includes(table);
+
+                                const list = isLTX
+                                  ? probeninformationLTXOptionsToRender
+                                  : probeninformationOptionsToRender;
+
+                                const info = list.find(p => p.id === row.probeninformation);
+
+                                return info ? info.probeninformation_text : "-";
+                              })()}
+                            </li>
+
+                          );
+                        }
+
+                        const normal = findNormalText(row.probeninformation);
+                        const fallback = row.probeninformation_text;
+                        const displayed = normal ?? fallback ?? "-";
+                        return <li key={row.id}>{displayed}</li>;
+                      })}
                     </ul>
                   ) : (
                     <span>-</span>
@@ -153,14 +225,14 @@ export default function Patientenuebersicht() {
         </Table>
       </TableContainer>
 
-      <Snackbar 
+      <Snackbar
         open={snackbarOpen}
         autoHideDuration={4000}
         onClose={() => setSnackbarOpen(false)}
       >
-        <Alert 
-          onClose={() => setSnackbarOpen(false)} 
-          severity={snackbarSeverity} 
+        <Alert
+          onClose={() => setSnackbarOpen(false)}
+          severity={snackbarSeverity}
           sx={{ width: '100%' }}
         >
           {snackbarMessage}
