@@ -204,7 +204,7 @@ export default function SampleForm() {
           Probengefäße Hinzufügen
         </Typography>
         <Typography variant="h7" sx={{ color: "text.primary" }}>
-          Probengefäße (Probenröhrchen) können hier zur Vorbereitung hinzugefügt werden. Dies ist nötig um diese später Einschleusen zu können.
+          Probengefäße (Probenröhrchen) können hier zur Vorbereitung hinzugefügt werden. Das ist nötig um diese später Einschleusen zu können.
         </Typography>
       </Box>
 
@@ -228,7 +228,6 @@ export default function SampleForm() {
           helperText={errors.patient_Id_intern}
         />
 
-
         <TextField
           label="Scannerfeld für Barcode ID"
           name="barcode_id"
@@ -249,8 +248,6 @@ export default function SampleForm() {
             }}
           />} label="LTX-Probe" />
         </FormGroup>
-
-
 
         {/* Normale Probeninformation */}
         {!checked && (

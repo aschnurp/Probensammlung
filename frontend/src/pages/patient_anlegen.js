@@ -208,7 +208,17 @@ export default function PatientForm() {
   };
 
   return (
-    <Box sx={{ p: 3, maxWidth: 600, mx: 'auto' }}>
+    <Box sx={{ p: 3, maxWidth: 600, mx: 'auto' }}
+    onKeyDown={(e) => {
+      if (e.key === "Enter") { //bei press-enter
+        const active = document.activeElement; // Cursor Element
+        if (active.name === "patient_Id_intern") { 
+          e.preventDefault(); //aendere default funktion
+          handleSubmit();    //submit
+        }
+      }
+    }}
+    >
       <Box sx={{ position: 'absolute', top: 90, left: 16 }}>
         <Button variant="contained" color="primary" onClick={() => window.location.href = '/overview'}>
           <IoMdArrowRoundBack className='text-2xl' />
@@ -335,7 +345,7 @@ export default function PatientForm() {
         <Button variant="outlined" color="secondary" onClick={handleClear}>
           Zurücksetzen
         </Button>
-        <Button variant="contained" color="success" onClick={handleSubmit}>
+        <Button variant="contained" color="success" onClick={handleSubmit} type="submit">
           Speichern
         </Button>
       </Box>
