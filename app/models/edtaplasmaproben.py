@@ -16,7 +16,7 @@ class Edtaplasmaproben(Base):
     uhrzeit = Column(TEXT)			
     probenart = Column(TEXT)
     probeninformation_ltx = Column(Integer, ForeignKey("probeninformation_ltx.id"), nullable=True)
-    differenzierungsmerkmal	= Column(TINYINT, ForeignKey("differenzierungsmerkmal_serum.id"), nullable=True)
+    differenzierungsmerkmal	= Column(TINYINT, ForeignKey("differenzierungsmerkmal_edtaplasma.id"), nullable=True)
     boxnummer = Column(Integer) 
     boxzeile = Column(TEXT) 
     boxspalte = Column(Integer) 	

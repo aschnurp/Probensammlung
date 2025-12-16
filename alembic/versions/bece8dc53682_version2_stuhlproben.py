@@ -25,8 +25,8 @@ def upgrade() -> None:
         sa.Column('differenzierungsmerkmal_text', mysql.TEXT(), nullable=True),
         sa.PrimaryKeyConstraint('id'),
         mysql_engine='InnoDB',
-        mysql_charset='latin1',
-        mysql_collate='latin1_swedish_ci'
+        mysql_charset='utf8mb4',
+        mysql_collate='utf8mb4_general_ci',
     )
 
     # Create table stuhlproben
@@ -43,8 +43,8 @@ def upgrade() -> None:
         sa.Column('anmerkungen', mysql.TEXT(), nullable=True),
         sa.Column('status', mysql.TINYINT(), nullable=True),
         mysql_engine='InnoDB',
-        mysql_charset='latin1',
-        mysql_collate='latin1_swedish_ci'
+        mysql_charset='utf8mb4',
+        mysql_collate='utf8mb4_general_ci',
     )
 
 

@@ -146,6 +146,7 @@ export default function SampleForm() {
               ...prevData,
               patient_Id_intern: foundItem.patient_Id_intern,
               probeninformation: foundItem.probeninformation,
+              probeninformation_ltx: foundItem.probeninformation_ltx,
             }))
             setSnackbarMessage("Barcode gefunden.");
             setSnackbarSeverity("success");
@@ -1558,6 +1559,17 @@ export default function SampleForm() {
             {/* Conditional Fields for Stuhl */}
             {formData.probenart === 'stuhl' && (
         <Box sx={{ mt: 2 }}>
+          {/* Barcode ID */}
+          <TextField
+            label="Barcode ID"
+            name="barcode_id"
+            value={formData.barcode_id}
+            onChange={handleChange}
+            fullWidth
+            margin="normal"
+            error={Boolean(errors.barcode_id)}
+            helperText={errors.barcode_id}
+          />
           {/* Patienten ID TextField */}
           <TextField
             label="Patienten ID (intern) z.B. HL0126"

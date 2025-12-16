@@ -8,7 +8,7 @@ import sqlalchemy as sa
 
 class Stuhlproben(Base):
     __tablename__ = "stuhlproben"
-    barcode_id = Column(Integer, primary_key= True, nullable=False, autoincrement=True)
+    barcode_id = Column(VARCHAR(200), primary_key=True, nullable=False)
     timestamp = Column(TIMESTAMP(timezone=True), nullable=False, server_default=text("now()"))
     patient_Id_intern = Column(VARCHAR(200), ForeignKey("patient.patient_Id_intern")) 
     created_at = Column(TEXT)
