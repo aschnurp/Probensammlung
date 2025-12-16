@@ -65,7 +65,7 @@ export default function ProbeAusschleusen() {
       console.error('Error submitting data:', error);
 
       // Show error snackbar notification
-      setSnackbarMessage('Falsche Barcode ID oder Probenart!');
+      setSnackbarMessage('Falsche Barcode ID, Probenart oder Probe bereits wieder eingeschleust!');
       setSnackbarSeverity('error');
       setSnackbarOpen(true);
     }
@@ -146,7 +146,7 @@ export default function ProbeAusschleusen() {
       {/* Snackbar for notifications */}
       <Snackbar
         open={snackbarOpen}
-        autoHideDuration={3000}
+        autoHideDuration={10000}
         onClose={() => setSnackbarOpen(false)}
       >
         <Alert

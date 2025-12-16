@@ -28,6 +28,14 @@ def patch_serumproben(barcode_id: str, db: Session = Depends(get_db)):
             status_code=status.HTTP_404_NOT_FOUND,
             detail=f"Eintrag mit barcode_id: {barcode_id} existiert nicht.",
         )
+    
+    #test ob item bereits status 3 hat
+    if existing_item.status == 3:
+        raise HTTPException(
+            status_code=status.HTTP_409_CONFLICT,
+            detail=f"Eintrag mit barcode_id {barcode_id} ist bereits wieder eingeschleust.",
+    )
+
     # Aktualisieren des Eintrags mit dem Standardwert 3 für status
     try:
         item_query.update({"status": 3}, synchronize_session=False)
@@ -55,6 +63,14 @@ def patch_gewebeproben(barcode_id: str, db: Session = Depends(get_db)):
             status_code=status.HTTP_404_NOT_FOUND,
             detail=f"Eintrag mit barcode_id: {barcode_id} existiert nicht.",
         )
+    
+    #test ob item bereits status 3 hat
+    if existing_item.status == 3:
+        raise HTTPException(
+            status_code=status.HTTP_409_CONFLICT,
+            detail=f"Eintrag mit barcode_id {barcode_id} ist bereits wieder eingeschleust.",
+    )
+
     # Aktualisieren des Eintrags mit dem Standardwert 3 für status
     try:
         item_query.update({"status": 3}, synchronize_session=False)
@@ -82,6 +98,14 @@ def patch_urinproben(barcode_id: str, db: Session = Depends(get_db)):
             status_code=status.HTTP_404_NOT_FOUND,
             detail=f"Eintrag mit barcode_id: {barcode_id} existiert nicht.",
         )
+    
+    #test ob item bereits status 3 hat
+    if existing_item.status == 3:
+        raise HTTPException(
+            status_code=status.HTTP_409_CONFLICT,
+            detail=f"Eintrag mit barcode_id {barcode_id} ist bereits wieder eingeschleust.",
+    )
+
     # Aktualisieren des Eintrags mit dem Standardwert 3 für status
     try:
         item_query.update({"status": 3}, synchronize_session=False)
@@ -109,6 +133,14 @@ def patch_galleproben(barcode_id: str, db: Session = Depends(get_db)):
             status_code=status.HTTP_404_NOT_FOUND,
             detail=f"Eintrag mit barcode_id: {barcode_id} existiert nicht.",
         )
+    
+    #test ob item bereits status 3 hat
+    if existing_item.status == 3:
+        raise HTTPException(
+            status_code=status.HTTP_409_CONFLICT,
+            detail=f"Eintrag mit barcode_id {barcode_id} ist bereits wieder eingeschleust.",
+    )
+
     # Aktualisieren des Eintrags mit dem Standardwert 3 für status
     try:
         item_query.update({"status": 3}, synchronize_session=False)
@@ -135,6 +167,14 @@ def patch_stuhlproben(barcode_id: str, db: Session = Depends(get_db)):
             status_code=status.HTTP_404_NOT_FOUND,
             detail=f"Eintrag mit barcode_id: {barcode_id} existiert nicht.",
         )
+    
+    #test ob item bereits status 3 hat
+    if existing_item.status == 3:
+        raise HTTPException(
+            status_code=status.HTTP_409_CONFLICT,
+            detail=f"Eintrag mit barcode_id {barcode_id} ist bereits wieder eingeschleust.",
+    )
+
     # Aktualisieren des Eintrags mit dem Standardwert 3 für status
     try:
         item_query.update({"status": 3}, synchronize_session=False)
@@ -161,6 +201,14 @@ def patch_edtaplasmaproben(barcode_id: str, db: Session = Depends(get_db)):
             status_code=status.HTTP_404_NOT_FOUND,
             detail=f"Eintrag mit barcode_id: {barcode_id} existiert nicht.",
         )
+    
+    #test ob item bereits status 3 hat
+    if existing_item.status == "3":
+        raise HTTPException(
+            status_code=status.HTTP_409_CONFLICT,
+            detail=f"Eintrag mit barcode_id {barcode_id} ist bereits wieder eingeschleust.",
+    )
+
     # Aktualisieren des Eintrags mit dem Standardwert 3 für status
     try:
         item_query.update({"status": 3}, synchronize_session=False)
