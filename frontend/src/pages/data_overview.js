@@ -580,7 +580,10 @@ export default function Uebersicht() {
                           const BOXMapping = {
                             gewebe: "Cryo",
                             urin: "Urin",
-                            serum: "Blut"
+                            serum: "Blut",
+                            galle: "Galle",
+                            stuhl: "Stuhl",
+                            edtaplasma: "EDTA-Plasma"
                           };
 
                           const boxType = BOXMapping[row["probenart"]] || "N/A";
