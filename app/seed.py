@@ -5,6 +5,8 @@ from .models.differenzierungsmerkmal_serum import Differenzierungsmerkmal_serum
 from .models.differenzierungsmerkmal_urin import Differenzierungsmerkmal_urin
 from .models.uebergeordnete_probenart_paraffin import Uebergeordnete_probenart_paraffin
 from .models.differenzierungsmerkmal_edtaplasma import Differenzierungsmerkmal_edtaplasma
+from .models.ltx_fragebogen_ernaerung_lookup import Ltx_fragebogen_ernaerung_lookup
+
 
 from .models.probeninformation import Probeninformation
 from .models.probeninformation_ltx import Probeninformation_ltx
@@ -102,31 +104,30 @@ def seed_status_data(db: Session):
 
     if not db.query(Probeninformation_ltx).first():
         seed_data = [
-            Probeninformation_ltx(probeninformation_text="Galle intra OP von expl. Leber (PCR) I", probenart="galle"),  
-            Probeninformation_ltx(probeninformation_text="Galle intra OP von expl. Leber (PCR) II", probenart="galle"),
+            Probeninformation_ltx(probeninformation_text="Galle intra OP von expl. Leber  I", probenart="galle"),  
+            Probeninformation_ltx(probeninformation_text="Galle intra OP von expl. Leber II", probenart="galle"),
             Probeninformation_ltx(probeninformation_text="Galle intra OP von expl. Leber III", probenart="galle"),
             Probeninformation_ltx(probeninformation_text="Galle intra OP von expl. Leber IV", probenart="galle"),
-            Probeninformation_ltx(probeninformation_text="Galle intra OP von expl. Leber (Rest)", probenart="galle"),
-            Probeninformation_ltx(probeninformation_text="Galle intra OP von impl. Leber (PCR) I", probenart="galle"),  
-            Probeninformation_ltx(probeninformation_text="Galle intra OP von impl. Leber (PCR) II", probenart="galle"),
+            Probeninformation_ltx(probeninformation_text="Galle intra OP von impl. Leber I", probenart="galle"),  
+            Probeninformation_ltx(probeninformation_text="Galle intra OP von impl. Leber II", probenart="galle"),
             Probeninformation_ltx(probeninformation_text="Galle intra OP von impl. Leber III", probenart="galle"),
             Probeninformation_ltx(probeninformation_text="Galle intra OP von impl. Leber IV", probenart="galle"),
-            Probeninformation_ltx(probeninformation_text="Galle intra OP von impl. Leber (Rest)", probenart="galle"),
-            Probeninformation_ltx(probeninformation_text="Galle post OP 1d von impl. Leber (PCR) I", probenart="galle"),
-            Probeninformation_ltx(probeninformation_text="Galle post OP 1d von impl. Leber (PCR) II", probenart="galle"),
+            Probeninformation_ltx(probeninformation_text="Galle post OP 1d von impl. Leber I", probenart="galle"),
+            Probeninformation_ltx(probeninformation_text="Galle post OP 1d von impl. Leber II", probenart="galle"),
             Probeninformation_ltx(probeninformation_text="Galle post OP 1d von impl. Leber III", probenart="galle"),
             Probeninformation_ltx(probeninformation_text="Galle post OP 1d von impl. Leber IV", probenart="galle"),
-            Probeninformation_ltx(probeninformation_text="Galle post OP 1d von impl. Leber (Rest)", probenart="galle"),
-            Probeninformation_ltx(probeninformation_text="Galle post OP 7d von impl. Leber (PCR) I", probenart="galle"),
-            Probeninformation_ltx(probeninformation_text="Galle post OP 7d von impl. Leber (PCR) II", probenart="galle"),
+            Probeninformation_ltx(probeninformation_text="Galle post OP 2d von impl. Leber I", probenart="galle"),
+            Probeninformation_ltx(probeninformation_text="Galle post OP 2d von impl. Leber II", probenart="galle"),
+            Probeninformation_ltx(probeninformation_text="Galle post OP 2d von impl. Leber III", probenart="galle"),
+            Probeninformation_ltx(probeninformation_text="Galle post OP 2d von impl. Leber IV", probenart="galle"),
+            Probeninformation_ltx(probeninformation_text="Galle post OP 7d von impl. Leber I", probenart="galle"),
+            Probeninformation_ltx(probeninformation_text="Galle post OP 7d von impl. Leber II", probenart="galle"),
             Probeninformation_ltx(probeninformation_text="Galle post OP 7d von impl. Leber III", probenart="galle"),
             Probeninformation_ltx(probeninformation_text="Galle post OP 7d von impl. Leber IV", probenart="galle"),
-            Probeninformation_ltx(probeninformation_text="Galle post OP 7d von impl. Leber (Rest)", probenart="galle"),
-            Probeninformation_ltx(probeninformation_text="Galle post OP 14d von impl. Leber (PCR) I", probenart="galle"),
-            Probeninformation_ltx(probeninformation_text="Galle post OP 14d von impl. Leber (PCR) II", probenart="galle"),
+            Probeninformation_ltx(probeninformation_text="Galle post OP 14d von impl. Leber I", probenart="galle"),
+            Probeninformation_ltx(probeninformation_text="Galle post OP 14d von impl. Leber II", probenart="galle"),
             Probeninformation_ltx(probeninformation_text="Galle post OP 14d von impl. Leber III", probenart="galle"),
             Probeninformation_ltx(probeninformation_text="Galle post OP 14d von impl. Leber IV", probenart="galle"),
-            Probeninformation_ltx(probeninformation_text="Galle post OP 14d von impl. Leber (Rest)", probenart="galle"),
             Probeninformation_ltx(probeninformation_text="EDTA-Plasma bei Aufklährung I", probenart="edtaplasma"),
             Probeninformation_ltx(probeninformation_text="EDTA-Plasma bei Aufklährung II", probenart="edtaplasma"),
             Probeninformation_ltx(probeninformation_text="EDTA-Plasma bei Aufklährung III", probenart="edtaplasma"),
@@ -259,6 +260,21 @@ def seed_status_data(db: Session):
         db.add_all(seed_data)
         db.commit()
         print("Seed-Daten erfolgreich hinzugefügt.")
-    
+
+    if not db.query(Ltx_fragebogen_ernaerung_lookup).first():
+        # Seed-Daten definieren
+        seed_data = [
+            Ltx_fragebogen_ernaerung_lookup(value="Nie"),
+            Ltx_fragebogen_ernaerung_lookup(value="1-3 Mal pro Monat"),
+            Ltx_fragebogen_ernaerung_lookup(value="1-2 Mal pro Woche"),
+            Ltx_fragebogen_ernaerung_lookup(value="3-5 Mal pro Woche"),
+            Ltx_fragebogen_ernaerung_lookup(value="1 Mal pro Tag"),
+            Ltx_fragebogen_ernaerung_lookup(value="ueber 2 Mal pro Tag"),
+        ]
+        # Einfügen und speichern
+        db.add_all(seed_data)
+        db.commit()
+        print("Seed-Daten erfolgreich hinzugefügt.") 
+
     else:
         print("Tabelle ist bereits gefüllt. Keine Seed-Daten hinzugefügt.")

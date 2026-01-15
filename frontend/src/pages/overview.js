@@ -21,11 +21,10 @@ import EditRoundedIcon from '@mui/icons-material/EditRounded';
 import RepeatRoundedIcon from '@mui/icons-material/RepeatRounded';
 import SearchIcon from '@mui/icons-material/Search';
 
-
-
 const sections = [
   { title: 'Patient anlegen', link: '/patient_anlegen', icon: <AddCircleRoundedIcon />, iconName: 'Neu' },
   { title: 'Proben einschleusen', link: '/proben_einschleusen', icon: <InputRoundedIcon />, iconName: 'Neu' },
+  { title: 'LTX Fragebogen', link: '/ltx_fragebogen', icon: <InputRoundedIcon />, iconName: 'Neu' },
   { title: 'Proben ausschleusen', link: '/proben_ausscheusen', icon: <OutputRoundedIcon />, iconName: 'Neu', color: 'error' },
   { title: 'Proben wieder einschleusen', link: '/proben_wiedereinschleusen', icon: <RepeatRoundedIcon />, iconName: 'Neu' },
 ];
