@@ -349,97 +349,165 @@ export default function SampleForm() {
         TAG_MEHR_2: 6,
     };
 
-    //data submittet when pressing send
-    const handleSubmit = async () => {
-        const Data = {
-            patient_Id_intern: formData.patient_Id_intern,
-            geschlecht: formData.geschlecht,
-            alter: formData.alter,
-            gewicht: formData.gewicht,
-            groesse: formData.groesse,
-            beruf: formData.beruf,
-            kinder_anzahl: formData.kinder_anzahl,
-            krankenversicherung: formData.krankenversicherung,
-            epices_score: formData.epices_score,
-            bewegung: formData.bewegung,
-            rotes_fleisch: formData.rotes_fleisch,
-            rotes_fleisch_anz: formData.rotes_fleisch_anz,
-            gefluegel: formData.gefluegel,
-            gefluegel_anz: formData.gefluegel_anz,
-            verarbeitetes_fleisch: formData.verarbeitetes_fleisch,
-            verarbeitetes_fleisch_anz: formData.verarbeitetes_fleisch_anz,
-            fisch_meeresfruechte: formData.fisch_meeresfruechte,
-            fisch_meeresfruechte_anz: formData.fisch_meeresfruechte_anz,
-            eier: formData.eier,
-            eier_anz: formData.eier_anz,
-            fruechte_gemuese: formData.fruechte_gemuese,
-            fruechte_gemuese_anz: formData.fruechte_gemuese_anz,
-            staerkehaltige_lebensmittel: formData.staerkehaltige_lebensmittel,
-            staerkehaltige_lebensmittel_anz: formData.staerkehaltige_lebensmittel_anz,
-            vollwertkost: formData.vollwertkost,
-            vollwertkost_anz: formData.vollwertkost_anz,
-            huelsenfruechte: formData.huelsenfruechte,
-            huelsenfruechte_anz: formData.huelsenfruechte_anz,
-            joghurt: formData.joghurt,
-            joghurt_anz: formData.joghurt_anz,
-            kaese: formData.kaese,
-            kaese_anz: formData.kaese_anz,
-            milch: formData.milch,
-            milch_anz: formData.milch_anz,
-            fruehstueckscerealien: formData.fruehstueckscerealien,
-            fruehstueckscerealien_anz: formData.fruehstueckscerealien_anz,
-            fettfreie_zuckerhaltige_produkte: formData.fettfreie_zuckerhaltige_produkte,
-            fettfreie_zuckerhaltige_produkte_anz: formData.fettfreie_zuckerhaltige_produkte_anz,
-            fetthaltige_zuckerhaltige_produkte: formData.fetthaltige_zuckerhaltige_produkte,
-            fetthaltige_zuckerhaltige_produkte_anz: formData.fetthaltige_zuckerhaltige_produkte_anz,
-            fettige_salzige_produkte: formData.fettige_salzige_produkte,
-            fettige_salzige_produkte_anz: formData.fettige_salzige_produkte_anz,
-            fette: formData.fette,
-            fette_anz: formData.fette_anz,
-            zuckerhaltige_getraenke: formData.zuckerhaltige_getraenke,
-            zuckerhaltige_getraenke_anz: formData.zuckerhaltige_getraenke_anz,
-            wein: formData.wein,
-            wein_anz: formData.wein_anz,
-            bier: formData.bier,
-            bier_anz: formData.bier_anz,
-            aperitifs_digestifs: formData.aperitifs_digestifs,
-            aperitifs_digestifs_anz: formData.aperitifs_digestifs_anz,
-            nierenfunktion: formData.nierenfunktion,
-            diabetes: formData.diabetes,
-            immunsuppression_immunkompetent: formData.immunsuppression_immunkompetent,
-            immunsuppression_HIV_AIDS: formData.immunsuppression_HIV_AIDS,
-            immunsuppression_solider_krebs: formData.immunsuppression_solider_krebs,
-            immunsuppression_maligne_heamatopathie: formData.immunsuppression_maligne_heamatopathie,
-            immunsuppression_organ_knochenmarkstransplantation: formData.immunsuppression_organ_knochenmarkstransplantation,
-            immunsuppression_neutropenie: formData.immunsuppression_neutropenie,
-            immunsuppression_angeborene_immunschwaeche: formData.immunsuppression_angeborene_immunschwaeche,
-            immunsuppression_immunsuppessive_therapie: formData.immunsuppression_immunsuppessive_therapie,
-            multiresistenz_infektion: formData.multiresistenz_infektion,
-            antibiotische_behandlung: formData.antibiotische_behandlung,
-            antibiotische_therapie_1_name: formData.antibiotische_therapie_1_name,
-            antibiotische_therapie_1_zeitraum: formData.antibiotische_therapie_1_zeitraum,
-            antibiotische_therapie_1_grund: formData.antibiotische_therapie_1_grund,
-            antibiotische_therapie_2_name: formData.antibiotische_therapie_2_name,
-            antibiotische_therapie_2_zeitraum: formData.antibiotische_therapie_2_zeitraum,
-            antibiotische_therapie_2_grund: formData.antibiotische_therapie_2_grund,
-            antibiotische_therapie_3_name: formData.antibiotische_therapie_3_name,
-            antibiotische_therapie_3_zeitraum: formData.antibiotische_therapie_3_zeitraum,
-            antibiotische_therapie_3_grund: formData.antibiotische_therapie_3_grund,
-            langzeit_norfloxacin_prophylaxe: formData.langzeit_norfloxacin_prophylaxe,
-            hospitalisation_vergangenes_jahr: formData.hospitalisation_vergangenes_jahr,
-            geburtsort_ausserhalb_deutschlands: formData.geburtsort_ausserhalb_deutschlands,
-            geburtsort_ausserhalb_deutschlands_ort: formData.geburtsort_ausserhalb_deutschlands_ort,
-            auslandsreise_letzte_drei_monate: formData.auslandsreise_letzte_drei_monate,
-            auslandsreise_letzte_drei_monate_ort: formData.auslandsreise_letzte_drei_monate_ort,
-            auslandsreise_antibiotika: formData.auslandsreise_antibiotika,
-            auslandsreise_durchfall: formData.auslandsreise_durchfall,
-            auslandsreise_krankenhaus: formData.auslandsreise_krankenhaus,
+    //fetch already entered data
+    useEffect(() => {
+        const fetchAllData = async () => {
+            try {
+                const response = await axios.get("http://localhost:8000/table/data?table_name=ltx_fragebogen",
+                );
+
+                if (response.data && formData.patient_Id_intern) {
+                    const foundItem = response.data.find(item => item.patient_Id_intern === formData.patient_Id_intern);
+
+                    if (foundItem) {
+                        setFormData((prevData) => ({
+                            ...prevData,
+                            beruf: foundItem.beruf,
+                            geschlecht: foundItem.geschlecht,
+                            alter: foundItem.alter,
+                            gewicht: foundItem.gewicht,
+                            groesse: foundItem.groesse,
+                            beruf: foundItem.beruf,
+                            kinder_anzahl: foundItem.kinder_anzahl,
+                            krankenversicherung: foundItem.krankenversicherung,
+                            epices_score: foundItem.epices_score,
+                            bewegung: foundItem.bewegung,
+                            rotes_fleisch: foundItem.rotes_fleisch,
+                            rotes_fleisch_anz: foundItem.rotes_fleisch_anz,
+                            gefluegel: foundItem.gefluegel,
+                            gefluegel_anz: foundItem.gefluegel_anz,
+                            verarbeitetes_fleisch: foundItem.verarbeitetes_fleisch,
+                            verarbeitetes_fleisch_anz: foundItem.verarbeitetes_fleisch_anz,
+                            fisch_meeresfruechte: foundItem.fisch_meeresfruechte,
+                            fisch_meeresfruechte_anz: foundItem.fisch_meeresfruechte_anz,
+                            eier: foundItem.eier,
+                            eier_anz: foundItem.eier_anz,
+                            fruechte_gemuese: foundItem.fruechte_gemuese,
+                            fruechte_gemuese_anz: foundItem.fruechte_gemuese_anz,
+                            staerkehaltige_lebensmittel: foundItem.staerkehaltige_lebensmittel,
+                            staerkehaltige_lebensmittel_anz: foundItem.staerkehaltige_lebensmittel_anz,
+                            vollwertkost: foundItem.vollwertkost,
+                            vollwertkost_anz: foundItem.vollwertkost_anz,
+                            huelsenfruechte: foundItem.huelsenfruechte,
+                            huelsenfruechte_anz: foundItem.huelsenfruechte_anz,
+                            joghurt: foundItem.joghurt,
+                            joghurt_anz: foundItem.joghurt_anz,
+                            kaese: foundItem.kaese,
+                            kaese_anz: foundItem.kaese_anz,
+                            milch: foundItem.milch,
+                            milch_anz: foundItem.milch_anz,
+                            fruehstueckscerealien: foundItem.fruehstueckscerealien,
+                            fruehstueckscerealien_anz: foundItem.fruehstueckscerealien_anz,
+                            fettfreie_zuckerhaltige_produkte: foundItem.fettfreie_zuckerhaltige_produkte,
+                            fettfreie_zuckerhaltige_produkte_anz: foundItem.fettfreie_zuckerhaltige_produkte_anz,
+                            fetthaltige_zuckerhaltige_produkte: foundItem.fetthaltige_zuckerhaltige_produkte,
+                            fetthaltige_zuckerhaltige_produkte_anz: foundItem.fetthaltige_zuckerhaltige_produkte_anz,
+                            fettige_salzige_produkte: foundItem.fettige_salzige_produkte,
+                            fettige_salzige_produkte_anz: foundItem.fettige_salzige_produkte_anz,
+                            fette: foundItem.fette,
+                            fette_anz: foundItem.fette_anz,
+                            zuckerhaltige_getraenke: foundItem.zuckerhaltige_getraenke,
+                            zuckerhaltige_getraenke_anz: foundItem.zuckerhaltige_getraenke_anz,
+                            wein: foundItem.wein,
+                            wein_anz: foundItem.wein_anz,
+                            bier: foundItem.bier,
+                            bier_anz: foundItem.bier_anz,
+                            aperitifs_digestifs: foundItem.aperitifs_digestifs,
+                            aperitifs_digestifs_anz: foundItem.aperitifs_digestifs_anz,
+                            nierenfunktion: foundItem.nierenfunktion,
+                            diabetes: foundItem.diabetes,
+                            immunsuppression_immunkompetent: Boolean(foundItem.immunsuppression_immunkompetent),
+                            immunsuppression_HIV_AIDS: Boolean(foundItem.immunsuppression_HIV_AIDS),
+                            immunsuppression_solider_krebs: Boolean(foundItem.immunsuppression_solider_krebs),
+                            immunsuppression_maligne_heamatopathie: Boolean(foundItem.immunsuppression_maligne_heamatopathie),
+                            immunsuppression_organ_knochenmarkstransplantation: Boolean(foundItem.immunsuppression_organ_knochenmarkstransplantation),
+                            immunsuppression_neutropenie: Boolean(foundItem.immunsuppression_neutropenie),
+                            immunsuppression_angeborene_immunschwaeche: Boolean(foundItem.immunsuppression_angeborene_immunschwaeche),
+                            immunsuppression_immunsuppessive_therapie: Boolean(foundItem.immunsuppression_immunsuppessive_therapie),
+                            multiresistenz_infektion: foundItem.multiresistenz_infektion,
+                            antibiotische_behandlung: foundItem.antibiotische_behandlung,
+                            antibiotische_therapie_1_name: foundItem.antibiotische_therapie_1_name,
+                            antibiotische_therapie_1_zeitraum: foundItem.antibiotische_therapie_1_zeitraum,
+                            antibiotische_therapie_1_grund: foundItem.antibiotische_therapie_1_grund,
+                            antibiotische_therapie_2_name: foundItem.antibiotische_therapie_2_name,
+                            antibiotische_therapie_2_zeitraum: foundItem.antibiotische_therapie_2_zeitraum,
+                            antibiotische_therapie_2_grund: foundItem.antibiotische_therapie_2_grund,
+                            antibiotische_therapie_3_name: foundItem.antibiotische_therapie_3_name,
+                            antibiotische_therapie_3_zeitraum: foundItem.antibiotische_therapie_3_zeitraum,
+                            antibiotische_therapie_3_grund: foundItem.antibiotische_therapie_3_grund,
+                            langzeit_norfloxacin_prophylaxe: foundItem.langzeit_norfloxacin_prophylaxe,
+                            hospitalisation_vergangenes_jahr: foundItem.hospitalisation_vergangenes_jahr,
+                            geburtsort_ausserhalb_deutschlands: foundItem.geburtsort_ausserhalb_deutschlands,
+                            geburtsort_ausserhalb_deutschlands_ort: foundItem.geburtsort_ausserhalb_deutschlands_ort,
+                            auslandsreise_letzte_drei_monate: foundItem.auslandsreise_letzte_drei_monate,
+                            auslandsreise_letzte_drei_monate_ort: foundItem.auslandsreise_letzte_drei_monate_ort,
+                            auslandsreise_antibiotika: foundItem.auslandsreise_antibiotika,
+                            auslandsreise_durchfall: foundItem.auslandsreise_durchfall,
+                            auslandsreise_krankenhaus: foundItem.auslandsreise_krankenhaus,
+                        }))
+                        setSnackbarMessage("Patienten Id gefunden");
+                        setSnackbarSeverity("success");
+                        setSnackbarOpen(true);
+                    } else {
+                        setSnackbarOpen(false);
+                    }
+                }
+            } catch (error) {
+                setSnackbarMessage("Fehler beim Abrufen der Daten.");
+                setSnackbarSeverity("error");
+                setSnackbarOpen(true);
+            }
         };
 
+        fetchAllData();
+    }, [formData.patient_Id_intern]);
+
+    //data submittet when pressing send
+    const handleSubmit = async () => {
         const payload = normalize(formData);
 
+    //try to send
         try {
-            console.log("Data being sent:", payload);
+            console.log("Data try to send:", payload);
+            const newErrors = {};
+
+            //definde required fields
+            const isUnfilled = (v) => v === '';
+            [
+                'rotes_fleisch', 
+                'gefluegel', 
+                'verarbeitetes_fleisch', 
+                'fisch_meeresfruechte', 
+                'eier', 
+                'fruechte_gemuese', 
+                'staerkehaltige_lebensmittel', 
+                'vollwertkost', 
+                'huelsenfruechte', 
+                'joghurt', 
+                'kaese', 
+                'milch', 
+                'fruehstueckscerealien',
+                'fettfreie_zuckerhaltige_produkte',
+                'fetthaltige_zuckerhaltige_produkte',
+                'fettige_salzige_produkte',
+                'fette',
+                'zuckerhaltige_getraenke',
+                'wein',
+                'bier',
+                'aperitifs_digestifs'
+            ]
+            .forEach((f) => {
+            if (isUnfilled(formData[f])) {
+                newErrors[f] = 'Alle Felder zum Thema "Ernährung" müssen Vollständig ausgefüllt sein';
+            }
+            });
+            if (Object.keys(newErrors).length > 0) {
+                setErrors(newErrors);
+                setSnackbarMessage('Alle Felder zum Thema "Ernährung" müssen Vollständig ausgefüllt sein'); //error message
+                setSnackbarSeverity('error');
+                setSnackbarOpen(true);
+                return;
+            }
 
             await axios.post(
                 "http://localhost:8000/new_data/ltx_fragebogen",
@@ -447,15 +515,20 @@ export default function SampleForm() {
                 { headers: { 'Content-Type': 'application/json' } }
             );
 
+            console.log("Data has been sent:", payload);
+
             setSnackbarMessage('Daten erfolgreich gespeichert.');
             setSnackbarSeverity('success');
             setSnackbarOpen(true);
+
         } catch (error) {
+            console.error(error);
             setSnackbarMessage('Fehler beim Speichern.');
             setSnackbarSeverity('error');
             setSnackbarOpen(true);
         }
     };
+
 
     const handleSnackbarClose = (event, reason) => {
         if (reason === 'clickaway') return;
@@ -467,13 +540,13 @@ export default function SampleForm() {
             sx={{ p: 3, maxWidth: 1000, mx: "auto" }}
             onKeyDown={(e) => {
                 if (e.key === "Enter") { //bei press-enter
-                  const active = document.activeElement; // Cursor Element
-                  if (active.name === "patient_Id_intern") { 
-                    e.preventDefault(); //aendere default funktion
-                    handleSubmit();    //submit
-                  }
+                    const active = document.activeElement; // Cursor Element
+                    if (active.name === "patient_Id_intern") {
+                        e.preventDefault(); //aendere default funktion
+                        handleSubmit();    //submit
+                    }
                 }
-              }}
+            }}
         >
             <Box sx={{ position: 'absolute', top: 90, left: 16 }}>
                 <Button
@@ -490,7 +563,7 @@ export default function SampleForm() {
                     LTX-Fragebogen
                 </Typography>
                 <Typography variant="body1">
-                    Erfassung aller befragten LTX-Patienten, welche der Studienkriterien entsprechen
+                    Erfassung aller befragten LTX-Patienten, welche den Studienkriterien entsprechen
                 </Typography>
             </Box>
 
@@ -841,7 +914,7 @@ export default function SampleForm() {
                     <FormControlLabel
                         control={
                             <Checkbox
-                                name="immunsuppression_immunsuppressive_therapie"
+                                name="immunsuppression_immunsuppessive_therapie"
                                 checked={Boolean(formData.immunsuppression_immunsuppessive_therapie)}
                                 onChange={handleChange}
                             />
@@ -1094,6 +1167,18 @@ export default function SampleForm() {
                     <FormControlLabel value="nein" control={<Radio />} label="Nein" />
                 </RadioGroup>
             </FormControl>
+
+            <Snackbar
+                open={snackbarOpen}
+                autoHideDuration={6000}
+                onClose={handleSnackbarClose}
+                anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+            >
+                <Alert onClose={handleSnackbarClose} severity={snackbarSeverity} sx={{ width: '100%' }} elevation={6}
+                    variant="filled">
+                    {snackbarMessage}
+                </Alert>
+            </Snackbar>
 
             {/* Action Buttons */}
             <Box sx={{ mt: 3, display: 'flex', justifyContent: 'space-between' }}>

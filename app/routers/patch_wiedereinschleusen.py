@@ -9,13 +9,14 @@ from ..models.urinproben import Urinproben
 from ..models.galleproben import Galleproben
 from ..models.edtaplasmaproben import Edtaplasmaproben
 from ..models.stuhlproben import Stuhlproben
+from ..models.ltx_fragebogen import Ltx_fragebogen
 
 router = APIRouter(
     prefix="/wiedereingeschleusen",
     tags=['wiedereingeschleusen']
 )
 
-#router for new serum entry
+#router for patch serum entry
 @router.patch("/serum/{barcode_id}", status_code=status.HTTP_200_OK,response_model=schemas.TableDataSerumproben)
 def patch_serumproben(barcode_id: str, db: Session = Depends(get_db)):
     # Suche nach dem bestehenden Eintrag
@@ -50,7 +51,7 @@ def patch_serumproben(barcode_id: str, db: Session = Depends(get_db)):
     return item_query.first()
 
 
-#router for new gewebe entry
+#router for patch gewebe entry
 @router.patch("/gewebe/{barcode_id}", status_code=status.HTTP_200_OK,response_model=schemas.TableDataSerumproben)
 def patch_gewebeproben(barcode_id: str, db: Session = Depends(get_db)):
     # Suche nach dem bestehenden Eintrag
@@ -85,7 +86,7 @@ def patch_gewebeproben(barcode_id: str, db: Session = Depends(get_db)):
     return item_query.first()
 
 
-#router for new urin entry
+#router for patch urin entry
 @router.patch("/urin/{barcode_id}", status_code=status.HTTP_200_OK,response_model=schemas.TableDataSerumproben)
 def patch_urinproben(barcode_id: str, db: Session = Depends(get_db)):
     # Suche nach dem bestehenden Eintrag
@@ -120,7 +121,7 @@ def patch_urinproben(barcode_id: str, db: Session = Depends(get_db)):
     return item_query.first()
 
 
-#router for new galle entry
+#router for patch galle entry
 @router.patch("/galle/{barcode_id}", status_code=status.HTTP_200_OK,response_model=schemas.TableDataGalleproben)
 def patch_galleproben(barcode_id: str, db: Session = Depends(get_db)):
     # Suche nach dem bestehenden Eintrag
@@ -154,7 +155,7 @@ def patch_galleproben(barcode_id: str, db: Session = Depends(get_db)):
         )
     return item_query.first()
 
-#router for new stuhl entry
+#router for patch stuhl entry
 @router.patch("/stuhl/{barcode_id}", status_code=status.HTTP_200_OK,response_model=schemas.TableDataStuhlproben)
 def patch_stuhlproben(barcode_id: str, db: Session = Depends(get_db)):
     # Suche nach dem bestehenden Eintrag
@@ -188,7 +189,7 @@ def patch_stuhlproben(barcode_id: str, db: Session = Depends(get_db)):
         )
     return item_query.first()
 
-#router for new edtaplasma entry
+#router for patch edtaplasma entry
 @router.patch("/edtaplasma/{barcode_id}", status_code=status.HTTP_200_OK,response_model=schemas.TableDataEdtaplasmaproben)
 def patch_edtaplasmaproben(barcode_id: str, db: Session = Depends(get_db)):
     # Suche nach dem bestehenden Eintrag

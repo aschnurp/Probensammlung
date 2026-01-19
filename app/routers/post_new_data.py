@@ -218,10 +218,16 @@ def create_galleproben(post: schemas.TableDataEdtaplasmaproben, db: Session = De
 #router for new ltx-fragebogen entry
 @router.post("/ltx_fragebogen", status_code=status.HTTP_201_CREATED, response_model= schemas.TableDataLtx_fragebogen)
 def create_ltxfragebogen(post: schemas.TableDataLtx_fragebogen, db: Session = Depends(get_db)):
-    new_item = Ltx_fragebogen(**post.dict())
-    
-    # Neue Probe hinzufügen
-    db.add(new_item)
+    item = (
+        db.query(Ltx_fragebogen).filter(Ltx_fragebogen.patient_Id_intern == post.patient_Id_intern).first()
+    )
+    if item:
+        for key, value in post.dict().items():
+            setattr(item, key, value)
+    else:
+        item = Ltx_fragebogen(**post.dict())
+        db.add(item)
+
     db.commit()
-    db.refresh(new_item)
-    return new_item
+    db.refresh(item)
+    return item

@@ -13,13 +13,14 @@ from ..models.vorlaeufige_proben import VorlaeufigeProben
 from ..models.stuhlproben import Stuhlproben
 from ..models.galleproben import Galleproben
 from ..models.edtaplasmaproben import Edtaplasmaproben
+from ..models.ltx_fragebogen import Ltx_fragebogen
 
 router = APIRouter(
     prefix="/update",
     tags=['update']
 )
 
-#router for patch serum entry
+#router for put serum entry
 @router.put("/serumproben", status_code=status.HTTP_201_CREATED, response_model= schemas.TableDataSerumproben)
 def update_serumproben(updated_post: schemas.TableDataSerumproben, db: Session = Depends(get_db)):
     existing_item_query = db.query(Serumproben).filter(Serumproben.barcode_id == updated_post.barcode_id)
@@ -30,7 +31,7 @@ def update_serumproben(updated_post: schemas.TableDataSerumproben, db: Session =
     db.commit()
     return existing_item_query.first()
 
-#router for patch gewebe entry
+#router for put gewebe entry
 @router.put("/gewebeproben", status_code=status.HTTP_201_CREATED, response_model= schemas.TableDataGewebeproben)
 def update_gewebeproben(updated_post: schemas.TableDataGewebeproben, db: Session = Depends(get_db)):
     existing_item_query = db.query(Gewebeproben).filter(Gewebeproben.barcode_id == updated_post.barcode_id)
@@ -41,7 +42,7 @@ def update_gewebeproben(updated_post: schemas.TableDataGewebeproben, db: Session
     db.commit()
     return existing_item_query.first()
 
-#router for patch urin entry
+#router for put urin entry
 @router.put("/urinproben", status_code=status.HTTP_201_CREATED, response_model= schemas.TableDataUrinproben)
 def update_urinproben(updated_post: schemas.TableDataUrinproben, db: Session = Depends(get_db)):
     existing_item_query = db.query(Urinproben).filter(Urinproben.barcode_id == updated_post.barcode_id)
@@ -52,7 +53,7 @@ def update_urinproben(updated_post: schemas.TableDataUrinproben, db: Session = D
     db.commit()
     return existing_item_query.first()
 
-#router for patch paraffin entry
+#router for put paraffin entry
 @router.put("/paraffinproben", status_code=status.HTTP_201_CREATED, response_model= schemas.TableDataParaffinproben)
 def update_paraffinproben(updated_post: schemas.TableDataParaffinproben, db: Session = Depends(get_db)):
     existing_item_query = db.query(Paraffinproben).filter(Paraffinproben.id == updated_post.id)
@@ -63,7 +64,7 @@ def update_paraffinproben(updated_post: schemas.TableDataParaffinproben, db: Ses
     db.commit()
     return existing_item_query.first()
 
-#router for patch patient entry
+#router for put patient entry
 @router.put("/patient", status_code=status.HTTP_201_CREATED, response_model= schemas.TableDatapatient)
 def update_patient(updated_post: schemas.TableDatapatient, db: Session = Depends(get_db)):
     existing_item_query = db.query(Patient).filter(Patient.patient_Id_intern == updated_post.patient_Id_intern)
@@ -74,7 +75,7 @@ def update_patient(updated_post: schemas.TableDatapatient, db: Session = Depends
     db.commit()
     return existing_item_query.first()
 
-#router for patch probenabholer entry
+#router for put probenabholer entry
 @router.put("/probenabholer", status_code=status.HTTP_201_CREATED, response_model= schemas.TableDataProbenabholer)
 def update_probenabholer(updated_post: schemas.TableDataProbenabholer, db: Session = Depends(get_db)):
     existing_item_query = db.query(Probenabholer).filter(Probenabholer.id == updated_post.id)
@@ -85,7 +86,7 @@ def update_probenabholer(updated_post: schemas.TableDataProbenabholer, db: Sessi
     db.commit()
     return existing_item_query.first()
 
-#router for patch vorläufige proben entry
+#router for put vorläufige proben entry
 @router.put("/vorlaeufigeproben", status_code=status.HTTP_201_CREATED, response_model= schemas.TableVorlaeufigeProben)
 def update_vorlaeufigeproben(updated_post: schemas.TableVorlaeufigeProben, db: Session = Depends(get_db)):
     existing_item_query = db.query(VorlaeufigeProben).filter(VorlaeufigeProben.barcode_id == updated_post.barcode_id)
@@ -96,7 +97,7 @@ def update_vorlaeufigeproben(updated_post: schemas.TableVorlaeufigeProben, db: S
     db.commit()
     return existing_item_query.first()
 
-#router for patch stuhl entry
+#router for put stuhl entry
 @router.put("/stuhlproben", status_code=status.HTTP_201_CREATED, response_model= schemas.TableDataStuhlproben)
 def update_stuhlproben(updated_post: schemas.TableDataStuhlproben, db: Session = Depends(get_db)):
     existing_item_query = db.query(Stuhlproben).filter(Stuhlproben.barcode_id == updated_post.barcode_id)
@@ -107,7 +108,7 @@ def update_stuhlproben(updated_post: schemas.TableDataStuhlproben, db: Session =
     db.commit()
     return existing_item_query.first()
 
-#router for patch galle entry
+#router for put galle entry
 @router.put("/galleproben", status_code=status.HTTP_201_CREATED, response_model= schemas.TableDataGalleproben)
 def update_galleproben(updated_post: schemas.TableDataGalleproben, db: Session = Depends(get_db)):
     existing_item_query = db.query(Galleproben).filter(Galleproben.barcode_id == updated_post.barcode_id)
@@ -118,7 +119,7 @@ def update_galleproben(updated_post: schemas.TableDataGalleproben, db: Session =
     db.commit()
     return existing_item_query.first()
 
-#router for patch edta entry
+#router for put edta entry
 @router.put("/edtaplasmaproben", status_code=status.HTTP_201_CREATED, response_model= schemas.TableDataEdtaplasmaproben)
 def update_edtaplasmaproben(updated_post: schemas.TableDataEdtaplasmaproben, db: Session = Depends(get_db)):
     existing_item_query = db.query(Edtaplasmaproben).filter(Edtaplasmaproben.barcode_id == updated_post.barcode_id)
