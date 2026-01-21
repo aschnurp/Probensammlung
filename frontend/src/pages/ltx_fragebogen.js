@@ -548,15 +548,11 @@ export default function SampleForm() {
                 }
             }}
         >
-            <Box sx={{ position: 'absolute', top: 90, left: 16 }}>
-                <Button
-                    variant="contained"
-                    color="primary"
-                    onClick={() => window.location.href = '/overview'}
-                >
-                    <IoMdArrowRoundBack />
-                </Button>
-            </Box>
+      <Box sx={{ position: "absolute", top: 90, left: 16 }}>
+        <Button variant="contained" color="primary" onClick={() => window.location.href = "/overview"}>
+          <IoMdArrowRoundBack className="text-2xl" />
+        </Button>
+      </Box>
 
             <Box sx={{ textAlign: 'center', mt: 4, mb: 2 }}>
                 <Typography variant="h5" sx={{ fontWeight: 'bold' }}>

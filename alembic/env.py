@@ -23,6 +23,9 @@ from app.models.stuhlproben import Stuhlproben
 from app.models.galleproben import Galleproben
 from app.models.probeninformation_ltx import Probeninformation_ltx
 from app.models.edtaplasmaproben import Edtaplasmaproben
+from app.models.differenzierungsmerkmal_edtaplasma import Differenzierungsmerkmal_edtaplasma
+from app.models.ltx_fragebogen import Ltx_fragebogen
+from app.models.ltx_fragebogen_ernaerung_lookup import Ltx_fragebogen_ernaerung_lookup
 
 from alembic import context
 
