@@ -67,7 +67,7 @@ export const getProbeOptions = (probenart) => {
     ];
   }
 
-
+  
   const probeDataLTX = [
     {id: 1, text:"Galle intra OP von expl. Leber  I", type:"galle"},  
     {id: 2, text:"Galle intra OP von expl. Leber II", type:"galle"},

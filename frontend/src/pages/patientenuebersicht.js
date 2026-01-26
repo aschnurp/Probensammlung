@@ -139,7 +139,7 @@ export default function Patientenuebersicht() {
           Patientenübersicht
         </Typography>
         <Typography variant="body1" sx={{ color: 'text.primary' }}>
-          Aller Proben eines Patienten.
+          Eine Übersicht aller eingetragenen Proben eines Patienten.
         </Typography>
       </Box>
 
