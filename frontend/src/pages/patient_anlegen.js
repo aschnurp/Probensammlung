@@ -303,6 +303,20 @@ export default function PatientForm() {
         helperText={errors.sap_id}
       />
 
+      {/* SAP ID TextField */}
+      <TextField
+        label="Fallnr. im SAP"
+        name="sap_fallnummer"
+        type="number"
+        value={formData.sap_fallnummer || ''}
+        onChange={handleChange}
+        fullWidth
+        margin="normal"
+        required
+        error={Boolean(errors.sap_fallnummer)}
+        helperText={errors.sap_fallnummer}
+      />
+
       {/* Diagnose TextField */}
       <TextField
         label="OP Diagnose"
