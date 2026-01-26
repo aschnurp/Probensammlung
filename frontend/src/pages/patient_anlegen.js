@@ -208,7 +208,17 @@ export default function PatientForm() {
   };
 
   return (
-    <Box sx={{ p: 3, maxWidth: 600, mx: 'auto' }}>
+    <Box sx={{ p: 3, maxWidth: 600, mx: 'auto' }}
+    onKeyDown={(e) => {
+      if (e.key === "Enter") { //bei press-enter
+        const active = document.activeElement; // Cursor Element
+        if (active.name === "patient_Id_intern") { 
+          e.preventDefault(); //aendere default funktion
+          handleSubmit();    //submit
+        }
+      }
+    }}
+    >
       <Box sx={{ position: 'absolute', top: 90, left: 16 }}>
         <Button variant="contained" color="primary" onClick={() => window.location.href = '/overview'}>
           <IoMdArrowRoundBack className='text-2xl' />
@@ -218,10 +228,13 @@ export default function PatientForm() {
         <Typography variant="h5" sx={{ fontWeight: 'bold', color: 'text.primary' }}>
           Patienten Anlegen
         </Typography>
+        <Typography variant="body1" sx={{ color: 'text.primary' }}>
+          Hier können Patientendaten vervollständigt, sowie neue Patienten angelegt werden.
+        </Typography>
       </Box>
 
       <TextField
-        label="Patienten ID (intern)"
+        label="Patienten ID (intern) z.B. HL0126"
         name="patient_Id_intern"
         value={formData.patient_Id_intern || ''}
         onChange={handleChange}
@@ -290,6 +303,20 @@ export default function PatientForm() {
         helperText={errors.sap_id}
       />
 
+      {/* SAP ID TextField */}
+      <TextField
+        label="Fallnr. im SAP"
+        name="sap_fallnummer"
+        type="number"
+        value={formData.sap_fallnummer || ''}
+        onChange={handleChange}
+        fullWidth
+        margin="normal"
+        required
+        error={Boolean(errors.sap_fallnummer)}
+        helperText={errors.sap_fallnummer}
+      />
+
       {/* Diagnose TextField */}
       <TextField
         label="OP Diagnose"
@@ -317,7 +344,7 @@ export default function PatientForm() {
 
       {/* Bemerkungen TextField (Optional) */}
       <TextField
-        label="SAP Fallnummer / Bemerkungen"
+        label="Bemerkungen"
         name="bemerkung"
         value={formData.bemerkung || ''}
         onChange={handleChange}
@@ -332,7 +359,7 @@ export default function PatientForm() {
         <Button variant="outlined" color="secondary" onClick={handleClear}>
           Zurücksetzen
         </Button>
-        <Button variant="contained" color="success" onClick={handleSubmit}>
+        <Button variant="contained" color="success" onClick={handleSubmit} type="submit">
           Speichern
         </Button>
       </Box>

@@ -65,14 +65,23 @@ export default function ProbeAusschleusen() {
       console.error('Error submitting data:', error);
 
       // Show error snackbar notification
-      setSnackbarMessage('Falsche Barcode ID oder Probenart!');
+      setSnackbarMessage('Falsche Barcode ID, Probenart oder Probe bereits wieder eingeschleust!');
       setSnackbarSeverity('error');
       setSnackbarOpen(true);
     }
   };
 
   return (
-    <Box sx={{ p: 3, maxWidth: 600, mx: 'auto' }}>
+    <Box sx={{ p: 3, maxWidth: 600, mx: 'auto' }}
+    onKeyDown={(e) => {
+      if (e.key === "Enter") { //bei press-enter
+        const active = document.activeElement; // Cursor Element
+        if (active.name === "barcodeId") { 
+          e.preventDefault(); //aendere default funktion
+          handleSubmit();    //submit
+        }
+      }
+    }}>
       <Box sx={{ position: 'absolute', top: 90, left: 16 }}>
         <Button
           variant="contained"
@@ -86,6 +95,9 @@ export default function ProbeAusschleusen() {
         <Typography variant="h5" sx={{ fontWeight: 'bold', color: 'text.primary' }}>
           Proben wieder einschleusen
         </Typography>
+        <Typography variant="body1" sx={{ color: 'text.primary' }}>
+          Ausgeschleuste Proben in das System wieder einschleusen. 
+        </Typography>
       </Box>
 
       {/* Proben RadioGroup */}
@@ -96,14 +108,20 @@ export default function ProbeAusschleusen() {
           name="proben"
           value={selectedProbe}
           onChange={handleProbeChange}
-          row
+          col
         >
           <FormControlLabel value="serum" control={<Radio />} label="Serumproben" />
           <FormControlLabel value="gewebe" control={<Radio />} label="Gewebeproben" />
           <FormControlLabel value="urin" control={<Radio />} label="Urinproben" />
+          <FormControlLabel value="galle" control={<Radio />} label="Galleproben" />
+          <FormControlLabel value="stuhl" control={<Radio />} label="Stuhlproben" />
+          <FormControlLabel value="edtaplasma" control={<Radio />} label="EDTA-Plasmaproben" />
         </RadioGroup>
       </FormControl>
 
+      <Box sx={{ textAlign: 'left', mt: 4}}>
+      <FormLabel id="proben-label">Barcode</FormLabel>
+      </Box>
       <TextField
         label="Scannerfeld für Barcode ID"
         name="barcodeId"
@@ -122,13 +140,13 @@ export default function ProbeAusschleusen() {
         fullWidth
         sx={{ mt: 2 }}
       >
-        Probe ausschleusen
+        Einschleusen
       </Button>
 
       {/* Snackbar for notifications */}
       <Snackbar
         open={snackbarOpen}
-        autoHideDuration={3000}
+        autoHideDuration={10000}
         onClose={() => setSnackbarOpen(false)}
       >
         <Alert

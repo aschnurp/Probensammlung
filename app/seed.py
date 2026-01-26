@@ -2,11 +2,15 @@ from sqlalchemy.orm import Session
 from .models.status import Status
 from .models.differenzierungsmerkmal_gewebe import Differenzierungsmerkmal_gewebe
 from .models.differenzierungsmerkmal_serum import Differenzierungsmerkmal_serum
-
 from .models.differenzierungsmerkmal_urin import Differenzierungsmerkmal_urin
 from .models.uebergeordnete_probenart_paraffin import Uebergeordnete_probenart_paraffin
+from .models.differenzierungsmerkmal_edtaplasma import Differenzierungsmerkmal_edtaplasma
+from .models.ltx_fragebogen_ernaerung_lookup import Ltx_fragebogen_ernaerung_lookup
+
 
 from .models.probeninformation import Probeninformation
+from .models.probeninformation_ltx import Probeninformation_ltx
+
 from .models.untergeordnete_probenart_paraffin import Untergeordnete_probenart_paraffin
 from . database import get_db, Base
 from sqlalchemy.orm import Session
@@ -97,6 +101,78 @@ def seed_status_data(db: Session):
         db.commit()
         print("Seed-Daten erfolgreich hinzugefügt.")
 
+
+    if not db.query(Probeninformation_ltx).first():
+        seed_data = [
+            Probeninformation_ltx(probeninformation_text="Galle intra OP von expl. Leber  I", probenart="galle"),  
+            Probeninformation_ltx(probeninformation_text="Galle intra OP von expl. Leber II", probenart="galle"),
+            Probeninformation_ltx(probeninformation_text="Galle intra OP von expl. Leber III", probenart="galle"),
+            Probeninformation_ltx(probeninformation_text="Galle intra OP von expl. Leber IV", probenart="galle"),
+            Probeninformation_ltx(probeninformation_text="Galle intra OP von impl. Leber I", probenart="galle"),  
+            Probeninformation_ltx(probeninformation_text="Galle intra OP von impl. Leber II", probenart="galle"),
+            Probeninformation_ltx(probeninformation_text="Galle intra OP von impl. Leber III", probenart="galle"),
+            Probeninformation_ltx(probeninformation_text="Galle intra OP von impl. Leber IV", probenart="galle"),
+            Probeninformation_ltx(probeninformation_text="Galle post OP 1d von impl. Leber I", probenart="galle"),
+            Probeninformation_ltx(probeninformation_text="Galle post OP 1d von impl. Leber II", probenart="galle"),
+            Probeninformation_ltx(probeninformation_text="Galle post OP 1d von impl. Leber III", probenart="galle"),
+            Probeninformation_ltx(probeninformation_text="Galle post OP 1d von impl. Leber IV", probenart="galle"),
+            Probeninformation_ltx(probeninformation_text="Galle post OP 2d von impl. Leber I", probenart="galle"),
+            Probeninformation_ltx(probeninformation_text="Galle post OP 2d von impl. Leber II", probenart="galle"),
+            Probeninformation_ltx(probeninformation_text="Galle post OP 2d von impl. Leber III", probenart="galle"),
+            Probeninformation_ltx(probeninformation_text="Galle post OP 2d von impl. Leber IV", probenart="galle"),
+            Probeninformation_ltx(probeninformation_text="Galle post OP 7d von impl. Leber I", probenart="galle"),
+            Probeninformation_ltx(probeninformation_text="Galle post OP 7d von impl. Leber II", probenart="galle"),
+            Probeninformation_ltx(probeninformation_text="Galle post OP 7d von impl. Leber III", probenart="galle"),
+            Probeninformation_ltx(probeninformation_text="Galle post OP 7d von impl. Leber IV", probenart="galle"),
+            Probeninformation_ltx(probeninformation_text="Galle post OP 14d von impl. Leber I", probenart="galle"),
+            Probeninformation_ltx(probeninformation_text="Galle post OP 14d von impl. Leber II", probenart="galle"),
+            Probeninformation_ltx(probeninformation_text="Galle post OP 14d von impl. Leber III", probenart="galle"),
+            Probeninformation_ltx(probeninformation_text="Galle post OP 14d von impl. Leber IV", probenart="galle"),
+            Probeninformation_ltx(probeninformation_text="EDTA-Plasma bei Aufklährung I", probenart="edtaplasma"),
+            Probeninformation_ltx(probeninformation_text="EDTA-Plasma bei Aufklährung II", probenart="edtaplasma"),
+            Probeninformation_ltx(probeninformation_text="EDTA-Plasma bei Aufklährung III", probenart="edtaplasma"),
+            Probeninformation_ltx(probeninformation_text="EDTA-Plasma bei Aufklährung IV", probenart="edtaplasma"),
+            Probeninformation_ltx(probeninformation_text="EDTA-Plasma intra OP I", probenart="edtaplasma"),
+            Probeninformation_ltx(probeninformation_text="EDTA-Plasma intra OP II", probenart="edtaplasma"),
+            Probeninformation_ltx(probeninformation_text="EDTA-Plasma intra OP III", probenart="edtaplasma"),
+            Probeninformation_ltx(probeninformation_text="EDTA-Plasma intra OP IV", probenart="edtaplasma"),
+            Probeninformation_ltx(probeninformation_text="EDTA-Plasma prä OP I", probenart="edtaplasma"),
+            Probeninformation_ltx(probeninformation_text="EDTA-Plasma prä OP II", probenart="edtaplasma"),
+            Probeninformation_ltx(probeninformation_text="EDTA-Plasma prä OP III", probenart="edtaplasma"),
+            Probeninformation_ltx(probeninformation_text="EDTA-Plasma prä OP IV", probenart="edtaplasma"),
+            Probeninformation_ltx(probeninformation_text="EDTA-Plasma post OP 1d I", probenart="edtaplasma"),
+            Probeninformation_ltx(probeninformation_text="EDTA-Plasma post OP 1d II", probenart="edtaplasma"),
+            Probeninformation_ltx(probeninformation_text="EDTA-Plasma post OP 1d III", probenart="edtaplasma"),
+            Probeninformation_ltx(probeninformation_text="EDTA-Plasma post OP 1d IV", probenart="edtaplasma"),
+            Probeninformation_ltx(probeninformation_text="EDTA-Plasma post OP 7d I", probenart="edtaplasma"),
+            Probeninformation_ltx(probeninformation_text="EDTA-Plasma post OP 7d II", probenart="edtaplasma"),
+            Probeninformation_ltx(probeninformation_text="EDTA-Plasma post OP 7d III", probenart="edtaplasma"),
+            Probeninformation_ltx(probeninformation_text="EDTA-Plasma post OP 7d IV", probenart="edtaplasma"),
+            Probeninformation_ltx(probeninformation_text="EDTA-Plasma post OP 14d I", probenart="edtaplasma"),
+            Probeninformation_ltx(probeninformation_text="EDTA-Plasma post OP 14d II", probenart="edtaplasma"),
+            Probeninformation_ltx(probeninformation_text="EDTA-Plasma post OP 14d III", probenart="edtaplasma"),
+            Probeninformation_ltx(probeninformation_text="EDTA-Plasma post OP 14d IV", probenart="edtaplasma"),
+            Probeninformation_ltx(probeninformation_text="Stuhl prä OP I", probenart="stuhl"),
+            Probeninformation_ltx(probeninformation_text="Stuhl prä OP II", probenart="stuhl"),
+            Probeninformation_ltx(probeninformation_text="Stuhl prä OP III", probenart="stuhl"),
+            Probeninformation_ltx(probeninformation_text="Stuhl prä OP IV", probenart="stuhl"),
+            Probeninformation_ltx(probeninformation_text="Stuhl post OP 1d I", probenart="stuhl"),
+            Probeninformation_ltx(probeninformation_text="Stuhl post OP 1d II", probenart="stuhl"),
+            Probeninformation_ltx(probeninformation_text="Stuhl post OP 1d III", probenart="stuhl"),
+            Probeninformation_ltx(probeninformation_text="Stuhl post OP 1d IV", probenart="stuhl"),
+            Probeninformation_ltx(probeninformation_text="Stuhl post OP 7d I", probenart="stuhl"),
+            Probeninformation_ltx(probeninformation_text="Stuhl post OP 7d II", probenart="stuhl"),
+            Probeninformation_ltx(probeninformation_text="Stuhl post OP 7d III", probenart="stuhl"),
+            Probeninformation_ltx(probeninformation_text="Stuhl post OP 7d IV", probenart="stuhl"),
+            Probeninformation_ltx(probeninformation_text="Stuhl post OP 14d I", probenart="stuhl"),
+            Probeninformation_ltx(probeninformation_text="Stuhl post OP 14d II", probenart="stuhl"),
+            Probeninformation_ltx(probeninformation_text="Stuhl post OP 14d III", probenart="stuhl"),
+            Probeninformation_ltx(probeninformation_text="Stuhl post OP 14d IV", probenart="stuhl"),
+        ]
+        # Einfügen und speichern
+        db.add_all(seed_data)
+        db.commit()
+        print("Seed-Daten erfolgreich hinzugefügt.")
     
     if not db.query(Differenzierungsmerkmal_gewebe).first():
         # Seed-Daten definieren
@@ -106,6 +182,7 @@ def seed_status_data(db: Session):
             Differenzierungsmerkmal_gewebe(differenzierungsmerkmal_text="Empfänger"),
             Differenzierungsmerkmal_gewebe(differenzierungsmerkmal_text="Spender"),
             Differenzierungsmerkmal_gewebe(differenzierungsmerkmal_text="Spender nach Perfusion"),
+            Differenzierungsmerkmal_gewebe(differenzierungsmerkmal_text="LTX-Biopsie 1 Jahr post OP"),
         ]
         # Einfügen und speichern
         db.add_all(seed_data)
@@ -121,6 +198,21 @@ def seed_status_data(db: Session):
             Differenzierungsmerkmal_serum(differenzierungsmerkmal_text="ZVK"),
             Differenzierungsmerkmal_serum(differenzierungsmerkmal_text="Vene peripher"),
             Differenzierungsmerkmal_serum(differenzierungsmerkmal_text="Arterie peripher"),
+        ]
+        # Einfügen und speichern
+        db.add_all(seed_data)
+        db.commit()
+        print("Seed-Daten erfolgreich hinzugefügt.")
+
+
+    if not db.query(Differenzierungsmerkmal_edtaplasma).first():
+        # Seed-Daten definieren
+        seed_data = [
+            Differenzierungsmerkmal_edtaplasma(differenzierungsmerkmal_text="Lebervene Links"),            
+            Differenzierungsmerkmal_edtaplasma(differenzierungsmerkmal_text="Lebervene Rechts"),
+            Differenzierungsmerkmal_edtaplasma(differenzierungsmerkmal_text="ZVK"),
+            Differenzierungsmerkmal_edtaplasma(differenzierungsmerkmal_text="Vene peripher"),
+            Differenzierungsmerkmal_edtaplasma(differenzierungsmerkmal_text="Arterie peripher"),
         ]
         # Einfügen und speichern
         db.add_all(seed_data)
@@ -151,10 +243,6 @@ def seed_status_data(db: Session):
         db.add_all(seed_data)
         db.commit()
         print("Seed-Daten erfolgreich hinzugefügt.")
-    
-    else:
-        print("Tabelle ist bereits gefüllt. Keine Seed-Daten hinzugefügt.")
-
 
     if not db.query(Uebergeordnete_probenart_paraffin).first():
         # Seed-Daten definieren
@@ -166,11 +254,27 @@ def seed_status_data(db: Session):
             Uebergeordnete_probenart_paraffin(uebergeordnete_probenart_text="Normal Spender der Leber"),
             Uebergeordnete_probenart_paraffin(uebergeordnete_probenart_text="Normal Spender nach Perfusion der Leber"),
             Uebergeordnete_probenart_paraffin(uebergeordnete_probenart_text="Tumor"),
+            Uebergeordnete_probenart_paraffin(uebergeordnete_probenart_text="LTX-Biopsie 1 Jahr post OP"),
         ]
         # Einfügen und speichern
         db.add_all(seed_data)
         db.commit()
         print("Seed-Daten erfolgreich hinzugefügt.")
-    
+
+    if not db.query(Ltx_fragebogen_ernaerung_lookup).first():
+        # Seed-Daten definieren
+        seed_data = [
+            Ltx_fragebogen_ernaerung_lookup(value="Nie"),
+            Ltx_fragebogen_ernaerung_lookup(value="1-3 Mal pro Monat"),
+            Ltx_fragebogen_ernaerung_lookup(value="1-2 Mal pro Woche"),
+            Ltx_fragebogen_ernaerung_lookup(value="3-5 Mal pro Woche"),
+            Ltx_fragebogen_ernaerung_lookup(value="1 Mal pro Tag"),
+            Ltx_fragebogen_ernaerung_lookup(value="ueber 2 Mal pro Tag"),
+        ]
+        # Einfügen und speichern
+        db.add_all(seed_data)
+        db.commit()
+        print("Seed-Daten erfolgreich hinzugefügt.") 
+
     else:
         print("Tabelle ist bereits gefüllt. Keine Seed-Daten hinzugefügt.")

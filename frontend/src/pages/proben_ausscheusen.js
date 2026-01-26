@@ -75,7 +75,16 @@ export default function ProbeAusschleusen() {
   };
 
   return (
-    <Box sx={{ p: 3, maxWidth: 600, mx: 'auto' }}>
+    <Box sx={{ p: 3, maxWidth: 600, mx: 'auto' }}
+    onKeyDown={(e) => {
+      if (e.key === "Enter") { //bei press-enter
+        const active = document.activeElement; // Cursor Element
+        if (active.name === "barcodeId") { 
+          e.preventDefault(); //aendere default funktion
+          handleSubmit();    //submit
+        }
+      }
+    }}>
       <Box sx={{ position: 'absolute', top: 90, left: 16 }}>
         <Button
           variant="contained"
@@ -89,6 +98,9 @@ export default function ProbeAusschleusen() {
         <Typography variant="h5" sx={{ fontWeight: 'bold', color: 'text.primary' }}>
           Proben Ausschleusen
         </Typography>
+        <Typography variant="body1" sx={{ color: 'text.primary' }}>
+          Wähle die Probenart und gebe den Barcode der Probe ein, welche aufgetaut wird oder das System verlässt.
+        </Typography>
       </Box>
 
       {/* Proben RadioGroup */}
@@ -99,13 +111,19 @@ export default function ProbeAusschleusen() {
           name="proben"
           value={selectedProbe}
           onChange={handleProbeChange}
-          row
+          col
         >
           <FormControlLabel value="serum" control={<Radio />} label="Serumproben" />
           <FormControlLabel value="gewebe" control={<Radio />} label="Gewebeproben" />
           <FormControlLabel value="urin" control={<Radio />} label="Urinproben" />
+          <FormControlLabel value="galle" control={<Radio />} label="Galleproben" />
+          <FormControlLabel value="stuhl" control={<Radio />} label="Stuhlproben" />
+          <FormControlLabel value="edtaplasma" control={<Radio />} label="EDTA-Plasmaproben" />
         </RadioGroup>
       </FormControl>
+      <Box sx={{ textAlign: 'left', mt: 4}}>
+      <FormLabel id="proben-label">Barcode</FormLabel>
+      </Box>
 
       <TextField
         label="Scannerfeld für Barcode ID"
@@ -125,7 +143,7 @@ export default function ProbeAusschleusen() {
         fullWidth
         sx={{ mt: 2 }}
       >
-        Probe ausschleusen
+        Ausschleusen
       </Button>
 
       {/* Snackbar for notifications */}

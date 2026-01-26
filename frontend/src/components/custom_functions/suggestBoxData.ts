@@ -4,7 +4,7 @@ import { LastBoxInfo, SuggestedBoxData } from '@/src/types/otherOtypes';
 import axios from 'axios';
 
 export async function suggestBoxData(
-  tableName: 'gewebeproben' | 'serumproben' | 'urinproben'
+  tableName: 'gewebeproben' | 'serumproben' | 'urinproben' | 'galleproben' | 'stuhlproben' | 'edtaplasmaproben'
 ): Promise<SuggestedBoxData | null> {
   try {
     // Fetch the last box info from the backend

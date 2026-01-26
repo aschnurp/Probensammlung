@@ -6,13 +6,17 @@ from sqlalchemy.orm import Session
 from ..models.serumproben import Serumproben
 from ..models.gewebeproben import Gewebeproben
 from ..models.urinproben import Urinproben
+from ..models.galleproben import Galleproben
+from ..models.edtaplasmaproben import Edtaplasmaproben
+from ..models.stuhlproben import Stuhlproben
+from ..models.ltx_fragebogen import Ltx_fragebogen
 
 router = APIRouter(
     prefix="/wiedereingeschleusen",
     tags=['wiedereingeschleusen']
 )
 
-#router for new serum entry
+#router for patch serum entry
 @router.patch("/serum/{barcode_id}", status_code=status.HTTP_200_OK,response_model=schemas.TableDataSerumproben)
 def patch_serumproben(barcode_id: str, db: Session = Depends(get_db)):
     # Suche nach dem bestehenden Eintrag
@@ -25,9 +29,18 @@ def patch_serumproben(barcode_id: str, db: Session = Depends(get_db)):
             status_code=status.HTTP_404_NOT_FOUND,
             detail=f"Eintrag mit barcode_id: {barcode_id} existiert nicht.",
         )
-    # Aktualisieren des Eintrags mit dem Standardwert 2 für status
+    
+    #test ob item bereits status 3 hat
+    if existing_item.status == 3:
+        raise HTTPException(
+            status_code=status.HTTP_409_CONFLICT,
+            detail=f"Eintrag mit barcode_id {barcode_id} ist bereits wieder eingeschleust.",
+    )
+
+    # Aktualisieren des Eintrags mit dem Standardwert 3 für status
     try:
         item_query.update({"status": 3}, synchronize_session=False)
+        item_query.update({Serumproben.anzahl_statuswechsel: Serumproben.anzahl_statuswechsel + 1}, synchronize_session=False)
         db.commit()
     except Exception as e:
         db.rollback()
@@ -38,7 +51,7 @@ def patch_serumproben(barcode_id: str, db: Session = Depends(get_db)):
     return item_query.first()
 
 
-#router for new gewebe entry
+#router for patch gewebe entry
 @router.patch("/gewebe/{barcode_id}", status_code=status.HTTP_200_OK,response_model=schemas.TableDataSerumproben)
 def patch_gewebeproben(barcode_id: str, db: Session = Depends(get_db)):
     # Suche nach dem bestehenden Eintrag
@@ -51,9 +64,18 @@ def patch_gewebeproben(barcode_id: str, db: Session = Depends(get_db)):
             status_code=status.HTTP_404_NOT_FOUND,
             detail=f"Eintrag mit barcode_id: {barcode_id} existiert nicht.",
         )
-    # Aktualisieren des Eintrags mit dem Standardwert 2 für status
+    
+    #test ob item bereits status 3 hat
+    if existing_item.status == 3:
+        raise HTTPException(
+            status_code=status.HTTP_409_CONFLICT,
+            detail=f"Eintrag mit barcode_id {barcode_id} ist bereits wieder eingeschleust.",
+    )
+
+    # Aktualisieren des Eintrags mit dem Standardwert 3 für status
     try:
         item_query.update({"status": 3}, synchronize_session=False)
+        item_query.update({Gewebeproben.anzahl_statuswechsel: Gewebeproben.anzahl_statuswechsel + 1}, synchronize_session=False)
         db.commit()
     except Exception as e:
         db.rollback()
@@ -64,7 +86,7 @@ def patch_gewebeproben(barcode_id: str, db: Session = Depends(get_db)):
     return item_query.first()
 
 
-#router for new urin entry
+#router for patch urin entry
 @router.patch("/urin/{barcode_id}", status_code=status.HTTP_200_OK,response_model=schemas.TableDataSerumproben)
 def patch_urinproben(barcode_id: str, db: Session = Depends(get_db)):
     # Suche nach dem bestehenden Eintrag
@@ -77,9 +99,18 @@ def patch_urinproben(barcode_id: str, db: Session = Depends(get_db)):
             status_code=status.HTTP_404_NOT_FOUND,
             detail=f"Eintrag mit barcode_id: {barcode_id} existiert nicht.",
         )
-    # Aktualisieren des Eintrags mit dem Standardwert 2 für status
+    
+    #test ob item bereits status 3 hat
+    if existing_item.status == 3:
+        raise HTTPException(
+            status_code=status.HTTP_409_CONFLICT,
+            detail=f"Eintrag mit barcode_id {barcode_id} ist bereits wieder eingeschleust.",
+    )
+
+    # Aktualisieren des Eintrags mit dem Standardwert 3 für status
     try:
         item_query.update({"status": 3}, synchronize_session=False)
+        item_query.update({Urinproben.anzahl_statuswechsel: Urinproben.anzahl_statuswechsel + 1}, synchronize_session=False)
         db.commit()
     except Exception as e:
         db.rollback()
@@ -89,3 +120,105 @@ def patch_urinproben(barcode_id: str, db: Session = Depends(get_db)):
         )
     return item_query.first()
 
+
+#router for patch galle entry
+@router.patch("/galle/{barcode_id}", status_code=status.HTTP_200_OK,response_model=schemas.TableDataGalleproben)
+def patch_galleproben(barcode_id: str, db: Session = Depends(get_db)):
+    # Suche nach dem bestehenden Eintrag
+    item_query = db.query(Galleproben).filter(Galleproben.barcode_id == barcode_id)
+    existing_item = item_query.first()
+
+    #test ob item existiert
+    if not existing_item:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"Eintrag mit barcode_id: {barcode_id} existiert nicht.",
+        )
+    
+    #test ob item bereits status 3 hat
+    if existing_item.status == 3:
+        raise HTTPException(
+            status_code=status.HTTP_409_CONFLICT,
+            detail=f"Eintrag mit barcode_id {barcode_id} ist bereits wieder eingeschleust.",
+    )
+
+    # Aktualisieren des Eintrags mit dem Standardwert 3 für status
+    try:
+        item_query.update({"status": 3}, synchronize_session=False)
+        item_query.update({Galleproben.anzahl_statuswechsel: Galleproben.anzahl_statuswechsel + 1}, synchronize_session=False)
+        db.commit()
+    except Exception as e:
+        db.rollback()
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Fehler beim Aktualisieren: {str(e)}",
+        )
+    return item_query.first()
+
+#router for patch stuhl entry
+@router.patch("/stuhl/{barcode_id}", status_code=status.HTTP_200_OK,response_model=schemas.TableDataStuhlproben)
+def patch_stuhlproben(barcode_id: str, db: Session = Depends(get_db)):
+    # Suche nach dem bestehenden Eintrag
+    item_query = db.query(Stuhlproben).filter(Stuhlproben.barcode_id == barcode_id)
+    existing_item = item_query.first()
+
+    #test ob item existiert
+    if not existing_item:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"Eintrag mit barcode_id: {barcode_id} existiert nicht.",
+        )
+    
+    #test ob item bereits status 3 hat
+    if existing_item.status == 3:
+        raise HTTPException(
+            status_code=status.HTTP_409_CONFLICT,
+            detail=f"Eintrag mit barcode_id {barcode_id} ist bereits wieder eingeschleust.",
+    )
+
+    # Aktualisieren des Eintrags mit dem Standardwert 3 für status
+    try:
+        item_query.update({"status": 3}, synchronize_session=False)
+        item_query.update({Stuhlproben.anzahl_statuswechsel: Stuhlproben.anzahl_statuswechsel + 1}, synchronize_session=False)
+        db.commit()
+    except Exception as e:
+        db.rollback()
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Fehler beim Aktualisieren: {str(e)}",
+        )
+    return item_query.first()
+
+#router for patch edtaplasma entry
+@router.patch("/edtaplasma/{barcode_id}", status_code=status.HTTP_200_OK,response_model=schemas.TableDataEdtaplasmaproben)
+def patch_edtaplasmaproben(barcode_id: str, db: Session = Depends(get_db)):
+    # Suche nach dem bestehenden Eintrag
+    item_query = db.query(Edtaplasmaproben).filter(Edtaplasmaproben.barcode_id == barcode_id)
+    existing_item = item_query.first()
+
+    #test ob item existiert
+    if not existing_item:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"Eintrag mit barcode_id: {barcode_id} existiert nicht.",
+        )
+    
+    #test ob item bereits status 3 hat
+    if existing_item.status == "3":
+        raise HTTPException(
+            status_code=status.HTTP_409_CONFLICT,
+            detail=f"Eintrag mit barcode_id {barcode_id} ist bereits wieder eingeschleust.",
+    )
+
+    # Aktualisieren des Eintrags mit dem Standardwert 3 für status
+    try:
+        item_query.update({"status": 3}, synchronize_session=False)
+        item_query.update({Edtaplasmaproben.anzahl_statuswechsel: Edtaplasmaproben.anzahl_statuswechsel + 1}, synchronize_session=False)
+        db.commit()
+    except Exception as e:
+        db.rollback()
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Fehler beim Aktualisieren: {str(e)}",
+        )
+    return item_query.first()

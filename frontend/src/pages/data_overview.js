@@ -4,10 +4,15 @@ import { serumprobenDataColumns } from '../types/serumprobenColumns';
 import { urinprobenDataColumns } from '../types/urinprobenColumns';
 import { paraffinprobenDataColumns } from '../types/paraffinprobenColumns';
 import { vorlaeufigeprobenDataColumns } from '../types/vorlaeufigeprobenColumns';
+import { galleprobenDataColumns } from '../types/galleprobenColumns';
+import { stuhlprobenDataColumns } from '../types/stuhlprobenColumns';
+import { edtaplasmaprobenDataColumns } from '../types/edtaplasmaprobenColumns';
 import dayjs from 'dayjs';
 import axios from 'axios';
 import React, { useState, useEffect, useRef } from 'react';
 import InfoIcon from '@mui/icons-material/Info';
+
+
 //import InfoIcon from '@mui/icons-material/Info';
 import {
   Box,
@@ -22,8 +27,13 @@ import {
   DialogActions,
   Dialog,
   Snackbar,
+  AppBar,
+  Tabs,
+  Tab,
+  Pagination,
+  PaginationItem,
+  Link
 } from '@mui/material';
-import { getProbeOptions } from '../components/custom_functions/getProbeOPtions';
 
 
 // Mapping der Tabellen-Spalten für dynamisches Rendern
@@ -33,7 +43,10 @@ const TABLE_COLUMNS = {
   serumproben: serumprobenDataColumns,
   urinproben: urinprobenDataColumns,
   patient: patientDataColumns,
-  vorlaeufigeproben: vorlaeufigeprobenDataColumns
+  vorlaeufigeproben: vorlaeufigeprobenDataColumns,
+  galleproben: galleprobenDataColumns,
+  stuhlproben: stuhlprobenDataColumns,
+  edtaplasmaproben: edtaplasmaprobenDataColumns
 };
 
 // definition für probenstatus mapping
@@ -45,9 +58,27 @@ const STATUS_MAPPING = {
 
 require('dotenv').config();
 
+function TabPanel({ children, value, index, ...other }) {
+  return (
+    <div
+      role="tabpanel"
+      hidden={value !== index}
+      id={`simple-tabpanel-${index}`}
+      aria-labelledby={`simple-tab-${index}`}
+      {...other}
+    >
+      {value === index && (
+        <Box sx={{ p: 3 }}>
+          {children}
+        </Box>
+      )}
+    </div>
+  );
+}
+
 export default function Uebersicht() {
   const [isOpen, setIsOpen] = useState(false);
-  const [selectedTable, setSelectedTable] = useState(null);
+  const [selectedTable, setSelectedTable] = useState("paraffinproben");
   const [data, setData] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
   const [editRowIndex, setEditRowIndex] = useState(null);
@@ -58,17 +89,73 @@ export default function Uebersicht() {
   const [selectedColumn, setSelectedColumn] = useState("");
   const dropdownRef = useRef(null);
   const tableScrollRef = useRef(null);
-  const [Table_header, setTable_header] = useState(""); // Keep React state setter
+  const [Table_header, setTable_header] = useState("");
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [openPsw, setOpen] = useState()
   const [openCheck, setOpenCheck] = useState()
   const [rowToDelete, setRowToDelete] = useState(null);
+  const tableKeys = Object.keys(TABLE_COLUMNS);
+  const [tabIndex, setTabIndex] = useState(0);
+  const [currentPage, setCurrentPage] = useState(1);
+  const rowsPerPage = 20;
 
+
+  //handle table pegination
+  const indexOfLastRow = currentPage * rowsPerPage;
+  const indexOfFirstRow = indexOfLastRow - rowsPerPage;
+  const currentRows = filteredData.slice(indexOfFirstRow, indexOfLastRow);
+  const totalPages = Math.ceil(filteredData.length / rowsPerPage);
+
+
+  const handlePaginationChange = (event, value) => {
+    setCurrentPage(value);
+    console.log(`Page changed to ${value}`);
+  };
+
+
+  //handle click
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
 
+  //handle tab change
+  const handleTabChange = (event, newValue) => {
+    setTabIndex(newValue);
+    setSelectedTable(tableKeys[newValue]);
+  };
+
   const [probeninformationOptionsToRender, setProbeninformationOptionsToRender] = useState([]);
+  const [probeninformationLTXOptionsToRender, setProbeninformationLTXOptionsToRender] = useState([]);
+
+  useEffect(() => {
+    if (!selectedTable) return;
+
+    const fetchData = async () => {
+      setLoading(true);
+      setError(null);
+
+      try {
+        const response = await axios.get(
+          `http://localhost:8000/table/data?table_name=${selectedTable}`
+        );
+
+        const sorted = response.data.sort(
+          (a, b) => new Date(b.timestamp) - new Date(a.timestamp)
+        );
+
+        setData(sorted);
+        setFilteredData(sorted);
+      } catch (error) {
+        console.error(error);
+        setError("Failed to fetch data");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, [selectedTable]);
+
 
   useEffect(() => {
     console.log('FILTERED DATA:', filteredData);
@@ -90,6 +177,22 @@ export default function Uebersicht() {
     getOptions("probeninformation", setProbeninformationOptionsToRender)
   }, []);
 
+  useEffect(() => {
+    const getOptions = async (tableName, setFunction) => {
+      try {
+        const res = await fetch(`http://localhost:8000/table/data?table_name=${tableName}`);
+        if (!res.ok) throw new Error(`Fehler beim Abrufen von ${tableName}`);
+
+        const response = await res.json();
+        setFunction(response);
+      } catch (error) {
+        console.error(`Error fetching ${tableName}:`, error);
+      }
+    };
+
+    getOptions("probeninformation_ltx", setProbeninformationLTXOptionsToRender)
+  }, []);
+
 
   const handleClose = () => {
     setAnchorEl(null);
@@ -107,11 +210,6 @@ export default function Uebersicht() {
   };
 
   // Handle Check change
-  const handleOpenCheck = () => {
-    setOpenCheck(true);
-  };
-
-  // Handle Check change
   const handleCloseCheck = (e) => {
     setOpenCheck(false);
     setError("");
@@ -123,13 +221,16 @@ export default function Uebersicht() {
     serumproben: "Serumproben",
     urinproben: "Urinproben",
     patient: "Patientendaten",
-    vorlaeufigeproben: "Vorläufige Proben"
+    vorlaeufigeproben: "Vorläufige Proben",
+    galleproben: "Galleproben",
+    stuhlproben: "Stuhlproben",
+    edtaplasmaproben: "EDTA-Plasmaproben"
   };
 
   const open = Boolean(anchorEl);
   const id = open ? 'simple-popover' : undefined;
   useEffect(() => {
-    console.log("Selected table:", selectedTable); // Ausgabe des ausgewählten Tabellenwerts
+    console.log("Selected table:", selectedTable);
     if (selectedTable === "urinproben") {
       setTable_header("Urinproben");
     } else if (selectedTable === "serumproben") {
@@ -142,13 +243,18 @@ export default function Uebersicht() {
       setTable_header("Patientendaten");
     } else if (selectedTable === "vorlaeufigeproben") {
       setTable_header("Vorläufige Proben");
+    } else if (selectedTable === "galleproben") {
+      setTable_header("Galleproben");
+    } else if (selectedTable === "stuhlproben") {
+      setTable_header("Stuhlproben");
+    } else if (selectedTable === "edtaplasmaproben") {
+      setTable_header("EDTA-Plasmaproben");
     } else {
       setTable_header("");
     }
   }, [selectedTable]);
 
-  // import probeOPtions for the selected table
-
+  // import Sample-Options for the selected table
   useEffect(() => {
     if (selectedTable) {
       let selectedTableName;
@@ -162,48 +268,18 @@ export default function Uebersicht() {
         selectedTableName = "paraffin";
       } else if (selectedTable === "vorlaeufigeproben") {
         selectedTableName = "vorlaeufigeproben";
+      } else if (selectedTable === "galleproben") {
+        selectedTableName = "galleproben";
+      } else if (selectedTable === "stuhlproben") {
+        selectedTableName = "stuhlproben";
+      } else if (selectedTable === "edtaplasmaproben") {
+        selectedTableName = "edtaplasmaproben";
       } else {
         selectedTableName = selectedTable;
       }
     }
   }, [selectedTable]);
 
-  const toggleDropdown = () => setIsOpen(!isOpen);
-
-  const handleTable = async (e) => {
-    e.preventDefault();
-
-    let tableName = e.currentTarget.textContent?.trim().toLowerCase();
-
-    if (tableName === "patientendaten") {
-      tableName = "patient";
-    } else if (tableName === "vorläufige proben") {
-      tableName = "vorlaeufigeproben";
-    }
-
-    setSelectedTable(tableName);
-
-    if (!TABLE_COLUMNS[tableName]) {
-      setError("Invalid table name");
-      return;
-    }
-
-    setLoading(true);
-    setError(null);
-
-    try {
-      const response = await axios.get(`http://localhost:8000/table/data?table_name=${tableName}`);
-      const sorted = response.data.sort(
-        (a, b) => new Date(b.timestamp) - new Date(a.timestamp)
-      );
-      setData(sorted);
-      setFilteredData(sorted);  // Update der gefilterten Daten
-    } catch (error) {
-      setError('Failed to fetch data');
-    } finally {
-      setLoading(false);
-    }
-  };
   // Handle search for specific column
   const handleSearchChange = (e) => {
     const query = e.target.value;
@@ -242,7 +318,6 @@ export default function Uebersicht() {
         setIsOpen(false);
       }
     };
-
     document.addEventListener("mousedown", handleClickOutside);
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
@@ -298,7 +373,6 @@ export default function Uebersicht() {
     }
   };
 
-
   const handleDelete = async (row) => {
     console.log(row);
     let payload;
@@ -322,13 +396,13 @@ export default function Uebersicht() {
           barcode_id: row.barcode_id,
         };
       }
-  
+
       // Make the DELETE request with the payload
       const response = await axios.delete(
         `http://localhost:8000/delete/${selectedTable}`,
         { data: payload }  // Sending the payload in the 'data' field
       );
-  
+
       // Handle successful deletion
       if (selectedTable === "paraffinproben") {
         setData((prevData) => prevData.filter((r) => r.id !== row.id));
@@ -337,32 +411,20 @@ export default function Uebersicht() {
         setData((prevData) => prevData.filter((r) => r.barcode_id !== row.barcode_id));
         setFilteredData((prevFiltered) => prevFiltered.filter((r) => r.barcode_id !== row.barcode_id));
       }
-  
+
       // Fetch the updated data for the selected table
       const response_update = await axios.get(
         `http://localhost:8000/table/data?table_name=${selectedTable}`
       );
       setData(response_update.data);
       setFilteredData(response_update.data);
-  
+
     } catch (error) {
       console.error('Error deleting data:', error);
     }
   };
 
-  // Table horizontal Scroll logic
-  const scrollLeft = () => {
-    if (tableScrollRef.current) {
-      tableScrollRef.current.scrollBy({ left: -100, behavior: 'smooth' });
-    }
-  };
-
-  const scrollRight = () => {
-    if (tableScrollRef.current) {
-      tableScrollRef.current.scrollBy({ left: 100, behavior: 'smooth' });
-    }
-  };
-
+  // reder table view
   const renderTable = () => {
     const columns = TABLE_COLUMNS[selectedTable];
 
@@ -370,15 +432,8 @@ export default function Uebersicht() {
     if (error) return <p className="text-red-500">{error}</p>;
 
     return (
-      <div className="flex justify-center items-center mt-12">
-        {/* Left Scroll Button */}
-        <button
-          onClick={scrollLeft}
-          className="absolute left-20 top-1/2 transform -translate-y-1/2 bg-gray-200 p-2 rounded-full shadow-md hover:bg-gray-300"
-        >
-          ←
-        </button>
-        <div className="w-full h-[700px] overflow-y-auto" ref={tableScrollRef}>
+      <div className="flex justify-center items-center mt-4">
+        <div className="w-full h-[720px] overflow-y-auto" ref={tableScrollRef}>
           <table className="min-w-full divide-y divide-gray-200">
             <thead className="bg-gray-100 sticky top-0 z-10">
               <tr>
@@ -396,12 +451,12 @@ export default function Uebersicht() {
               </tr>
             </thead>
             <tbody className="bg-white divide-y divide-gray-200">
-              {filteredData.map((row, rowIndex) => (
+              {currentRows.map((row, rowIndex) => (
                 <tr key={rowIndex}>
                   {columns.map((col) => (
                     <td
                       key={col.key}
-                      className="px-6 py-4 whitespace-nowrap text-sm text-gray-500"
+                      className="px-6 py-4 whitespace-normal break-words text-sm text-gray-500 max-w-[250px]"
                     >
                       {editRowIndex === rowIndex ? (
                         <input
@@ -424,6 +479,19 @@ export default function Uebersicht() {
                         })()
 
 
+                        ) : col.key === "probeninformation_ltx" ? (
+                          (() => {
+                            // Prüfen, ob die Probenart "vorläufige Proben" ist
+                            const probeninfo = probeninformationLTXOptionsToRender.find(
+                              (probe) => probe.id === row.probeninformation_ltx
+                            );
+  
+                            // Wenn passende Probeninformation gefunden wurde, gib den Text zurück, sonst "N/A"
+                            return probeninfo ? probeninfo.probeninformation_text : "N/A";
+                          })()
+
+
+
                       ) : col.key === "differenzierungsmerkmal" ? (
                         (() => {
                           if (row["probenart"] === "urin") {
@@ -441,6 +509,7 @@ export default function Uebersicht() {
                               3: "Empfänger",
                               4: "Spender",
                               5: "Spender nach Perfusion",
+                              6: "LTX-Biopsie 1 Jahr post OP",
                             };
                             return differenzierungsmerkmalMapping[row["differenzierungsmerkmal"]] || "N/A";
                           } else if (row["probenart"] === "serum") {
@@ -468,7 +537,8 @@ export default function Uebersicht() {
                               4: "Normal Empfängerleber",
                               5: "Normal Spender der Leber",
                               6: "Normal Spender nach Perfusion der Leber",
-                              7: "Tumor"
+                              7: "Tumor",
+                              8: "LTX-Biopsie 1 Jahr post OP"
                             };
 
                             return uebergeordnete_probenart_mapping[row["uebergeordnete_probenart"]] || "N/A";
@@ -497,7 +567,10 @@ export default function Uebersicht() {
                             gewebe: "Gewebe",
                             urin: "Urin",
                             serum: "Serum",
-                            paraffin: "Paraffin"
+                            paraffin: "Paraffin",
+                            galle: "Galle",
+                            stuhl: "Stuhl",
+                            edtaplasma: "EDTA-Plasma",
                           };
                           return probenartMapping[row["probenart"]] || "N/A";
                         })()
@@ -507,7 +580,10 @@ export default function Uebersicht() {
                           const BOXMapping = {
                             gewebe: "Cryo",
                             urin: "Urin",
-                            serum: "Blut"
+                            serum: "Blut",
+                            galle: "Galle",
+                            stuhl: "Stuhl",
+                            edtaplasma: "EDTA-Plasma"
                           };
 
                           const boxType = BOXMapping[row["probenart"]] || "N/A";
@@ -536,15 +612,16 @@ export default function Uebersicht() {
                         <Button
                           onClick={() => handleSave(row.id)}
                           variant="outlined"
-                          color="success" // Matches "text-green" style
+                          color="success" //green
                           size='small'
+                          sx = {{margin:1}}
                         >
                           Speichern
                         </Button>
                         <Button
                           onClick={handleCancelEdit}
                           variant="outlined"
-                          color="error" // Matches "text-green" style
+                          color="error" //red 
                           size='small'
                         >
                           Abbrechen
@@ -557,6 +634,7 @@ export default function Uebersicht() {
                           variant="outlined"
                           color="primary"
                           size='small'
+                          sx = {{margin:1}}
                         >
                           Bearbeiten
                         </Button>
@@ -611,7 +689,7 @@ export default function Uebersicht() {
                             PaperProps={{
                               component: "form",
                               onSubmit: (event) => {
-                                event.preventDefault(); // Verhindert das Standard-Formularverhalten
+                                event.preventDefault(); // Stoppt Standart Funktion
                                 handleEditClick(rowIndex, row); // Bearbeitungsmodus aktivieren
                               },
                             }}
@@ -640,55 +718,71 @@ export default function Uebersicht() {
             </tbody>
           </table>
         </div>
-        {/* Right Scroll Button */}
-        <button
-          onClick={scrollRight}
-          className="absolute right-20 top-1/2 transform -translate-y-1/2 bg-gray-200 p-2 rounded-full shadow-md hover:bg-gray-300"
-        >
-          →
-        </button>
       </div>
     );
   };
 
   return (
     <>
-      <div className="flex justify-center items-center mt-12">
-        <div className="relative" ref={dropdownRef}>
-          <button
-            onClick={toggleDropdown}
-            className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center"
-            type="button"
+      <Box sx={{ width: "100%", mt: 1 }}>
+        <AppBar
+          position="static"
+          sx={{
+            backgroundColor: "#1976d2",
+            borderRadius: 7,
+            width: "99.4%",
+            margin: "0 auto",
+            boxShadow: "0 4px 30px rgba(0,0,0,0.1)",
+            padding: "1px",
+          }}
+        >
+          <Tabs
+            value={tabIndex}
+            onChange={handleTabChange}
+            centered
+            TabIndicatorProps={{
+              style: { backgroundColor: "transparent" }
+            }}
           >
-            {DISPLAY_NAMES[selectedTable] || "Tabellenname auswählen"}
-            <svg className="w-2.5 h-2.5 ms-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
-              <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m1 1 4 4 4-4" />
-            </svg>
-          </button>
+            {tableKeys.map((key, index) => (
+              <Tab
+                key={key}
+                label={DISPLAY_NAMES[key] || key}
+                sx={{
+                  fontFamily: "IBM Plex Sans, sans-serif",
+                  fontSize: "0.925rem",
+                  fontWeight: 600,
+                  textTransform: "none",
 
-          {isOpen && (
-            <div className="absolute z-20 mt-2 bg-white divide-y divide-gray-100 rounded-lg shadow w-44">
-              <ul className="py-2 text-sm text-gray-700">
-                {Object.keys(TABLE_COLUMNS).map((tableName) => (
-                  <li key={tableName}>
-                    <a
-                      href="#"
-                      className="block px-4 py-2 hover:bg-gray-100"
-                      onClick={(e) => handleTable(e, tableName)}
-                    >
-                      {DISPLAY_NAMES[tableName] || tableName}
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          )}
-        </div>
-      </div>
+                  color: "#fff",
+                  padding: "10px 22px",
+                  margin: "6px",
+                  border: "none",
+                  borderRadius: 7,
 
-      {/* Filter Input */}
+                  "&:hover": {
+                    backgroundColor: "#173A5E",
+                  },
+
+                  "&.Mui-selected": {
+                    backgroundColor: "#fff",
+                    color: "#173A5E",
+                    fontWeight: "700",
+                  },
+                }}
+              />
+            ))}
+          </Tabs>
+        </AppBar>
+
+        {tableKeys.map((key, index) => (
+          <TabPanel key={key} value={tabIndex} index={index}>
+          </TabPanel>
+        ))}
+      </Box>
+
       {selectedTable && (
-        <div className="flex margin-left auto mt-4">
+        <div className="flex margin-left auto mt-0">
           <div className="mr-4">
             <select
               value={selectedColumn}
@@ -712,9 +806,10 @@ export default function Uebersicht() {
             className="border border-gray-300 px-4 py-2 rounded"
           />
 
-          <IconButton onClick={handleClick}><InfoIcon />
+          <IconButton onClick={handleClick}>
+            <InfoIcon />
+          </IconButton>
 
-          </IconButton >
           <Popover
             id={id}
             open={open}
@@ -729,25 +824,32 @@ export default function Uebersicht() {
               Anmerkungen zum Filter:
             </Typography>
             <Typography variant='caption' sx={{ display: 'block' }}>
-              Probenstatus:   1: eingeschleust   ---
-              2: ausgeschleust  ---
-              3: wiedereingeschleust
+              Siehe Dokumentation der Probensammlung
             </Typography>
           </Popover>
         </div>
+
       )}
-      <Box
-        sx={{
-          textAlign: 'center',
-          mt: 5,
-          height: 10,
-        }}
-      >
-        <Typography variant="h5" sx={{ fontWeight: 'bold', color: 'text.primary' }}>
-          {Table_header}
-        </Typography>
-      </Box>
       {renderTable()}
+      <div>
+        <Box margin={2} sx={{
+          display: 'flex',
+          justifyContent: 'center'
+        }}>
+          <Pagination
+            count={totalPages} siblingCount={0} onChange={handlePaginationChange}
+            renderItem={(item) => (
+              <PaginationItem
+                component={Link}
+                to={`/inbox${item.page === 1 ? '' : `?page=${item.page}`}`}
+                {...item}
+              />
+            )}
+          />
+        </Box>
+      </div>
+
     </>
   );
 }
+

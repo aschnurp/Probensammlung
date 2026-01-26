@@ -10,13 +10,16 @@ from ..models.urinproben import Urinproben
 from ..models.paraffinproben import Paraffinproben
 from ..models.probenabholer import Probenabholer
 from ..models.vorlaeufige_proben import VorlaeufigeProben
+from ..models.stuhlproben import Stuhlproben
+from ..models.galleproben import Galleproben
+from ..models.edtaplasmaproben import Edtaplasmaproben
 
 router = APIRouter(
     prefix="/delete",
     tags=['delete']
 )
 
-#router for new serum entry
+#router for deleting serum entry
 @router.delete("/serumproben", status_code=status.HTTP_200_OK)  # No content on successful delete
 def delete_serumproben(delete_post: schemas.TableDataSerumproben, db: Session = Depends(get_db)):
     existing_item_query = db.query(Serumproben).filter(Serumproben.barcode_id == delete_post.barcode_id)
@@ -27,7 +30,7 @@ def delete_serumproben(delete_post: schemas.TableDataSerumproben, db: Session = 
     db.commit()
     return {"message": "Successfully deleted"} 
 
-#router for new gewebe entry
+#router for deleting gewebe entry
 @router.delete("/gewebeproben", status_code=status.HTTP_200_OK)  # No content on successful delete
 def delete_gewebeproben(delete_post: schemas.TableDataGewebeproben, db: Session = Depends(get_db)):
     existing_item_query = db.query(Gewebeproben).filter(Gewebeproben.barcode_id == delete_post.barcode_id)
@@ -38,7 +41,7 @@ def delete_gewebeproben(delete_post: schemas.TableDataGewebeproben, db: Session 
     db.commit()
     return {"message": "Successfully deleted"} 
 
-#router for new urin entry
+#router for deleting urin entry
 @router.delete("/urinproben", status_code=status.HTTP_200_OK)  # No content on successful delete
 def delete_urinproben(delete_post: schemas.TableDataUrinproben, db: Session = Depends(get_db)):
     existing_item_query = db.query(Urinproben).filter(Urinproben.barcode_id == delete_post.barcode_id)
@@ -49,7 +52,7 @@ def delete_urinproben(delete_post: schemas.TableDataUrinproben, db: Session = De
     db.commit()
     return {"message": "Successfully deleted"} 
 
-#router for new paraffin entry
+#router for deleting paraffin entry
 @router.delete("/paraffinproben", status_code=status.HTTP_200_OK)  # No content on successful delete
 def delete_paraffinproben(delete_post: schemas.TableDataParaffinproben, db: Session = Depends(get_db)):
     existing_item_query = db.query(Paraffinproben).filter(Paraffinproben.id == delete_post.id)
@@ -60,7 +63,7 @@ def delete_paraffinproben(delete_post: schemas.TableDataParaffinproben, db: Sess
     db.commit()
     return {"message": "Successfully deleted"} 
 
-#router for new patient entry
+#router for deleting patient entry
 @router.delete("/patient", status_code=status.HTTP_200_OK)  # No content on successful delete
 def delete_patient(delete_post: schemas.TableDatapatient, db: Session = Depends(get_db)):
     existing_item_query = db.query(Patient).filter(Patient.patient_Id_intern == delete_post.patient_Id_intern)
@@ -71,7 +74,7 @@ def delete_patient(delete_post: schemas.TableDatapatient, db: Session = Depends(
     db.commit()
     return {"message": "Successfully deleted"} 
 
-#router for new paraffin entry
+#router for deleting paraffin entry
 @router.delete("/probenabholer", status_code=status.HTTP_200_OK)  # No content on successful delete
 def delete_probenabholer(delete_post: schemas.TableDataProbenabholer, db: Session = Depends(get_db)):
     existing_item_query = db.query(Probenabholer).filter(Probenabholer.id == delete_post.id)
@@ -82,10 +85,43 @@ def delete_probenabholer(delete_post: schemas.TableDataProbenabholer, db: Sessio
     db.commit()
     return {"message": "Successfully deleted"} 
 
-#router for new proben entry
+#router for deleting proben entry
 @router.delete("/vorlaeufigeproben", status_code=status.HTTP_200_OK)  # No content on successful delete
 def delete_vorlaeufige_proben(delete_post: schemas.TableVorlaeufigeProben, db: Session = Depends(get_db)):
     existing_item_query = db.query(VorlaeufigeProben).filter(VorlaeufigeProben.barcode_id == delete_post.barcode_id)
+    existing_item = existing_item_query.first()
+    if not existing_item:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"Entry with barcode_id: {delete_post.barcode_id} not found.")
+    existing_item_query.delete(synchronize_session=False)
+    db.commit()
+    return {"message": "Successfully deleted"} 
+
+#router for deleting stuhlproben entry
+@router.delete("/stuhlproben", status_code=status.HTTP_200_OK)  # No content on successful delete
+def delete_stuhl_proben(delete_post: schemas.TableDataStuhlproben, db: Session = Depends(get_db)):
+    existing_item_query = db.query(Stuhlproben).filter(Stuhlproben.barcode_id == delete_post.barcode_id)
+    existing_item = existing_item_query.first()
+    if not existing_item:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"Entry with barcode_id: {delete_post.barcode_id} not found.")
+    existing_item_query.delete(synchronize_session=False)
+    db.commit()
+    return {"message": "Successfully deleted"} 
+
+#router for deleting galleproben entry
+@router.delete("/galleproben", status_code=status.HTTP_200_OK)  # No content on successful delete
+def delete_galle_proben(delete_post: schemas.TableDataGalleproben, db: Session = Depends(get_db)):
+    existing_item_query = db.query(Galleproben).filter(Galleproben.barcode_id == delete_post.barcode_id)
+    existing_item = existing_item_query.first()
+    if not existing_item:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"Entry with barcode_id: {delete_post.barcode_id} not found.")
+    existing_item_query.delete(synchronize_session=False)
+    db.commit()
+    return {"message": "Successfully deleted"} 
+
+#router for deleting galleproben entry
+@router.delete("/edtaplasmaproben", status_code=status.HTTP_200_OK)  # No content on successful delete
+def delete_edtaplasma_proben(delete_post: schemas.TableDataEdtaplasmaproben, db: Session = Depends(get_db)):
+    existing_item_query = db.query(Edtaplasmaproben).filter(Edtaplasmaproben.barcode_id == delete_post.barcode_id)
     existing_item = existing_item_query.first()
     if not existing_item:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"Entry with barcode_id: {delete_post.barcode_id} not found.")

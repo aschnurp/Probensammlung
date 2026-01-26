@@ -16,4 +16,5 @@ export const gewebeprobenDataColumns = [
     { key: "anmerkungen", label: "Besonderheiten/Anmerkungen (bei Probennahme)" },
     { key: "remarks", label: "Bemerkungen (während Probenaufbereitung)" },
     { key: "status", label: "Probenstatus" },
+    { key: "anzahl_statuswechsel", label: "Anzahl Statuswechsel" },
 ];

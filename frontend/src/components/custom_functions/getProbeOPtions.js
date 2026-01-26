@@ -1,11 +1,12 @@
 export const getProbeOptions = (probenart) => {
-  const sampleTypes = ["gewebe", "serum", "urin", "paraffin"];
+  const sampleTypes = ["gewebe", "serum", "urin", "paraffin", "galle", "stuhl", "edtaplasma"];
   if (!sampleTypes.includes(probenart)) {
     return {
       übergeordnete: [],
       untergeordnete: [],
       differenzierungsmerkmal: [],
       probeninformation: [],
+      probeninformationLTX: [],
     };
   }
 
@@ -13,6 +14,7 @@ export const getProbeOptions = (probenart) => {
   let untergeordneteOptions = [];
   let differenzierungsmerkmalOptions = [];
   let probeninformationOptions = [];
+  let probeninformationLTXOptions = [];
 
   if (probenart === 'paraffin') {
     overgeordneteProbeOptions = [
@@ -22,6 +24,7 @@ export const getProbeOptions = (probenart) => {
       { id: 4, text: "Normal Empfängerleber" },
       { id: 5, text: "Normal Spender der Leber" },
       { id: 6, text: "Normal Spender nach Perfusion der Leber" },
+      { id: 8, text: "LTX-Biopsie 1 Jahr post OP" }, //id 8 is correct
       { id: 7, text: "Tumor" },
     ];
     untergeordneteOptions = [
@@ -41,6 +44,7 @@ export const getProbeOptions = (probenart) => {
       { id: 3, text: "Empfänger" },
       { id: 4, text: "Spender" },
       { id: 5, text: "Spender nach Perfusion" },
+      { id: 6, text: "LTX-Biopsie 1 Jahr post OP" }, //new row
     ];
   }
   else if (probenart === 'serum') {
@@ -52,6 +56,88 @@ export const getProbeOptions = (probenart) => {
       { id: 5, text: "Arterie peripher" },
     ];
   }
+
+  else if (probenart === 'edtaplasma') {
+    differenzierungsmerkmalOptions = [
+      { id: 1, text: "Lebervene Links" },
+      { id: 2, text: "Lebervene Rechts" },
+      { id: 3, text: "ZVK" },
+      { id: 4, text: "Vene peripher" },
+      { id: 5, text: "Arterie peripher" },
+    ];
+  }
+
+  
+  const probeDataLTX = [
+    {id: 1, text:"Galle intra OP von expl. Leber  I", type:"galle"},  
+    {id: 2, text:"Galle intra OP von expl. Leber II", type:"galle"},
+    {id: 3, text:"Galle intra OP von expl. Leber III", type:"galle"},
+    {id: 4, text:"Galle intra OP von expl. Leber IV", type:"galle"},
+    {id: 5, text:"Galle intra OP von impl. Leber I", type:"galle"},  
+    {id: 6, text:"Galle intra OP von impl. Leber II", type:"galle"},
+    {id: 7, text:"Galle intra OP von impl. Leber III", type:"galle"},
+    {id: 8, text:"Galle intra OP von impl. Leber IV", type:"galle"},
+    {id: 9, text:"Galle post OP 1d von impl. Leber I", type:"galle"},
+    {id: 10, text:"Galle post OP 1d von impl. Leber II", type:"galle"},
+    {id: 11, text:"Galle post OP 1d von impl. Leber III", type:"galle"},
+    {id: 12, text:"Galle post OP 1d von impl. Leber IV", type:"galle"},
+    {id: 13, text:"Galle post OP 2d von impl. Leber I", type:"galle"},
+    {id: 14, text:"Galle post OP 2d von impl. Leber II", type:"galle"},
+    {id: 15, text:"Galle post OP 2d von impl. Leber III", type:"galle"},
+    {id: 16, text:"Galle post OP 2d von impl. Leber IV", type:"galle"},
+    {id: 17, text:"Galle post OP 7d von impl. Leber I", type:"galle"},
+    {id: 18, text:"Galle post OP 7d von impl. Leber II", type:"galle"},
+    {id: 19, text:"Galle post OP 7d von impl. Leber III", type:"galle"},
+    {id: 20, text:"Galle post OP 7d von impl. Leber IV", type:"galle"},
+    {id: 21, text:"Galle post OP 14d von impl. Leber I", type:"galle"},
+    {id: 22, text:"Galle post OP 14d von impl. Leber II", type:"galle"},
+    {id: 23, text:"Galle post OP 14d von impl. Leber III", type:"galle"},
+    {id: 24, text:"Galle post OP 14d von impl. Leber IV", type:"galle"},
+    {id: 25, text:"EDTA-Plasma bei Aufklährung I", type:"edtaplasma"},
+    {id: 26, text:"EDTA-Plasma bei Aufklährung II", type:"edtaplasma"},
+    {id: 27, text:"EDTA-Plasma bei Aufklährung III", type:"edtaplasma"},
+    {id: 28, text:"EDTA-Plasma bei Aufklährung IV", type:"edtaplasma"},
+    {id: 29, text:"EDTA-Plasma intra OP I", type:"edtaplasma"},
+    {id: 30, text:"EDTA-Plasma intra OP II", type:"edtaplasma"},
+    {id: 31, text:"EDTA-Plasma intra OP III", type:"edtaplasma"},
+    {id: 32, text:"EDTA-Plasma intra OP IV", type:"edtaplasma"},
+    {id: 33, text:"EDTA-Plasma prä OP I", type:"edtaplasma"},
+    {id: 34, text:"EDTA-Plasma prä OP II", type:"edtaplasma"},
+    {id: 35, text:"EDTA-Plasma prä OP III", type:"edtaplasma"},
+    {id: 36, text:"EDTA-Plasma prä OP IV", type:"edtaplasma"},
+    {id: 37, text:"EDTA-Plasma post OP 1d I", type:"edtaplasma"},
+    {id: 38, text:"EDTA-Plasma post OP 1d II", type:"edtaplasma"},
+    {id: 39, text:"EDTA-Plasma post OP 1d III", type:"edtaplasma"},
+    {id: 40, text:"EDTA-Plasma post OP 1d IV", type:"edtaplasma"},
+    {id: 41, text:"EDTA-Plasma post OP 7d I", type:"edtaplasma"},
+    {id: 42, text:"EDTA-Plasma post OP 7d II", type:"edtaplasma"},
+    {id: 43, text:"EDTA-Plasma post OP 7d III", type:"edtaplasma"},
+    {id: 44, text:"EDTA-Plasma post OP 7d IV", type:"edtaplasma"},
+    {id: 45, text:"EDTA-Plasma post OP 14d I", type:"edtaplasma"},
+    {id: 46, text:"EDTA-Plasma post OP 14d II", type:"edtaplasma"},
+    {id: 47, text:"EDTA-Plasma post OP 14d III", type:"edtaplasma"},
+    {id: 48, text:"EDTA-Plasma post OP 14d IV", type:"edtaplasma"},
+    {id: 49, text:"Stuhl prä OP I", type:"stuhl"},
+    {id: 50, text:"Stuhl prä OP II", type:"stuhl"},
+    {id: 51, text:"Stuhl prä OP III", type:"stuhl"},
+    {id: 52, text:"Stuhl prä OP IV", type:"stuhl"},
+    {id: 53, text:"Stuhl post OP 1d I", type:"stuhl"},
+    {id: 54, text:"Stuhl post OP 1d II", type:"stuhl"},
+    {id: 55, text:"Stuhl post OP 1d III", type:"stuhl"},
+    {id: 56, text:"Stuhl post OP 1d IV", type:"stuhl"},
+    {id: 57, text:"Stuhl post OP 7d I", type:"stuhl"},
+    {id: 58, text:"Stuhl post OP 7d II", type:"stuhl"},
+    {id: 59, text:"Stuhl post OP 7d III", type:"stuhl"},
+    {id: 60, text:"Stuhl post OP 7d IV", type:"stuhl"},
+    {id: 61, text:"Stuhl post OP 14d I", type:"stuhl"},
+    {id: 62, text:"Stuhl post OP 14d II", type:"stuhl"},
+    {id: 63, text:"Stuhl post OP 14d III", type:"stuhl"},
+    {id: 64, text:"Stuhl post OP 14d IV", type:"stuhl"},
+]
+
+  probeninformationLTXOptions = probeDataLTX
+  .filter((probe) => probe.type === probenart)
+  .map((probe) => ({ id: probe.id, probeninformation_text: probe.text }));
 
   const probeData = [
     { id: 1, text: "Serum prä OP I", type: "serum" },
@@ -127,5 +213,6 @@ export const getProbeOptions = (probenart) => {
     untergeordnete: untergeordneteOptions,
     differenzierungsmerkmal: differenzierungsmerkmalOptions,
     probeninformation: probeninformationOptions,
+    probeninformationLTX: probeninformationLTXOptions
   };
 };

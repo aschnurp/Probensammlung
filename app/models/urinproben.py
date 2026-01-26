@@ -22,4 +22,5 @@ class Urinproben(Base):
     boxspalte = Column(Integer) 	
     lagerraum = Column(TEXT)
     anmerkungen = Column(TEXT)
+    anzahl_statuswechsel = Column(Integer, server_default="0")
     status = Column(TINYINT, ForeignKey("status.id"))

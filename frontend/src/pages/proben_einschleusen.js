@@ -60,6 +60,7 @@ export default function SampleForm() {
     uebergeordneteProbe: '',
     untergeordneteProbe: '',
     probeninformation: '',
+    probeninformation_ltx: '',
     differenzierungsmerkmal: '',
   });
 
@@ -76,6 +77,7 @@ export default function SampleForm() {
   const [overgeordneteProbeOptions, setOvergeordneteProbeOptions] = useState([]);
   const [differenzierungsmerkmalOptions, setDifferenzierungsmerkmalOptions] = useState([]);
   const [probeninformationOptions, setProbeninformationOptions] = useState([]);
+  const [probeninformationLTXOptions, setProbeninformationLTXOptions] = useState([]);
   const [untergeordneteProbeOptions, setUntergeordneteProbeOptions] = useState([]);
   const [abholer, setCategorias] = useState([]);
 
@@ -104,6 +106,9 @@ export default function SampleForm() {
       urin: "1029",
       serum: "1029",
       gewebe: "1029",
+      stuhl: "1029",
+      galle: "1029",
+      edtaplasma: "1029",
     };
 
     // Lagerraum wird gesetzt, wenn probenart geändert wird
@@ -126,6 +131,7 @@ export default function SampleForm() {
     }));
   }, []);
 
+  //fetch previous entered data
   useEffect(() => {
     const fetchAllData = async () => {
       try {
@@ -140,6 +146,7 @@ export default function SampleForm() {
               ...prevData,
               patient_Id_intern: foundItem.patient_Id_intern,
               probeninformation: foundItem.probeninformation,
+              probeninformation_ltx: foundItem.probeninformation_ltx,
             }))
             setSnackbarMessage("Barcode gefunden.");
             setSnackbarSeverity("success");
@@ -174,6 +181,7 @@ export default function SampleForm() {
         setUntergeordneteProbeOptions(options.untergeordnete || []);
         setDifferenzierungsmerkmalOptions(options.differenzierungsmerkmal || []);
         setProbeninformationOptions(options.probeninformation || []);
+        setProbeninformationLTXOptions(options.probeninformationLTX || []);
       }
     } else {
       // Falls keine Probenart ausgewählt wurde
@@ -181,6 +189,7 @@ export default function SampleForm() {
       setUntergeordneteProbeOptions([]);
       setDifferenzierungsmerkmalOptions([]);
       setProbeninformationOptions([]);
+      setProbeninformationLTXOptions([]);
     }
   }, [formData.probenart]);
 
@@ -196,7 +205,13 @@ export default function SampleForm() {
             ? 'serumproben'
             : probenart === 'urin'
               ? 'urinproben'
-              : null;
+              : probenart === 'galle'
+              ? 'galleproben'
+                : probenart === 'stuhl'
+                ? 'stuhlproben'
+                  : probenart === 'edtaplasma'
+                  ? 'edtaplasmaproben'
+                  : null;
 
       if (!tableName) return;
 
@@ -378,10 +393,12 @@ export default function SampleForm() {
       uebergeordnete_probenart: formData.uebergeordneteProbe,
       differenzierungsmerkmal: parseInt(formData.differenzierungsmerkmal, 10),
       probeninformation: formData.probeninformation,
+      probeninformation_ltx: formData.probeninformation_ltx,
     };
   
     console.log('Filtered data beim EINSCHLEUSEN:', filteredData);
   
+    //possible sample typs - endpoints
     try {
       let endpoint = '';
       switch (formData.probenart) {
@@ -397,10 +414,18 @@ export default function SampleForm() {
         case 'paraffin':
           endpoint = 'paraffin';
           break;
+        case 'galle':
+          endpoint = 'galle';
+          break;
+        case 'stuhl':
+          endpoint = 'stuhl';
+          break;
+        case 'edtaplasma':
+          endpoint = 'edtaplasma';
+          break;
         default:
           throw new Error('Ungültige Probenart ausgewählt.');
       }
-  
       console.log(endpoint);
   
       // Senden der neuen Daten
@@ -412,13 +437,13 @@ export default function SampleForm() {
         }
       );
   
-      // Nur für Serum, Gewebe und Urin vorläufige Proben löschen
-      if (['serum', 'gewebe', 'urin'].includes(formData.probenart)) {
+      // Nur für Serum, Gewebe, Urin, Galle, EDTA-Plasma vorläufige Proben löschen
+      if (['serum', 'gewebe', 'urin', 'galle', 'edtaplasma', 'stuhl'].includes(formData.probenart)) {
         const deleteResponse = await axios.delete(
           'http://localhost:8000/delete/vorlaeufigeproben',
           {
             headers: { 'Content-Type': 'application/json' },
-            data: { barcode_id: formData.barcode_id },
+            data: { barcode_id: formData.barcode_id }, //deletion based on barcode_id
           }
         );
         console.log('Response after delete:', deleteResponse);
@@ -459,8 +484,18 @@ export default function SampleForm() {
   ///////////////////////////////////////////////////////////
 
   return (
-    <Box sx={{ p: 3, maxWidth: 600, mx: 'auto' }}>
-
+    <Box   
+      sx={{ p: 3, maxWidth: 600, mx: "auto" }}
+      onKeyDown={(e) => {
+      if (e.key === "Enter") { //bei press-enter
+        const active = document.activeElement; // Cursor Element
+        if (active.name === "barcode_id") { 
+          e.preventDefault(); //aendere default funktion
+          handleSubmit();    //submit
+        }
+      }
+    }}
+    >
       <Box sx={{ position: 'absolute', top: 90, left: 16 }}>
         <Button variant="contained" color="primary" onClick={() => window.location.href = '/overview'}>
           <IoMdArrowRoundBack className='text-2xl' />
@@ -477,6 +512,9 @@ export default function SampleForm() {
         <Typography variant="h5" sx={{ fontWeight: 'bold', color: 'text.primary' }}>
           Proben Einschleusen
         </Typography>
+        <Typography variant="body1" sx={{ color: 'text.primary' }}>
+          Zum Einschleusen vorangelegter Proben und neuer Proben bitte die Probenart wählen. 
+        </Typography>
       </Box>
 
       {/* Probenart Select Field */}
@@ -492,6 +530,9 @@ export default function SampleForm() {
           <MenuItem value="serum">Serumproben</MenuItem>
           <MenuItem value="urin">Urinproben</MenuItem>
           <MenuItem value="paraffin">Paraffinproben</MenuItem>
+          <MenuItem value="galle">Galleproben</MenuItem>
+          <MenuItem value="stuhl">Stuhlproben</MenuItem>
+          <MenuItem value="edtaplasma">EDTA-Plasmaproben</MenuItem>
         </Select>
         {errors.probenart && (
           <Typography variant="caption" color="error">
@@ -499,7 +540,6 @@ export default function SampleForm() {
           </Typography>
         )}
       </FormControl>
-
 
       {/* Conditional Fields for Gewebe */}
       {formData.probenart === 'gewebe' && (
@@ -516,7 +556,7 @@ export default function SampleForm() {
             helperText={errors.barcode_id}
           />
           <TextField
-            label="Patienten ID (Intern)"
+            label="Patienten ID (intern) z.B. HL0126"
             name="patient_Id_intern"
             value={formData.patient_Id_intern}
             onChange={handleChange}
@@ -526,6 +566,7 @@ export default function SampleForm() {
             helperText={errors.patient_Id_intern}
           />
 
+          {/* Probeninformation */}
           <FormControl
             variant="outlined"
             fullWidth
@@ -558,8 +599,7 @@ export default function SampleForm() {
             )}
           </FormControl>
 
-
-
+          {/* Differenzierungsmerkmal */}
           <FormControl
             variant="outlined"
             fullWidth
@@ -592,13 +632,12 @@ export default function SampleForm() {
             )}
           </FormControl>
 
-
           {/* Datum */}
           <TextField
             label="Datum"
             name="created_at"
             type="date"
-            value={formData.created_at}  // Hier ist der Wert im ISO-Format
+            value={formData.created_at} 
             onChange={handleChange}
             fullWidth
             margin="normal"
@@ -752,7 +791,7 @@ export default function SampleForm() {
 
           {/* Patienten ID TextField */}
           <TextField
-            label="Patienten ID (Intern)"
+            label="Patienten ID (intern) z.B. HL0126"
             name="patient_Id_intern"
             value={formData.patient_Id_intern}
             onChange={handleChange}
@@ -762,6 +801,7 @@ export default function SampleForm() {
             helperText={errors.patient_Id_intern}
           />
 
+          {/* Probeninformationen */}
           <FormControl
             variant="outlined"
             fullWidth
@@ -794,7 +834,7 @@ export default function SampleForm() {
             )}
           </FormControl>
 
-
+          {/* Differenzierungsmerkmal */}
           <FormControl
             variant="outlined"
             fullWidth
@@ -854,7 +894,6 @@ export default function SampleForm() {
             error={Boolean(errors.uhrzeit)}
             helperText={errors.uhrzeit}
           />
-
 
           {/* Probenabholer*in Select Field */}
           <FormControl
@@ -970,10 +1009,9 @@ export default function SampleForm() {
             helperText={errors.barcode_id}
           />
 
-
           {/* Patienten ID TextField */}
           <TextField
-            label="Patienten ID (Intern)"
+            label="Patienten ID (intern) z.B. HL0126"
             name="patient_Id_intern"
             value={formData.patient_Id_intern}
             onChange={handleChange}
@@ -983,6 +1021,7 @@ export default function SampleForm() {
             helperText={errors.patient_Id_intern}
           />
 
+          {/* Probeninformation */}
           <FormControl
             variant="outlined"
             fullWidth
@@ -1011,7 +1050,7 @@ export default function SampleForm() {
             )}
           </FormControl>
 
-
+          {/* Differenzierungsmerkmal */}
           <FormControl
             variant="outlined"
             fullWidth
@@ -1176,7 +1215,7 @@ export default function SampleForm() {
         <Box sx={{ mt: 2 }}>
           {/* Patienten ID TextField */}
           <TextField
-            label="Patienten ID (Intern)"
+            label="Patienten ID (intern) z.B. HL0126"
             name="patient_Id_intern"
             value={formData.patient_Id_intern}
             onChange={handleChange}
@@ -1186,15 +1225,13 @@ export default function SampleForm() {
             helperText={errors.patient_Id_intern}
           />
 
-
+          {/* Übergeordnete Probenart */}
           <FormControl
             variant="outlined"
             fullWidth
             margin="normal"
             error={Boolean(errors.uebergeordneteProbe)}
           >
-
-
             <InputLabel>Übergeordnete Probenart</InputLabel>
             <Select
               id="uebergeordnet"
@@ -1221,6 +1258,7 @@ export default function SampleForm() {
             )}
           </FormControl>
 
+          {/* Untergeordnete Probenart */}
           <FormControl
             variant="outlined"
             fullWidth
@@ -1258,14 +1296,13 @@ export default function SampleForm() {
             label="Datum"
             name="created_at"
             type="date"
-            value={formData.created_at}  // Hier ist der Wert im ISO-Format
+            value={formData.created_at}
             onChange={handleChange}
             fullWidth
             margin="normal"
             InputLabelProps={{ shrink: true }}
             error={Boolean(errors.created_at)}
             helperText={errors.created_at}
-
           />
 
           {/* Uhrzeit */}
@@ -1333,6 +1370,593 @@ export default function SampleForm() {
         </Box>
       )}
 
+
+      {/* Conditional Fields for Galle */}
+      {formData.probenart === 'galle' && (
+        <Box sx={{ mt: 2 }}>
+          {/* Barcode ID */}
+          <TextField
+            label="Scannerfeld für Barcode ID"
+            name="barcode_id"
+            value={formData.barcode_id}
+            onChange={handleChange}
+            fullWidth
+            margin="normal"
+            error={Boolean(errors.barcode_id)}
+            helperText={errors.barcode_id}
+          />
+
+          {/* Patienten ID TextField */}
+          <TextField
+            label="Patienten ID (intern) z.B. HL0126"
+            name="patient_Id_intern"
+            value={formData.patient_Id_intern}
+            onChange={handleChange}
+            fullWidth
+            margin="normal"
+            error={Boolean(errors.patient_Id_intern)}
+            helperText={errors.patient_Id_intern}
+          />
+
+          {/* Probeninformation_LTX */}
+          <FormControl
+            variant="outlined"
+            fullWidth
+            margin="normal"
+            error={Boolean(errors.untergeordneteProbe)}
+          >
+            <InputLabel>Probeninformation-LTX</InputLabel>
+            <Select
+              id="Probeninformation_ltx"
+              name="probeninformation_ltx"
+              value={formData.probeninformation_ltx}
+              onChange={handleChange}
+              label="Probeninformation_ltx"
+            >
+              <MenuItem value="">-- Bitte auswählen --</MenuItem>
+              {probeninformationLTXOptions.map((option) => (
+                <MenuItem key={option.id} value={option.id}>
+                  {option.probeninformation_text} 
+                </MenuItem>
+              ))}
+            </Select>
+            {errors.probeninformation && (
+              <Typography variant="caption" color="error">
+                {errors.probeninformation}
+              </Typography>
+            )}
+          </FormControl>
+
+          {/* Datum */}
+          <TextField
+            label="Datum"
+            name="created_at"
+            type="date"
+            value={formData.created_at}
+            onChange={handleChange}
+            fullWidth
+            margin="normal"
+            InputLabelProps={{ shrink: true }}
+            error={Boolean(errors.created_at)}
+            helperText={errors.created_at}
+          />
+
+          {/* Uhrzeit */}
+          <TextField
+            label="Uhrzeit"
+            name="uhrzeit"
+            type="time"
+            value={formData.uhrzeit}
+            onChange={handleChange}
+            fullWidth
+            margin="normal"
+            InputLabelProps={{ shrink: true }}
+            error={Boolean(errors.uhrzeit)}
+            helperText={errors.uhrzeit}
+          />
+
+          {/* Probenabholer*in Select Field */}
+          <FormControl
+            variant="outlined"
+            fullWidth
+            margin="normal">
+            <InputLabel id="demo-simple-select-label">Probenabholer:In</InputLabel>
+            <Select
+              name="abholer"
+              labelId="demo-simple-select-filled-label"
+              label="Probenabholer:In"
+              id="demo-simple-select-filled"
+              value={formData.abholer}
+              onChange={handleChange}
+            >
+              <MenuItem value="">
+                <em>None</em>
+              </MenuItem>
+              {abholer.map((abholer) => (
+                <MenuItem key={abholer.id} value={abholer.name}>{abholer.name}</MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+
+          {/* Raum */}
+          <TextField
+            label="Raum"
+            name="lagerraum"
+            value={formData.lagerraum}
+            onChange={handleChange}
+            fullWidth
+            margin="normal"
+            error={Boolean(errors.lagerraum)}
+            helperText={errors.lagerraum}
+          />
+
+          {/* Boxnummer */}
+          <TextField
+            label="Boxnummer"
+            name="boxnummer"
+            type="number"
+            value={formData.boxnummer}
+            onChange={handleChange}
+            fullWidth
+            margin="normal"
+            error={Boolean(errors.boxnummer)}
+            helperText={errors.boxnummer}
+          />
+
+          {/* Boxzeile */}
+          <FormControl variant="outlined" fullWidth margin="normal" error={Boolean(errors.boxzeile)}>
+            <InputLabel>Boxzeile</InputLabel>
+            <Select
+              name="boxzeile"
+              value={formData.boxzeile}
+              onChange={handleChange}
+              label="Boxzeile"
+            >
+              {['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I'].map((letter) => (
+                <MenuItem key={letter} value={letter}>
+                  {letter}
+                </MenuItem>
+              ))}
+            </Select>
+            {errors.boxzeile && (
+              <Typography variant="caption" color="error">
+                {errors.boxzeile}
+              </Typography>
+            )}
+          </FormControl>
+
+          {/* Boxspalte */}
+          <TextField
+            label="Boxspalte"
+            name="boxspalte"
+            type="number"
+            value={formData.boxspalte}
+            onChange={handleChange}
+            fullWidth
+            margin="normal"
+            error={Boolean(errors.boxspalte)}
+            helperText={errors.boxspalte}
+          />
+
+          {/* Besonderheiten */}
+          <TextField
+            label="Besonderheiten"
+            name="anmerkungen"
+            value={formData.anmerkungen}
+            onChange={handleChange}
+            fullWidth
+            margin="normal"
+            multiline
+            rows={4}
+            error={Boolean(errors.anmerkungen)}
+            helperText={errors.anmerkungen}
+          />
+        </Box>
+
+        //remarks missing
+      )}
+
+            {/* Conditional Fields for Stuhl */}
+            {formData.probenart === 'stuhl' && (
+        <Box sx={{ mt: 2 }}>
+          {/* Barcode ID */}
+          <TextField
+            label="Barcode ID"
+            name="barcode_id"
+            value={formData.barcode_id}
+            onChange={handleChange}
+            fullWidth
+            margin="normal"
+            error={Boolean(errors.barcode_id)}
+            helperText={errors.barcode_id}
+          />
+          {/* Patienten ID TextField */}
+          <TextField
+            label="Patienten ID (intern) z.B. HL0126"
+            name="patient_Id_intern"
+            value={formData.patient_Id_intern}
+            onChange={handleChange}
+            fullWidth
+            margin="normal"
+            error={Boolean(errors.patient_Id_intern)}
+            helperText={errors.patient_Id_intern}
+          />
+
+          {/* Probeninformation_LTX */}
+          <FormControl
+            variant="outlined"
+            fullWidth
+            margin="normal"
+            error={Boolean(errors.untergeordneteProbe)}
+          >
+            <InputLabel>Probeninformation-LTX</InputLabel>
+            <Select
+              id="Probeninformation_ltx"
+              name="probeninformation_ltx"
+              value={formData.probeninformation_ltx}
+              onChange={handleChange}
+              label="Probeninformation_ltx"
+            >
+              <MenuItem value="">-- Bitte auswählen --</MenuItem>
+              {probeninformationLTXOptions.map((option) => (
+                <MenuItem key={option.id} value={option.id}>
+                  {option.probeninformation_text} 
+                </MenuItem>
+              ))}
+            </Select>
+            {errors.probeninformation && (
+              <Typography variant="caption" color="error">
+                {errors.probeninformation}
+              </Typography>
+            )}
+          </FormControl>
+
+          {/* Datum */}
+          <TextField
+            label="Datum"
+            name="created_at"
+            type="date"
+            value={formData.created_at}
+            onChange={handleChange}
+            fullWidth
+            margin="normal"
+            InputLabelProps={{ shrink: true }}
+            error={Boolean(errors.created_at)}
+            helperText={errors.created_at}
+          />
+
+          {/* Uhrzeit */}
+          <TextField
+            label="Uhrzeit"
+            name="uhrzeit"
+            type="time"
+            value={formData.uhrzeit}
+            onChange={handleChange}
+            fullWidth
+            margin="normal"
+            InputLabelProps={{ shrink: true }}
+            error={Boolean(errors.uhrzeit)}
+            helperText={errors.uhrzeit}
+          />
+
+          {/* Probenabholer*in Select Field */}
+          <FormControl
+            variant="outlined"
+            fullWidth
+            margin="normal">
+            <InputLabel id="demo-simple-select-label">Probenabholer:In</InputLabel>
+            <Select
+              name="abholer"
+              labelId="demo-simple-select-filled-label"
+              label="Probenabholer:In"
+              id="demo-simple-select-filled"
+              value={formData.abholer}
+              onChange={handleChange}
+            >
+              <MenuItem value="">
+                <em>None</em>
+              </MenuItem>
+              {abholer.map((abholer) => (
+                <MenuItem key={abholer.id} value={abholer.name}>{abholer.name}</MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+
+          {/* Raum */}
+          <TextField
+            label="Raum"
+            name="lagerraum"
+            value={formData.lagerraum}
+            onChange={handleChange}
+            fullWidth
+            margin="normal"
+            error={Boolean(errors.lagerraum)}
+            helperText={errors.lagerraum}
+          />
+
+
+          {/* Boxnummer */}
+          <TextField
+            label="Boxnummer"
+            name="boxnummer"
+            type="number"
+            value={formData.boxnummer}
+            onChange={handleChange}
+            fullWidth
+            margin="normal"
+            error={Boolean(errors.boxnummer)}
+            helperText={errors.boxnummer}
+          />
+
+          {/* Boxzeile */}
+          <FormControl variant="outlined" fullWidth margin="normal" error={Boolean(errors.boxzeile)}>
+            <InputLabel>Boxzeile</InputLabel>
+            <Select
+              name="boxzeile"
+              value={formData.boxzeile}
+              onChange={handleChange}
+              label="Boxzeile"
+            >
+              {['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I'].map((letter) => (
+                <MenuItem key={letter} value={letter}>
+                  {letter}
+                </MenuItem>
+              ))}
+            </Select>
+            {errors.boxzeile && (
+              <Typography variant="caption" color="error">
+                {errors.boxzeile}
+              </Typography>
+            )}
+          </FormControl>
+
+          {/* Boxspalte */}
+          <TextField
+            label="Boxspalte"
+            name="boxspalte"
+            type="number"
+            value={formData.boxspalte}
+            onChange={handleChange}
+            fullWidth
+            margin="normal"
+            error={Boolean(errors.boxspalte)}
+            helperText={errors.boxspalte}
+          />
+
+          {/* Besonderheiten */}
+          <TextField
+            label="Besonderheiten"
+            name="anmerkungen"
+            value={formData.anmerkungen}
+            onChange={handleChange}
+            fullWidth
+            margin="normal"
+            multiline
+            rows={4}
+            error={Boolean(errors.anmerkungen)}
+            helperText={errors.anmerkungen}
+          />
+        </Box>
+      )}
+
+
+      {/* Conditional Fields for EDTA-Plasma */}
+      {formData.probenart === 'edtaplasma' && (
+        <Box sx={{ mt: 2 }}>
+          {/* Barcode ID */}
+          <TextField
+            label="Scannerfeld für Barcode ID"
+            name="barcode_id"
+            value={formData.barcode_id}
+            onChange={handleChange}
+            fullWidth
+            margin="normal"
+            error={Boolean(errors.barcode_id)}
+            helperText={errors.barcode_id}
+          />
+
+          {/* Patienten ID TextField */}
+          <TextField
+            label="Patienten ID (intern) z.B. HL0126"
+            name="patient_Id_intern"
+            value={formData.patient_Id_intern}
+            onChange={handleChange}
+            fullWidth
+            margin="normal"
+            error={Boolean(errors.patient_Id_intern)}
+            helperText={errors.patient_Id_intern}
+          />
+
+          {/* Probeninformation_LTX */}
+          <FormControl
+            variant="outlined"
+            fullWidth
+            margin="normal"
+            error={Boolean(errors.untergeordneteProbe)}
+          >
+            <InputLabel>Probeninformation-LTX</InputLabel>
+            <Select
+              id="Probeninformation_ltx"
+              name="probeninformation_ltx"
+              value={formData.probeninformation_ltx}
+              onChange={handleChange}
+              label="Probeninformation_ltx"
+            >
+              <MenuItem value="">-- Bitte auswählen --</MenuItem>
+              {probeninformationLTXOptions.map((option) => (
+                <MenuItem key={option.id} value={option.id}>
+                  {option.probeninformation_text} 
+                </MenuItem>
+              ))}
+            </Select>
+            {errors.probeninformation && (
+              <Typography variant="caption" color="error">
+                {errors.probeninformation}
+              </Typography>
+            )}
+          </FormControl>
+
+        {/* Differenzierungsmerkmal */}  
+        <FormControl
+            variant="outlined"
+            fullWidth
+            margin="normal"
+          >
+            <InputLabel>Differenzierungsmerkmal</InputLabel>
+            <Select
+              id="Differenzierungsmerkmal"
+              name="differenzierungsmerkmal"
+              value={formData.differenzierungsmerkmal}
+              onChange={handleChange}
+              label="Differenzierungsmerkmal"
+            >
+              <MenuItem value="">-- Bitte auswählen --</MenuItem>
+              {Array.isArray(differenzierungsmerkmalOptions) && differenzierungsmerkmalOptions.length > 0 ? (
+                differenzierungsmerkmalOptions.map((option) => (
+                  <MenuItem key={option.id} value={option.id}>
+                    {option.text}
+                  </MenuItem>
+                ))
+              ) : (
+                <MenuItem disabled>Keine Optionen verfügbar</MenuItem>
+              )}
+            </Select>
+            {errors.Differenzierungsmerkmal && (
+              <Typography variant="caption" color="error">
+                {errors.Differenzierungsmerkmal}
+              </Typography>
+            )}
+          </FormControl>
+
+          {/* Datum */}
+          <TextField
+            label="Datum"
+            name="created_at"
+            type="date"
+            value={formData.created_at}
+            onChange={handleChange}
+            fullWidth
+            margin="normal"
+            InputLabelProps={{ shrink: true }}
+            error={Boolean(errors.created_at)}
+            helperText={errors.created_at}
+          />
+
+          {/* Uhrzeit */}
+          <TextField
+            label="Uhrzeit"
+            name="uhrzeit"
+            type="time"
+            value={formData.uhrzeit}
+            onChange={handleChange}
+            fullWidth
+            margin="normal"
+            InputLabelProps={{ shrink: true }}
+            error={Boolean(errors.uhrzeit)}
+            helperText={errors.uhrzeit}
+          />
+
+          {/* Probenabholer*in Select Field */}
+          <FormControl
+            variant="outlined"
+            fullWidth
+            margin="normal">
+            <InputLabel id="demo-simple-select-label">Probenabholer:In</InputLabel>
+            <Select
+              name="abholer"
+              labelId="demo-simple-select-filled-label"
+              label="Probenabholer:In"
+              id="demo-simple-select-filled"
+              value={formData.abholer}
+              onChange={handleChange}
+            >
+              <MenuItem value="">
+                <em>None</em>
+              </MenuItem>
+              {abholer.map((abholer) => (
+                <MenuItem key={abholer.id} value={abholer.name}>{abholer.name}</MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+
+          {/* Raum */}
+          <TextField
+            label="Raum"
+            name="lagerraum"
+            value={formData.lagerraum}
+            onChange={handleChange}
+            fullWidth
+            margin="normal"
+            error={Boolean(errors.lagerraum)}
+            helperText={errors.lagerraum}
+          />
+
+          {/* Boxnummer */}
+          <TextField
+            label="Boxnummer"
+            name="boxnummer"
+            type="number"
+            value={formData.boxnummer}
+            onChange={handleChange}
+            fullWidth
+            margin="normal"
+            error={Boolean(errors.boxnummer)}
+            helperText={errors.boxnummer}
+          />
+
+          {/* Boxzeile */}
+          <FormControl variant="outlined" fullWidth margin="normal" error={Boolean(errors.boxzeile)}>
+            <InputLabel>Boxzeile</InputLabel>
+            <Select
+              name="boxzeile"
+              value={formData.boxzeile}
+              onChange={handleChange}
+              label="Boxzeile"
+            >
+              {['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I'].map((letter) => (
+                <MenuItem key={letter} value={letter}>
+                  {letter}
+                </MenuItem>
+              ))}
+            </Select>
+            {errors.boxzeile && (
+              <Typography variant="caption" color="error">
+                {errors.boxzeile}
+              </Typography>
+            )}
+          </FormControl>
+
+          {/* Boxspalte */}
+          <TextField
+            label="Boxspalte"
+            name="boxspalte"
+            type="number"
+            value={formData.boxspalte}
+            onChange={handleChange}
+            fullWidth
+            margin="normal"
+            error={Boolean(errors.boxspalte)}
+            helperText={errors.boxspalte}
+          />
+
+          {/* Besonderheiten */}
+          <TextField
+            label="Besonderheiten"
+            name="anmerkungen"
+            value={formData.anmerkungen}
+            onChange={handleChange}
+            fullWidth
+            margin="normal"
+            multiline
+            rows={4}
+            error={Boolean(errors.anmerkungen)}
+            helperText={errors.anmerkungen}
+          />
+        </Box>
+        //remarks missing
+      )}
+
+
       <Snackbar
         open={snackbarOpen}
         autoHideDuration={6000}
@@ -1350,7 +1974,7 @@ export default function SampleForm() {
         <Button variant="outlined" color="secondary" onClick={handleClear}>
           Zurücksetzen
         </Button>
-        <Button variant="contained" color="success" onClick={handleSubmit}>
+        <Button type="submit" variant="contained" color="success" onClick={handleSubmit}>
           Speichern
         </Button>
       </Box>

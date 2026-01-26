@@ -14,7 +14,7 @@ class Gewebeproben(Base):
     created_at = Column(TEXT)
     differenzierungsmerkmal	= Column(TINYINT, ForeignKey("differenzierungsmerkmal_gewebe.id"), nullable=True)
     probenart = Column(TEXT)
-    probeninformation	= Column(Integer, ForeignKey("probeninformation.id"), nullable=True)
+    probeninformation = Column(Integer, ForeignKey("probeninformation.id"), nullable=True)
     abholer = Column(TEXT)
     uhrzeit = Column(TEXT)		
     boxnummer = Column(Integer) 
@@ -23,5 +23,6 @@ class Gewebeproben(Base):
     lagerraum = Column(TEXT)
     anmerkungen = Column(TEXT)
     remarks = Column(TEXT)
+    anzahl_statuswechsel = Column(Integer, server_default="0")
     status = Column(TINYINT, ForeignKey("status.id"), nullable=True)
 

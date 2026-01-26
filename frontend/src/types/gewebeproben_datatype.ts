@@ -11,4 +11,5 @@ export type gewebeprobenData = {
     anmerkungen?: string;
     abholer?: string;
     remarks?: string;
+    anzahl_statuswechsel?: number;
 }
