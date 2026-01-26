@@ -111,7 +111,7 @@ class TableVorlaeufigeProben(BaseModel):
     probeninformation: Optional[int] = None
     probeninformation_ltx: Optional[int] = None
 
-class TableDataStuhlproben(BaseModel):
+class Stuhlproben(BaseModel):
     barcode_id: str
     patient_Id_intern: str
     probenart: str			
@@ -126,6 +126,9 @@ class TableDataStuhlproben(BaseModel):
     uhrzeit: Optional[str] = None
     probeninformation_ltx: Optional[int] = None
     anzahl_statuswechsel: Optional[int] = 0
+
+class TableDataStuhlproben(Stuhlproben): 
+    status: Optional[int] = 1
 
 class GalleprobenBase(BaseModel):
     patient_Id_intern: str

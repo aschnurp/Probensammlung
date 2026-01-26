@@ -438,7 +438,7 @@ export default function SampleForm() {
       );
   
       // Nur für Serum, Gewebe, Urin, Galle, EDTA-Plasma vorläufige Proben löschen
-      if (['serum', 'gewebe', 'urin', 'galle', 'edtaplasma'].includes(formData.probenart)) {
+      if (['serum', 'gewebe', 'urin', 'galle', 'edtaplasma', 'stuhl'].includes(formData.probenart)) {
         const deleteResponse = await axios.delete(
           'http://localhost:8000/delete/vorlaeufigeproben',
           {
