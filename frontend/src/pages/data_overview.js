@@ -490,8 +490,6 @@ export default function Uebersicht() {
                             return probeninfo ? probeninfo.probeninformation_text : "N/A";
                           })()
 
-
-
                       ) : col.key === "differenzierungsmerkmal" ? (
                         (() => {
                           if (row["probenart"] === "urin") {
@@ -522,8 +520,14 @@ export default function Uebersicht() {
                               5: "Arterie peripher",
                             };
                             return differenzierungsmerkmalMapping[row["differenzierungsmerkmal"]] || "N/A";
+                          } else if (row["probenart"] === "galle") {
+                            // Mappings für "serum"
+                            const differenzierungsmerkmalMapping = {
+                              1: "Zentrifugiert",
+                              2: "nicht Zentrifugiert",
+                            };
+                            return differenzierungsmerkmalMapping[row["differenzierungsmerkmal"]] || "N/A";
                           }
-
                           return "N/A";
                         })()
 

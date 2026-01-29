@@ -4,6 +4,7 @@ export type galleprobenData = {
     created_at?: string;
     probenart?: string;
     probeninformation_ltx?: string;
+    differenzierungsmerkmal?: number;
     abholer?: string;
     uhrzeit?: string;
     boxnummer?: number;

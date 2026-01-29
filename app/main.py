@@ -3,7 +3,7 @@ from sqlalchemy.sql import text
 from fastapi import Depends, FastAPI
 from .database import get_db, engine, SessionLocal, Base
 from sqlalchemy.orm import Session
-from .models import edtaplasmaproben ,ltx_fragebogen ,ltx_fragebogen_ernaerung_lookup ,stuhlproben, differenzierungsmerkmal_edtaplasma ,probeninformation_ltx, galleproben , differenzierungsmerkmal_stuhl ,differenzierungsmerkmal_gewebe, differenzierungsmerkmal_urin, differenzierungsmerkmal_serum , probeninformation, status, gewebeproben, probenabholer, serumproben, urinproben, patient, paraffinproben, probenquelle_urin, vorlaeufige_proben, uebergeordnete_probenart_paraffin, untergeordnete_probenart_paraffin
+from .models import edtaplasmaproben ,ltx_fragebogen, differenzierungsmerkmal_galle ,ltx_fragebogen_ernaerung_lookup ,stuhlproben, differenzierungsmerkmal_edtaplasma ,probeninformation_ltx, galleproben , differenzierungsmerkmal_stuhl ,differenzierungsmerkmal_gewebe, differenzierungsmerkmal_urin, differenzierungsmerkmal_serum , probeninformation, status, gewebeproben, probenabholer, serumproben, urinproben, patient, paraffinproben, probenquelle_urin, vorlaeufige_proben, uebergeordnete_probenart_paraffin, untergeordnete_probenart_paraffin
 from .config import settings
 from .routers import post_new_data, put_tabledata, tables, number_entrys, patch_ausschleusen, patch_wiedereinschleusen, delete_tabledata, get_patients_samples
 from fastapi.middleware.cors import CORSMiddleware
@@ -35,6 +35,7 @@ uebergeordnete_probenart_paraffin.Base.metadata.create_all(bind=engine)
 probeninformation.Base.metadata.create_all(bind=engine)
 probeninformation_ltx.Base.metadata.create_all(bind=engine)
 ltx_fragebogen_ernaerung_lookup.Base.metadata.create_all(bind=engine)
+differenzierungsmerkmal_galle.Base.metadata.create_all(bind=engine)
 
 probenquelle_urin.Base.metadata.create_all(bind=engine)
 probenabholer.Base.metadata.create_all(bind=engine)

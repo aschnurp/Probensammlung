@@ -12,6 +12,7 @@ class Galleproben(Base):
     timestamp = Column(TIMESTAMP(timezone=True), nullable=False, server_default=text("now()"))
     patient_Id_intern = Column(VARCHAR(200),  ForeignKey("patient.patient_Id_intern"))  
     created_at = Column(TEXT)
+    differenzierungsmerkmal	= Column(TINYINT, nullable=True)
     probenart = Column(TEXT)
     probeninformation_ltx = Column(Integer, ForeignKey("probeninformation_ltx.id"), nullable=True)
     abholer = Column(TEXT)
