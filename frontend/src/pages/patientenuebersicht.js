@@ -127,7 +127,17 @@ export default function Patientenuebersicht() {
   };
 
   return (
-    <Box sx={{ p: 3, maxWidth: 1300, mx: 'auto' }}>
+    <Box sx={{ p: 3, maxWidth: 1300, mx: 'auto' }}
+    onKeyDown={(e) => {
+      if (e.key === "Enter") { //bei press-enter
+        const active = document.activeElement; // Cursor Element
+        if (active.name === "patient_Id_intern") { 
+          e.preventDefault(); //aendere default funktion
+          fetchSampleData();    //submit
+        }
+      }
+    }}
+    >
       <Box sx={{ position: 'absolute', top: 90, left: 16 }}>
         <Button variant="contained" color="primary" onClick={() => (window.location.href = '/overview')}>
           <IoMdArrowRoundBack className="text-2xl" />
@@ -146,6 +156,7 @@ export default function Patientenuebersicht() {
       <Box sx={{ display: 'flex', gap: 2, maxWidth: 600, mx: 'auto' }}>
         <TextField
           label="Patientennummer (z. B. HL0125)"
+          name="patient_Id_intern" 
           value={patientID}
           onChange={(e) => setPatientID(e.target.value)}
           fullWidth

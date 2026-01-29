@@ -140,6 +140,7 @@ class GalleprobenBase(BaseModel):
     boxspalte: Optional[int] = None
     anmerkungen: Optional[str] = None
     created_at: Optional[str] = None
+    differenzierungsmerkmal: Optional[int] = None
     abholer: Optional[str] = None
     uhrzeit: Optional[str] = None
     probeninformation_ltx: Optional[int] = None

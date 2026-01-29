@@ -23,10 +23,10 @@ import SearchIcon from '@mui/icons-material/Search';
 
 const sections = [
   { title: 'Patient anlegen', link: '/patient_anlegen', icon: <AddCircleRoundedIcon />, iconName: 'Neu' },
-  { title: 'Proben einschleusen', link: '/proben_einschleusen', icon: <InputRoundedIcon />, iconName: 'Neu' },
-  { title: 'LTX Fragebogen', link: '/ltx_fragebogen', icon: <InputRoundedIcon />, iconName: 'Neu' },
-  { title: 'Proben ausschleusen', link: '/proben_ausscheusen', icon: <OutputRoundedIcon />, iconName: 'Neu', color: 'error' },
-  { title: 'Proben wieder einschleusen', link: '/proben_wiedereinschleusen', icon: <RepeatRoundedIcon />, iconName: 'Neu' },
+  { title: 'Proben einschleusen', link: '/proben_einschleusen', icon: <AddCircleRoundedIcon />, iconName: 'Neu' },
+  //{ title: 'LTX Fragebogen', link: '/ltx_fragebogen', icon: <AddCircleRoundedIcon />, iconName: 'Neu' },
+  //{ title: 'Proben ausschleusen', link: '/proben_ausscheusen', icon: <OutputRoundedIcon />, iconName: 'Neu', color: 'error' },
+  //{ title: 'Proben wieder einschleusen', link: '/proben_wiedereinschleusen', icon: <RepeatRoundedIcon />, iconName: 'Neu' },
 ];
 
 const theme = createTheme({
@@ -76,8 +76,8 @@ export default function Overview() {
   const [stuhl_count, setStuhlCount] = useState(0);
   const [edtaplasma_count, setEdtaplasmaCount] = useState(0);
   const location = usePathname();
-  const [loading, setLoading] = useState(false); 
-  const [error, setError] = useState(null); 
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
 
 
   useEffect(() => {
@@ -138,7 +138,7 @@ export default function Overview() {
           sx={{
             display: 'flex',
             justifyContent: 'space-between',
-            alignItems: 'center', 
+            alignItems: 'center',
           }}
         >
           <Typography variant="h6" sx={{ fontWeight: 'medium', color: 'text.primary' }}>
@@ -152,7 +152,7 @@ export default function Overview() {
           >
             <Button variant="contained" color='primary' startIcon={<SearchIcon />}>
               Öffnen
-              </Button>   
+            </Button>
 
           </Link>
         </Box>
@@ -227,8 +227,8 @@ export default function Overview() {
             </Typography>
           </Box>
         </Box>
-      </Box> 
-     
+      </Box>
+
       <Box
         sx={{
           bgcolor: 'background.paper',
@@ -242,11 +242,11 @@ export default function Overview() {
           sx={{
             display: 'flex',
             justifyContent: 'space-between',
-            alignItems: 'center', 
+            alignItems: 'center',
           }}
         >
           <Typography variant="h6" sx={{ fontWeight: 'medium', color: 'text.primary' }}>
-            Patientenübersicht 
+            Patientenübersicht
           </Typography>
           <Link
             href={'/patientenuebersicht'}
@@ -254,17 +254,17 @@ export default function Overview() {
               underline: location === '/patientenuebersicht',
             })}
           >
-            <Button variant="contained" startIcon={<SearchIcon />}   sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}
->
+            <Button variant="contained" startIcon={<SearchIcon />} sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+            >
               Öffnen
             </Button>
           </Link>
         </Box>
         <Divider sx={{ my: 2 }} />
-      </Box>      
-    
+      </Box>
 
-      <Box 
+
+      <Box
         sx={{
           textAlign: 'center',
           height: 0,
@@ -287,7 +287,7 @@ export default function Overview() {
           sx={{
             display: 'flex',
             justifyContent: 'space-between',
-            alignItems: 'center', 
+            alignItems: 'center',
           }}
         >
           <Typography variant="h6" sx={{ fontWeight: 'medium', color: 'text.primary' }}>
@@ -299,8 +299,8 @@ export default function Overview() {
               underline: location === '/probengefaesse_hinzufuegen',
             })}
           >
-            <Button variant="contained" startIcon={<AddCircleRoundedIcon />}   sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}
->
+            <Button variant="contained" startIcon={<AddCircleRoundedIcon />} sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+            >
               Neu
             </Button>
           </Link>
@@ -349,32 +349,225 @@ export default function Overview() {
       </Box>
 
       {sections.map((section, index) => (
-  <Box key={index} sx={{ bgcolor: 'background.paper', boxShadow: 3, borderRadius: 4, p: 3, m: 10 }}>
-    <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-      <Typography variant="h6" sx={{ fontWeight: 'medium', color: 'text.primary' }}>
-        {section.title}
-      </Typography>
-      <Box sx={{ display: 'flex', gap: 1 }}>
-        <Link href={section.link} className={clsx('text-white font-semibold hover:text-blue-200')}>
-          <Button variant="contained" startIcon={section.icon} color={section.color || 'primary'}>
-            {/* Hier den benutzerdefinierten Namen des Icons anzeigen */}
-            {section.iconName}
-          </Button>
-        </Link>
-        {section.extraButton && (
-          <Link href={section.link} className={clsx('text-white font-semibold hover:text-blue-200')}>
-            <Button variant="outlined" startIcon={<EditRoundedIcon />}>
-              Bearbeiten
-            </Button>
-          </Link>
-        )}
-      </Box>
-    </Box>
-    <Divider sx={{ my: 2 }} />
-  </Box>
-))}
+        <Box key={index} sx={{ bgcolor: 'background.paper', boxShadow: 3, borderRadius: 4, p: 3, m: 10 }}>
+          <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <Typography variant="h6" sx={{ fontWeight: 'medium', color: 'text.primary' }}>
+              {section.title}
+            </Typography>
+            <Box sx={{ display: 'flex', gap: 1 }}>
+              <Link href={section.link} className={clsx('text-white font-semibold hover:text-blue-200')}>
+                <Button variant="contained" startIcon={section.icon} color={section.color || 'primary'}>
+                  {/* Hier den benutzerdefinierten Namen des Icons anzeigen */}
+                  {section.iconName}
+                </Button>
+              </Link>
 
-<Box sx={{ textAlign: 'center', height: 0 }}>
+              
+            </Box>
+          </Box>
+          <Divider sx={{ my: 2 }} />
+        </Box>
+      ))}
+
+
+
+      <Box
+        sx={{
+          display: 'flex',
+          gap: 5,        // Abstand zwischen den Boxen
+          m: 10,
+        }}
+      >
+        <Box
+          sx={{
+            flex: 1,
+            bgcolor: 'background.paper',
+            boxShadow: 3,
+            borderRadius: 4,
+            p: 3,
+          }}
+        >
+          <Box
+            sx={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+            }}
+          >
+            <Typography variant="h6" sx={{ fontWeight: 'medium', color: 'text.primary' }}>
+              LTX-Fragebogen
+            </Typography>
+            <Link
+              href={'/ltx_fragebogen'}
+              className={clsx('text-white font-semibold hover:text-blue-200', {
+                underline: location === '/ltx_fragebogen',
+              })}
+            >
+              <Button
+                variant="contained"
+                sx={{
+                  minWidth: 78,
+                  minHeight: 36,
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}
+              >
+                <AddCircleRoundedIcon />
+              </Button>
+            </Link>
+          </Box>
+          <Divider sx={{ my: 2 }} />
+        </Box>
+
+        <Box
+          sx={{
+            flex: 1,
+            bgcolor: 'background.paper',
+            boxShadow: 3,
+            borderRadius: 4,
+            p: 3,
+          }}
+        >
+          <Box
+            sx={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+            }}
+          >
+            <Typography variant="h6" sx={{ fontWeight: 'medium', color: 'text.primary' }}>
+              LTX-Fragebogen Patienten
+            </Typography>
+            <Link
+              href={'/ltx_fragebogen_patienten'}
+              className={clsx('text-white font-semibold hover:text-blue-200', {
+                underline: location === '/ltx_fragebogen_patienten',
+              })}
+            >
+              <Button
+                variant="contained"
+                sx={{
+                  minWidth: 78,
+                  minHeight: 36,
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}
+              >
+                <SearchIcon />
+              </Button>
+            </Link>
+          </Box>
+          <Divider sx={{ my: 2 }} />
+        </Box>
+      </Box>
+
+
+
+
+
+
+
+      <Box sx={{ textAlign: 'center', height: 0 }}>
+        <Typography variant="h5" sx={{ fontWeight: 'bold', color: 'text.primary' }}>
+          Proben Verwalten
+        </Typography>
+      </Box>
+      <Box
+        sx={{
+          display: 'flex',
+          gap: 5,        // Abstand zwischen den Boxen
+          m: 10,
+        }}
+      >
+        <Box
+          sx={{
+            flex: 1,
+            bgcolor: 'background.paper',
+            boxShadow: 3,
+            borderRadius: 4,
+            p: 3,
+          }}
+        >
+          <Box
+            sx={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+            }}
+          >
+            <Typography variant="h6" sx={{ fontWeight: 'medium', color: 'text.primary' }}>
+              Proben ausschleusen
+            </Typography>
+            <Link
+              href={'/proben_ausscheusen'}
+              className={clsx('text-white font-semibold hover:text-blue-200', {
+                underline: location === '/proben_ausscheusen',
+              })}
+            >
+              <Button
+                variant="contained"
+                color="error"
+                sx={{
+                  minWidth: 78,
+                  minHeight: 36,
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}
+              >
+                <OutputRoundedIcon />
+              </Button>
+            </Link>
+          </Box>
+          <Divider sx={{ my: 2 }} />
+        </Box>
+
+        <Box
+          sx={{
+            flex: 1,
+            bgcolor: 'background.paper',
+            boxShadow: 3,
+            borderRadius: 4,
+            p: 3,
+          }}
+        >
+          <Box
+            sx={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+            }}
+          >
+            <Typography variant="h6" sx={{ fontWeight: 'medium', color: 'text.primary' }}>
+              Proben wieder einschleusen
+            </Typography>
+            <Link
+              href={'/proben_wiedereinschleusen'}
+              className={clsx('text-white font-semibold hover:text-blue-200', {
+                underline: location === '/proben_wiedereinschleusen',
+              })}
+            >
+              <Button
+                variant="contained"
+                sx={{
+                  minWidth: 78,
+                  minHeight: 36,
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}
+              >
+                <AddCircleRoundedIcon />
+              </Button>
+            </Link>
+          </Box>
+          <Divider sx={{ my: 2 }} />
+        </Box>
+      </Box>
+
+      <Box sx={{ textAlign: 'center', height: 0 }}>
         <Typography variant="h5" sx={{ fontWeight: 'bold', color: 'text.primary' }}>
           Weitere Funktionen
         </Typography>

@@ -559,7 +559,7 @@ export default function SampleForm() {
                     LTX-Fragebogen
                 </Typography>
                 <Typography variant="body1">
-                    Erfassung aller befragten LTX-Patienten, welche den Studienkriterien entsprechen
+                    Erfassung aller befragten LTX-Patienten, welche den Studienkriterien entsprechen. Für ein erfolgreiches Dateneintragen muss der Patient bereits im System registriert sein.
                 </Typography>
             </Box>
 

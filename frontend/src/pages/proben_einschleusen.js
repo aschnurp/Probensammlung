@@ -1427,6 +1427,39 @@ export default function SampleForm() {
             )}
           </FormControl>
 
+            {/* Differenzierungsmerkmal */}
+          <FormControl
+            variant="outlined"
+            fullWidth
+            margin="normal"
+            error={Boolean(errors.uebergeordneteProbe)}
+          >
+            <InputLabel>Differenzierungsmerkmal</InputLabel>
+            <Select
+              id="Differenzierungsmerkmal"
+              name="differenzierungsmerkmal"
+              value={formData.differenzierungsmerkmal}
+              onChange={handleChange}
+              label="Differenzierungsmerkmal"
+            >
+              <MenuItem value="">-- Bitte auswählen --</MenuItem>
+              {Array.isArray(differenzierungsmerkmalOptions) && differenzierungsmerkmalOptions.length > 0 ? (
+                differenzierungsmerkmalOptions.map((option) => (
+                  <MenuItem key={option.id} value={option.id}>
+                    {option.text}
+                  </MenuItem>
+                ))
+              ) : (
+                <MenuItem disabled>Keine Optionen verfügbar</MenuItem>
+              )}
+            </Select>
+            {errors.Differenzierungsmerkmal && (
+              <Typography variant="caption" color="error">
+                {errors.Differenzierungsmerkmal}
+              </Typography>
+            )}
+          </FormControl>
+
           {/* Datum */}
           <TextField
             label="Datum"
