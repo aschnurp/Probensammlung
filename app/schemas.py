@@ -117,7 +117,6 @@ class Stuhlproben(BaseModel):
     probenart: str			
     anmerkungen: Optional[str] = None
     created_at: Optional[str] = None
-    differenzierungsmerkmal: Optional[int] = None
     abholer: Optional[str] = None
     lagerraum: Optional[str] = None	
     boxnummer: Optional[int] = None
