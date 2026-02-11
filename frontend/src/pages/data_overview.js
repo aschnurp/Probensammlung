@@ -520,6 +520,16 @@ export default function Uebersicht() {
                               5: "Arterie peripher",
                             };
                             return differenzierungsmerkmalMapping[row["differenzierungsmerkmal"]] || "N/A";
+                          } else if (row["probenart"] === "edtaplasma") {
+                            // Mappings für "serum"
+                            const differenzierungsmerkmalMapping = {
+                              1: "Lebervene Links",
+                              2: "Lebervene Rechts",
+                              3: "ZVK",
+                              4: "Vene peripher",
+                              5: "Arterie peripher",
+                            };
+                            return differenzierungsmerkmalMapping[row["differenzierungsmerkmal"]] || "N/A";
                           } else if (row["probenart"] === "galle") {
                             // Mappings für "serum"
                             const differenzierungsmerkmalMapping = {

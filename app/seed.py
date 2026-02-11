@@ -125,10 +125,10 @@ def seed_status_data(db: Session):
             Probeninformation_ltx(probeninformation_text="Galle post OP 14d von impl. Leber II", probenart="galle"),
             Probeninformation_ltx(probeninformation_text="Galle post OP 14d von impl. Leber III", probenart="galle"),
             Probeninformation_ltx(probeninformation_text="Galle post OP 14d von impl. Leber IV", probenart="galle"),
-            Probeninformation_ltx(probeninformation_text="EDTA-Plasma bei Aufklährung I", probenart="edtaplasma"),
-            Probeninformation_ltx(probeninformation_text="EDTA-Plasma bei Aufklährung II", probenart="edtaplasma"),
-            Probeninformation_ltx(probeninformation_text="EDTA-Plasma bei Aufklährung III", probenart="edtaplasma"),
-            Probeninformation_ltx(probeninformation_text="EDTA-Plasma bei Aufklährung IV", probenart="edtaplasma"),
+            Probeninformation_ltx(probeninformation_text="EDTA-Plasma bei Aufklärung I", probenart="edtaplasma"),
+            Probeninformation_ltx(probeninformation_text="EDTA-Plasma bei Aufklärung II", probenart="edtaplasma"),
+            Probeninformation_ltx(probeninformation_text="EDTA-Plasma bei Aufklärung III", probenart="edtaplasma"),
+            Probeninformation_ltx(probeninformation_text="EDTA-Plasma bei Aufklärung IV", probenart="edtaplasma"),
             Probeninformation_ltx(probeninformation_text="EDTA-Plasma prä OP I", probenart="edtaplasma"),
             Probeninformation_ltx(probeninformation_text="EDTA-Plasma prä OP II", probenart="edtaplasma"),
             Probeninformation_ltx(probeninformation_text="EDTA-Plasma prä OP III", probenart="edtaplasma"),
@@ -277,6 +277,7 @@ def seed_status_data(db: Session):
             Ltx_fragebogen_ernaerung_lookup(value="3-5 Mal pro Woche"),
             Ltx_fragebogen_ernaerung_lookup(value="1 Mal pro Tag"),
             Ltx_fragebogen_ernaerung_lookup(value="ueber 2 Mal pro Tag"),
+            Ltx_fragebogen_ernaerung_lookup(value="keine Angabe"),
         ]
         # Einfügen und speichern
         db.add_all(seed_data)
