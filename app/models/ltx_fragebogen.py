@@ -23,7 +23,7 @@ class Ltx_fragebogen(Base):
     kinder_anzahl = Column(Integer)
     krankenversicherung = Column(TEXT)
     epices_score = Column(Integer)
-    sozialer_prekaritaetsindex = Column(Integer)
+    sozialer_prekaritaetsindex = Column(TEXT)
 
     # körperliche Aktivität
     bewegung = Column(TEXT)

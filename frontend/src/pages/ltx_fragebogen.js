@@ -33,6 +33,7 @@ export default function SampleForm() {
         kinder_anzahl: '',
         krankenversicherung: '',
         epices_score: '',
+        sozialer_prekaritaetsindex: '',
         bewegung: '',
         rotes_fleisch: '',
         rotes_fleisch_anz: '',
@@ -184,27 +185,27 @@ export default function SampleForm() {
 
     //set of all items for the nutrition table
     const FOOD_ITEMS = [
-        { key: 'rotes_fleisch', label: 'Rotes Fleisch' },
-        { key: 'gefluegel', label: 'Geflügel' },
-        { key: 'verarbeitetes_fleisch', label: 'Verarbeitetes Fleisch' },
-        { key: 'fisch_meeresfruechte', label: 'Fisch / Meeresfrüchte' },
-        { key: 'eier', label: 'Eier' },
-        { key: 'fruechte_gemuese', label: 'Früchte & Gemüse' },
-        { key: 'staerkehaltige_lebensmittel', label: 'Stärkehaltige Lebensmittel' },
-        { key: 'vollwertkost', label: 'Vollwertkost' },
-        { key: 'huelsenfruechte', label: 'Hülsenfrüchte' },
-        { key: 'joghurt', label: 'Joghurt' },
-        { key: 'kaese', label: 'Käse' },
-        { key: 'milch', label: 'Milch' },
-        { key: 'fruehstueckscerealien', label: 'Frühstückscerealien' },
-        { key: 'fettfreie_zuckerhaltige_produkte', label: 'Fettfreie zuckerhaltige Produkte' },
-        { key: 'fetthaltige_zuckerhaltige_produkte', label: 'Fetthaltige zuckerhaltige Produkte' },
-        { key: 'fettige_salzige_produkte', label: 'Fettige salzige Produkte' },
-        { key: 'fette', label: 'Fette' },
-        { key: 'zuckerhaltige_getraenke', label: 'Zuckerhaltige Getränke' },
-        { key: 'wein', label: 'Wein' },
-        { key: 'bier', label: 'Bier' },
-        { key: 'aperitifs_digestifs', label: 'Aperitifs / Digestifs' },
+        { key: 'rotes_fleisch', label: 'Rotes Fleisch *' },
+        { key: 'gefluegel', label: 'Geflügel *' },
+        { key: 'verarbeitetes_fleisch', label: 'Verarbeitetes Fleisch *' },
+        { key: 'fisch_meeresfruechte', label: 'Fisch / Meeresfrüchte *' },
+        { key: 'eier', label: 'Eier *' },
+        { key: 'fruechte_gemuese', label: 'Früchte & Gemüse *' },
+        { key: 'staerkehaltige_lebensmittel', label: 'Stärkehaltige Lebensmittel *' },
+        { key: 'vollwertkost', label: 'Vollwertkost *' },
+        { key: 'huelsenfruechte', label: 'Hülsenfrüchte *' },
+        { key: 'joghurt', label: 'Joghurt *' },
+        { key: 'kaese', label: 'Käse *' },
+        { key: 'milch', label: 'Milch *' },
+        { key: 'fruehstueckscerealien', label: 'Frühstückscerealien *' },
+        { key: 'fettfreie_zuckerhaltige_produkte', label: 'Fettfreie zuckerhaltige Produkte *' },
+        { key: 'fetthaltige_zuckerhaltige_produkte', label: 'Fetthaltige zuckerhaltige Produkte *' },
+        { key: 'fettige_salzige_produkte', label: 'Fettige salzige Produkte *' },
+        { key: 'fette', label: 'Fette *' },
+        { key: 'zuckerhaltige_getraenke', label: 'Zuckerhaltige Getränke *' },
+        { key: 'wein', label: 'Wein *' },
+        { key: 'bier', label: 'Bier *' },
+        { key: 'aperitifs_digestifs', label: 'Aperitifs / Digestifs *' },
     ];
 
     const handleChange = (e) => {
@@ -262,6 +263,7 @@ export default function SampleForm() {
             kinder_anzahl: '',
             krankenversicherung: '',
             epices_score: '',
+            sozialer_prekaritaetsindex: '',
             bewegung: '',
             rotes_fleisch: '',
             rotes_fleisch_anz: '',
@@ -341,6 +343,7 @@ export default function SampleForm() {
 
     //lookup const for nutrition table (cols)
     const FREQUENCY = {
+        KEINEANGABE: 7, //correct
         NIE: 1,
         MONAT_1_3: 2,
         WOCHE_1_2: 3,
@@ -371,6 +374,7 @@ export default function SampleForm() {
                             kinder_anzahl: foundItem.kinder_anzahl,
                             krankenversicherung: foundItem.krankenversicherung,
                             epices_score: foundItem.epices_score,
+                            sozialer_prekaritaetsindex: foundItem.sozialer_prekaritaetsindex,
                             bewegung: foundItem.bewegung,
                             rotes_fleisch: foundItem.rotes_fleisch,
                             rotes_fleisch_anz: foundItem.rotes_fleisch_anz,
@@ -559,7 +563,7 @@ export default function SampleForm() {
                     LTX-Fragebogen
                 </Typography>
                 <Typography variant="body1">
-                Erfassung aller LTX-Patienten, die den Studienkriterien entsprechen. Voraussetzung für die erfolgreiche Datenerfassung ist, dass der Patient bereits im System registriert ist.
+                Erfassung aller LTX-Patienten, die den Studienkriterien entsprechen. Voraussetzung für die erfolgreiche Datenerfassung ist, dass der Patient bereits im System registriert ist. Alle mit * gekennzeichneten Felder, sind Pflichtfelder.
                 </Typography>
             </Box>
 
@@ -571,7 +575,7 @@ export default function SampleForm() {
                     </Typography>
 
                     <TextField
-                        label="Patienten ID (intern)"
+                        label="Patienten ID (intern) *"
                         name="patient_Id_intern"
                         value={formData.patient_Id_intern}
                         onChange={handleChange}
@@ -581,7 +585,7 @@ export default function SampleForm() {
 
                     <FormControl component="fieldset" margin="normal">
                         <FormLabel id="geschlecht-label">
-                            Geschlecht:
+                            Geschlecht *
                         </FormLabel>
 
                         <RadioGroup
@@ -598,7 +602,7 @@ export default function SampleForm() {
                     </FormControl>
 
                     <TextField
-                        label="Alter"
+                        label="Alter [Jahre]"
                         name="alter"
                         type='number'
                         value={formData.alter}
@@ -608,7 +612,7 @@ export default function SampleForm() {
                     />
 
                     <TextField
-                        label="Gewicht"
+                        label="Gewicht [kg]"
                         name="gewicht"
                         type="number"
                         value={formData.gewicht}
@@ -618,7 +622,7 @@ export default function SampleForm() {
                     />
 
                     <TextField
-                        label="Körpergröße"
+                        label="Körpergröße [cm]"
                         name="groesse"
                         type="number"
                         value={formData.groesse}
@@ -671,11 +675,28 @@ export default function SampleForm() {
                     fullWidth
                     margin="normal"
                 />
+                    <FormControl component="fieldset" margin="normal">
+                        <FormLabel id="sozialer_prekaritaetsindex_label">
+                        Sozialer Prekaritätsindex (≥30 = Auffällig) *
+                        </FormLabel>
+
+                        <RadioGroup
+                            name="sozialer_prekaritaetsindex"
+                            value={formData.sozialer_prekaritaetsindex}
+                            onChange={handleChange}
+                            row
+                            sx={{ mt: 1 }}
+                        >
+                            <FormControlLabel value="keine Angabe" control={<Radio />} label="keine Angabe" />
+                            <FormControlLabel value=">=30" control={<Radio />} label="≥30" />
+                            <FormControlLabel value="<30" control={<Radio />} label="<30" />
+                        </RadioGroup>
+                    </FormControl>
             </Box>
 
             <Divider sx={{ my: 3 }} />
             <Typography variant="h6" sx={{ fontWeight: 'bold', mt: 3 }}>
-                Körperliche Aktivität
+                Körperliche Aktivität *
             </Typography>
 
             <FormControl component="fieldset" margin="normal">
@@ -685,6 +706,7 @@ export default function SampleForm() {
                     onChange={handleChange}
                     sx={{ flexDirection: 'column' }}
                 >
+                    <FormControlLabel value="keine Angabe" control={<Radio />} label="keine Angabe" />
                     <FormControlLabel value="gelegentliche_bewegung" control={<Radio />} label="Gelegentliche Bewegung" />
                     <FormControlLabel value="woechentliche_bewegung" control={<Radio />} label="Wöchentliche Bewegung" />
                     <FormControlLabel value="30min_schnelles_gehen_jeden_tag" control={<Radio />} label="30 min schnelles Gehen pro Tag" />
@@ -701,7 +723,7 @@ export default function SampleForm() {
                 <Box
                     sx={{
                         display: 'grid',
-                        gridTemplateColumns: '2.5fr repeat(6, 1fr)',
+                        gridTemplateColumns: '3.0fr repeat(7, 1fr)',
                         gap: 1,
                         textAlign: 'center',
                         alignItems: 'center',
@@ -709,6 +731,7 @@ export default function SampleForm() {
                 >
                     {/* Header */}
                     <Box />
+                    <Typography variant="body2">keine Angabe</Typography>
                     <Typography variant="body2">Nie</Typography>
                     <Typography variant="body2">1–3 / Monat</Typography>
                     <Typography variant="body2">1–2 / Woche</Typography>
@@ -740,6 +763,7 @@ export default function SampleForm() {
                                 }
                                 sx={{ display: 'contents' }}
                             >
+                                <Radio value={FREQUENCY.KEINEANGABE} />
                                 <Radio value={FREQUENCY.NIE} />
                                 <Radio value={FREQUENCY.MONAT_1_3} />
                                 <Radio value={FREQUENCY.WOCHE_1_2} />
@@ -772,7 +796,7 @@ export default function SampleForm() {
             </Typography>
             <FormControl component="fieldset" margin="normal">
                 <FormLabel id="nierenfunktion-label">
-                    Nierenfunktion
+                    Nierenfunktion (eGFR) *
                 </FormLabel>
 
                 <RadioGroup
@@ -783,25 +807,26 @@ export default function SampleForm() {
                     row
                     sx={{
                         display: 'grid',
-                        gridTemplateColumns: 'repeat(6, 1fr)',
+                        gridTemplateColumns: 'repeat(7, 1fr)',
                         textAlign: 'center',
-                        maxWidth: 1000,
+                        maxWidth: 1200,
                         mx: 'auto',
                         mt: 1,
                     }}
                 >
+                    <FormControlLabel value="keine Angabe" control={<Radio />} label="keine Angabe" />
                     <FormControlLabel value="normal" control={<Radio />} label="Normal" />
-                    <FormControlLabel value="eGFR_ueber_90" control={<Radio />} label="1 (eGFR > 90)" />
-                    <FormControlLabel value="eGFR_60_90" control={<Radio />} label="2 (60 – 89)" />
-                    <FormControlLabel value="eGFR_30_59" control={<Radio />} label="3 (30 – 59)" />
-                    <FormControlLabel value="eGFR_15_29" control={<Radio />} label="4 (15 – 29)" />
-                    <FormControlLabel value="eGFR_unter_15" control={<Radio />} label="5 (< 15)" />
+                    <FormControlLabel value="eGFR_ueber_90" control={<Radio />} label="> 90" />
+                    <FormControlLabel value="eGFR_60_90" control={<Radio />} label="60 – 89" />
+                    <FormControlLabel value="eGFR_30_59" control={<Radio />} label="30 – 59" />
+                    <FormControlLabel value="eGFR_15_29" control={<Radio />} label="15 – 29" />
+                    <FormControlLabel value="eGFR_unter_15" control={<Radio />} label="< 15" />
                 </RadioGroup>
             </FormControl>
 
             <FormControl component="fieldset" margin="normal">
                 <FormLabel id="diabetes-label">
-                    Diabetes
+                    Diabetes *
                 </FormLabel>
 
                 <RadioGroup
@@ -819,7 +844,7 @@ export default function SampleForm() {
                         mt: 1,
                     }}
                 >
-                    <FormControlLabel value="fehlend" control={<Radio />} label="Fehlend" />
+                    <FormControlLabel value="keine Angabe" control={<Radio />} label="keine Angabe" />
                     <FormControlLabel value="typ1" control={<Radio />} label="Typ 1" />
                     <FormControlLabel value="typ2_keine_insulinpflicht" control={<Radio />} label="Typ 2 (nicht insulinpflichtig)" />
                     <FormControlLabel value="typ2_insulinpflicht" control={<Radio />} label="Typ 2 (insulinpflichtig)" />
@@ -927,7 +952,7 @@ export default function SampleForm() {
             </Typography>
             <FormControl component="fieldset" margin="normal">
                 <FormLabel id="multiresistenz_infektion-label">
-                    Vorgeschichte einer Multiresistenten-Infektion in den letzten 6 Monaten:
+                    Vorgeschichte einer Multiresistenten-Infektion in den letzten 6 Monaten: *
                 </FormLabel>
 
                 <RadioGroup
@@ -939,15 +964,15 @@ export default function SampleForm() {
                         mt: 1,
                     }}
                 >
-                    <FormControlLabel value="ja" control={<Radio />} label="Ja" />
+                    <FormControlLabel value="keine Angabe" control={<Radio />} label="keine Angabe" />
                     <FormControlLabel value="nein" control={<Radio />} label="Nein" />
-
+                    <FormControlLabel value="ja" control={<Radio />} label="Ja" />
                 </RadioGroup>
             </FormControl>
             <Box sx={{ mt: 0 }}></Box>
             <FormControl component="fieldset" margin="normal">
                 <FormLabel id="antibiotische_behandlung-label">
-                    Antibiotische Behandlung in den letzten 6 Monaten:
+                    Antibiotische Behandlung in den letzten 6 Monaten: *
                 </FormLabel>
 
                 <RadioGroup
@@ -957,8 +982,9 @@ export default function SampleForm() {
                     row
                     sx={{ mt: 1 }}
                 >
-                    <FormControlLabel value="ja" control={<Radio />} label="Ja" />
+                    <FormControlLabel value="keine Angabe" control={<Radio />} label="keine Angabe" />
                     <FormControlLabel value="nein" control={<Radio />} label="Nein" />
+                    <FormControlLabel value="ja" control={<Radio />} label="Ja" />
                 </RadioGroup>
             </FormControl>
 
@@ -1003,7 +1029,7 @@ export default function SampleForm() {
 
             <FormControl component="fieldset" margin="normal">
                 <FormLabel id="langzeit_norfloxacin_prophylaxe-label">
-                    Langzeit Norfloxacin Prophylaxe (Sekundärprophylaxe SPB):
+                    Langzeit Norfloxacin Prophylaxe (Sekundärprophylaxe SPB): *
                 </FormLabel>
 
                 <RadioGroup
@@ -1015,8 +1041,9 @@ export default function SampleForm() {
                         mt: 1,
                     }}
                 >
-                    <FormControlLabel value="ja" control={<Radio />} label="Ja" />
+                    <FormControlLabel value="keine Angabe" control={<Radio />} label="keine Angabe" />
                     <FormControlLabel value="nein" control={<Radio />} label="Nein" />
+                    <FormControlLabel value="ja" control={<Radio />} label="Ja" />
 
                 </RadioGroup>
             </FormControl>
@@ -1024,7 +1051,7 @@ export default function SampleForm() {
             <Box sx={{ mt: 0 }} />
             <FormControl component="fieldset" margin="normal">
                 <FormLabel id="hospitalisation_vergangenes_jahr-label">
-                    Hospitalisation im vergangenen Jahr:
+                    Hospitalisation im vergangenen Jahr: *
                 </FormLabel>
 
                 <RadioGroup
@@ -1036,8 +1063,9 @@ export default function SampleForm() {
                         mt: 1,
                     }}
                 >
-                    <FormControlLabel value="ja" control={<Radio />} label="Ja" />
+                    <FormControlLabel value="keine Angabe" control={<Radio />} label="keine Angabe" />
                     <FormControlLabel value="nein" control={<Radio />} label="Nein" />
+                    <FormControlLabel value="ja" control={<Radio />} label="Ja" />
 
                 </RadioGroup>
             </FormControl>
@@ -1045,7 +1073,7 @@ export default function SampleForm() {
             <Box sx={{ mt: 0 }} />
             <FormControl component="fieldset" margin="normal" fullWidth>
                 <FormLabel id="geburtsort_ausserhalb_deutschlands-label">
-                    Geburtsort außerhalb Deutschlands:
+                    Geburtsort außerhalb Deutschlands: *
                 </FormLabel>
 
                 <RadioGroup
@@ -1055,8 +1083,9 @@ export default function SampleForm() {
                     row
                     sx={{ mt: 1 }}
                 >
-                    <FormControlLabel value="ja" control={<Radio />} label="Ja" />
+                    <FormControlLabel value="keine Angabe" control={<Radio />} label="keine Angabe" />
                     <FormControlLabel value="nein" control={<Radio />} label="Nein" />
+                    <FormControlLabel value="ja" control={<Radio />} label="Ja" />
                 </RadioGroup>
 
                 {/* Wenn Ja */}
@@ -1076,7 +1105,7 @@ export default function SampleForm() {
             <Box sx={{ mt: 0 }} />
             <FormControl component="fieldset" margin="normal" fullWidth>
                 <FormLabel id="auslandsreise_letzte_drei_monate">
-                    Auslandsreisen innerhalb der letzten 3 Monate:
+                    Auslandsreisen innerhalb der letzten 3 Monate: *
                 </FormLabel>
 
                 <RadioGroup
@@ -1086,8 +1115,9 @@ export default function SampleForm() {
                     row
                     sx={{ mt: 1 }}
                 >
-                    <FormControlLabel value="ja" control={<Radio />} label="Ja" />
+                    <FormControlLabel value="keine Angabe" control={<Radio />} label="keine Angabe" />
                     <FormControlLabel value="nein" control={<Radio />} label="Nein" />
+                    <FormControlLabel value="ja" control={<Radio />} label="Ja" />
                 </RadioGroup>
 
                 {/* Wenn Ja */}
@@ -1106,7 +1136,7 @@ export default function SampleForm() {
 
             <FormControl component="fieldset" margin="normal">
                 <FormLabel id="auslandsreise_antibiotika-label">
-                    Wurden Antibiotika während dieser Auslandsreise eingenommen?:
+                    Wurden Antibiotika während dieser Auslandsreise eingenommen?: *
                 </FormLabel>
 
                 <RadioGroup
@@ -1118,8 +1148,9 @@ export default function SampleForm() {
                         mt: 1,
                     }}
                 >
-                    <FormControlLabel value="ja" control={<Radio />} label="Ja" />
+                    <FormControlLabel value="keine Angabe" control={<Radio />} label="keine Angabe" />
                     <FormControlLabel value="nein" control={<Radio />} label="Nein" />
+                    <FormControlLabel value="ja" control={<Radio />} label="Ja" />
 
                 </RadioGroup>
             </FormControl>
@@ -1127,7 +1158,7 @@ export default function SampleForm() {
             <Box sx={{ mt: 0 }} />
             <FormControl component="fieldset" margin="normal">
                 <FormLabel id="auslandsreise_durchfall-label">
-                    Kam es zu Durchfall während dieser Auslandsreise?:
+                    Kam es zu Durchfall während dieser Auslandsreise?: *
                 </FormLabel>
 
                 <RadioGroup
@@ -1139,15 +1170,16 @@ export default function SampleForm() {
                         mt: 1,
                     }}
                 >
-                    <FormControlLabel value="ja" control={<Radio />} label="Ja" />
+                    <FormControlLabel value="keine Angabe" control={<Radio />} label="keine Angabe" />
                     <FormControlLabel value="nein" control={<Radio />} label="Nein" />
+                    <FormControlLabel value="ja" control={<Radio />} label="Ja" />
                 </RadioGroup>
             </FormControl>
 
             <Box sx={{ mt: 0 }} />
             <FormControl component="fieldset" margin="normal">
                 <FormLabel id="auslandsreise_krankenhaus-label">
-                    Haben Sie eine medizinische Einrichtung (Praxis, Krankenhaus) während dieser Auslandsreise besucht?:
+                    Haben Sie eine medizinische Einrichtung (Praxis, Krankenhaus) während dieser Auslandsreise besucht?: *
                 </FormLabel>
 
                 <RadioGroup
@@ -1159,8 +1191,9 @@ export default function SampleForm() {
                         mt: 1,
                     }}
                 >
-                    <FormControlLabel value="ja" control={<Radio />} label="Ja" />
+                    <FormControlLabel value="keine Angabe" control={<Radio />} label="keine Angabe" />
                     <FormControlLabel value="nein" control={<Radio />} label="Nein" />
+                    <FormControlLabel value="ja" control={<Radio />} label="Ja" />
                 </RadioGroup>
             </FormControl>
 

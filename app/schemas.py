@@ -117,7 +117,6 @@ class Stuhlproben(BaseModel):
     probenart: str			
     anmerkungen: Optional[str] = None
     created_at: Optional[str] = None
-    differenzierungsmerkmal: Optional[int] = None
     abholer: Optional[str] = None
     lagerraum: Optional[str] = None	
     boxnummer: Optional[int] = None
@@ -177,7 +176,8 @@ class TableDataLtx_fragebogen(BaseModel):
     beruf: Optional[str] = None
     kinder_anzahl: Optional[int] = None
     krankenversicherung: Optional[str] = None
-    epices_score: Optional[int] = None
+    epices_score: Optional[float] = None
+    sozialer_prekaritaetsindex: Optional[str] = None
     bewegung: Optional[str] = None
     rotes_fleisch: Optional[int] = None
     rotes_fleisch_anz: Optional[int] = None
