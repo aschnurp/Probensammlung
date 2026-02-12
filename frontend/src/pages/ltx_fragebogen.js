@@ -595,8 +595,8 @@ export default function SampleForm() {
                             row
                             sx={{ mt: 1 }}
                         >
-                            <FormControlLabel value="männlich" control={<Radio />} label="Männlich" />
                             <FormControlLabel value="weiblich" control={<Radio />} label="Weiblich" />
+                            <FormControlLabel value="männlich" control={<Radio />} label="Männlich" />
                             <FormControlLabel value="non_binary" control={<Radio />} label="Non-Binary" />
                         </RadioGroup>
                     </FormControl>
@@ -837,7 +837,7 @@ export default function SampleForm() {
                     row
                     sx={{
                         display: 'grid',
-                        gridTemplateColumns: 'repeat(4, 1fr)',
+                        gridTemplateColumns: 'repeat(5, 1fr)',
                         textAlign: 'center',
                         maxWidth: 900,
                         mx: 'auto',
@@ -845,6 +845,7 @@ export default function SampleForm() {
                     }}
                 >
                     <FormControlLabel value="keine Angabe" control={<Radio />} label="keine Angabe" />
+                    <FormControlLabel value="fehlend" control={<Radio />} label="Fehlend" />
                     <FormControlLabel value="typ1" control={<Radio />} label="Typ 1" />
                     <FormControlLabel value="typ2_keine_insulinpflicht" control={<Radio />} label="Typ 2 (nicht insulinpflichtig)" />
                     <FormControlLabel value="typ2_insulinpflicht" control={<Radio />} label="Typ 2 (insulinpflichtig)" />
@@ -964,9 +965,9 @@ export default function SampleForm() {
                         mt: 1,
                     }}
                 >
-                    <FormControlLabel value="keine Angabe" control={<Radio />} label="keine Angabe" />
-                    <FormControlLabel value="nein" control={<Radio />} label="Nein" />
                     <FormControlLabel value="ja" control={<Radio />} label="Ja" />
+                    <FormControlLabel value="nein" control={<Radio />} label="Nein" />
+                    <FormControlLabel value="keine Angabe" control={<Radio />} label="keine Angabe" />
                 </RadioGroup>
             </FormControl>
             <Box sx={{ mt: 0 }}></Box>
@@ -982,9 +983,9 @@ export default function SampleForm() {
                     row
                     sx={{ mt: 1 }}
                 >
-                    <FormControlLabel value="keine Angabe" control={<Radio />} label="keine Angabe" />
-                    <FormControlLabel value="nein" control={<Radio />} label="Nein" />
                     <FormControlLabel value="ja" control={<Radio />} label="Ja" />
+                    <FormControlLabel value="nein" control={<Radio />} label="Nein" />
+                    <FormControlLabel value="keine Angabe" control={<Radio />} label="keine Angabe" />
                 </RadioGroup>
             </FormControl>
 
@@ -1041,9 +1042,9 @@ export default function SampleForm() {
                         mt: 1,
                     }}
                 >
-                    <FormControlLabel value="keine Angabe" control={<Radio />} label="keine Angabe" />
-                    <FormControlLabel value="nein" control={<Radio />} label="Nein" />
                     <FormControlLabel value="ja" control={<Radio />} label="Ja" />
+                    <FormControlLabel value="nein" control={<Radio />} label="Nein" />
+                    <FormControlLabel value="keine Angabe" control={<Radio />} label="keine Angabe" />
 
                 </RadioGroup>
             </FormControl>
@@ -1063,9 +1064,9 @@ export default function SampleForm() {
                         mt: 1,
                     }}
                 >
-                    <FormControlLabel value="keine Angabe" control={<Radio />} label="keine Angabe" />
-                    <FormControlLabel value="nein" control={<Radio />} label="Nein" />
                     <FormControlLabel value="ja" control={<Radio />} label="Ja" />
+                    <FormControlLabel value="nein" control={<Radio />} label="Nein" />
+                    <FormControlLabel value="keine Angabe" control={<Radio />} label="keine Angabe" />
 
                 </RadioGroup>
             </FormControl>
@@ -1083,9 +1084,9 @@ export default function SampleForm() {
                     row
                     sx={{ mt: 1 }}
                 >
-                    <FormControlLabel value="keine Angabe" control={<Radio />} label="keine Angabe" />
-                    <FormControlLabel value="nein" control={<Radio />} label="Nein" />
                     <FormControlLabel value="ja" control={<Radio />} label="Ja" />
+                    <FormControlLabel value="nein" control={<Radio />} label="Nein" />
+                    <FormControlLabel value="keine Angabe" control={<Radio />} label="keine Angabe" />
                 </RadioGroup>
 
                 {/* Wenn Ja */}
@@ -1115,9 +1116,9 @@ export default function SampleForm() {
                     row
                     sx={{ mt: 1 }}
                 >
-                    <FormControlLabel value="keine Angabe" control={<Radio />} label="keine Angabe" />
-                    <FormControlLabel value="nein" control={<Radio />} label="Nein" />
                     <FormControlLabel value="ja" control={<Radio />} label="Ja" />
+                    <FormControlLabel value="nein" control={<Radio />} label="Nein" />
+                    <FormControlLabel value="keine Angabe" control={<Radio />} label="keine Angabe" />
                 </RadioGroup>
 
                 {/* Wenn Ja */}
@@ -1148,9 +1149,9 @@ export default function SampleForm() {
                         mt: 1,
                     }}
                 >
-                    <FormControlLabel value="keine Angabe" control={<Radio />} label="keine Angabe" />
-                    <FormControlLabel value="nein" control={<Radio />} label="Nein" />
                     <FormControlLabel value="ja" control={<Radio />} label="Ja" />
+                    <FormControlLabel value="nein" control={<Radio />} label="Nein" />
+                    <FormControlLabel value="keine Angabe" control={<Radio />} label="keine Angabe" />
 
                 </RadioGroup>
             </FormControl>
@@ -1170,9 +1171,9 @@ export default function SampleForm() {
                         mt: 1,
                     }}
                 >
-                    <FormControlLabel value="keine Angabe" control={<Radio />} label="keine Angabe" />
-                    <FormControlLabel value="nein" control={<Radio />} label="Nein" />
                     <FormControlLabel value="ja" control={<Radio />} label="Ja" />
+                    <FormControlLabel value="nein" control={<Radio />} label="Nein" />
+                    <FormControlLabel value="keine Angabe" control={<Radio />} label="keine Angabe" />
                 </RadioGroup>
             </FormControl>
 
@@ -1191,9 +1192,9 @@ export default function SampleForm() {
                         mt: 1,
                     }}
                 >
-                    <FormControlLabel value="keine Angabe" control={<Radio />} label="keine Angabe" />
-                    <FormControlLabel value="nein" control={<Radio />} label="Nein" />
                     <FormControlLabel value="ja" control={<Radio />} label="Ja" />
+                    <FormControlLabel value="nein" control={<Radio />} label="Nein" />
+                    <FormControlLabel value="keine Angabe" control={<Radio />} label="keine Angabe" />
                 </RadioGroup>
             </FormControl>
 
