@@ -171,8 +171,8 @@ class TableDataLtx_fragebogen(BaseModel):
     patient_Id_intern: str
     geschlecht: Optional[str] = None
     alter: Optional[int] = None
-    gewicht: Optional[int] = None
-    groesse: Optional[int] = None
+    gewicht: Optional[float] = None
+    groesse: Optional[float] = None
     beruf: Optional[str] = None
     kinder_anzahl: Optional[int] = None
     krankenversicherung: Optional[str] = None
