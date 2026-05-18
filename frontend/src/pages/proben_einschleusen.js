@@ -54,7 +54,8 @@ export default function SampleForm() {
     boxnummer: '',
     anmerkungen: '',
     created_at: '',
-    uhrzeit: '',
+    uhrzeit_probennahme: '',
+    uhrzeit_freeze: '',
     sap_id: '',
     remarks: '',
     uebergeordneteProbe: '',
@@ -385,7 +386,9 @@ export default function SampleForm() {
       boxspalte: parseInt(formData.boxspalte, 10),
       anmerkungen: formData.anmerkungen,
       created_at: formData.created_at,
+      uhrzeit: formData.uhrzeit_probennahme,
       uhrzeit: formData.uhrzeit,
+      uhrzeit: formData.uhrzeit_freeze,
       sap_id: formData.sap_id,
       abholer: formData.abholer,
       remarks: formData.remarks,
@@ -648,10 +651,24 @@ export default function SampleForm() {
 
           {/* Uhrzeit */}
           <TextField
-            label="Uhrzeit"
+            label="Uhrzeit (Probennahme im OP)"
             name="uhrzeit"
             type="time"
-            value={formData.uhrzeit}
+            value={formData.uhrzeit_probennahme}
+            onChange={handleChange}
+            fullWidth
+            margin="normal"
+            InputLabelProps={{ shrink: true }}
+            error={Boolean(errors.uhrzeit)}
+            helperText={errors.uhrzeit}
+          />
+
+          {/* Uhrzeit */}
+          <TextField
+            label="Uhrzeit (Freeze)"
+            name="uhrzeit"
+            type="time"
+            value={formData.uhrzeit_freeze}
             onChange={handleChange}
             fullWidth
             margin="normal"

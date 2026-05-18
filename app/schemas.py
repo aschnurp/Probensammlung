@@ -42,7 +42,9 @@ class GewebeprobenBase(BaseModel):
     barcode_id: str 	
     lagerraum: Optional[str] = 1029
     abholer: Optional[str] = None
+    uhrzeit_probennahme: Optional[str] = None
     uhrzeit: Optional[str] = None
+    uhrzeit_freeze: Optional[str] = None
     boxnummer: Optional[int] = None
     boxzeile: Optional[str] = None
     boxspalte: Optional[int] = None
