@@ -1,8 +1,8 @@
 # Laboratory Sample Collection <img width="40" height="40" alt="leber_icon" src="https://github.com/user-attachments/assets/69bb7d95-247b-48ac-a6a0-85d231faea71" />
 
 
-## Out Now - Version 1.1.3
-- New option to add and view liver transplant samples
+## Out Now - Version 1.1.6
+- New options for more accurate time tracking of sampling
 
 ## Overview
 The Laboratory Sample Collection is a locally deployable electronic laboratory system for structured documentation and management of laboratory samples.
