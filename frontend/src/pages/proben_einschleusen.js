@@ -293,6 +293,11 @@ export default function SampleForm() {
       if (!formData.untergeordneteProbe) {
         newErrors.untergeordneteProbe = 'Ist erforderlich.';
       }
+
+      if (formData.uhrzeit) { //set time for paraffinproben to empty string
+        formData.uhrzeit = '';
+      }
+
     }
   
     // Validation for "gewebe"
@@ -366,11 +371,6 @@ export default function SampleForm() {
         console.error('Error fetching probeninformationen:', error);
         newErrors.probeninformation = 'Fehler beim Überprüfen der Probeninformationen.';
       }
-
-      if (formData.uhrzeit) { //set time for gewebeproben to empty string
-        formData.uhrzeit = '';
-      }
-      
     }
   
     // If we have collected any errors, stop here
