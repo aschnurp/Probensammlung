@@ -3,7 +3,9 @@ export type paraffinprobenData = {
     created_at: string;	
     probenart?: string;		
     untergeordnete_probenart?: string;
-    uebergeordnete_probenart?: string; 	
+    uebergeordnete_probenart?: string; 
+    uhrzeit_probennahme?: string,
+    uhrzeit_freeze?: string,	
     lagerraum?: string;	
     anmerkungen?: string;
     abholer?: string; 
