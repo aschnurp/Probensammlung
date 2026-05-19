@@ -463,12 +463,6 @@ export default function Overview() {
         </Box>
       </Box>
 
-
-
-
-
-
-
       <Box sx={{ textAlign: 'center', height: 0 }}>
         <Typography variant="h5" sx={{ fontWeight: 'bold', color: 'text.primary' }}>
           Proben Verwalten

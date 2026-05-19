@@ -42,7 +42,9 @@ class GewebeprobenBase(BaseModel):
     barcode_id: str 	
     lagerraum: Optional[str] = 1029
     abholer: Optional[str] = None
+    uhrzeit_probennahme: Optional[str] = None
     uhrzeit: Optional[str] = None
+    uhrzeit_freeze: Optional[str] = None
     boxnummer: Optional[int] = None
     boxzeile: Optional[str] = None
     boxspalte: Optional[int] = None
@@ -171,8 +173,8 @@ class TableDataLtx_fragebogen(BaseModel):
     patient_Id_intern: str
     geschlecht: Optional[str] = None
     alter: Optional[int] = None
-    gewicht: Optional[int] = None
-    groesse: Optional[int] = None
+    gewicht: Optional[float] = None
+    groesse: Optional[float] = None
     beruf: Optional[str] = None
     kinder_anzahl: Optional[int] = None
     krankenversicherung: Optional[str] = None
