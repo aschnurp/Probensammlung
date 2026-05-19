@@ -4,6 +4,8 @@ export type gewebeprobenData = {
     differenzierungsmerkmal?: number;
     probenart?: string;
     probeninformation?: number;
+    uhrzeit_probennahme?: string,
+    uhrzeit_freeze?: string,
     boxnummer?: number;
     boxzeile?: string;
     boxspalte?: number;

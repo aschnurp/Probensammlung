@@ -55,6 +55,7 @@ export default function SampleForm() {
     anmerkungen: '',
     created_at: '',
     uhrzeit_probennahme: '',
+    uhrzeit:'',
     uhrzeit_freeze: '',
     sap_id: '',
     remarks: '',
@@ -245,7 +246,6 @@ export default function SampleForm() {
   };
 
   /////////////// helper functions here ///////////////
-
   const handleChange = (e) => {
     const { name, value } = e.target;
 
@@ -319,6 +319,10 @@ export default function SampleForm() {
         newErrors.abholer = 'Abholer ist erforderlich.';
       }
   
+      if (formData.uhrzeit) { //set time for gewebeproben to empty string
+        formData.uhrzeit = '';
+      }
+
       if (!formData.barcode_id) {
         newErrors.barcode_id = 'Barcode ist erforderlich.';
       }
@@ -386,9 +390,9 @@ export default function SampleForm() {
       boxspalte: parseInt(formData.boxspalte, 10),
       anmerkungen: formData.anmerkungen,
       created_at: formData.created_at,
-      uhrzeit: formData.uhrzeit_probennahme,
+      uhrzeit_probennahme: formData.uhrzeit_probennahme,
       uhrzeit: formData.uhrzeit,
-      uhrzeit: formData.uhrzeit_freeze,
+      uhrzeit_freeze: formData.uhrzeit_freeze,
       sap_id: formData.sap_id,
       abholer: formData.abholer,
       remarks: formData.remarks,
@@ -649,10 +653,10 @@ export default function SampleForm() {
             helperText={errors.created_at}
           />
 
-          {/* Uhrzeit */}
+          {/* Uhrzeit (Probennahme im OP) */}
           <TextField
             label="Uhrzeit (Probennahme im OP)"
-            name="uhrzeit"
+            name="uhrzeit_probennahme"
             type="time"
             value={formData.uhrzeit_probennahme}
             onChange={handleChange}
@@ -663,10 +667,10 @@ export default function SampleForm() {
             helperText={errors.uhrzeit}
           />
 
-          {/* Uhrzeit */}
+          {/* Uhrzeit (Freeze) */}
           <TextField
             label="Uhrzeit (Freeze)"
-            name="uhrzeit"
+            name="uhrzeit_freeze"
             type="time"
             value={formData.uhrzeit_freeze}
             onChange={handleChange}
