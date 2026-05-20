@@ -15,7 +15,7 @@ export default function Home() {
         </div>
 
         <figcaption className="mt-6 text-xl text-gray-600">
-          Version 1.6
+          Version 1.1.6
         </figcaption>
       </figure>
     </div>
