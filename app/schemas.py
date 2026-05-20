@@ -91,7 +91,9 @@ class TableDataParaffinproben(BaseModel):
     uebergeordnete_probenart: Optional[int] = None 
     untergeordnete_probenart: Optional[int] = None
     abholer: Optional[str] = None
+    uhrzeit_probennahme: Optional[str] = None
     uhrzeit: Optional[str] = None
+    uhrzeit_freeze: Optional[str] = None
 
 class TableDataParaffinproben(TableDataParaffinproben):
     status: Optional[int] = 1

@@ -293,6 +293,11 @@ export default function SampleForm() {
       if (!formData.untergeordneteProbe) {
         newErrors.untergeordneteProbe = 'Ist erforderlich.';
       }
+
+      if (formData.uhrzeit) { //set time for paraffinproben to empty string
+        formData.uhrzeit = '';
+      }
+
     }
   
     // Validation for "gewebe"
@@ -1326,12 +1331,26 @@ export default function SampleForm() {
             helperText={errors.created_at}
           />
 
-          {/* Uhrzeit */}
+          {/* Uhrzeit (Probennahme im OP) */}
           <TextField
-            label="Uhrzeit"
-            name="uhrzeit"
+            label="Uhrzeit (Probennahme im OP)"
+            name="uhrzeit_probennahme"
             type="time"
-            value={formData.uhrzeit}
+            value={formData.uhrzeit_probennahme}
+            onChange={handleChange}
+            fullWidth
+            margin="normal"
+            InputLabelProps={{ shrink: true }}
+            error={Boolean(errors.uhrzeit)}
+            helperText={errors.uhrzeit}
+          />
+
+          {/* Uhrzeit (Freeze) */}
+          <TextField
+            label="Uhrzeit im Paraffin"
+            name="uhrzeit_freeze"
+            type="time"
+            value={formData.uhrzeit_freeze}
             onChange={handleChange}
             fullWidth
             margin="normal"
