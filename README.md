@@ -37,7 +37,7 @@ NEXT_PUBLIC_CONTACT_MAIL_TWO=Your Email
 NEXT_PUBLIC_DELETE_PASSCODE=1111
 ```
 ## Get started - Database
-Create a new MySql or MariaBD database within your the local environment. Match the credentials with the .env file.
+Create a new MySql or MariaDB database within your the local environment. Match the credentials with the .env file.
 
 ## Get started - Run the Application
 ```bash
