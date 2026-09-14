@@ -127,6 +127,7 @@ class Stuhlproben(BaseModel):
     boxzeile: Optional[str] = None
     boxspalte: Optional[int] = None
     uhrzeit: Optional[str] = None
+    differenzierungsmerkmal: Optional[int] = None
     probeninformation_ltx: Optional[int] = None
     anzahl_statuswechsel: Optional[int] = 0
 

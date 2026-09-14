@@ -493,14 +493,14 @@ export default function Uebersicht() {
                       ) : col.key === "differenzierungsmerkmal" ? (
                         (() => {
                           if (row["probenart"] === "urin") {
-                            // Mappings für "Urin"
+                            // Mappings für "urin"
                             const differenzierungsmerkmalMapping = {
                               1: "Katheter",
                               2: "Spontan",
                             };
                             return differenzierungsmerkmalMapping[row["differenzierungsmerkmal"]] || "N/A";
                           } else if (row["probenart"] === "gewebe") {
-                            // Mappings für "Gewebe"
+                            // Mappings für "gewebe"
                             const differenzierungsmerkmalMapping = {
                               1: "Regeneriert",
                               2: "Embolisiert",
@@ -521,7 +521,7 @@ export default function Uebersicht() {
                             };
                             return differenzierungsmerkmalMapping[row["differenzierungsmerkmal"]] || "N/A";
                           } else if (row["probenart"] === "edtaplasma") {
-                            // Mappings für "serum"
+                            // Mappings für "edtaplasma"
                             const differenzierungsmerkmalMapping = {
                               1: "Lebervene Links",
                               2: "Lebervene Rechts",
@@ -531,10 +531,16 @@ export default function Uebersicht() {
                             };
                             return differenzierungsmerkmalMapping[row["differenzierungsmerkmal"]] || "N/A";
                           } else if (row["probenart"] === "galle") {
-                            // Mappings für "serum"
+                            // Mappings für "galle"
                             const differenzierungsmerkmalMapping = {
                               1: "Zentrifugiert",
                               2: "nicht Zentrifugiert",
+                            };
+                          } else if (row["probenart"] === "stuhl") {
+                            // Mappings für "stuhl"
+                            const differenzierungsmerkmalMapping = {
+                              1: "Nativ",
+                              2: "Nukleinsäurestabilisiert",
                             };
                             return differenzierungsmerkmalMapping[row["differenzierungsmerkmal"]] || "N/A";
                           }

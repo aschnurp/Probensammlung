@@ -73,7 +73,13 @@ export const getProbeOptions = (probenart) => {
       ];
   }
 
-  
+  else if (probenart === 'stuhl') {
+    differenzierungsmerkmalOptions = [
+      { id: 1, text: "Nativ" },
+      { id: 2, text: "Nukleinsäurestabilisiert " },
+    ];
+}
+
   const probeDataLTX = [
     {id: 1, text:"Galle intra OP von expl. Leber  I", type:"galle"},  
     {id: 2, text:"Galle intra OP von expl. Leber II", type:"galle"},

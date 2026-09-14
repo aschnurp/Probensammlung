@@ -7,6 +7,7 @@ from .models.uebergeordnete_probenart_paraffin import Uebergeordnete_probenart_p
 from .models.differenzierungsmerkmal_edtaplasma import Differenzierungsmerkmal_edtaplasma
 from .models.ltx_fragebogen_ernaerung_lookup import Ltx_fragebogen_ernaerung_lookup
 from .models.differenzierungsmerkmal_galle import Differenzierungsmerkmal_galle
+from .models.differenzierungsmerkmal_stuhl import Differenzierungsmerkmal_stuhl
 
 
 from .models.probeninformation import Probeninformation
@@ -239,6 +240,16 @@ def seed_status_data(db: Session):
         db.commit()
         print("Seed-Daten erfolgreich hinzugefügt.")
 
+    if not db.query(Differenzierungsmerkmal_stuhl).first():
+        # Seed-Daten definieren
+        seed_data = [
+            Differenzierungsmerkmal_stuhl(differenzierungsmerkmal_text="Nativ"),
+            Differenzierungsmerkmal_stuhl(differenzierungsmerkmal_text="Nukleinsäurestabilisiert"),
+        ]
+        # Einfügen und speichern
+        db.add_all(seed_data)
+        db.commit()
+        print("Seed-Daten erfolgreich hinzugefügt.")
 
     if not db.query(Untergeordnete_probenart_paraffin).first():
         # Seed-Daten definieren
