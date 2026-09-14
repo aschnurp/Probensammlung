@@ -147,6 +147,7 @@ class GalleprobenBase(BaseModel):
     abholer: Optional[str] = None
     uhrzeit: Optional[str] = None
     probeninformation_ltx: Optional[int] = None
+    remarks: Optional[str] = None
     anzahl_statuswechsel: Optional[int] = 0
 
 class TableDataGalleproben(GalleprobenBase):
