@@ -536,6 +536,7 @@ export default function Uebersicht() {
                               1: "Zentrifugiert",
                               2: "nicht Zentrifugiert",
                             };
+                          return differenzierungsmerkmalMapping[row["differenzierungsmerkmal"]] || "N/A";
                           } else if (row["probenart"] === "stuhl") {
                             // Mappings für "stuhl"
                             const differenzierungsmerkmalMapping = {
