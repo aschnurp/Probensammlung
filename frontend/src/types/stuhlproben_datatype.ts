@@ -10,5 +10,6 @@ export type stuhlprobenData = {
     boxzeile?: string; 
     boxspalte?: number;	
     anmerkungen?: string;
+    differenzierungsmerkmal?: number;
     anzahl_statuswechsel?: number;
 }

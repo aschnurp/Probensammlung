@@ -1,8 +1,8 @@
 # Laboratory Sample Collection <img width="40" height="40" alt="leber_icon" src="https://github.com/user-attachments/assets/69bb7d95-247b-48ac-a6a0-85d231faea71" />
 
-
-## Out Now - Version 1.1.6
-- New options for more accurate time tracking of sampling
+## Out Now - Version 1.1.7
+- New options tracking sample categories are more efficient
+- Bug fixes, where it can happen that changed text is not saved
 
 ## Overview
 The Laboratory Sample Collection is a locally deployable electronic laboratory system for structured documentation and management of laboratory samples.
