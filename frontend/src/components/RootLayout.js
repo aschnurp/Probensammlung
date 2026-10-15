@@ -43,6 +43,15 @@ export default function RootLayout({ children }) {
     </Link>
 
     <Link
+      href="/export"
+      className={clsx('text-xl font-semibold hover:text-blue-200', {
+        underline: location === '/export',
+      })}
+    >
+      Export
+    </Link>
+
+    <Link
       href="/help"
       className={clsx('text-xl font-semibold hover:text-blue-200', {
         underline: location === '/help',
