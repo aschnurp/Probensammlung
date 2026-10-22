@@ -144,6 +144,3 @@ export const getPatientUrinCount = async (patientID: string) => {
         throw error; 
     }
 };
-
-
-

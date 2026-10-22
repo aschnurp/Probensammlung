@@ -14,6 +14,8 @@ from sqlalchemy.exc import SQLAlchemyError
 from ..config import settings
 from fastapi.responses import StreamingResponse
 
+from ..table_data_service import fetch_export_data
+
 # Import the LastBoxInfo schema
 from ..schemas import LastBoxInfo
 
@@ -102,7 +104,7 @@ def export_table(
         )
 
     try:
-        columns, data = fetch_table_data(table_name, db)
+        columns, data = fetch_export_data(table_name, db)
 
         # ================= CSV EXPORT =================
         if format == "csv":
@@ -252,6 +254,8 @@ def export_table(
             status_code=500,
             detail="Database error during export.",
         )
+    
+    
 """
 #get table content dynamicly
 @router.get("/data", response_model=None)
@@ -292,6 +296,7 @@ def row_to_dict(row):
 
 @router.put("/data")
 """
+
 
 
 #get all table names
