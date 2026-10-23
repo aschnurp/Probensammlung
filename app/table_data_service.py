@@ -194,7 +194,7 @@ PATIENT_QUERY = """
 SELECT 
 patient.patient_Id_intern AS patient_id_intern,
 patient.sap_id AS sap_id,
-patient.sap_fallnummer AS fallnummer,
+patient.sap_fallnummer AS sap_fallnummer,
 patient.created_at AS erstellungsdatum,
 patient.geschlecht AS geschlecht,
 patient.`alter` AS `alter`,
@@ -208,10 +208,10 @@ FROM patient
 VORLAUFIGE_PROBEN_QUERY = """
 SELECT 
 vorlaeufigeproben.barcode_id AS barcode_id,
-vorlaeufigeproben.timestamp AS zeitstempel,
-vorlaeufigeproben.patient_Id_intern AS patient_id_intern,
 probeninformation.probeninformation_text AS probeninformation_text,
-probeninformation_ltx.probeninformation_text AS probeninformation_ltx_text
+probeninformation_ltx.probeninformation_text AS probeninformation_ltx_text,
+vorlaeufigeproben.timestamp AS zeitstempel,
+vorlaeufigeproben.patient_Id_intern AS patient_id_intern
 
 FROM vorlaeufigeproben
 
