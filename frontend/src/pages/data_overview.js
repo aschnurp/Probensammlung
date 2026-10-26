@@ -106,6 +106,130 @@ export default function Uebersicht() {
   const currentRows = filteredData.slice(indexOfFirstRow, indexOfLastRow);
   const totalPages = Math.ceil(filteredData.length / rowsPerPage);
 
+  
+  // Liefert den angezeigten Text eines Mapping-Feldes
+  const getMappedValue = (row, key) => {
+    const value = row[key];
+
+    switch (key) {
+      case "probeninformation":
+        return (
+          probeninformationOptionsToRender.find(
+            (p) => String(p.id) === String(value)
+          )?.probeninformation_text ?? ""
+        );
+
+      case "probeninformation_ltx":
+        return (
+          probeninformationLTXOptionsToRender.find(
+            (p) => String(p.id) === String(value)
+          )?.probeninformation_text ?? ""
+        );
+
+      case "differenzierungsmerkmal": {
+        const mappings = {
+          urin: {
+            1: "Katheter",
+            2: "Spontan",
+          },
+          gewebe: {
+            1: "Regeneriert",
+            2: "Embolisiert",
+            3: "Empfänger",
+            4: "Spender",
+            5: "Spender nach Perfusion",
+            6: "LTX-Biopsie 1 Jahr post OP",
+          },
+          serum: {
+            1: "Lebervene Links",
+            2: "Lebervene Rechts",
+            3: "ZVK",
+            4: "Vene peripher",
+            5: "Arterie peripher",
+          },
+          edtaplasma: {
+            1: "Lebervene Links",
+            2: "Lebervene Rechts",
+            3: "ZVK",
+            4: "Vene peripher",
+            5: "Arterie peripher",
+          },
+          galle: {
+            1: "Zentrifugiert",
+            2: "nicht Zentrifugiert",
+          },
+          stuhl: {
+            1: "Nativ",
+            2: "Nukleinsäurestabilisiert",
+          },
+        };
+
+        return mappings[row.probenart]?.[value] ?? "";
+      }
+
+      case "uebergeordnete_probenart": {
+        if (row.probenart !== "paraffin") return "";
+
+        const mappings = {
+          1: "Normal",
+          2: "Normal regeneriert",
+          3: "Normal embolisiert",
+          4: "Normal Empfängerleber",
+          5: "Normal Spender der Leber",
+          6: "Normal Spender nach Perfusion der Leber",
+          7: "Tumor",
+          8: "LTX-Biopsie 1 Jahr post OP",
+        };
+
+        return mappings[value] ?? "";
+      }
+
+      case "untergeordnete_probenart": {
+        if (row.probenart !== "paraffin") return "";
+
+        const mappings = {
+          1: "Paraffinblock",
+          2: "Paraffinblock (A/B)",
+        };
+
+        return mappings[value] ?? "";
+      }
+
+      case "probenart": {
+        const mappings = {
+          gewebe: "Gewebe",
+          urin: "Urin",
+          serum: "Serum",
+          paraffin: "Paraffin",
+          galle: "Galle",
+          stuhl: "Stuhl",
+          edtaplasma: "EDTA-Plasma",
+        };
+
+        return mappings[value] ?? "";
+      }
+
+      case "boxnummer": {
+        const mappings = {
+          gewebe: "Cryo",
+          urin: "Urin",
+          serum: "Blut",
+          galle: "Galle",
+          stuhl: "Stuhl",
+          edtaplasma: "EDTA-Plasma",
+        };
+
+        return `${mappings[row.probenart] ?? ""} ${value ?? ""}`;
+      }
+
+      case "status":
+        return STATUS_MAPPING[value] ?? "";
+
+      default:
+        return "";
+    }
+  };
+
 
   const handlePaginationChange = (event, value) => {
     setCurrentPage(value);
@@ -280,37 +404,80 @@ export default function Uebersicht() {
     }
   }, [selectedTable]);
 
-  // Handle search for specific column
+
+  // Handle search
   const handleSearchChange = (e) => {
     const query = e.target.value;
     setSearchQuery(query);
 
-    if (query === "") {
+    // Bei jeder neuen Suche wieder auf Seite 1 springen
+    setCurrentPage(1);
+
+    const search = query.trim().toLowerCase();
+
+    if (!search) {
       setFilteredData(data);
-    } else {
-      const lowercasedQuery = query.toLowerCase();
-      const filtered = data.filter((row) => {
-        if (selectedColumn && row[selectedColumn]) {
-          return row[selectedColumn].toString().toLowerCase().includes(lowercasedQuery);
-        }
-        return Object.keys(row).some((key) =>
-          row[key] && row[key].toString().toLowerCase().includes(lowercasedQuery)
+      return;
+    }
+
+    const filtered = data.filter((row) => {
+      // Wenn eine Spalte ausgewählt wurde, nur diese durchsuchen
+      const keysToSearch = selectedColumn
+        ? [selectedColumn]
+        : Object.keys(row);
+
+      return keysToSearch.some((key) => {
+        const dbValue = String(row[key] ?? "").toLowerCase();
+
+        const mappedValue = String(
+          getMappedValue(row, key) ?? ""
+        ).toLowerCase();
+
+        return (
+          dbValue.includes(search) ||
+          mappedValue.includes(search)
         );
       });
-      setFilteredData(filtered); // Set filtered data based on search query
-    }
+    });
+
+    setFilteredData(filtered);
   };
 
   // Handle column selection for search filter
+ 
   const handleColumnSelect = (e) => {
-    setSelectedColumn(e.target.value);
+    const column = e.target.value;
+    setSelectedColumn(column);
+    setCurrentPage(1);
+
+    const search = searchQuery.trim().toLowerCase();
+
+    if (!search) {
+      setFilteredData(data);
+      return;
+    }
+
+    const filtered = data.filter((row) => {
+      const keysToSearch = column
+        ? [column]
+        : Object.keys(row);
+
+      return keysToSearch.some((key) => {
+        const dbValue = String(row[key] ?? "").toLowerCase();
+        const mappedValue = String(
+          getMappedValue(row, key) ?? ""
+        ).toLowerCase();
+
+        return (
+          dbValue.includes(search) ||
+          mappedValue.includes(search)
+        );
+      });
+    });
+
+    setFilteredData(filtered);
   };
 
-  useEffect(() => {
-    if (selectedTable) {
-      setIsOpen(false);
-    }
-  }, [selectedTable]);
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -873,4 +1040,3 @@ export default function Uebersicht() {
     </>
   );
 }
-
