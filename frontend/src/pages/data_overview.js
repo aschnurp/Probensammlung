@@ -407,44 +407,41 @@ export default function Uebersicht() {
 
   // Handle search
   const handleSearchChange = (e) => {
-    const query = e.target.value;
-    setSearchQuery(query);
-
-    // Bei jeder neuen Suche wieder auf Seite 1 springen
-    setCurrentPage(1);
-
-    const search = query.trim().toLowerCase();
-
-    if (!search) {
+    const query = e.target.value.toLowerCase().trim();
+    setSearchQuery(e.target.value);
+  
+    if (!query) {
       setFilteredData(data);
       return;
     }
-
+  
     const filtered = data.filter((row) => {
-      // Wenn eine Spalte ausgewählt wurde, nur diese durchsuchen
-      const keysToSearch = selectedColumn
-        ? [selectedColumn]
-        : Object.keys(row);
-
-      return keysToSearch.some((key) => {
-        const dbValue = String(row[key] ?? "").toLowerCase();
-
-        const mappedValue = String(
-          getMappedValue(row, key) ?? ""
-        ).toLowerCase();
-
-        return (
-          dbValue.includes(search) ||
-          mappedValue.includes(search)
-        );
+      return Object.keys(row).some((key) => {
+        const value = row[key];
+  
+        if (value === null || value === undefined) return false;
+  
+        // original value
+        const originalValue = String(value).toLowerCase();
+  
+        // For date fields, also search by display format
+        if (key === "created_at" || key === "timestamp") {
+          const displayDate = dayjs(value).format("DD.MM.YYYY").toLowerCase();
+  
+          return (
+            originalValue.includes(query) ||
+            displayDate.includes(query)
+          );
+        }
+  
+        return originalValue.includes(query);
       });
     });
-
+  
     setFilteredData(filtered);
   };
 
   // Handle column selection for search filter
- 
   const handleColumnSelect = (e) => {
     const column = e.target.value;
     setSelectedColumn(column);
