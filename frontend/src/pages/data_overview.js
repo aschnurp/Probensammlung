@@ -246,7 +246,14 @@ export default function Uebersicht() {
   const handleTabChange = (event, newValue) => {
     setTabIndex(newValue);
     setSelectedTable(tableKeys[newValue]);
+
+    // reset page when changeing tabs
     setCurrentPage(1);
+
+      // reset search filter
+      setSearchQuery("");
+      setSelectedColumn("");
+    
   };
 
   const [probeninformationOptionsToRender, setProbeninformationOptionsToRender] = useState([]);
