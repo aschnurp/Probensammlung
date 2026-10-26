@@ -73,100 +73,96 @@ export default function Overview() {
     dataSelection === 'gesamt' ||
     (dataSelection === 'einzel' && selectedTable !== '');
 
-  const exportData = async () => {
-    setError('');
-    setSuccess('');
+  
+const exportData = async () => {
+  setError('');
+  setSuccess('');
 
-    if (!canExport || !dataFormat || exporting) {
-      return;
-    }
+  if (!canExport || !dataFormat || exporting) {
+    return;
+  }
 
-    // TODO - Export über mehrere Tabelle vorbereiten
-    // Export als PDF sinnvoll?
-    // Der bestehende Backend-Endpunkt exportiert eine einzelne Tabelle.
+  // Der Gesamtexport wird als gemeinsames PDF erstellt.
+  if (dataSelection === 'gesamt' && dataFormat !== 'pdf') {
+    setError(
+      'Der Gesamtexport ist derzeit nur als PDF verfügbar.'
+    );
+    return;
+  }
+
+  setExporting(true);
+
+  try {
+    const API_BASE_URL =
+      process.env.NEXT_PUBLIC_API_URL ||
+      'http://localhost:8000';
+
+    let exportUrl;
+    let filename;
+
     if (dataSelection === 'gesamt') {
-      setError(
-        'Der Gesamtexport über mehrere Tabellen ist noch nicht implementiert.' 
-      );
-      return;
-    }
-    if (
-      dataSelection === 'einzel' &&
-      selectedTable === 'ltx_fragebogen' &&
-      dataFormat === 'pdf'
-    ) {
-      setError(
-        'Der Export der Tabelle LTX-Fragebogen als PDF ist nicht möglich.'
-      );
-      return;
-    }
-    setExporting(true);
-
-    try {
+      exportUrl = `${API_BASE_URL}/table/export/all/pdf`;
+      filename = 'gesamtexport.pdf';
+    } else {
       const params = new URLSearchParams({
         table_name: selectedTable,
         format: dataFormat,
       });
 
-      // Falls nötig, hier die vollständige FastAPI-URL einsetzen,
-      const API_BASE_URL =
-      process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
-    
-    const response = await fetch(
-      `${API_BASE_URL}/table/export?${params.toString()}`
-    );
+      exportUrl =
+        `${API_BASE_URL}/table/export?${params.toString()}`;
 
+      filename = `${selectedTable}.${dataFormat}`;
+    }
 
-      if (!response.ok) {
-        const responseText = await response.text();
-      
-        console.error("Export-Fehler:", {
-          status: response.status,
-          statusText: response.statusText,
-          response: responseText,
-        });
-      
-        let message = `Export fehlgeschlagen (${response.status})`;
-      
-        try {
-          const result = JSON.parse(responseText);
-          message = result.detail || message;
-        } catch {
-          if (responseText) {
-            message += `: ${responseText}`;
-          }
+    const response = await fetch(exportUrl);
+
+    if (!response.ok) {
+      const responseText = await response.text();
+
+      let message = `Export fehlgeschlagen (${response.status})`;
+
+      try {
+        const result = JSON.parse(responseText);
+        message = result.detail || message;
+      } catch {
+        if (responseText) {
+          message += `: ${responseText}`;
         }
-      
-        throw new Error(message);
       }
 
-      const blob = await response.blob();
-      const downloadUrl = window.URL.createObjectURL(blob);
-      const link = document.createElement('a');
-
-      link.href = downloadUrl;
-      link.download = `${selectedTable}.${dataFormat}`;
-
-      document.body.appendChild(link);
-      link.click();
-      link.remove();
-
-      // URL erst nach dem Start des Downloads freigeben.
-      window.setTimeout(() => {
-        window.URL.revokeObjectURL(downloadUrl);
-      }, 1000);
-
-      setSuccess('Der Download wurde gestartet.');
-    } catch (err) {
-      console.error('Exportfehler:', err);
-      setError(
-        err.message ||
-          'Verbindung zum Backend fehlgeschlagen.'
-      );
-    } finally {
-      setExporting(false);
+      throw new Error(message);
     }
-  };
+
+    const blob = await response.blob();
+    const downloadUrl = window.URL.createObjectURL(blob);
+    const link = document.createElement('a');
+
+    link.href = downloadUrl;
+    link.download = filename;
+
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+
+    window.setTimeout(() => {
+      window.URL.revokeObjectURL(downloadUrl);
+    }, 1000);
+
+    setSuccess('Der Download wurde gestartet.');
+  } catch (err) {
+    console.error('Exportfehler:', err);
+
+    setError(
+      err instanceof Error
+        ? err.message
+        : 'Verbindung zum Backend fehlgeschlagen.'
+    );
+  } finally {
+    setExporting(false);
+  }
+};
+
 
   return (
     <ThemeProvider theme={theme}>
