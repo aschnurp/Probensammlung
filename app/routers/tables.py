@@ -108,10 +108,15 @@ def export_table(
             detail="Supported formats are CSV and PDF.",
         )
 
+    if format == "pdf" and table_name == "ltx_fragebogen":
+        raise HTTPException(
+            status_code=400,
+            detail="CSV export only for LTX-Fragebogen")
+    
     try:
         columns, data = fetch_export_data(table_name, db)
 
-        # ================= CSV EXPORT =================
+        # ================= CSV EXPORT - single table =================
         if format == "csv":
             output = io.StringIO(newline="")
             output.write("\ufeff")
@@ -135,6 +140,7 @@ def export_table(
                 },
             )
 
+    
         # ================= PDF EXPORT - single table =================
         pdf_buffer = io.BytesIO()
 
@@ -259,8 +265,103 @@ def export_table(
             status_code=500,
             detail="Database error during export.",
         )
-    
 
+# ================= MULTI TABLE CSV EXPORT =================
+
+@router.get("/export/all/csv")
+def export_all_tables_csv(
+    db: Session = Depends(get_db),
+):
+    """Exportiert alle konfigurierten Tabellen in eine gemeinsame CSV-Datei."""
+    output = io.StringIO(newline="")
+    output.write("\ufeff")
+
+    writer = csv.writer(output, delimiter=";")
+
+    table_labels = {
+        "edtaplasmaproben": "EDTA-Plasmaproben",
+        "galleproben": "Galleproben",
+        "gewebeproben": "Gewebeproben",
+        "ltx_fragebogen": "LTX-Fragebogen",
+        "paraffinproben": "Paraffinproben",
+        "patient": "Patienten",
+        "serumproben": "Serumproben",
+        "stuhlproben": "Stuhlproben",
+        "urinproben": "Urinproben",
+        "vorlaeufigeproben": "Vorläufige Proben",
+    }
+
+    gesamt_anzahl_datensaetze = 0
+
+    try:
+        for table_name in TABLE_QUERIES:
+            columns, data = fetch_export_data(table_name, db)
+
+            label = table_labels.get(table_name, table_name)
+            anzahl_datensaetze = len(data)
+            gesamt_anzahl_datensaetze += anzahl_datensaetze
+
+            # Tabellenabschnitt
+            writer.writerow([label])
+            writer.writerow([
+                "Datensätze in dieser Tabelle",
+                anzahl_datensaetze,
+            ])
+
+            if columns:
+                # Spaltenüberschriften
+                writer.writerow(columns)
+
+                # Datenzeilen in der richtigen Spaltenreihenfolge
+                for row in data:
+                    writer.writerow([
+                        row.get(column)
+                        for column in columns
+                    ])
+            else:
+                writer.writerow(["Keine Spalten vorhanden"])
+
+            # Leerzeilen zwischen den Tabellen
+            writer.writerow([])
+            writer.writerow([])
+
+        # Gesamtsumme am Ende der CSV-Datei
+        writer.writerow([
+            "Gesamtanzahl aller Datensätze",
+            gesamt_anzahl_datensaetze,
+        ])
+
+        content = output.getvalue().encode("utf-8")
+
+        return StreamingResponse(
+            iter([content]),
+            media_type="text/csv; charset=utf-8",
+            headers={
+                "Content-Disposition":
+                    'attachment; filename="gesamtexport.csv"'
+            },
+        )
+
+    except HTTPException:
+        raise
+
+    except SQLAlchemyError:
+        logging.exception(
+            "Database error during complete CSV export"
+        )
+        raise HTTPException(
+            status_code=500,
+            detail="Datenbankfehler beim CSV-Gesamtexport.",
+        )
+
+    except Exception:
+        logging.exception(
+            "Error during complete CSV export"
+        )
+        raise HTTPException(
+            status_code=500,
+            detail="Fehler beim Erstellen des CSV-Gesamtexports.",
+        )
 
 # ================= router - PDF EXPORT - multi table =================
 
