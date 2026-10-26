@@ -246,6 +246,7 @@ export default function Uebersicht() {
   const handleTabChange = (event, newValue) => {
     setTabIndex(newValue);
     setSelectedTable(tableKeys[newValue]);
+    setCurrentPage(1);
   };
 
   const [probeninformationOptionsToRender, setProbeninformationOptionsToRender] = useState([]);
@@ -409,6 +410,7 @@ export default function Uebersicht() {
   const handleSearchChange = (e) => {
     const query = e.target.value.toLowerCase().trim();
     setSearchQuery(e.target.value);
+    setCurrentPage(1);
   
     if (!query) {
       setFilteredData(data);
@@ -1022,11 +1024,12 @@ export default function Uebersicht() {
           justifyContent: 'center'
         }}>
           <Pagination
-            count={totalPages} siblingCount={0} onChange={handlePaginationChange}
+            count={totalPages}
+            page={currentPage}
+            siblingCount={0}
+            onChange={handlePaginationChange}
             renderItem={(item) => (
               <PaginationItem
-                component={Link}
-                to={`/inbox${item.page === 1 ? '' : `?page=${item.page}`}`}
                 {...item}
               />
             )}
