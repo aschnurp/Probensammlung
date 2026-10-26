@@ -258,7 +258,7 @@ LTX_FRAGEBOGEN = """
 SELECT
     ltx_fragebogen.id AS fragebogen_id,
     ltx_fragebogen.timestamp AS fragebogen_timestamp,
-    ltx_fragebogen.patient_Id_intern AS patient_Id_intern,
+    ltx_fragebogen.patient_Id_intern AS patient_id_intern,
     ltx_fragebogen.geschlecht AS geschlecht,
     ltx_fragebogen.`alter` AS `alter`,
     ltx_fragebogen.gewicht AS gewicht,
