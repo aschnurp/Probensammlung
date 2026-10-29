@@ -22,46 +22,95 @@ export default function ProbeAusschleusen() {
     setBarcodeId(e.target.value);
   };
 
-  const validateForm = () => {
-    const newErrors = {};
-    if (!barcodeId.trim()) {
-      newErrors.barcodeId = 'Barcode ID darf nicht leer sein.';
-    }
+
+  
+const validateForm = async () => {
+  const newErrors = {};
+  const barcode = barcodeId.trim();
+
+  if (!barcode) {
+    newErrors.barcodeId = 'Barcode ID darf nicht leer sein.';
     setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
-  };
+    setSnackbarMessage(newErrors.barcodeId);
+    setSnackbarSeverity('error');
+    setSnackbarOpen(true);
+    return false;
+  }
 
-  const handleSubmit = async () => {
-    if (!validateForm()) {
-      setSnackbarMessage("Bitte füllen Sie alle erforderlichen Felder aus.");
-      setSnackbarSeverity("error");
-      setSnackbarOpen(true);
-      return;
+  try {
+    const response = await axios.get(
+      'http://localhost:8000/table/data',
+      {
+        params: { table_name: 'vorlaeufigeproben' },
+      }
+    );
+
+    const proben = response.data;
+
+    const barcodeExists = Array.isArray(proben) && proben.some(
+      (probe) =>
+        String(probe.barcode_id ?? probe.barcodeId ?? '').trim() === barcode
+    );
+
+    if (!barcodeExists) {
+      newErrors.barcodeId =
+        'Dieser Barcode ist nicht verfügbar oder wurde bereits gelöscht.';
     }
+  } catch (error) {
+    console.error('Fehler bei der Barcode-Prüfung:', error);
 
-    const payload = { barcode_id: barcodeId };
+    newErrors.barcodeId =
+      error.response?.status === 404
+        ? 'Die Tabelle oder der Barcode wurde nicht gefunden.'
+        : 'Die Barcode-Prüfung ist fehlgeschlagen.';
+  }
 
+  setErrors(newErrors);
+
+  if (Object.keys(newErrors).length > 0) {
+    setSnackbarMessage(newErrors.barcodeId);
+    setSnackbarSeverity('error');
+    setSnackbarOpen(true);
+    return false;
+  }
+
+  return true;
+};
+
+const handleSubmit = async () => {
+  const isValid = await validateForm();
+
+  if (!isValid) {
+    return;
+  }
+
+    const payload = {
+      barcode_id: barcodeId.trim(),
+    };
+  
     try {
-      await new Promise(resolve => setTimeout(resolve, 500));
       const response = await axios.delete(
-        `http://localhost:8000/delete/vorlaeufigeproben`,
+        'http://localhost:8000/delete/vorlaeufigeproben',
         {
-          headers: { "Content-Type": "application/json" },
-          data: payload, // Correctly passing the data
+          headers: { 'Content-Type': 'application/json' },
+          data: payload,
         }
       );
-
-      console.log("Response after delete:", response);
-
-      setSnackbarMessage("Probe erfolgreich entfernt!");
-      setSnackbarSeverity("success");
+  
+      setSnackbarMessage('Probe erfolgreich entfernt!');
+      setSnackbarSeverity('success');
       setSnackbarOpen(true);
-
-      setBarcodeId(""); 
-
+      setBarcodeId('');
+  
     } catch (error) {
       console.error("Fehler beim Entfernen:", error);
-      setSnackbarMessage("Fehler beim Entfernen der Probe.");
+    
+      const message =
+        error.response?.status === 404
+          ? "Diese vorläufige Probe existiert nicht oder wurde bereits entfernt."
+          : "Fehler beim Entfernen der Probe.";
+    
+      setSnackbarMessage(message);
       setSnackbarSeverity("error");
       setSnackbarOpen(true);
     }
