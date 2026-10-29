@@ -120,12 +120,21 @@ export default function SampleForm() {
     if (!formData.patient_Id_intern)
       newErrors.patient_Id_intern = "Patienten ID ist erforderlich.";
 
-    if (!formData.barcode_id)
-      newErrors.barcode_id = "Barcode ID ist erforderlich.";
+    if (!formData.barcode_id) {
+      newErrors.barcode_id = "Barcode ID ist erforderlich."; //valid form before submitting it
+    } else {
+      const barcodeExists = data.some(
+        (row) => row.barcode_id === formData.barcode_id
+      );  
+     if (barcodeExists) {
+        newErrors.barcode_id = "Dieser Barcode ist bereits vorhanden.";
+      }
+}
 
     if (checked) {
       if (!formData.probeninformation_ltx)
         newErrors.probeninformation_ltx = "LTX Probeninformation ist erforderlich.";
+
     } else {
       if (!formData.probeninformation)
         newErrors.probeninformation = "Probeninformation ist erforderlich.";
