@@ -161,7 +161,7 @@ export default function SampleForm() {
         payload,
         { headers: { "Content-Type": "application/json" } }
       );
-  
+        console.log(payload)
       setSnackbarMessage("Daten erfolgreich gesendet!");
       setSnackbarSeverity("success");
       setSnackbarOpen(true);

@@ -106,6 +106,49 @@ export default function Uebersicht() {
   const currentRows = filteredData.slice(indexOfFirstRow, indexOfLastRow);
   const totalPages = Math.ceil(filteredData.length / rowsPerPage);
 
+
+  //expand search function
+  const applySearch = (query, column = selectedColumn) => {
+    const search = query.trim().toLowerCase();
+
+    if (!search) {
+      setFilteredData(data);
+      return;
+    }
+
+    const columnsToSearch = column
+      ? [column]
+      : TABLE_COLUMNS[selectedTable].map(col => col.key);
+
+    const filtered = data.filter(row =>
+      columnsToSearch.some(key => {
+
+        // Originalwert aus der Datenbank
+        const originalValue = String(row[key] ?? "").toLowerCase();
+
+        // Gemappter Anzeigewert
+        const mappedValue = String(
+          getMappedValue(row, key) ?? ""
+        ).toLowerCase();
+
+        // Datumsformat
+        const displayDate =
+          (key === "created_at" || key === "timestamp")
+            ? dayjs(row[key]).format("DD.MM.YYYY").toLowerCase()
+            : "";
+
+        return (
+          originalValue.includes(search) ||
+          mappedValue.includes(search) ||
+          displayDate.includes(search)
+        );
+      })
+    );
+
+  setFilteredData(filtered);
+};
+
+  
   
   // Liefert den angezeigten Text eines Mapping-Feldes
   const getMappedValue = (row, key) => {
@@ -415,75 +458,24 @@ export default function Uebersicht() {
 
   // Handle search
   const handleSearchChange = (e) => {
-    const query = e.target.value.toLowerCase().trim();
-    setSearchQuery(e.target.value);
+    const value = e.target.value;
+  
+    setSearchQuery(value);
     setCurrentPage(1);
   
-    if (!query) {
-      setFilteredData(data);
-      return;
-    }
-  
-    const filtered = data.filter((row) => {
-      return Object.keys(row).some((key) => {
-        const value = row[key];
-  
-        if (value === null || value === undefined) return false;
-  
-        // original value
-        const originalValue = String(value).toLowerCase();
-  
-        // For date fields, also search by display format
-        if (key === "created_at" || key === "timestamp") {
-          const displayDate = dayjs(value).format("DD.MM.YYYY").toLowerCase();
-  
-          return (
-            originalValue.includes(query) ||
-            displayDate.includes(query)
-          );
-        }
-  
-        return originalValue.includes(query);
-      });
-    });
-  
-    setFilteredData(filtered);
+    applySearch(value);
   };
-
-  // Handle column selection for search filter
+  
+  //Handle select
   const handleColumnSelect = (e) => {
     const column = e.target.value;
+  
     setSelectedColumn(column);
     setCurrentPage(1);
-
-    const search = searchQuery.trim().toLowerCase();
-
-    if (!search) {
-      setFilteredData(data);
-      return;
-    }
-
-    const filtered = data.filter((row) => {
-      const keysToSearch = column
-        ? [column]
-        : Object.keys(row);
-
-      return keysToSearch.some((key) => {
-        const dbValue = String(row[key] ?? "").toLowerCase();
-        const mappedValue = String(
-          getMappedValue(row, key) ?? ""
-        ).toLowerCase();
-
-        return (
-          dbValue.includes(search) ||
-          mappedValue.includes(search)
-        );
-      });
-    });
-
-    setFilteredData(filtered);
+  
+    applySearch(searchQuery, column);
   };
-
+  
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -975,55 +967,68 @@ export default function Uebersicht() {
         ))}
       </Box>
 
-      {selectedTable && (
-        <div className="flex margin-left auto mt-0">
-          <div className="mr-4">
-            <select
-              value={selectedColumn}
-              onChange={handleColumnSelect}
-              className="border border-gray-300 px-4 py-2 rounded"
-            >
-              <option value="">Alle Spalten</option>
-              {TABLE_COLUMNS[selectedTable]?.map((col) => (
-                <option key={col.key} value={col.key}>
-                  {col.label}
-                </option>
-              ))}
-            </select>
-          </div>
+     
+{selectedTable && (
+  <div className="flex margin-left auto mt-0 items-center">
+    {/* Auswahl der Suchspalte */}
+    <div className="mr-2">
+      <select
+        value={selectedColumn}
+        onChange={handleColumnSelect}
+        className="border border-gray-300 px-4 py-2 rounded"
+      >
+        <option value="">Alle Spalten</option>
+        {TABLE_COLUMNS[selectedTable]?.map((col) => (
+          <option key={col.key} value={col.key}>
+            {col.label}
+          </option>
+        ))}
+      </select>
+    </div>
 
-          <input
-            type="text"
-            value={searchQuery}
-            onChange={handleSearchChange}
-            placeholder="Suche..."
-            className="border border-gray-300 px-4 py-2 rounded"
-          />
+    {/* Suchfeld */}
+    <input
+      type="text"
+      value={searchQuery}
+      onChange={handleSearchChange}
+      placeholder={
+        selectedColumn
+          ? `Suche in ${TABLE_COLUMNS[selectedTable]?.find(
+              col => col.key === selectedColumn
+            )?.label || 'Spalte'}...`
+          : "Suche in allen Spalten..."
+      }
+      className="border border-gray-300 px-4 py-2 rounded"
+    />
 
-          <IconButton onClick={handleClick}>
-            <InfoIcon />
-          </IconButton>
+    <IconButton onClick={handleClick}>
+      <InfoIcon />
+    </IconButton>
 
-          <Popover
-            id={id}
-            open={open}
-            anchorEl={anchorEl}
-            onClose={handleClose}
-            anchorOrigin={{
-              vertical: 'bottom',
-              horizontal: 'left',
-            }}
-          >
-            <Typography variant='caption' fontWeight={'fontWeightBold'} sx={{ display: 'block' }}>
-              Anmerkungen zum Filter:
-            </Typography>
-            <Typography variant='caption' sx={{ display: 'block' }}>
-              Siehe Dokumentation der Probensammlung
-            </Typography>
-          </Popover>
-        </div>
+    <Popover
+      id={id}
+      open={open}
+      anchorEl={anchorEl}
+      onClose={handleClose}
+      anchorOrigin={{
+        vertical: 'bottom',
+        horizontal: 'left',
+      }}
+    >
+      <Typography
+        variant="caption"
+        fontWeight="fontWeightBold"
+        sx={{ display: 'block' }}
+      >
+        Anmerkungen zum Filter:
+      </Typography>
+      <Typography variant="caption" sx={{ display: 'block' }}>
+        Siehe Dokumentation der Probensammlung
+      </Typography>
+    </Popover>
+  </div>
+)}
 
-      )}
       {renderTable()}
       <div>
         <Box margin={2} sx={{
