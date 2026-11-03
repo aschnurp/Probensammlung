@@ -346,14 +346,14 @@ export default function Overview() {
       </Box>
 
 
-      <Box sx={{ textAlign: 'center', height: 0}}>
+      <Box sx={{ textAlign: 'center', height: 0 }}>
         <Typography variant="h5" sx={{ fontWeight: 'bold', color: 'text.primary' }}>
           Neue Daten Eintragen
         </Typography>
       </Box>
 
       {sections.map((section, index) => (
-        <Box key={index} sx={{ bgcolor: 'background.paper', boxShadow: 3, borderRadius: 4, p: 3, m: 10, mb: -2, mt:6 }}>
+        <Box key={index} sx={{ bgcolor: 'background.paper', boxShadow: 3, borderRadius: 4, p: 3, m: 10, mb: -2, mt: 6 }}>
           <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
             <Typography variant="h6" sx={{ fontWeight: 'medium', color: 'text.primary' }}>
               {section.title}

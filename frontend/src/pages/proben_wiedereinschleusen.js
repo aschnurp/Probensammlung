@@ -47,7 +47,7 @@ export default function ProbeAusschleusen() {
 
       const response = await axios.patch(
         `http://localhost:8000/wiedereingeschleusen/${selectedProbe}/${barcodeId}`,
-        null, 
+        null,
         {
           headers: { 'Content-Type': 'application/json' },
         }
@@ -73,15 +73,15 @@ export default function ProbeAusschleusen() {
 
   return (
     <Box sx={{ p: 3, maxWidth: 600, mx: 'auto' }}
-    onKeyDown={(e) => {
-      if (e.key === "Enter") { //bei press-enter
-        const active = document.activeElement; // Cursor Element
-        if (active.name === "barcodeId") { 
-          e.preventDefault(); //aendere default funktion
-          handleSubmit();    //submit
+      onKeyDown={(e) => {
+        if (e.key === "Enter") { //bei press-enter
+          const active = document.activeElement; // Cursor Element
+          if (active.name === "barcodeId") {
+            e.preventDefault(); //aendere default funktion
+            handleSubmit();    //submit
+          }
         }
-      }
-    }}>
+      }}>
       <Box sx={{ position: 'absolute', top: 90, left: 16 }}>
         <Button
           variant="contained"
@@ -96,7 +96,7 @@ export default function ProbeAusschleusen() {
           Proben wieder einschleusen
         </Typography>
         <Typography variant="body1" sx={{ color: 'text.primary' }}>
-          Ausgeschleuste Proben in das System wieder einschleusen. 
+          Ausgeschleuste Proben in das System wieder einschleusen.
         </Typography>
       </Box>
 
@@ -119,8 +119,8 @@ export default function ProbeAusschleusen() {
         </RadioGroup>
       </FormControl>
 
-      <Box sx={{ textAlign: 'left', mt: 4}}>
-      <FormLabel id="proben-label">Barcode</FormLabel>
+      <Box sx={{ textAlign: 'left', mt: 4 }}>
+        <FormLabel id="proben-label">Barcode</FormLabel>
       </Box>
       <TextField
         label="Scannerfeld für Barcode ID"

@@ -56,15 +56,15 @@ export default function SampleForm() {
         console.error("Error fetching Probeninformation:", error);
       }
     };
-    
-  // Retrieve sample information (LTX) for sample suggestions in the dropdown menu
+
+    // Retrieve sample information (LTX) for sample suggestions in the dropdown menu
     const getProbeninformationLTX = async () => {
       try {
         const res = await fetch(
           `http://localhost:8000/table/data?table_name=probeninformation_ltx`
         );
         if (!res.ok) throw new Error("Fehler beim Abrufen der Probeninformation-LTX");
-        
+
         const response = await res.json();
         setProbeninformationLTX(response);
       } catch (error) {
@@ -103,13 +103,13 @@ export default function SampleForm() {
   // Die korrekte Reihenfolge für Proben. Nutzung für Probenvorschläge.
   const probeReihenfolgeLTX = [
     ...Array.from({ length: 48 }, (_, i) => i + 1),
-  
+
     // Stuhl prä OP
     49, 50, 51, 52, 61, 62, 63, 64,
-  
+
     // Stuhl post OP
     53, 54, 55, 56, 65, 66, 67, 68,
-  
+
     // Stuhl post OP 1 Jahr
     57, 58, 59, 60, 69, 70, 71, 72,
   ];
@@ -125,11 +125,11 @@ export default function SampleForm() {
     } else {
       const barcodeExists = data.some(
         (row) => row.barcode_id === formData.barcode_id
-      );  
-     if (barcodeExists) {
+      );
+      if (barcodeExists) {
         newErrors.barcode_id = "Dieser Barcode ist bereits vorhanden.";
       }
-}
+    }
 
     if (checked) {
       if (!formData.probeninformation_ltx)
@@ -147,26 +147,26 @@ export default function SampleForm() {
     if (!validateForm()) return;
     const payload = checked
       ? {
-          ...formData,
-          probeninformation: null,        
-        }
+        ...formData,
+        probeninformation: null,
+      }
       : {
-          ...formData,
-          probeninformation_ltx: null,    
-        };
-  
+        ...formData,
+        probeninformation_ltx: null,
+      };
+
     try {
       await axios.post(
         `http://localhost:8000/new_data/vorlaeufige_proben`,
         payload,
         { headers: { "Content-Type": "application/json" } }
       );
-        console.log(payload)
+      console.log(payload)
       setSnackbarMessage("Daten erfolgreich gesendet!");
       setSnackbarSeverity("success");
       setSnackbarOpen(true);
-  
-     
+
+
       // --- NEXT PROBE LOGIC ---
       if (checked) {
         // LTX: feste Navigationsreihenfolge verwenden
@@ -207,13 +207,13 @@ export default function SampleForm() {
         });
       }
 
-  
+
       // Refresh table
       const updatedTableData = await axios.get(
         `http://localhost:8000/table/data?table_name=vorlaeufigeproben`
       );
       setData(updatedTableData.data);
-  
+
     } catch (error) {
       console.error("Error submitting form:", error);
       setSnackbarMessage("Fehler beim Senden der Daten.");
@@ -221,7 +221,7 @@ export default function SampleForm() {
       setSnackbarOpen(true);
     }
   };
-  
+
 
   return (
     <Box sx={{ p: 3, maxWidth: 900, mx: "auto" }}>
@@ -378,5 +378,4 @@ export default function SampleForm() {
       </Snackbar>
     </Box>
   );
-
 }

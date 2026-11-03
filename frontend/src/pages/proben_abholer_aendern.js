@@ -101,15 +101,15 @@ export default function Uebersicht() {
 
   const handleTable = async (tableName) => {
     setSelectedTable(tableName);
-  
+
     if (!TABLE_COLUMNS[tableName]) {
       setError("Invalid table name");
       return;
     }
-  
+
     setLoading(true);
     setError(null);
-  
+
     try {
       const response = await axios.get(`http://localhost:8000/table/data?table_name=${tableName}`);
       setData(response.data);
@@ -227,9 +227,9 @@ export default function Uebersicht() {
     let payload;
     try {
       // Prepare the payload to send, including the required fields
-        payload = {
-          id: row.id,
-        };
+      payload = {
+        id: row.id,
+      };
 
       console.log("Payload to delete:", payload); // Log the payload for debugging
 
@@ -327,7 +327,7 @@ export default function Uebersicht() {
                           variant="outlined"
                           color="success" // green
                           size='small'
-                          sx = {{margin:1}}
+                          sx={{ margin: 1 }}
                         >
                           Speichern
                         </Button>
@@ -347,7 +347,7 @@ export default function Uebersicht() {
                           variant="outlined"
                           color="primary"
                           size='small'
-                          sx = {{margin:1}}
+                          sx={{ margin: 1 }}
                         >
                           Bearbeiten
                         </Button>
@@ -370,14 +370,14 @@ export default function Uebersicht() {
                                 if (passcode === process.env.NEXT_PUBLIC_DELETE_PASSCODE) {
                                   handleDelete(row);
                                 } else {
-                                  alert("Incorrect passcode!"); 
+                                  alert("Incorrect passcode!");
                                 }
                                 handleClosePASSW();
                               },
                             }}
                             BackdropProps={{
                               style: {
-                                backgroundColor: "rgba(0, 0, 0, 0.2)", 
+                                backgroundColor: "rgba(0, 0, 0, 0.2)",
                               },
                             }}
                           >

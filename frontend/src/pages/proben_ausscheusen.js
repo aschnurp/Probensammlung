@@ -76,15 +76,15 @@ export default function ProbeAusschleusen() {
 
   return (
     <Box sx={{ p: 3, maxWidth: 600, mx: 'auto' }}
-    onKeyDown={(e) => {
-      if (e.key === "Enter") { //bei press-enter
-        const active = document.activeElement; // Cursor Element
-        if (active.name === "barcodeId") { 
-          e.preventDefault(); //aendere default funktion
-          handleSubmit();    //submit
+      onKeyDown={(e) => {
+        if (e.key === "Enter") { //bei press-enter
+          const active = document.activeElement; // Cursor Element
+          if (active.name === "barcodeId") {
+            e.preventDefault(); //aendere default funktion
+            handleSubmit();    //submit
+          }
         }
-      }
-    }}>
+      }}>
       <Box sx={{ position: 'absolute', top: 90, left: 16 }}>
         <Button
           variant="contained"
@@ -121,8 +121,8 @@ export default function ProbeAusschleusen() {
           <FormControlLabel value="edtaplasma" control={<Radio />} label="EDTA-Plasmaproben" />
         </RadioGroup>
       </FormControl>
-      <Box sx={{ textAlign: 'left', mt: 4}}>
-      <FormLabel id="proben-label">Barcode</FormLabel>
+      <Box sx={{ textAlign: 'left', mt: 4 }}>
+        <FormLabel id="proben-label">Barcode</FormLabel>
       </Box>
 
       <TextField

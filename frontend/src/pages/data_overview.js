@@ -145,11 +145,11 @@ export default function Uebersicht() {
       })
     );
 
-  setFilteredData(filtered);
-};
+    setFilteredData(filtered);
+  };
 
-  
-  
+
+
   // Liefert den angezeigten Text eines Mapping-Feldes
   const getMappedValue = (row, key) => {
     const value = row[key];
@@ -293,10 +293,10 @@ export default function Uebersicht() {
     // reset page when changeing tabs
     setCurrentPage(1);
 
-      // reset search filter
-      setSearchQuery("");
-      setSelectedColumn("");
-    
+    // reset search filter
+    setSearchQuery("");
+    setSelectedColumn("");
+
   };
 
   const [probeninformationOptionsToRender, setProbeninformationOptionsToRender] = useState([]);
@@ -351,6 +351,7 @@ export default function Uebersicht() {
 
     getOptions("probeninformation", setProbeninformationOptionsToRender)
   }, []);
+  
 
   useEffect(() => {
     const getOptions = async (tableName, setFunction) => {
@@ -367,7 +368,6 @@ export default function Uebersicht() {
 
     getOptions("probeninformation_ltx", setProbeninformationLTXOptionsToRender)
   }, []);
-
 
   const handleClose = () => {
     setAnchorEl(null);
@@ -459,23 +459,19 @@ export default function Uebersicht() {
   // Handle search
   const handleSearchChange = (e) => {
     const value = e.target.value;
-  
     setSearchQuery(value);
     setCurrentPage(1);
-  
     applySearch(value);
   };
-  
+
   //Handle select
   const handleColumnSelect = (e) => {
     const column = e.target.value;
-  
     setSelectedColumn(column);
     setCurrentPage(1);
-  
     applySearch(searchQuery, column);
   };
-  
+
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -530,7 +526,6 @@ export default function Uebersicht() {
           index === editRowIndex ? response.data : row
         )
       );
-
       setEditRowIndex(null); // Exit edit mode
       setFormData({});
     } catch (error) {
@@ -644,16 +639,16 @@ export default function Uebersicht() {
                         })()
 
 
-                        ) : col.key === "probeninformation_ltx" ? (
-                          (() => {
-                            // Prüfen, ob die Probenart "vorläufige Proben" ist
-                            const probeninfo = probeninformationLTXOptionsToRender.find(
-                              (probe) => probe.id === row.probeninformation_ltx
-                            );
-  
-                            // Wenn passende Probeninformation gefunden wurde, gib den Text zurück, sonst "N/A"
-                            return probeninfo ? probeninfo.probeninformation_text : "N/A";
-                          })()
+                      ) : col.key === "probeninformation_ltx" ? (
+                        (() => {
+                          // Prüfen, ob die Probenart "vorläufige Proben" ist
+                          const probeninfo = probeninformationLTXOptionsToRender.find(
+                            (probe) => probe.id === row.probeninformation_ltx
+                          );
+
+                          // Wenn passende Probeninformation gefunden wurde, gib den Text zurück, sonst "N/A"
+                          return probeninfo ? probeninfo.probeninformation_text : "N/A";
+                        })()
 
                       ) : col.key === "differenzierungsmerkmal" ? (
                         (() => {
@@ -701,7 +696,7 @@ export default function Uebersicht() {
                               1: "Zentrifugiert",
                               2: "nicht Zentrifugiert",
                             };
-                          return differenzierungsmerkmalMapping[row["differenzierungsmerkmal"]] || "N/A";
+                            return differenzierungsmerkmalMapping[row["differenzierungsmerkmal"]] || "N/A";
                           } else if (row["probenart"] === "stuhl") {
                             // Mappings für "stuhl"
                             const differenzierungsmerkmalMapping = {
@@ -778,7 +773,6 @@ export default function Uebersicht() {
                           return `${boxType} (${boxNumber})`;
                         })()
 
-
                       ) : (col.key === 'created_at' || col.key === 'timestamp' ? (
                         // Formatierung für das Datum, falls "created_at"
                         dayjs(row[col.key]).format("DD.MM.YYYY")
@@ -800,7 +794,7 @@ export default function Uebersicht() {
                           variant="outlined"
                           color="success" //green
                           size='small'
-                          sx = {{margin:1}}
+                          sx={{ margin: 1 }}
                         >
                           Speichern
                         </Button>
@@ -820,7 +814,7 @@ export default function Uebersicht() {
                           variant="outlined"
                           color="primary"
                           size='small'
-                          sx = {{margin:1}}
+                          sx={{ margin: 1 }}
                         >
                           Bearbeiten
                         </Button>
@@ -967,67 +961,66 @@ export default function Uebersicht() {
         ))}
       </Box>
 
-     
-{selectedTable && (
-  <div className="flex margin-left auto mt-0 items-center">
-    {/* Auswahl der Suchspalte */}
-    <div className="mr-2">
-      <select
-        value={selectedColumn}
-        onChange={handleColumnSelect}
-        className="border border-gray-300 px-4 py-2 rounded"
-      >
-        <option value="">Alle Spalten</option>
-        {TABLE_COLUMNS[selectedTable]?.map((col) => (
-          <option key={col.key} value={col.key}>
-            {col.label}
-          </option>
-        ))}
-      </select>
-    </div>
+      {selectedTable && (
+        <div className="flex margin-left auto mt-0 items-center">
+          {/* Auswahl der Suchspalte */}
+          <div className="mr-2">
+            <select
+              value={selectedColumn}
+              onChange={handleColumnSelect}
+              className="border border-gray-300 px-4 py-2 rounded"
+            >
+              <option value="">Alle Spalten</option>
+              {TABLE_COLUMNS[selectedTable]?.map((col) => (
+                <option key={col.key} value={col.key}>
+                  {col.label}
+                </option>
+              ))}
+            </select>
+          </div>
 
-    {/* Suchfeld */}
-    <input
-      type="text"
-      value={searchQuery}
-      onChange={handleSearchChange}
-      placeholder={
-        selectedColumn
-          ? `Suche in ${TABLE_COLUMNS[selectedTable]?.find(
-              col => col.key === selectedColumn
-            )?.label || 'Spalte'}...`
-          : "Suche in allen Spalten..."
-      }
-      className="border border-gray-300 px-4 py-2 rounded"
-    />
+          {/* Suchfeld */}
+          <input
+            type="text"
+            value={searchQuery}
+            onChange={handleSearchChange}
+            placeholder={
+              selectedColumn
+                ? `Suche in ${TABLE_COLUMNS[selectedTable]?.find(
+                  col => col.key === selectedColumn
+                )?.label || 'Spalte'}...`
+                : "Suche in allen Spalten..."
+            }
+            className="border border-gray-300 px-4 py-2 rounded"
+          />
 
-    <IconButton onClick={handleClick}>
-      <InfoIcon />
-    </IconButton>
+          <IconButton onClick={handleClick}>
+            <InfoIcon />
+          </IconButton>
 
-    <Popover
-      id={id}
-      open={open}
-      anchorEl={anchorEl}
-      onClose={handleClose}
-      anchorOrigin={{
-        vertical: 'bottom',
-        horizontal: 'left',
-      }}
-    >
-      <Typography
-        variant="caption"
-        fontWeight="fontWeightBold"
-        sx={{ display: 'block' }}
-      >
-        Anmerkungen zum Filter:
-      </Typography>
-      <Typography variant="caption" sx={{ display: 'block' }}>
-        Siehe Dokumentation der Probensammlung
-      </Typography>
-    </Popover>
-  </div>
-)}
+          <Popover
+            id={id}
+            open={open}
+            anchorEl={anchorEl}
+            onClose={handleClose}
+            anchorOrigin={{
+              vertical: 'bottom',
+              horizontal: 'left',
+            }}
+          >
+            <Typography
+              variant="caption"
+              fontWeight="fontWeightBold"
+              sx={{ display: 'block' }}
+            >
+              Anmerkungen zum Filter:
+            </Typography>
+            <Typography variant="caption" sx={{ display: 'block' }}>
+              Siehe Dokumentation der Probensammlung
+            </Typography>
+          </Popover>
+        </div>
+      )}
 
       {renderTable()}
       <div>
@@ -1048,7 +1041,6 @@ export default function Uebersicht() {
           />
         </Box>
       </div>
-
     </>
   );
 }

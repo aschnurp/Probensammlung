@@ -53,20 +53,20 @@ export default function PatientForm() {
 
   useEffect(() => {
     const fetchPatientData = async () => {
-      if (!formData.patient_Id_intern) return; 
-  
+      if (!formData.patient_Id_intern) return;
+
       try {
         const response = await axios.get("http://localhost:8000/table/data?table_name=patient");
-  
+
         if (response.data) {
           // Suchen nach der Patienten-ID in den erhaltenen Daten
           const foundItem = response.data.find(item => item.patient_Id_intern === formData.patient_Id_intern);
-  
+
           if (foundItem) {
             setFormData((prevData) => ({
               ...prevData,
               ...foundItem,
-              patient_Id_intern: prevData.patient_Id_intern, 
+              patient_Id_intern: prevData.patient_Id_intern,
             }));
           } else {
             setFormData({
@@ -85,19 +85,19 @@ export default function PatientForm() {
         console.error("Error fetching patient data:", error);
       }
     };
-  
+
     fetchPatientData();
   }, [formData.patient_Id_intern]);
 
   useEffect(() => {
-    if (!formData.created_at) {  
-        const currentDate = dayjs().format('YYYY-MM-DD');
-        setFormData((prevData) => ({
-            ...prevData,
-            created_at: currentDate,  
-        }));
+    if (!formData.created_at) {
+      const currentDate = dayjs().format('YYYY-MM-DD');
+      setFormData((prevData) => ({
+        ...prevData,
+        created_at: currentDate,
+      }));
     }
-}, [formData.created_at]);
+  }, [formData.created_at]);
 
   const handleClear = () => {
     setFormData({
@@ -119,15 +119,15 @@ export default function PatientForm() {
   const validateForm = () => {
     const newErrors = {};
     const { patient_Id_intern, geschlecht, alter, op_diagnose, op_geplant, created_at, sap_id } = formData;
-  
+
     if (!patient_Id_intern || !patient_Id_intern.trim()) {
       newErrors.patient_Id_intern = 'Patienten ID ist erforderlich.';
     }
-  
+
     if (!geschlecht || !geschlecht.trim()) {
       newErrors.geschlecht = 'Geschlecht ist erforderlich.';
     }
-  
+
     if (!alter.toString().trim()) {
       newErrors.alter = 'Alter ist erforderlich.';
     } else {
@@ -136,26 +136,26 @@ export default function PatientForm() {
         newErrors.alter = 'Bitte geben Sie ein gültiges Alter ein.';
       }
     }
-  
+
     if (!op_diagnose || !op_diagnose.trim()) {
       newErrors.op_diagnose = 'Diagnose ist erforderlich.';
     }
-  
+
     if (!op_geplant || !op_geplant.trim()) {
       newErrors.op_geplant = 'Art der OP ist erforderlich.';
     }
-  
+
     if (!String(sap_id).trim()) {
       newErrors.sap_id = 'SAP ID ist erforderlich.';
     }
-  
-  
+
+
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
       return false;
     }
     return true;
-  };  
+  };
 
   const handleSubmit = async () => {
     console.log(formData)
@@ -165,19 +165,19 @@ export default function PatientForm() {
       setSnackbarOpen(true);
       return;
     }
-  
+
     const dataToSend = {
       ...formData,
       alter: Number(formData.alter),
     };
-  
+
     try {
       // First, check if the patient exists
       const checkResponse = await axios.get(`http://localhost:8000/table/data?table_name=patient`);
       const existingPatient = checkResponse.data.find(patient => patient.patient_Id_intern === formData.patient_Id_intern);
-  
+
       let response;
-  
+
       if (existingPatient) {
         // If the patient exists, update using PUT
         response = await axios.put(
@@ -196,9 +196,9 @@ export default function PatientForm() {
         setSnackbarMessage('Patientendaten erfolgreich gesendet!');
         setSnackbarSeverity('success');
       }
-  
+
       setSnackbarOpen(true);
-      handleClear(); 
+      handleClear();
     } catch (error) {
       const errorMessage = `${error.response?.data?.detail || 'Fehler beim Senden der Daten.'}`;
       setSnackbarMessage(errorMessage);
@@ -209,15 +209,15 @@ export default function PatientForm() {
 
   return (
     <Box sx={{ p: 3, maxWidth: 600, mx: 'auto' }}
-    onKeyDown={(e) => {
-      if (e.key === "Enter") { //bei press-enter
-        const active = document.activeElement; // Cursor Element
-        if (active.name === "patient_Id_intern") { 
-          e.preventDefault(); //aendere default funktion
-          handleSubmit();    //submit
+      onKeyDown={(e) => {
+        if (e.key === "Enter") { //bei press-enter
+          const active = document.activeElement; // Cursor Element
+          if (active.name === "patient_Id_intern") {
+            e.preventDefault(); //aendere default funktion
+            handleSubmit();    //submit
+          }
         }
-      }
-    }}
+      }}
     >
       <Box sx={{ position: 'absolute', top: 90, left: 16 }}>
         <Button variant="contained" color="primary" onClick={() => window.location.href = '/overview'}>
