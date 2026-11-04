@@ -14,7 +14,7 @@ export default function RootLayout({ children }) {
   
   {/* links */}
   <div className="text-xl font-bold">
-    v1.1.8
+    v1.2
   </div>
 
   {/* mitte (zentriert) */}

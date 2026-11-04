@@ -49,7 +49,7 @@ export default function Sonstiges() {
           }}
         >
           <Typography variant="h6" sx={{ color: 'text.primary' }}>
-          Informationen können den Zusatzdokumenten der Probensammlung entnommen werden. Eine Übersicht zu allen genutzen Codes und Fremdschlüsseln sowie eine Erklährung der bedeutung der Inhalte sind in dem Dokument "Software-Dokumentation-Probensammlung_v1.2" festgehalten. 
+          Informationen können den Zusatzdokumenten der Probensammlung entnommen werden. Eine Übersicht zu allen genutzten Codes und Fremdschlüsseln sowie eine Erklärung der Bedeutung der Inhalte sind in dem Dokument "Software-Dokumentation-Probensammlung_v1.2" festgehalten.
           </Typography>
         </Box>
       </Box>
