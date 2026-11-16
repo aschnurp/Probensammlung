@@ -331,7 +331,9 @@ SELECT
     ltx_fragebogen.bier_anz AS bier_anz,
 
     aperitif_lookup.value AS aperitifs_digestifs,
-    ltx_fragebogen.aperitifs_digestifs_anz AS aperitifs_digestifs_anz
+    ltx_fragebogen.aperitifs_digestifs_anz AS aperitifs_digestifs_anz,
+
+    ltx_fragebogen.bemerkungen
 
 FROM ltx_fragebogen
 

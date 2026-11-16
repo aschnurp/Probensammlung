@@ -106,3 +106,6 @@ class Ltx_fragebogen(Base):
     auslandsreise_antibiotika = Column(TEXT)
     auslandsreise_durchfall = Column(TEXT)
     auslandsreise_krankenhaus = Column(TEXT)
+
+    #bemerkungen
+    bemerkungen = Column(TEXT)

@@ -107,6 +107,7 @@ export default function SampleForm() {
         auslandsreise_antibiotika: '',
         auslandsreise_durchfall: '',
         auslandsreise_krankenhaus: '',
+        bemerkungen: '',
     });
 
     //set of all numerical variables
@@ -337,6 +338,7 @@ export default function SampleForm() {
             auslandsreise_antibiotika: '',
             auslandsreise_durchfall: '',
             auslandsreise_krankenhaus: '',
+            bemerkungen: '',
         }));
         setErrors({});
     };
@@ -448,6 +450,7 @@ export default function SampleForm() {
                             auslandsreise_antibiotika: foundItem.auslandsreise_antibiotika,
                             auslandsreise_durchfall: foundItem.auslandsreise_durchfall,
                             auslandsreise_krankenhaus: foundItem.auslandsreise_krankenhaus,
+                            bemerkungen: foundItem.bemerkungen,
                         }))
                         setSnackbarMessage("Patienten Id gefunden");
                         setSnackbarSeverity("success");
@@ -1197,6 +1200,18 @@ export default function SampleForm() {
                     <FormControlLabel value="keine Angabe" control={<Radio />} label="keine Angabe" />
                 </RadioGroup>
             </FormControl>
+
+            <TextField
+                        label="Bemerkungen"
+                        name="bemerkungen"
+                        type='text'
+                        value={formData.bemerkungen}
+                        onChange={handleChange}
+                        fullWidth
+                        margin="normal"
+                        minRows={3}
+                        multiline
+                    />
 
             <Snackbar
                 open={snackbarOpen}
