@@ -1,8 +1,10 @@
 # Laboratory Sample Collection <img width="40" height="40" alt="leber_icon" src="https://github.com/user-attachments/assets/69bb7d95-247b-48ac-a6a0-85d231faea71" />
 
-## Out Now - Version 1.1.8
-- New options tracking sample categories are more efficient
-- Bug fixes, where it can happen that changed text is not saved
+## Out Now - Version 1.2
+- New export function: On the Export tab, you can now export data either table by table or as a complete database, in CSV or PDF format.
+- Enhanced search function: You can now find all entries using the search function in the Sample Overview.
+- More aliquots: Additional aliquot options are now available.
+- New help page: Updated information and helpful guidance are now available on the Help page.
 
 ## Overview
 The Laboratory Sample Collection is a locally deployable electronic laboratory system for structured documentation and management of laboratory samples. It was initially created due to a lack of alternatives, especially since similar LIMS systems cannot offer comparable functionality. The application has been in active use at a research institution since 2024 and is constantly being expanded.
