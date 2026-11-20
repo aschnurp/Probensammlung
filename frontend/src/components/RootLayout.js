@@ -14,7 +14,7 @@ export default function RootLayout({ children }) {
   
   {/* links */}
   <div className="text-xl font-bold">
-    v1.1.8
+    v1.2
   </div>
 
   {/* mitte (zentriert) */}
@@ -40,6 +40,15 @@ export default function RootLayout({ children }) {
       })}
     >
       Übersicht
+    </Link>
+
+    <Link
+      href="/export"
+      className={clsx('text-xl font-semibold hover:text-blue-200', {
+        underline: location === '/export',
+      })}
+    >
+      Export
     </Link>
 
     <Link

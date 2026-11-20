@@ -4,7 +4,7 @@ export default function Home() {
   return (
     <div className="flex justify-center items-center h-screen">
       <figure className="flex flex-col items-center">
-        
+
         <div className="relative w-80 h-80 overflow-hidden rounded-full">
           <Image
             src="/leber.jpg"
@@ -15,7 +15,7 @@ export default function Home() {
         </div>
 
         <figcaption className="mt-6 text-xl text-gray-600">
-          Version 1.1.8
+          Version 1.2
         </figcaption>
       </figure>
     </div>

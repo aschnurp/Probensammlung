@@ -107,6 +107,7 @@ export default function SampleForm() {
         auslandsreise_antibiotika: '',
         auslandsreise_durchfall: '',
         auslandsreise_krankenhaus: '',
+        bemerkungen: '',
     });
 
     //set of all numerical variables
@@ -337,6 +338,7 @@ export default function SampleForm() {
             auslandsreise_antibiotika: '',
             auslandsreise_durchfall: '',
             auslandsreise_krankenhaus: '',
+            bemerkungen: '',
         }));
         setErrors({});
     };
@@ -448,6 +450,7 @@ export default function SampleForm() {
                             auslandsreise_antibiotika: foundItem.auslandsreise_antibiotika,
                             auslandsreise_durchfall: foundItem.auslandsreise_durchfall,
                             auslandsreise_krankenhaus: foundItem.auslandsreise_krankenhaus,
+                            bemerkungen: foundItem.bemerkungen,
                         }))
                         setSnackbarMessage("Patienten Id gefunden");
                         setSnackbarSeverity("success");
@@ -470,7 +473,7 @@ export default function SampleForm() {
     const handleSubmit = async () => {
         const payload = normalize(formData);
 
-    //try to send
+        //try to send
         try {
             console.log("Data try to send:", payload);
             const newErrors = {};
@@ -478,18 +481,18 @@ export default function SampleForm() {
             //definde required fields
             const isUnfilled = (v) => v === '';
             [
-                'rotes_fleisch', 
-                'gefluegel', 
-                'verarbeitetes_fleisch', 
-                'fisch_meeresfruechte', 
-                'eier', 
-                'fruechte_gemuese', 
-                'staerkehaltige_lebensmittel', 
-                'vollwertkost', 
-                'huelsenfruechte', 
-                'joghurt', 
-                'kaese', 
-                'milch', 
+                'rotes_fleisch',
+                'gefluegel',
+                'verarbeitetes_fleisch',
+                'fisch_meeresfruechte',
+                'eier',
+                'fruechte_gemuese',
+                'staerkehaltige_lebensmittel',
+                'vollwertkost',
+                'huelsenfruechte',
+                'joghurt',
+                'kaese',
+                'milch',
                 'fruehstueckscerealien',
                 'fettfreie_zuckerhaltige_produkte',
                 'fetthaltige_zuckerhaltige_produkte',
@@ -500,11 +503,11 @@ export default function SampleForm() {
                 'bier',
                 'aperitifs_digestifs'
             ]
-            .forEach((f) => {
-            if (isUnfilled(formData[f])) {
-                newErrors[f] = 'Alle Felder zum Thema "Ernährung" müssen Vollständig ausgefüllt sein';
-            }
-            });
+                .forEach((f) => {
+                    if (isUnfilled(formData[f])) {
+                        newErrors[f] = 'Alle Felder zum Thema "Ernährung" müssen Vollständig ausgefüllt sein';
+                    }
+                });
             if (Object.keys(newErrors).length > 0) {
                 setErrors(newErrors);
                 setSnackbarMessage('Alle Felder zum Thema "Ernährung" müssen Vollständig ausgefüllt sein'); //error message
@@ -552,18 +555,18 @@ export default function SampleForm() {
                 }
             }}
         >
-      <Box sx={{ position: "absolute", top: 90, left: 16 }}>
-        <Button variant="contained" color="primary" onClick={() => window.location.href = "/overview"}>
-          <IoMdArrowRoundBack className="text-2xl" />
-        </Button>
-      </Box>
+            <Box sx={{ position: "absolute", top: 90, left: 16 }}>
+                <Button variant="contained" color="primary" onClick={() => window.location.href = "/overview"}>
+                    <IoMdArrowRoundBack className="text-2xl" />
+                </Button>
+            </Box>
 
             <Box sx={{ textAlign: 'center', mt: 4, mb: 2 }}>
                 <Typography variant="h5" sx={{ fontWeight: 'bold' }}>
                     LTX-Fragebogen
                 </Typography>
                 <Typography variant="body1">
-                Erfassung aller LTX-Patienten, die den Studienkriterien entsprechen. Voraussetzung für die erfolgreiche Datenerfassung ist, dass der Patient bereits im System registriert ist. Alle mit * gekennzeichneten Felder, sind Pflichtfelder.
+                    Erfassung aller LTX-Patienten, die den Studienkriterien entsprechen. Voraussetzung für die erfolgreiche Datenerfassung ist, dass der Patient bereits im System registriert ist. Alle mit * gekennzeichneten Felder, sind Pflichtfelder.
                 </Typography>
             </Box>
 
@@ -675,23 +678,23 @@ export default function SampleForm() {
                     fullWidth
                     margin="normal"
                 />
-                    <FormControl component="fieldset" margin="normal">
-                        <FormLabel id="sozialer_prekaritaetsindex_label">
+                <FormControl component="fieldset" margin="normal">
+                    <FormLabel id="sozialer_prekaritaetsindex_label">
                         Sozialer Prekaritätsindex (≥30 = Auffällig) *
-                        </FormLabel>
+                    </FormLabel>
 
-                        <RadioGroup
-                            name="sozialer_prekaritaetsindex"
-                            value={formData.sozialer_prekaritaetsindex}
-                            onChange={handleChange}
-                            row
-                            sx={{ mt: 1 }}
-                        >
-                            <FormControlLabel value="keine Angabe" control={<Radio />} label="keine Angabe" />
-                            <FormControlLabel value=">=30" control={<Radio />} label="≥30" />
-                            <FormControlLabel value="<30" control={<Radio />} label="<30" />
-                        </RadioGroup>
-                    </FormControl>
+                    <RadioGroup
+                        name="sozialer_prekaritaetsindex"
+                        value={formData.sozialer_prekaritaetsindex}
+                        onChange={handleChange}
+                        row
+                        sx={{ mt: 1 }}
+                    >
+                        <FormControlLabel value="keine Angabe" control={<Radio />} label="keine Angabe" />
+                        <FormControlLabel value=">=30" control={<Radio />} label="≥30" />
+                        <FormControlLabel value="<30" control={<Radio />} label="<30" />
+                    </RadioGroup>
+                </FormControl>
             </Box>
 
             <Divider sx={{ my: 3 }} />
@@ -1197,6 +1200,18 @@ export default function SampleForm() {
                     <FormControlLabel value="keine Angabe" control={<Radio />} label="keine Angabe" />
                 </RadioGroup>
             </FormControl>
+
+            <TextField
+                        label="Bemerkungen"
+                        name="bemerkungen"
+                        type='text'
+                        value={formData.bemerkungen}
+                        onChange={handleChange}
+                        fullWidth
+                        margin="normal"
+                        minRows={3}
+                        multiline
+                    />
 
             <Snackbar
                 open={snackbarOpen}

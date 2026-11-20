@@ -107,6 +107,173 @@ export default function Uebersicht() {
   const totalPages = Math.ceil(filteredData.length / rowsPerPage);
 
 
+  //expand search function
+  const applySearch = (query, column = selectedColumn) => {
+    const search = query.trim().toLowerCase();
+
+    if (!search) {
+      setFilteredData(data);
+      return;
+    }
+
+    const columnsToSearch = column
+      ? [column]
+      : TABLE_COLUMNS[selectedTable].map(col => col.key);
+
+    const filtered = data.filter(row =>
+      columnsToSearch.some(key => {
+
+        // Originalwert aus der Datenbank
+        const originalValue = String(row[key] ?? "").toLowerCase();
+
+        // Gemappter Anzeigewert
+        const mappedValue = String(
+          getMappedValue(row, key) ?? ""
+        ).toLowerCase();
+
+        // Datumsformat
+        const displayDate =
+          (key === "created_at" || key === "timestamp")
+            ? dayjs(row[key]).format("DD.MM.YYYY").toLowerCase()
+            : "";
+
+        return (
+          originalValue.includes(search) ||
+          mappedValue.includes(search) ||
+          displayDate.includes(search)
+        );
+      })
+    );
+
+    setFilteredData(filtered);
+  };
+
+
+
+  // Liefert den angezeigten Text eines Mapping-Feldes
+  const getMappedValue = (row, key) => {
+    const value = row[key];
+
+    switch (key) {
+      case "probeninformation":
+        return (
+          probeninformationOptionsToRender.find(
+            (p) => String(p.id) === String(value)
+          )?.probeninformation_text ?? ""
+        );
+
+      case "probeninformation_ltx":
+        return (
+          probeninformationLTXOptionsToRender.find(
+            (p) => String(p.id) === String(value)
+          )?.probeninformation_text ?? ""
+        );
+
+      case "differenzierungsmerkmal": {
+        const mappings = {
+          urin: {
+            1: "Katheter",
+            2: "Spontan",
+          },
+          gewebe: {
+            1: "Regeneriert",
+            2: "Embolisiert",
+            3: "Empfänger",
+            4: "Spender",
+            5: "Spender nach Perfusion",
+            6: "LTX-Biopsie 1 Jahr post OP",
+          },
+          serum: {
+            1: "Lebervene Links",
+            2: "Lebervene Rechts",
+            3: "ZVK",
+            4: "Vene peripher",
+            5: "Arterie peripher",
+          },
+          edtaplasma: {
+            1: "Lebervene Links",
+            2: "Lebervene Rechts",
+            3: "ZVK",
+            4: "Vene peripher",
+            5: "Arterie peripher",
+          },
+          galle: {
+            1: "Zentrifugiert",
+            2: "nicht Zentrifugiert",
+          },
+          stuhl: {
+            1: "Nativ",
+            2: "Nukleinsäurestabilisiert",
+          },
+        };
+
+        return mappings[row.probenart]?.[value] ?? "";
+      }
+
+      case "uebergeordnete_probenart": {
+        if (row.probenart !== "paraffin") return "";
+
+        const mappings = {
+          1: "Normal",
+          2: "Normal regeneriert",
+          3: "Normal embolisiert",
+          4: "Normal Empfängerleber",
+          5: "Normal Spender der Leber",
+          6: "Normal Spender nach Perfusion der Leber",
+          7: "Tumor",
+          8: "LTX-Biopsie 1 Jahr post OP",
+        };
+
+        return mappings[value] ?? "";
+      }
+
+      case "untergeordnete_probenart": {
+        if (row.probenart !== "paraffin") return "";
+
+        const mappings = {
+          1: "Paraffinblock",
+          2: "Paraffinblock (A/B)",
+        };
+
+        return mappings[value] ?? "";
+      }
+
+      case "probenart": {
+        const mappings = {
+          gewebe: "Gewebe",
+          urin: "Urin",
+          serum: "Serum",
+          paraffin: "Paraffin",
+          galle: "Galle",
+          stuhl: "Stuhl",
+          edtaplasma: "EDTA-Plasma",
+        };
+
+        return mappings[value] ?? "";
+      }
+
+      case "boxnummer": {
+        const mappings = {
+          gewebe: "Cryo",
+          urin: "Urin",
+          serum: "Blut",
+          galle: "Galle",
+          stuhl: "Stuhl",
+          edtaplasma: "EDTA-Plasma",
+        };
+
+        return `${mappings[row.probenart] ?? ""} ${value ?? ""}`;
+      }
+
+      case "status":
+        return STATUS_MAPPING[value] ?? "";
+
+      default:
+        return "";
+    }
+  };
+
+
   const handlePaginationChange = (event, value) => {
     setCurrentPage(value);
     console.log(`Page changed to ${value}`);
@@ -122,6 +289,14 @@ export default function Uebersicht() {
   const handleTabChange = (event, newValue) => {
     setTabIndex(newValue);
     setSelectedTable(tableKeys[newValue]);
+
+    // reset page when changeing tabs
+    setCurrentPage(1);
+
+    // reset search filter
+    setSearchQuery("");
+    setSelectedColumn("");
+
   };
 
   const [probeninformationOptionsToRender, setProbeninformationOptionsToRender] = useState([]);
@@ -176,6 +351,7 @@ export default function Uebersicht() {
 
     getOptions("probeninformation", setProbeninformationOptionsToRender)
   }, []);
+  
 
   useEffect(() => {
     const getOptions = async (tableName, setFunction) => {
@@ -192,7 +368,6 @@ export default function Uebersicht() {
 
     getOptions("probeninformation_ltx", setProbeninformationLTXOptionsToRender)
   }, []);
-
 
   const handleClose = () => {
     setAnchorEl(null);
@@ -280,37 +455,23 @@ export default function Uebersicht() {
     }
   }, [selectedTable]);
 
-  // Handle search for specific column
+
+  // Handle search
   const handleSearchChange = (e) => {
-    const query = e.target.value;
-    setSearchQuery(query);
-
-    if (query === "") {
-      setFilteredData(data);
-    } else {
-      const lowercasedQuery = query.toLowerCase();
-      const filtered = data.filter((row) => {
-        if (selectedColumn && row[selectedColumn]) {
-          return row[selectedColumn].toString().toLowerCase().includes(lowercasedQuery);
-        }
-        return Object.keys(row).some((key) =>
-          row[key] && row[key].toString().toLowerCase().includes(lowercasedQuery)
-        );
-      });
-      setFilteredData(filtered); // Set filtered data based on search query
-    }
+    const value = e.target.value;
+    setSearchQuery(value);
+    setCurrentPage(1);
+    applySearch(value);
   };
 
-  // Handle column selection for search filter
+  //Handle select
   const handleColumnSelect = (e) => {
-    setSelectedColumn(e.target.value);
+    const column = e.target.value;
+    setSelectedColumn(column);
+    setCurrentPage(1);
+    applySearch(searchQuery, column);
   };
 
-  useEffect(() => {
-    if (selectedTable) {
-      setIsOpen(false);
-    }
-  }, [selectedTable]);
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -365,7 +526,6 @@ export default function Uebersicht() {
           index === editRowIndex ? response.data : row
         )
       );
-
       setEditRowIndex(null); // Exit edit mode
       setFormData({});
     } catch (error) {
@@ -479,16 +639,16 @@ export default function Uebersicht() {
                         })()
 
 
-                        ) : col.key === "probeninformation_ltx" ? (
-                          (() => {
-                            // Prüfen, ob die Probenart "vorläufige Proben" ist
-                            const probeninfo = probeninformationLTXOptionsToRender.find(
-                              (probe) => probe.id === row.probeninformation_ltx
-                            );
-  
-                            // Wenn passende Probeninformation gefunden wurde, gib den Text zurück, sonst "N/A"
-                            return probeninfo ? probeninfo.probeninformation_text : "N/A";
-                          })()
+                      ) : col.key === "probeninformation_ltx" ? (
+                        (() => {
+                          // Prüfen, ob die Probenart "vorläufige Proben" ist
+                          const probeninfo = probeninformationLTXOptionsToRender.find(
+                            (probe) => probe.id === row.probeninformation_ltx
+                          );
+
+                          // Wenn passende Probeninformation gefunden wurde, gib den Text zurück, sonst "N/A"
+                          return probeninfo ? probeninfo.probeninformation_text : "N/A";
+                        })()
 
                       ) : col.key === "differenzierungsmerkmal" ? (
                         (() => {
@@ -536,7 +696,7 @@ export default function Uebersicht() {
                               1: "Zentrifugiert",
                               2: "nicht Zentrifugiert",
                             };
-                          return differenzierungsmerkmalMapping[row["differenzierungsmerkmal"]] || "N/A";
+                            return differenzierungsmerkmalMapping[row["differenzierungsmerkmal"]] || "N/A";
                           } else if (row["probenart"] === "stuhl") {
                             // Mappings für "stuhl"
                             const differenzierungsmerkmalMapping = {
@@ -613,7 +773,6 @@ export default function Uebersicht() {
                           return `${boxType} (${boxNumber})`;
                         })()
 
-
                       ) : (col.key === 'created_at' || col.key === 'timestamp' ? (
                         // Formatierung für das Datum, falls "created_at"
                         dayjs(row[col.key]).format("DD.MM.YYYY")
@@ -635,7 +794,7 @@ export default function Uebersicht() {
                           variant="outlined"
                           color="success" //green
                           size='small'
-                          sx = {{margin:1}}
+                          sx={{ margin: 1 }}
                         >
                           Speichern
                         </Button>
@@ -655,7 +814,7 @@ export default function Uebersicht() {
                           variant="outlined"
                           color="primary"
                           size='small'
-                          sx = {{margin:1}}
+                          sx={{ margin: 1 }}
                         >
                           Bearbeiten
                         </Button>
@@ -803,8 +962,9 @@ export default function Uebersicht() {
       </Box>
 
       {selectedTable && (
-        <div className="flex margin-left auto mt-0">
-          <div className="mr-4">
+        <div className="flex margin-left auto mt-0 items-center">
+          {/* Auswahl der Suchspalte */}
+          <div className="mr-2">
             <select
               value={selectedColumn}
               onChange={handleColumnSelect}
@@ -819,11 +979,18 @@ export default function Uebersicht() {
             </select>
           </div>
 
+          {/* Suchfeld */}
           <input
             type="text"
             value={searchQuery}
             onChange={handleSearchChange}
-            placeholder="Suche..."
+            placeholder={
+              selectedColumn
+                ? `Suche in ${TABLE_COLUMNS[selectedTable]?.find(
+                  col => col.key === selectedColumn
+                )?.label || 'Spalte'}...`
+                : "Suche in allen Spalten..."
+            }
             className="border border-gray-300 px-4 py-2 rounded"
           />
 
@@ -841,16 +1008,20 @@ export default function Uebersicht() {
               horizontal: 'left',
             }}
           >
-            <Typography variant='caption' fontWeight={'fontWeightBold'} sx={{ display: 'block' }}>
+            <Typography
+              variant="caption"
+              fontWeight="fontWeightBold"
+              sx={{ display: 'block' }}
+            >
               Anmerkungen zum Filter:
             </Typography>
-            <Typography variant='caption' sx={{ display: 'block' }}>
+            <Typography variant="caption" sx={{ display: 'block' }}>
               Siehe Dokumentation der Probensammlung
             </Typography>
           </Popover>
         </div>
-
       )}
+
       {renderTable()}
       <div>
         <Box margin={2} sx={{
@@ -858,19 +1029,18 @@ export default function Uebersicht() {
           justifyContent: 'center'
         }}>
           <Pagination
-            count={totalPages} siblingCount={0} onChange={handlePaginationChange}
+            count={totalPages}
+            page={currentPage}
+            siblingCount={0}
+            onChange={handlePaginationChange}
             renderItem={(item) => (
               <PaginationItem
-                component={Link}
-                to={`/inbox${item.page === 1 ? '' : `?page=${item.page}`}`}
                 {...item}
               />
             )}
           />
         </Box>
       </div>
-
     </>
   );
 }
-

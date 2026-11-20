@@ -257,6 +257,7 @@ class TableDataLtx_fragebogen(BaseModel):
     auslandsreise_antibiotika: Optional[str] = None
     auslandsreise_durchfall: Optional[str] = None
     auslandsreise_krankenhaus: Optional[str] = None
+    bemerkungen: Optional[str] = None
 
 class LastBoxInfo(BaseModel):
     boxnummer: int

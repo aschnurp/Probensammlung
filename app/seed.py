@@ -166,6 +166,18 @@ def seed_status_data(db: Session):
             Probeninformation_ltx(probeninformation_text="Stuhl post OP 1 Jahr II", probenart="stuhl"),
             Probeninformation_ltx(probeninformation_text="Stuhl post OP 1 Jahr III", probenart="stuhl"),
             Probeninformation_ltx(probeninformation_text="Stuhl post OP 1 Jahr IV", probenart="stuhl"),
+            Probeninformation_ltx(probeninformation_text="Stuhl prä OP V", probenart="stuhl"),
+            Probeninformation_ltx(probeninformation_text="Stuhl prä OP VI", probenart="stuhl"),
+            Probeninformation_ltx(probeninformation_text="Stuhl prä OP VII", probenart="stuhl"),
+            Probeninformation_ltx(probeninformation_text="Stuhl prä OP VIII", probenart="stuhl"),
+            Probeninformation_ltx(probeninformation_text="Stuhl post OP V", probenart="stuhl"),
+            Probeninformation_ltx(probeninformation_text="Stuhl post OP VI", probenart="stuhl"),
+            Probeninformation_ltx(probeninformation_text="Stuhl post OP VII", probenart="stuhl"),
+            Probeninformation_ltx(probeninformation_text="Stuhl post OP VIII", probenart="stuhl"),
+            Probeninformation_ltx(probeninformation_text="Stuhl post OP 1 Jahr V", probenart="stuhl"),
+            Probeninformation_ltx(probeninformation_text="Stuhl post OP 1 Jahr VI", probenart="stuhl"),
+            Probeninformation_ltx(probeninformation_text="Stuhl post OP 1 Jahr VII", probenart="stuhl"),
+            Probeninformation_ltx(probeninformation_text="Stuhl post OP 1 Jahr VIII", probenart="stuhl"),
         ]
         # Einfügen und speichern
         db.add_all(seed_data)

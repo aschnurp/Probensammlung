@@ -55,7 +55,7 @@ export default function SampleForm() {
     anmerkungen: '',
     created_at: '',
     uhrzeit_probennahme: '',
-    uhrzeit:'',
+    uhrzeit: '',
     uhrzeit_freeze: '',
     sap_id: '',
     remarks: '',
@@ -208,12 +208,12 @@ export default function SampleForm() {
             : probenart === 'urin'
               ? 'urinproben'
               : probenart === 'galle'
-              ? 'galleproben'
+                ? 'galleproben'
                 : probenart === 'stuhl'
-                ? 'stuhlproben'
+                  ? 'stuhlproben'
                   : probenart === 'edtaplasma'
-                  ? 'edtaplasmaproben'
-                  : null;
+                    ? 'edtaplasmaproben'
+                    : null;
 
       if (!tableName) return;
 
@@ -281,9 +281,9 @@ export default function SampleForm() {
   const handleSubmit = async () => {
     const newErrors = {};
     const isValidInteger = (value) => /^\d+$/.test(value);
-  
+
     console.log('handleSubmit called:', formData);
-  
+
     // New validation for Übergeordnete Probe and Untergeordnete Probe
     const sampleTypes = ['paraffin'];
     if (formData.probenart && sampleTypes.includes(formData.probenart)) {
@@ -299,17 +299,17 @@ export default function SampleForm() {
       }
 
     }
-  
+
     // Validation for "gewebe"
     if (formData.probenart === 'gewebe') {
       if (!formData.boxnummer || !isValidInteger(formData.boxnummer)) {
         newErrors.boxnummer = 'Boxnummer ist erforderlich und muss eine ganze Zahl sein.';
       }
-  
+
       if (!formData.boxzeile) {
         newErrors.boxzeile = 'Boxzeile ist erforderlich.';
       }
-  
+
       const boxspalteNumber = parseInt(formData.boxspalte, 10); // Convert to number
       if (
         !formData.boxspalte ||
@@ -319,11 +319,11 @@ export default function SampleForm() {
       ) {
         newErrors.boxspalte = 'Boxspalte ist erforderlich und muss eine ganze Zahl zwischen 1-9 sein.';
       }
-  
+
       if (!formData.abholer) {
         newErrors.abholer = 'Abholer ist erforderlich.';
       }
-  
+
       if (formData.uhrzeit) { //set time for gewebeproben to empty string
         formData.uhrzeit = '';
       }
@@ -332,17 +332,17 @@ export default function SampleForm() {
         newErrors.barcode_id = 'Barcode ist erforderlich.';
       }
     }
-  
+
     // Validation for "serum" or "urin"
     else if (formData.probenart === 'serum' || formData.probenart === 'urin') {
       if (!formData.boxnummer || !isValidInteger(formData.boxnummer)) {
         newErrors.boxnummer = 'Boxnummer ist erforderlich und muss eine ganze Zahl sein.';
       }
-  
+
       if (!formData.boxzeile) {
         newErrors.boxzeile = 'Boxzeile ist erforderlich.';
       }
-  
+
       const boxspalteNumber = parseInt(formData.boxspalte, 10); // Convert to number
       if (
         !formData.boxspalte ||
@@ -352,18 +352,18 @@ export default function SampleForm() {
       ) {
         newErrors.boxspalte = 'Boxspalte ist erforderlich und muss eine ganze Zahl zwischen 1-9 sein.';
       }
-  
+
       if (!formData.barcode_id) {
         newErrors.barcode_id = 'Barcode ist erforderlich.';
       }
     }
-  
+
     // Check if probeninformationen are the same as the fetched one
     if (formData.barcode_id && formData.probenart !== 'paraffin') {
       try {
         const response = await axios.get(`http://localhost:8000/table/data?table_name=vorlaeufigeproben`);
         const foundItem = response.data.find(item => item.barcode_id === formData.barcode_id);
-  
+
         if (foundItem && formData.probeninformation !== foundItem.probeninformation) {
           newErrors.probeninformation = 'Die Probeninformationen stimmen nicht überein.';
         }
@@ -372,7 +372,7 @@ export default function SampleForm() {
         newErrors.probeninformation = 'Fehler beim Überprüfen der Probeninformationen.';
       }
     }
-  
+
     // If we have collected any errors, stop here
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
@@ -382,9 +382,9 @@ export default function SampleForm() {
       setSnackbarOpen(true);
       return;
     }
-  
+
     setErrors({});
-  
+
     const filteredData = {
       probenart: formData.probenart,
       barcode_id: formData.barcode_id,
@@ -407,9 +407,9 @@ export default function SampleForm() {
       probeninformation: formData.probeninformation,
       probeninformation_ltx: formData.probeninformation_ltx,
     };
-  
+
     console.log('Filtered data beim EINSCHLEUSEN:', filteredData);
-  
+
     //possible sample typs - endpoints
     try {
       let endpoint = '';
@@ -439,7 +439,7 @@ export default function SampleForm() {
           throw new Error('Ungültige Probenart ausgewählt.');
       }
       console.log(endpoint);
-  
+
       // Senden der neuen Daten
       const response = await axios.post(
         `http://localhost:8000/new_data/${endpoint}`,
@@ -448,7 +448,7 @@ export default function SampleForm() {
           headers: { 'Content-Type': 'application/json' },
         }
       );
-  
+
       // Nur für Serum, Gewebe, Urin, Galle, EDTA-Plasma vorläufige Proben löschen
       if (['serum', 'gewebe', 'urin', 'galle', 'edtaplasma', 'stuhl'].includes(formData.probenart)) {
         const deleteResponse = await axios.delete(
@@ -460,17 +460,17 @@ export default function SampleForm() {
         );
         console.log('Response after delete:', deleteResponse);
       }
-  
+
       // Erfolgsbenachrichtigung
       setSnackbarMessage('Daten erfolgreich gespeichert.');
       setSnackbarSeverity('success');
       setSnackbarOpen(true);
-  
+
       // Formular leeren
       handleClear();
     } catch (error) {
       console.error('Error submitting data:', error);
-  
+
       if (error.response) {
         const message = error.response.data.detail
           ? `Error: ${error.response.data.detail}`
@@ -496,17 +496,17 @@ export default function SampleForm() {
   ///////////////////////////////////////////////////////////
 
   return (
-    <Box   
+    <Box
       sx={{ p: 3, maxWidth: 600, mx: "auto" }}
       onKeyDown={(e) => {
-      if (e.key === "Enter") { //bei press-enter
-        const active = document.activeElement; // Cursor Element
-        if (active.name === "barcode_id") { 
-          e.preventDefault(); //aendere default funktion
-          handleSubmit();    //submit
+        if (e.key === "Enter") { //bei press-enter
+          const active = document.activeElement; // Cursor Element
+          if (active.name === "barcode_id") {
+            e.preventDefault(); //aendere default funktion
+            handleSubmit();    //submit
+          }
         }
-      }
-    }}
+      }}
     >
       <Box sx={{ position: 'absolute', top: 90, left: 16 }}>
         <Button variant="contained" color="primary" onClick={() => window.location.href = '/overview'}>
@@ -525,7 +525,7 @@ export default function SampleForm() {
           Proben Einschleusen
         </Typography>
         <Typography variant="body1" sx={{ color: 'text.primary' }}>
-          Zum Einschleusen vorangelegter Proben und neuer Proben bitte die Probenart wählen. 
+          Zum Einschleusen vorangelegter Proben und neuer Proben bitte die Probenart wählen.
         </Typography>
       </Box>
 
@@ -649,7 +649,7 @@ export default function SampleForm() {
             label="Datum"
             name="created_at"
             type="date"
-            value={formData.created_at} 
+            value={formData.created_at}
             onChange={handleChange}
             fullWidth
             margin="normal"
@@ -1456,7 +1456,7 @@ export default function SampleForm() {
               <MenuItem value="">-- Bitte auswählen --</MenuItem>
               {probeninformationLTXOptions.map((option) => (
                 <MenuItem key={option.id} value={option.id}>
-                  {option.probeninformation_text} 
+                  {option.probeninformation_text}
                 </MenuItem>
               ))}
             </Select>
@@ -1467,7 +1467,7 @@ export default function SampleForm() {
             )}
           </FormControl>
 
-            {/* Differenzierungsmerkmal */}
+          {/* Differenzierungsmerkmal */}
           <FormControl
             variant="outlined"
             fullWidth
@@ -1629,8 +1629,8 @@ export default function SampleForm() {
         //remarks missing
       )}
 
-            {/* Conditional Fields for Stuhl */}
-            {formData.probenart === 'stuhl' && (
+      {/* Conditional Fields for Stuhl */}
+      {formData.probenart === 'stuhl' && (
         <Box sx={{ mt: 2 }}>
           {/* Barcode ID */}
           <TextField
@@ -1673,7 +1673,7 @@ export default function SampleForm() {
               <MenuItem value="">-- Bitte auswählen --</MenuItem>
               {probeninformationLTXOptions.map((option) => (
                 <MenuItem key={option.id} value={option.id}>
-                  {option.probeninformation_text} 
+                  {option.probeninformation_text}
                 </MenuItem>
               ))}
             </Select>
@@ -1890,7 +1890,7 @@ export default function SampleForm() {
               <MenuItem value="">-- Bitte auswählen --</MenuItem>
               {probeninformationLTXOptions.map((option) => (
                 <MenuItem key={option.id} value={option.id}>
-                  {option.probeninformation_text} 
+                  {option.probeninformation_text}
                 </MenuItem>
               ))}
             </Select>
@@ -1901,8 +1901,8 @@ export default function SampleForm() {
             )}
           </FormControl>
 
-        {/* Differenzierungsmerkmal */}  
-        <FormControl
+          {/* Differenzierungsmerkmal */}
+          <FormControl
             variant="outlined"
             fullWidth
             margin="normal"

@@ -22,46 +22,95 @@ export default function ProbeAusschleusen() {
     setBarcodeId(e.target.value);
   };
 
-  const validateForm = () => {
+
+
+  const validateForm = async () => {
     const newErrors = {};
-    if (!barcodeId.trim()) {
+    const barcode = barcodeId.trim();
+
+    if (!barcode) {
       newErrors.barcodeId = 'Barcode ID darf nicht leer sein.';
-    }
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
-  };
-
-  const handleSubmit = async () => {
-    if (!validateForm()) {
-      setSnackbarMessage("Bitte füllen Sie alle erforderlichen Felder aus.");
-      setSnackbarSeverity("error");
+      setErrors(newErrors);
+      setSnackbarMessage(newErrors.barcodeId);
+      setSnackbarSeverity('error');
       setSnackbarOpen(true);
-      return;
+      return false;
     }
-
-    const payload = { barcode_id: barcodeId };
 
     try {
-      await new Promise(resolve => setTimeout(resolve, 500));
-      const response = await axios.delete(
-        `http://localhost:8000/delete/vorlaeufigeproben`,
+      const response = await axios.get(
+        'http://localhost:8000/table/data',
         {
-          headers: { "Content-Type": "application/json" },
-          data: payload, // Correctly passing the data
+          params: { table_name: 'vorlaeufigeproben' },
         }
       );
 
-      console.log("Response after delete:", response);
+      const proben = response.data;
 
-      setSnackbarMessage("Probe erfolgreich entfernt!");
-      setSnackbarSeverity("success");
+      const barcodeExists = Array.isArray(proben) && proben.some(
+        (probe) =>
+          String(probe.barcode_id ?? probe.barcodeId ?? '').trim() === barcode
+      );
+
+      if (!barcodeExists) {
+        newErrors.barcodeId =
+          'Dieser Barcode ist nicht verfügbar oder wurde bereits gelöscht.';
+      }
+    } catch (error) {
+      console.error('Fehler bei der Barcode-Prüfung:', error);
+
+      newErrors.barcodeId =
+        error.response?.status === 404
+          ? 'Die Tabelle oder der Barcode wurde nicht gefunden.'
+          : 'Die Barcode-Prüfung ist fehlgeschlagen.';
+    }
+
+    setErrors(newErrors);
+
+    if (Object.keys(newErrors).length > 0) {
+      setSnackbarMessage(newErrors.barcodeId);
+      setSnackbarSeverity('error');
       setSnackbarOpen(true);
+      return false;
+    }
 
-      setBarcodeId(""); 
+    return true;
+  };
+
+  const handleSubmit = async () => {
+    const isValid = await validateForm();
+
+    if (!isValid) {
+      return;
+    }
+
+    const payload = {
+      barcode_id: barcodeId.trim(),
+    };
+
+    try {
+      const response = await axios.delete(
+        'http://localhost:8000/delete/vorlaeufigeproben',
+        {
+          headers: { 'Content-Type': 'application/json' },
+          data: payload,
+        }
+      );
+
+      setSnackbarMessage('Probe erfolgreich entfernt!');
+      setSnackbarSeverity('success');
+      setSnackbarOpen(true);
+      setBarcodeId('');
 
     } catch (error) {
       console.error("Fehler beim Entfernen:", error);
-      setSnackbarMessage("Fehler beim Entfernen der Probe.");
+
+      const message =
+        error.response?.status === 404
+          ? "Diese vorläufige Probe existiert nicht oder wurde bereits entfernt."
+          : "Fehler beim Entfernen der Probe.";
+
+      setSnackbarMessage(message);
       setSnackbarSeverity("error");
       setSnackbarOpen(true);
     }
@@ -69,31 +118,31 @@ export default function ProbeAusschleusen() {
 
   useEffect(() => {
     if (!barcodeId.trim()) return; // Falls barcodeId leer ist, nicht ausführen.
-  
+
     const newTimeout = setTimeout(() => {
       if (validateForm()) {
         handleSubmit();
       }
     }, 2000);
-  
+
     setTypingTimeout(newTimeout);
-  
+
     return () => clearTimeout(newTimeout); // Bereinigung des alten Timeouts
-  
+
   }, [barcodeId]); // Wird nur ausgeführt, wenn barcodeId sich ändert.
-  
+
 
   return (
     <Box sx={{ p: 3, maxWidth: 600, mx: 'auto' }}
-    onKeyDown={(e) => {
-      if (e.key === "Enter") { //bei press-enter
-        const active = document.activeElement; // Cursor Element
-        if (active.name === "barcodeId") { 
-          e.preventDefault(); //aendere default funktion
-          handleSubmit();    //submit
+      onKeyDown={(e) => {
+        if (e.key === "Enter") { //bei press-enter
+          const active = document.activeElement; // Cursor Element
+          if (active.name === "barcodeId") {
+            e.preventDefault(); //aendere default funktion
+            handleSubmit();    //submit
+          }
         }
-      }
-    }}>
+      }}>
       <Box sx={{ position: 'absolute', top: 90, left: 16 }}>
         <Button
           variant="contained"

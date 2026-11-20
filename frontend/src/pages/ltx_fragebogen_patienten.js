@@ -72,7 +72,7 @@ export default function Ltx_fragebogen_patienten() {
             <TableHead>
               <TableRow>
                 <TableCell sx={{ fontWeight: "bold" }}>
-                Patienten ID (intern)
+                  Patienten ID (intern)
                 </TableCell>
                 <TableCell sx={{ fontWeight: "bold" }}>
                   Eingetragen am

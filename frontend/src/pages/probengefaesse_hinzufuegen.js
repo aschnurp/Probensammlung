@@ -41,6 +41,7 @@ export default function SampleForm() {
   const [data, setData] = useState([]);
   const [checked, setChecked] = useState(false);
 
+  // Retrieve sample information for sample suggestions in the dropdown menu
   useEffect(() => {
     const getProbeninformation = async () => {
       try {
@@ -56,6 +57,7 @@ export default function SampleForm() {
       }
     };
 
+    // Retrieve sample information (LTX) for sample suggestions in the dropdown menu
     const getProbeninformationLTX = async () => {
       try {
         const res = await fetch(
@@ -98,6 +100,19 @@ export default function SampleForm() {
     setErrors({ ...errors, [name]: "" });
   };
 
+  // Die korrekte Reihenfolge für Proben. Nutzung für Probenvorschläge.
+  const probeReihenfolgeLTX = [
+    ...Array.from({ length: 48 }, (_, i) => i + 1),
+
+    // Stuhl prä OP
+    49, 50, 51, 52, 61, 62, 63, 64,
+
+    // Stuhl post OP
+    53, 54, 55, 56, 65, 66, 67, 68,
+
+    // Stuhl post OP 1 Jahr
+    57, 58, 59, 60, 69, 70, 71, 72,
+  ];
 
   const validateForm = () => {
     let newErrors = {};
@@ -105,12 +120,21 @@ export default function SampleForm() {
     if (!formData.patient_Id_intern)
       newErrors.patient_Id_intern = "Patienten ID ist erforderlich.";
 
-    if (!formData.barcode_id)
-      newErrors.barcode_id = "Barcode ID ist erforderlich.";
+    if (!formData.barcode_id) {
+      newErrors.barcode_id = "Barcode ID ist erforderlich."; //valid form before submitting it
+    } else {
+      const barcodeExists = data.some(
+        (row) => row.barcode_id === formData.barcode_id
+      );
+      if (barcodeExists) {
+        newErrors.barcode_id = "Dieser Barcode ist bereits vorhanden.";
+      }
+    }
 
     if (checked) {
       if (!formData.probeninformation_ltx)
         newErrors.probeninformation_ltx = "LTX Probeninformation ist erforderlich.";
+
     } else {
       if (!formData.probeninformation)
         newErrors.probeninformation = "Probeninformation ist erforderlich.";
@@ -123,65 +147,73 @@ export default function SampleForm() {
     if (!validateForm()) return;
     const payload = checked
       ? {
-          ...formData,
-          probeninformation: null,        
-        }
+        ...formData,
+        probeninformation: null,
+      }
       : {
-          ...formData,
-          probeninformation_ltx: null,    
-        };
-  
+        ...formData,
+        probeninformation_ltx: null,
+      };
+
     try {
       await axios.post(
         `http://localhost:8000/new_data/vorlaeufige_proben`,
         payload,
         { headers: { "Content-Type": "application/json" } }
       );
-  
+      console.log(payload)
       setSnackbarMessage("Daten erfolgreich gesendet!");
       setSnackbarSeverity("success");
       setSnackbarOpen(true);
-  
+
+
       // --- NEXT PROBE LOGIC ---
-      let nextProbe = "";
-  
       if (checked) {
-        // LTX-mode → rotate in probeninformationLTX
-        const currentIndex = probeninformationLTX.findIndex(
-          (probe) => probe.id === formData.probeninformation_ltx
-        );
-        const nextIndex = (currentIndex + 1) % probeninformationLTX.length;
-        nextProbe = probeninformationLTX[nextIndex]?.id || "";
-  
+        // LTX: feste Navigationsreihenfolge verwenden
+        const currentId = Number(formData.probeninformation_ltx);
+        const currentIndex = probeReihenfolgeLTX.indexOf(currentId);
+
+        const nextIndex =
+          currentIndex === -1
+            ? 0
+            : (currentIndex + 1) % probeReihenfolgeLTX.length;
+
+        const nextProbe = probeReihenfolgeLTX[nextIndex];
+
         setFormData({
           patient_Id_intern: formData.patient_Id_intern,
           barcode_id: "",
-          probeninformation: "",       // always empty in LTX mode
+          probeninformation: "",
           probeninformation_ltx: nextProbe,
         });
-  
       } else {
-        // Normal mode → rotate in probeninformation
+        // Normal mode: bisherige Reihenfolge beibehalten
         const currentIndex = probeninformation.findIndex(
-          (probe) => probe.id === formData.probeninformation
+          (probe) => Number(probe.id) === Number(formData.probeninformation)
         );
-        const nextIndex = (currentIndex + 1) % probeninformation.length;
-        nextProbe = probeninformation[nextIndex]?.id || "";
-  
+
+        const nextIndex =
+          currentIndex === -1
+            ? 0
+            : (currentIndex + 1) % probeninformation.length;
+
+        const nextProbe = probeninformation[nextIndex]?.id ?? "";
+
         setFormData({
           patient_Id_intern: formData.patient_Id_intern,
           barcode_id: "",
           probeninformation: nextProbe,
-          probeninformation_ltx: "",   // always empty in NORMAL mode
+          probeninformation_ltx: "",
         });
       }
-  
+
+
       // Refresh table
       const updatedTableData = await axios.get(
         `http://localhost:8000/table/data?table_name=vorlaeufigeproben`
       );
       setData(updatedTableData.data);
-  
+
     } catch (error) {
       console.error("Error submitting form:", error);
       setSnackbarMessage("Fehler beim Senden der Daten.");
@@ -189,7 +221,7 @@ export default function SampleForm() {
       setSnackbarOpen(true);
     }
   };
-  
+
 
   return (
     <Box sx={{ p: 3, maxWidth: 900, mx: "auto" }}>
@@ -346,5 +378,4 @@ export default function SampleForm() {
       </Snackbar>
     </Box>
   );
-
 }
